@@ -1,4 +1,4 @@
-export type Material = 
+﻿export type Material = 
   | 'Granite' 
   | 'Concrete' 
   | 'Tile' 
@@ -45,7 +45,7 @@ export interface Product {
   applications: Application[]
   recommendedMachinePower: MachinePower
   recommendedCuttingVolume: string
-  price: number
+  listPrice: number
   imagePlaceholder: string
   videoPlaceholder?: string
   maxRPM?: string | number
@@ -91,7 +91,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting', 'Wall Cutting'],
     recommendedMachinePower: 'high',
     recommendedCuttingVolume: '500+ sqm',
-    price: 185.00,
+    listPrice: 185.00,
     imagePlaceholder: '/images/blade-granite.jpg',
     videoPlaceholder: '/placeholder-video.mp4',
     relatedProductIds: ['prod-002', 'prod-003'],
@@ -110,7 +110,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting', 'Wall Cutting'],
     recommendedMachinePower: 'medium',
     recommendedCuttingVolume: '200-500 sqm',
-    price: 145.00,
+    listPrice: 145.00,
     imagePlaceholder: '/images/blade-granite.jpg',
     relatedProductIds: ['prod-001', 'prod-003'],
   },
@@ -128,7 +128,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting'],
     recommendedMachinePower: 'high',
     recommendedCuttingVolume: '1000+ sqm',
-    price: 320.00,
+    listPrice: 320.00,
     imagePlaceholder: '/images/blade-concrete.jpg',
     videoPlaceholder: '/placeholder-video.mp4',
     relatedProductIds: ['prod-004', 'prod-005'],
@@ -147,7 +147,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting', 'Wall Cutting'],
     recommendedMachinePower: 'medium',
     recommendedCuttingVolume: '300-600 sqm',
-    price: 165.00,
+    listPrice: 165.00,
     imagePlaceholder: '/images/blade-concrete.jpg',
     relatedProductIds: ['prod-003', 'prod-005'],
   },
@@ -165,7 +165,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting', 'Wall Cutting'],
     recommendedMachinePower: 'low',
     recommendedCuttingVolume: '100-200 sqm',
-    price: 85.00,
+    listPrice: 85.00,
     imagePlaceholder: '/images/blade-tile.jpg',
     relatedProductIds: ['prod-006', 'prod-007'],
   },
@@ -183,7 +183,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting', 'Wall Cutting'],
     recommendedMachinePower: 'medium',
     recommendedCuttingVolume: '200-400 sqm',
-    price: 125.00,
+    listPrice: 125.00,
     imagePlaceholder: '/images/blade-tile.jpg',
     relatedProductIds: ['prod-005', 'prod-007'],
   },
@@ -201,7 +201,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting', 'Wall Cutting'],
     recommendedMachinePower: 'medium',
     recommendedCuttingVolume: '400-800 sqm',
-    price: 135.00,
+    listPrice: 135.00,
     imagePlaceholder: '/images/blade-granite.jpg',
     relatedProductIds: ['prod-004', 'prod-008'],
   },
@@ -219,7 +219,7 @@ export const products: Product[] = [
     applications: ['Coring'],
     recommendedMachinePower: 'high',
     recommendedCuttingVolume: '50+ holes',
-    price: 210.00,
+    listPrice: 210.00,
     imagePlaceholder: '/images/blade-granite.jpg',
     relatedProductIds: ['prod-009', 'prod-010'],
   },
@@ -237,7 +237,7 @@ export const products: Product[] = [
     applications: ['Coring'],
     recommendedMachinePower: 'high',
     recommendedCuttingVolume: '30+ holes',
-    price: 285.00,
+    listPrice: 285.00,
     imagePlaceholder: '/images/blade-granite.jpg',
     relatedProductIds: ['prod-008', 'prod-010'],
   },
@@ -255,7 +255,7 @@ export const products: Product[] = [
     applications: ['Grinding'],
     recommendedMachinePower: 'medium',
     recommendedCuttingVolume: '100+ sqm',
-    price: 155.00,
+    listPrice: 155.00,
     imagePlaceholder: '/images/blade-granite.jpg',
     relatedProductIds: ['prod-008', 'prod-003'],
   },
@@ -273,7 +273,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting'],
     recommendedMachinePower: 'high',
     recommendedCuttingVolume: '2000+ linear meters',
-    price: 385.00,
+    listPrice: 385.00,
     imagePlaceholder: '/images/blade-granite.jpg',
     relatedProductIds: ['prod-003', 'prod-004'],
   },
@@ -291,7 +291,7 @@ export const products: Product[] = [
     applications: ['Floor Cutting', 'Wall Cutting'],
     recommendedMachinePower: 'medium',
     recommendedCuttingVolume: '200-400 sqm',
-    price: 195.00,
+    listPrice: 195.00,
     imagePlaceholder: '/images/blade-granite.jpg',
     relatedProductIds: ['prod-001', 'prod-006'],
   },
@@ -312,7 +312,7 @@ products.push({
   applications: ['Grinding'],
   recommendedMachinePower: 'low',
   recommendedCuttingVolume: '50+ sqm',
-  price: 45.00,
+  listPrice: 45.00,
   imagePlaceholder: '/images/blade-granite.jpg',
   relatedProductIds: ['prod-010', 'prod-012'],
 })

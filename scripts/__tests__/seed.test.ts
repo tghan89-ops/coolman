@@ -6,15 +6,15 @@ describe('Product Seed Mapping', () => {
     expect(products.length).toBe(13)
   })
 
-  it('should have price field on all products', () => {
+  it('should have listPrice field on all products', () => {
     for (const product of products) {
-      expect(product.price).toBeDefined()
-      expect(typeof product.price).toBe('number')
-      expect(product.price).toBeGreaterThan(0)
+      expect(product.listPrice).toBeDefined()
+      expect(typeof product.listPrice).toBe('number')
+      expect(product.listPrice).toBeGreaterThan(0)
     }
   })
 
-  it('should map price to listPrice correctly', () => {
+  it('should map listPrice correctly', () => {
     const product = products[0]
     const mapped = {
       sku: product.sku,
@@ -29,10 +29,10 @@ describe('Product Seed Mapping', () => {
       applications: product.applications,
       recommendedMachinePower: product.recommendedMachinePower,
       recommendedCuttingVolume: product.recommendedCuttingVolume,
-      listPrice: product.price,
+      listPrice: product.listPrice,
     }
 
-    expect(mapped.listPrice).toBe(product.price)
+    expect(mapped.listPrice).toBe(product.listPrice)
     expect(mapped).not.toHaveProperty('price')
   })
 
@@ -51,7 +51,7 @@ describe('Product Seed Mapping', () => {
       applications: product.applications,
       recommendedMachinePower: product.recommendedMachinePower,
       recommendedCuttingVolume: product.recommendedCuttingVolume,
-      listPrice: product.price,
+      listPrice: product.listPrice,
     }
 
     expect(mapped).toHaveProperty('sku')
@@ -77,7 +77,7 @@ describe('Product Seed Mapping', () => {
         product.recommendedMachinePower
       )
       expect(typeof product.recommendedCuttingVolume).toBe('string')
-      expect(typeof product.price).toBe('number')
+      expect(typeof product.listPrice).toBe('number')
     }
   })
 })

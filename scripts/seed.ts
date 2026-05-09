@@ -24,7 +24,7 @@ async function seed() {
           applications: product.applications,
           recommendedMachinePower: product.recommendedMachinePower,
           recommendedCuttingVolume: product.recommendedCuttingVolume,
-          listPrice: product.price,
+          listPrice: product.listPrice,
         },
       })
       console.log(`✓ Created: ${product.sku} — ${product.name}`)
