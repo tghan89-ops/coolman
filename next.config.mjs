@@ -1,3 +1,5 @@
+import { withPayload } from '@payloadcms/next/withPayload'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -5,7 +7,13 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+      },
+    ],
   },
 }
 
-export default nextConfig
+export default withPayload(nextConfig)
