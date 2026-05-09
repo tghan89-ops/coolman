@@ -48,6 +48,7 @@ export interface Product {
   price: number
   imagePlaceholder: string
   videoPlaceholder?: string
+  maxRPM?: string | number
   relatedProductIds: string[]
 }
 

@@ -43,12 +43,12 @@ function OrderRequestContent() {
     }
   }, [user])
 
-  const accountDiscount = user?.contractor?.accountDiscount || 0
+  const tierDiscountPct = user?.contractor?.tier_discount_pct || 0
 
   const pricing = useMemo(() => {
     if (!product) return null
-    return calculateOrderPrice(quantity, product.price, accountDiscount, promoDiscount)
-  }, [product, quantity, accountDiscount, promoDiscount])
+    return calculateOrderPrice(quantity, product.price, tierDiscountPct, promoDiscount)
+  }, [product, quantity, tierDiscountPct, promoDiscount])
 
   const handleApplyPromo = () => {
     setPromoError('')
@@ -274,11 +274,11 @@ function OrderRequestContent() {
                   <span className="font-medium">{formatPrice(pricing?.subtotal || 0)}</span>
                 </div>
 
-                {/* Account Discount */}
-                {accountDiscount > 0 && (
+                {/* Tier Discount */}
+                {tierDiscountPct > 0 && (
                   <div className="flex justify-between text-sm text-success">
-                    <span>{t.order.accountDiscount} ({formatPercentage(accountDiscount)})</span>
-                    <span>-{formatPrice(pricing?.accountDiscountAmount || 0)}</span>
+                    <span>{t.order.tierDiscount} ({formatPercentage(tierDiscountPct)})</span>
+                    <span>-{formatPrice(pricing?.tierDiscountAmount || 0)}</span>
                   </div>
                 )}
 

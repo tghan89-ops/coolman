@@ -7,7 +7,7 @@ export interface Contractor {
   email: string
   phone: string
   deliveryAddress: string
-  accountDiscount: number // percentage, e.g., 0.10 for 10%
+  tier_discount_pct: number // decimal, e.g., 0.10 = 10%
   status: ContractorStatus
   registeredAt: string
   lastOrderAt: string | null
@@ -22,7 +22,7 @@ export const contractors: Contractor[] = [
     email: 'ahmad@abcconstruction.com.my',
     phone: '+60 12-345 6789',
     deliveryAddress: '123 Jalan Industri, Shah Alam, Selangor 40150',
-    accountDiscount: 0.10,
+    tier_discount_pct: 0.10,
     status: 'Active',
     registeredAt: '2023-03-15',
     lastOrderAt: '2024-01-20',
@@ -35,7 +35,7 @@ export const contractors: Contractor[] = [
     email: 'weiming@megatile.com.my',
     phone: '+60 16-789 0123',
     deliveryAddress: '45 Lorong Perusahaan, Petaling Jaya, Selangor 46000',
-    accountDiscount: 0.15,
+    tier_discount_pct: 0.15,
     status: 'Active',
     registeredAt: '2022-08-01',
     lastOrderAt: '2024-01-22',
@@ -48,7 +48,7 @@ export const contractors: Contractor[] = [
     email: 'raj@precisioncut.com.my',
     phone: '+60 19-456 7890',
     deliveryAddress: '78 Jalan Pembangunan, Johor Bahru, Johor 81100',
-    accountDiscount: 0.05,
+    tier_discount_pct: 0.05,
     status: 'Active',
     registeredAt: '2023-11-10',
     lastOrderAt: '2024-01-18',
@@ -61,7 +61,7 @@ export const contractors: Contractor[] = [
     email: 'azmi@klroadworks.com.my',
     phone: '+60 13-234 5678',
     deliveryAddress: '200 Jalan Pembinaan, Kuala Lumpur 51200',
-    accountDiscount: 0.12,
+    tier_discount_pct: 0.12,
     status: 'Active',
     registeredAt: '2022-01-20',
     lastOrderAt: '2024-01-21',
@@ -74,7 +74,7 @@ export const contractors: Contractor[] = [
     email: 'ck@stonemasters.com.my',
     phone: '+60 17-890 1234',
     deliveryAddress: '15 Kawasan Perindustrian, Penang 13600',
-    accountDiscount: 0.08,
+    tier_discount_pct: 0.08,
     status: 'Gone Quiet',
     registeredAt: '2022-05-15',
     lastOrderAt: '2023-09-05',
@@ -87,7 +87,7 @@ export const contractors: Contractor[] = [
     email: 'farah@diamondedge.com.my',
     phone: '+60 14-567 8901',
     deliveryAddress: '88 Jalan Perusahaan Baru, Klang, Selangor 41000',
-    accountDiscount: 0.10,
+    tier_discount_pct: 0.10,
     status: 'Active',
     registeredAt: '2023-07-01',
     lastOrderAt: '2024-01-19',
@@ -100,7 +100,7 @@ export const contractors: Contractor[] = [
     email: 'james@borneobuilders.com.my',
     phone: '+60 82-123 4567',
     deliveryAddress: '25 Jalan Industri, Kuching, Sarawak 93350',
-    accountDiscount: 0.07,
+    tier_discount_pct: 0.07,
     status: 'Active',
     registeredAt: '2023-09-20',
     lastOrderAt: '2024-01-15',
@@ -113,7 +113,7 @@ export const contractors: Contractor[] = [
     email: 'siti@qualityfloors.com.my',
     phone: '+60 11-234 5678',
     deliveryAddress: '50 Kawasan Perindustrian Senai, Johor 81400',
-    accountDiscount: 0.05,
+    tier_discount_pct: 0.05,
     status: 'Gone Quiet',
     registeredAt: '2023-02-10',
     lastOrderAt: '2023-08-20',

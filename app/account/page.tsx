@@ -88,10 +88,10 @@ export default function AccountPage() {
                 },
                 {
                   icon: Percent,
-                  value: user.contractor?.accountDiscount 
-                    ? `${Math.round(user.contractor.accountDiscount * 100)}%`
+                  value: user.contractor?.tier_discount_pct
+                    ? `${Math.round(user.contractor.tier_discount_pct * 100)}%`
                     : '0%',
-                  label: 'Account Discount',
+                  label: 'Tier Discount',
                   color: 'emerald'
                 }
               ].map((stat, index) => (

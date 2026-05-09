@@ -264,23 +264,23 @@ export function calculateResponseTime(order: Order): number | null {
 export function calculateOrderPrice(
   quantity: number,
   unitPrice: number,
-  accountDiscount: number,
+  tierDiscountPct: number,
   promoDiscount: number
 ): {
   subtotal: number
-  accountDiscountAmount: number
+  tierDiscountAmount: number
   promoDiscountAmount: number
   total: number
 } {
   const subtotal = quantity * unitPrice
-  const afterAccountDiscount = subtotal * (1 - accountDiscount)
-  const accountDiscountAmount = subtotal - afterAccountDiscount
-  const total = afterAccountDiscount * (1 - promoDiscount)
-  const promoDiscountAmount = afterAccountDiscount - total
+  const afterTierDiscount = subtotal * (1 - tierDiscountPct)
+  const tierDiscountAmount = subtotal - afterTierDiscount
+  const total = afterTierDiscount * (1 - promoDiscount)
+  const promoDiscountAmount = afterTierDiscount - total
 
   return {
     subtotal,
-    accountDiscountAmount,
+    tierDiscountAmount,
     promoDiscountAmount,
     total,
   }

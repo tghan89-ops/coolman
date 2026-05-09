@@ -72,7 +72,7 @@ export interface CopyStructure {
     notesPlaceholder: string
     pricing: string
     listPrice: string
-    accountDiscount: string
+    tierDiscount: string
     promoCode: string
     promoCodePlaceholder: string
     applyPromo: string
@@ -260,7 +260,7 @@ export const COPY: Record<Language, CopyStructure> = {
       notesPlaceholder: 'Any special instructions or requirements...',
       pricing: 'Pricing',
       listPrice: 'List Price',
-      accountDiscount: 'Account Discount',
+      tierDiscount: 'Tier Discount',
       promoCode: 'Promo Code',
       promoCodePlaceholder: 'Enter code',
       applyPromo: 'Apply',
@@ -446,7 +446,7 @@ export const COPY: Record<Language, CopyStructure> = {
       notesPlaceholder: 'Sebarang arahan atau keperluan khas...',
       pricing: 'Harga',
       listPrice: 'Harga Senarai',
-      accountDiscount: 'Diskaun Akaun',
+      tierDiscount: 'Diskaun Tier',
       promoCode: 'Kod Promo',
       promoCodePlaceholder: 'Masukkan kod',
       applyPromo: 'Guna',
