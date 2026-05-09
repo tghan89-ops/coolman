@@ -27,15 +27,13 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
 
   // ── Hero ────────────────────────────────────────────────────────────────────
   const heroBadge = data.hero?.badge ?? 'ENGINEERED IN JAPAN'
-  const heroHeadlineRaw = data.hero?.headline ?? 'Precision Without/Compromise'
-  const slashIdx = heroHeadlineRaw.indexOf('/')
-  const heroLine1 = slashIdx !== -1 ? heroHeadlineRaw.slice(0, slashIdx) : heroHeadlineRaw
-  const heroLine2 = slashIdx !== -1 ? heroHeadlineRaw.slice(slashIdx + 1) : null
+  const heroLine1 = data.hero?.headlineLine1 ?? 'Precision Without'
+  const heroLine2 = data.hero?.headlineLine2 ?? 'Compromise'
   const heroSubheadline =
     data.hero?.subheadline ??
     'Shibuya core drilling machines represent five decades of Japanese engineering excellence. Trusted by professionals who demand nothing less than perfection.'
-  const heroPrimaryLabel = data.hero?.primaryCtaLabel ?? 'Explore Models'
-  const heroSecondaryLabel = data.hero?.secondaryCtaLabel ?? 'Watch Film'
+  const heroPrimaryLabel = 'Explore Models'
+  const heroSecondaryLabel = 'Watch Film'
   const heroImageUrl = data.hero?.heroImage?.url ?? '/images/shibuya-hero.jpg'
 
   // ── Heritage ────────────────────────────────────────────────────────────────
@@ -45,8 +43,8 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
     'Five decades of relentless pursuit of perfection. Every Shibuya machine is a testament to Japanese craftsmanship.'
 
   // ── Craftsmanship ───────────────────────────────────────────────────────────
-  const craftEyebrow = data.craftsmanship?.eyebrow ?? 'CRAFTSMANSHIP'
-  const craftHeadline = data.craftsmanship?.headline ?? 'Built to Last Generations'
+  const craftEyebrow = data.craftsmanship?.sectionLabel ?? 'CRAFTSMANSHIP'
+  const craftHeadline = data.craftsmanship?.title ?? 'Built to Last Generations'
   const craftBody =
     data.craftsmanship?.body ??
     'Every Shibuya machine begins its life in our Osaka manufacturing facility, where traditional Japanese craftsmanship meets modern precision engineering.'
@@ -78,18 +76,18 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
   const machines: any[] = data.machines ?? []
 
   // ── InAction ────────────────────────────────────────────────────────────────
-  const inActionEyebrow = data.inAction?.eyebrow ?? 'IN THE FIELD'
-  const inActionHeadline = data.inAction?.headline ?? 'Built for Real Work'
+  const inActionEyebrow = 'IN THE FIELD'
+  const inActionHeadline = data.inAction?.title ?? 'Built for Real Work'
   const inActionBody =
     data.inAction?.body ??
     'From high-rise construction to infrastructure projects, Shibuya machines perform flawlessly in the most demanding conditions.'
-  const inActionCtaLabel = data.inAction?.ctaLabel ?? 'View Applications'
-  const inActionCtaHref = data.inAction?.ctaHref ?? '/applications'
+  const inActionCtaLabel = 'View Applications'
+  const inActionCtaHref = '/applications'
   const inActionImageUrl = data.inAction?.image?.url ?? '/images/shibuya-action.jpg'
 
   // ── Support ─────────────────────────────────────────────────────────────────
-  const supportEyebrow = data.support?.eyebrow ?? 'SUPPORT'
-  const supportHeadline = data.support?.headline ?? 'We Stand Behind Every Machine'
+  const supportEyebrow = 'SUPPORT'
+  const supportHeadline = data.support?.title ?? 'We Stand Behind Every Machine'
   const supportItems = data.support?.items ?? [
     {
       title: '2-Year Warranty',
@@ -115,9 +113,9 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
     data.cta?.subheadline ??
     'Schedule a demonstration at your site or visit our showroom to see Shibuya performance firsthand.'
   const ctaPrimaryLabel = data.cta?.primaryCtaLabel ?? 'Schedule Demo'
-  const ctaPrimaryHref = data.cta?.primaryCtaHref ?? '/contact'
+  const ctaPrimaryHref = '/contact'
   const ctaSecondaryLabel = data.cta?.secondaryCtaLabel ?? 'Download Brochure'
-  const ctaSecondaryHref = data.cta?.secondaryCtaHref ?? '/contact'
+  const ctaSecondaryHref = '/contact'
 
   return (
     <PublicLayout>
@@ -150,9 +148,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
             {/* Headline */}
             <h1 className="text-5xl font-bold leading-[1.1] tracking-tight text-white md:text-6xl lg:text-7xl">
               {heroLine1}
-              {heroLine2 !== null && (
-                <span className="block text-white/40">{heroLine2}</span>
-              )}
+              <span className="block text-white/40">{heroLine2}</span>
             </h1>
 
             {/* Subheading */}
