@@ -56,7 +56,7 @@ const features = [
 export function HomePageClient({ initialData }: { initialData: any }) {
   const { data } = useLivePreview({
     initialData,
-    serverURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
     depth: 1,
   })
 

@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Filter, X } from 'lucide-react'
+import { useLivePreview } from '@payloadcms/live-preview-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils/formatting'
@@ -12,7 +13,11 @@ const MATERIALS = ['Granite', 'Concrete', 'Marble', 'Tile', 'Asphalt', 'Brick', 
 const APPLICATIONS = ['Wall Cutting', 'Floor Cutting', 'Coring', 'Grinding']
 
 export function ProductsClient({ initialProducts }: { initialProducts: any[] }) {
-  const [products] = useState(initialProducts)
+  const { data: products } = useLivePreview({
+    initialData: initialProducts,
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+    depth: 1,
+  })
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([])
   const [selectedApplications, setSelectedApplications] = useState<string[]>([])

@@ -12,7 +12,7 @@ import { formatPrice } from '@/lib/utils/formatting'
 export function ProductDetailClient({ initialData }: { initialData: any }) {
   const { data } = useLivePreview({
     initialData,
-    serverURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
     depth: 2,
   })
 
@@ -73,7 +73,7 @@ export function ProductDetailClient({ initialData }: { initialData: any }) {
               {/* SKU tag */}
               <div className="mb-4 inline-flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1.5">
                 <span className="text-xs font-bold tracking-widest text-white/40">SKU</span>
-                <span className="text-xs font-semibold text-white/60">{data.sku}</span>
+                <span className="font-mono text-xs font-semibold text-white/60">{data.sku}</span>
               </div>
 
               <div className="relative aspect-square overflow-hidden border border-white/10 bg-gradient-to-br from-navy-light to-navy">
@@ -122,7 +122,7 @@ export function ProductDetailClient({ initialData }: { initialData: any }) {
                 <div className="flex items-end justify-between">
                   <div>
                     <p className="text-sm text-white/40">List price per unit</p>
-                    <p className="mt-1 font-sans text-4xl font-bold text-white">{formatPrice(data.listPrice)}</p>
+                    <p className="font-mono mt-1 font-sans text-4xl font-bold text-white">{formatPrice(data.listPrice)}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-white/40">Machine power</p>
@@ -136,7 +136,7 @@ export function ProductDetailClient({ initialData }: { initialData: any }) {
                 {specs.slice(0, 3).map((spec) => (
                   <div key={spec.label} className="border border-white/10 bg-white/5 p-4 text-center">
                     <p className="text-xs font-semibold text-white/40">{spec.label}</p>
-                    <p className="mt-1 font-sans text-lg font-bold text-white">{spec.value}</p>
+                    <p className="font-mono mt-1 font-sans text-lg font-bold text-white">{spec.value}</p>
                   </div>
                 ))}
               </div>
@@ -203,7 +203,7 @@ export function ProductDetailClient({ initialData }: { initialData: any }) {
                   </div>
                   <div>
                     <p className="text-xs font-bold tracking-wider text-ink-faint">{spec.label}</p>
-                    <p className="mt-0.5 font-sans text-lg font-bold text-navy">{spec.value}</p>
+                    <p className="font-mono mt-0.5 font-sans text-lg font-bold text-navy">{spec.value}</p>
                   </div>
                 </div>
               ))}

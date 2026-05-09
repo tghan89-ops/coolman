@@ -13,7 +13,7 @@ import { useLivePreview } from '@payloadcms/live-preview-react'
 export function ContactClient({ initialData }: { initialData: any }) {
   const { data } = useLivePreview({
     initialData,
-    serverURL: process.env.NEXT_PUBLIC_SERVER_URL!,
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
     depth: 1,
   })
 
