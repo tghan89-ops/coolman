@@ -79,27 +79,27 @@ export default function RegisterPage() {
 
   return (
     <PublicLayout>
-      <div className="flex min-h-[calc(100vh-80px)] bg-[#0a1628]">
+      <div className="flex min-h-[calc(100vh-80px)] bg-navy">
         {/* Left Side - Visual */}
-        <div className="hidden w-1/2 items-center justify-center bg-gradient-to-br from-blue-600/20 to-blue-900/20 lg:flex">
+        <div className="hidden w-1/2 items-center justify-center bg-gradient-to-br from-accent/20 to-navy-surface/80 lg:flex">
           <div className="max-w-md p-12">
-            <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-500/10 ring-1 ring-blue-500/20">
-              <span className="font-playfair text-4xl font-bold text-blue-400">C</span>
+            <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-accent/10 ring-1 ring-accent/20">
+              <span className="font-sans text-4xl font-bold text-accent-light">C</span>
             </div>
-            <h2 className="mt-8 font-playfair text-3xl font-bold text-white">
+            <h2 className="mt-8 font-sans text-3xl font-bold text-white">
               Join Our Network
             </h2>
-            <p className="mt-4 text-gray-400">
+            <p className="mt-4 text-ink-muted">
               Register as a contractor to access exclusive pricing and streamline your ordering process.
             </p>
             
             <div className="mt-10 space-y-4">
               {benefits.map((benefit, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/20">
-                    <Check className="h-4 w-4 text-blue-400" />
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/20">
+                    <Check className="h-4 w-4 text-accent-light" />
                   </div>
-                  <span className="text-gray-300">{benefit}</span>
+                  <span className="text-ink-muted">{benefit}</span>
                 </div>
               ))}
             </div>
@@ -110,10 +110,10 @@ export default function RegisterPage() {
         <div className="flex flex-1 items-center justify-center px-4 py-12">
           <div className="w-full max-w-md">
             <div className="text-center">
-              <h1 className="font-playfair text-3xl font-bold text-white md:text-4xl">
+              <h1 className="font-sans text-3xl font-bold text-white md:text-4xl">
                 {t.auth.register}
               </h1>
-              <p className="mt-3 text-gray-400">
+              <p className="mt-3 text-ink-muted">
                 Create a contractor account to start ordering
               </p>
             </div>
@@ -126,7 +126,7 @@ export default function RegisterPage() {
               )}
               
               <div className="space-y-2">
-                <Label htmlFor="companyName" className={`text-sm transition-colors ${focusedField === 'companyName' ? 'text-blue-400' : 'text-gray-400'}`}>
+                <Label htmlFor="companyName" className={`text-sm transition-colors ${focusedField === 'companyName' ? 'text-accent-light' : 'text-ink-muted'}`}>
                   {t.auth.companyName} *
                 </Label>
                 <Input
@@ -138,12 +138,12 @@ export default function RegisterPage() {
                   onFocus={() => setFocusedField('companyName')}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="email" className={`text-sm transition-colors ${focusedField === 'email' ? 'text-blue-400' : 'text-gray-400'}`}>
+                <Label htmlFor="email" className={`text-sm transition-colors ${focusedField === 'email' ? 'text-accent-light' : 'text-ink-muted'}`}>
                   {t.auth.email} *
                 </Label>
                 <Input
@@ -156,12 +156,12 @@ export default function RegisterPage() {
                   onFocus={() => setFocusedField('email')}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="phone" className={`text-sm transition-colors ${focusedField === 'phone' ? 'text-blue-400' : 'text-gray-400'}`}>
+                <Label htmlFor="phone" className={`text-sm transition-colors ${focusedField === 'phone' ? 'text-accent-light' : 'text-ink-muted'}`}>
                   {t.auth.phone} *
                 </Label>
                 <Input
@@ -174,12 +174,12 @@ export default function RegisterPage() {
                   onFocus={() => setFocusedField('phone')}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="address" className={`text-sm transition-colors ${focusedField === 'address' ? 'text-blue-400' : 'text-gray-400'}`}>
+                <Label htmlFor="address" className={`text-sm transition-colors ${focusedField === 'address' ? 'text-accent-light' : 'text-ink-muted'}`}>
                   {t.auth.address} *
                 </Label>
                 <Textarea
@@ -192,13 +192,13 @@ export default function RegisterPage() {
                   onBlur={() => setFocusedField(null)}
                   rows={2}
                   required
-                  className="resize-none border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="resize-none border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
                 />
               </div>
               
               <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="password" className={`text-sm transition-colors ${focusedField === 'password' ? 'text-blue-400' : 'text-gray-400'}`}>
+                  <Label htmlFor="password" className={`text-sm transition-colors ${focusedField === 'password' ? 'text-accent-light' : 'text-ink-muted'}`}>
                     {t.auth.password} *
                   </Label>
                   <div className="relative">
@@ -211,12 +211,12 @@ export default function RegisterPage() {
                       onFocus={() => setFocusedField('password')}
                       onBlur={() => setFocusedField(null)}
                       required
-                      className="h-12 border-white/10 bg-white/5 pr-10 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
+                      className="h-12 border-white/10 bg-white/5 pr-10 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-white"
                     >
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
@@ -224,7 +224,7 @@ export default function RegisterPage() {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className={`text-sm transition-colors ${focusedField === 'confirmPassword' ? 'text-blue-400' : 'text-gray-400'}`}>
+                  <Label htmlFor="confirmPassword" className={`text-sm transition-colors ${focusedField === 'confirmPassword' ? 'text-accent-light' : 'text-ink-muted'}`}>
                     {t.auth.confirmPassword} *
                   </Label>
                   <Input
@@ -236,14 +236,14 @@ export default function RegisterPage() {
                     onFocus={() => setFocusedField('confirmPassword')}
                     onBlur={() => setFocusedField(null)}
                     required
-                    className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
+                    className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
                   />
                 </div>
               </div>
 
               <Button 
                 type="submit" 
-                className="group h-12 w-full bg-blue-600 text-white hover:bg-blue-500" 
+                className="group h-12 w-full bg-accent text-white hover:bg-accent-dark" 
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -254,15 +254,15 @@ export default function RegisterPage() {
                 ) : (
                   <span className="flex items-center gap-2">
                     {t.auth.registerButton}
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-4 w-4" />
                   </span>
                 )}
               </Button>
             </form>
               
-            <p className="mt-8 text-center text-sm text-gray-400">
+            <p className="mt-8 text-center text-sm text-ink-muted">
               {t.auth.hasAccount}{' '}
-              <Link href="/auth/login" className="font-medium text-blue-400 transition-colors hover:text-blue-300">
+              <Link href="/auth/login" className="font-medium text-accent-light transition-colors hover:text-accent-light">
                 {t.auth.login}
               </Link>
             </p>

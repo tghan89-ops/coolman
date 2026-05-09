@@ -74,19 +74,19 @@ export default function ProductsPage() {
     <PublicLayout>
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[#0a1628] pb-20 pt-32">
+      <section className="relative overflow-hidden bg-navy pb-20 pt-32">
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)`,
           backgroundSize: '60px 60px'
         }} />
         <div className="absolute right-0 top-0 h-full w-1/3 opacity-30">
           <Image src="/images/blade-granite.jpg" alt="Diamond blade" fill className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy to-transparent" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="text-sm font-bold tracking-wider text-[#3b82f6]">Diamond Tools</p>
+            <p className="text-sm font-bold tracking-wider text-accent">Diamond Tools</p>
             <h1 className="mt-4 text-5xl font-bold text-white lg:text-6xl">
               Industrial Diamond<br />Cutting Tools
             </h1>
@@ -112,15 +112,15 @@ export default function ProductsPage() {
       </section>
 
       {/* Category Tabs */}
-      <section className="border-b border-[#e2e8f0] bg-white">
+      <section className="border-b border-rule bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex items-center gap-1 overflow-x-auto py-4 scrollbar-hide">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`whitespace-nowrap px-5 py-2.5 text-sm font-bold transition-all ${
+              className={`whitespace-nowrap px-5 py-2.5 text-sm font-bold transition-colors ${
                 selectedCategory === null
-                  ? 'bg-[#0a1628] text-white'
-                  : 'bg-[#f1f5f9] text-[#64748b] hover:bg-[#e2e8f0] hover:text-[#0a1628]'
+                  ? 'bg-navy text-white'
+                  : 'bg-secondary text-ink-muted hover:bg-rule hover:text-navy'
               }`}
             >
               All Products
@@ -129,10 +129,10 @@ export default function ProductsPage() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`whitespace-nowrap px-5 py-2.5 text-sm font-bold transition-all ${
+                className={`whitespace-nowrap px-5 py-2.5 text-sm font-bold transition-colors ${
                   selectedCategory === category
-                    ? 'bg-[#0a1628] text-white'
-                    : 'bg-[#f1f5f9] text-[#64748b] hover:bg-[#e2e8f0] hover:text-[#0a1628]'
+                    ? 'bg-navy text-white'
+                    : 'bg-secondary text-ink-muted hover:bg-rule hover:text-navy'
                 }`}
               >
                 {category}
@@ -143,19 +143,19 @@ export default function ProductsPage() {
       </section>
 
       {/* Sticky Filter Bar */}
-      <section className="sticky top-0 z-30 border-b border-[#e2e8f0] bg-white/95 backdrop-blur-sm">
+      <section className="sticky top-0 z-30 border-b border-rule bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             <div className="hidden items-center gap-2 lg:flex">
-              <span className="mr-2 text-sm font-bold text-[#64748b]">Material:</span>
+              <span className="mr-2 text-sm font-bold text-ink-muted">Material:</span>
               {materials.slice(0, 5).map((material) => (
                 <button
                   key={material}
                   onClick={() => toggleMaterial(material)}
-                  className={`px-4 py-2 text-sm font-semibold transition-all ${
+                  className={`px-4 py-2 text-sm font-semibold transition-colors ${
                     selectedMaterials.includes(material)
-                      ? 'bg-[#0a1628] text-white'
-                      : 'bg-[#f1f5f9] text-[#64748b] hover:bg-[#e2e8f0] hover:text-[#0a1628]'
+                      ? 'bg-navy text-white'
+                      : 'bg-secondary text-ink-muted hover:bg-rule hover:text-navy'
                   }`}
                 >
                   {material}
@@ -164,18 +164,18 @@ export default function ProductsPage() {
             </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 text-sm font-bold text-[#0a1628] lg:hidden"
+              className="flex items-center gap-2 text-sm font-bold text-navy lg:hidden"
             >
               <Filter className="h-4 w-4" />
               Filters
-              {hasFilters && <span className="flex h-5 w-5 items-center justify-center bg-[#3b82f6] text-xs font-bold text-white">{(selectedCategory ? 1 : 0) + selectedMaterials.length + selectedApplications.length}</span>}
+              {hasFilters && <span className="flex h-5 w-5 items-center justify-center bg-accent text-xs font-bold text-white">{(selectedCategory ? 1 : 0) + selectedMaterials.length + selectedApplications.length}</span>}
             </button>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-[#64748b]">
+              <span className="text-sm text-ink-muted">
                 {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
               </span>
               {hasFilters && (
-                <button onClick={clearFilters} className="flex items-center gap-1 text-sm font-semibold text-[#3b82f6] hover:text-[#2563eb]">
+                <button onClick={clearFilters} className="flex items-center gap-1 text-sm font-semibold text-accent hover:text-accent-dark">
                   <X className="h-4 w-4" />
                   Clear
                 </button>
@@ -184,39 +184,39 @@ export default function ProductsPage() {
           </div>
 
           {showFilters && (
-            <div className="border-t border-[#e2e8f0] py-4 lg:hidden">
+            <div className="border-t border-rule py-4 lg:hidden">
               <div className="mb-4">
-                <p className="mb-2 text-xs font-bold text-[#64748b]">Category</p>
+                <p className="mb-2 text-xs font-bold text-ink-muted">Category</p>
                 <div className="flex flex-wrap gap-2">
                   <button onClick={() => setSelectedCategory(null)}
-                    className={`px-3 py-1.5 text-xs font-semibold transition-all ${!selectedCategory ? 'bg-[#0a1628] text-white' : 'bg-[#f1f5f9] text-[#64748b]'}`}>
+                    className={`px-3 py-1.5 text-xs font-semibold transition-colors ${!selectedCategory ? 'bg-navy text-white' : 'bg-secondary text-ink-muted'}`}>
                     All
                   </button>
                   {PRODUCT_CATEGORIES.map((cat) => (
                     <button key={cat} onClick={() => setSelectedCategory(cat)}
-                      className={`px-3 py-1.5 text-xs font-semibold transition-all ${selectedCategory === cat ? 'bg-[#0a1628] text-white' : 'bg-[#f1f5f9] text-[#64748b]'}`}>
+                      className={`px-3 py-1.5 text-xs font-semibold transition-colors ${selectedCategory === cat ? 'bg-navy text-white' : 'bg-secondary text-ink-muted'}`}>
                       {cat}
                     </button>
                   ))}
                 </div>
               </div>
               <div className="mb-4">
-                <p className="mb-2 text-xs font-bold text-[#64748b]">Material</p>
+                <p className="mb-2 text-xs font-bold text-ink-muted">Material</p>
                 <div className="flex flex-wrap gap-2">
                   {materials.map((material) => (
                     <button key={material} onClick={() => toggleMaterial(material)}
-                      className={`px-3 py-1.5 text-xs font-semibold transition-all ${selectedMaterials.includes(material) ? 'bg-[#0a1628] text-white' : 'bg-[#f1f5f9] text-[#64748b]'}`}>
+                      className={`px-3 py-1.5 text-xs font-semibold transition-colors ${selectedMaterials.includes(material) ? 'bg-navy text-white' : 'bg-secondary text-ink-muted'}`}>
                       {material}
                     </button>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="mb-2 text-xs font-bold text-[#64748b]">Application</p>
+                <p className="mb-2 text-xs font-bold text-ink-muted">Application</p>
                 <div className="flex flex-wrap gap-2">
                   {applications.map((app) => (
                     <button key={app} onClick={() => toggleApplication(app)}
-                      className={`px-3 py-1.5 text-xs font-semibold transition-all ${selectedApplications.includes(app) ? 'bg-[#0a1628] text-white' : 'bg-[#f1f5f9] text-[#64748b]'}`}>
+                      className={`px-3 py-1.5 text-xs font-semibold transition-colors ${selectedApplications.includes(app) ? 'bg-navy text-white' : 'bg-secondary text-ink-muted'}`}>
                       {app}
                     </button>
                   ))}
@@ -228,7 +228,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Product Grid */}
-      <section className="bg-[#f8fafc] py-16 lg:py-24">
+      <section className="bg-secondary py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[240px_1fr]">
 
@@ -236,12 +236,12 @@ export default function ProductsPage() {
             <aside className="hidden lg:block">
               <div className="sticky top-24 space-y-8">
                 <div>
-                  <h3 className="mb-4 text-sm font-bold text-[#0a1628]">Application</h3>
+                  <h3 className="mb-4 text-sm font-bold text-navy">Application</h3>
                   <div className="space-y-2">
                     {applications.map((app) => (
                       <button key={app} onClick={() => toggleApplication(app)}
-                        className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium transition-all ${
-                          selectedApplications.includes(app) ? 'bg-[#0a1628] text-white' : 'bg-white text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#0a1628]'
+                        className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium transition-colors ${
+                          selectedApplications.includes(app) ? 'bg-navy text-white' : 'bg-white text-ink-muted hover:bg-secondary hover:text-navy'
                         }`}>
                         {app}
                         {selectedApplications.includes(app) && <X className="h-4 w-4" />}
@@ -250,12 +250,12 @@ export default function ProductsPage() {
                   </div>
                 </div>
                 <div>
-                  <h3 className="mb-4 text-sm font-bold text-[#0a1628]">More Materials</h3>
+                  <h3 className="mb-4 text-sm font-bold text-navy">More Materials</h3>
                   <div className="space-y-2">
                     {materials.slice(5).map((material) => (
                       <button key={material} onClick={() => toggleMaterial(material)}
-                        className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium transition-all ${
-                          selectedMaterials.includes(material) ? 'bg-[#0a1628] text-white' : 'bg-white text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#0a1628]'
+                        className={`flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium transition-colors ${
+                          selectedMaterials.includes(material) ? 'bg-navy text-white' : 'bg-white text-ink-muted hover:bg-secondary hover:text-navy'
                         }`}>
                         {material}
                         {selectedMaterials.includes(material) && <X className="h-4 w-4" />}
@@ -263,10 +263,10 @@ export default function ProductsPage() {
                     ))}
                   </div>
                 </div>
-                <div className="border border-[#e2e8f0] bg-white p-6">
-                  <h4 className="text-lg font-bold text-[#0a1628]">Need Help?</h4>
-                  <p className="mt-2 text-sm text-[#64748b]">Our engineers can help you select the right tool for your project.</p>
-                  <Button className="mt-4 w-full bg-[#3b82f6] font-bold hover:bg-[#2563eb]" asChild>
+                <div className="border border-rule bg-white p-6">
+                  <h4 className="text-lg font-bold text-navy">Need Help?</h4>
+                  <p className="mt-2 text-sm text-ink-muted">Our engineers can help you select the right tool for your project.</p>
+                  <Button className="mt-4 w-full bg-accent font-bold hover:bg-accent-dark" asChild>
                     <Link href="/contact">Get Advice <ArrowRight className="ml-2 h-4 w-4" /></Link>
                   </Button>
                 </div>
@@ -282,10 +282,10 @@ export default function ProductsPage() {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center border border-[#e2e8f0] bg-white py-20">
-                  <p className="text-lg font-bold text-[#0a1628]">No Products Found</p>
-                  <p className="mt-2 text-sm text-[#64748b]">Try adjusting your filters</p>
-                  <Button onClick={clearFilters} className="mt-6 bg-[#0a1628] font-bold hover:bg-[#122036]">
+                <div className="flex flex-col items-center justify-center border border-rule bg-white py-20">
+                  <p className="text-lg font-bold text-navy">No Products Found</p>
+                  <p className="mt-2 text-sm text-ink-muted">Try adjusting your filters</p>
+                  <Button onClick={clearFilters} className="mt-6 bg-navy font-bold hover:bg-navy-light">
                     Clear Filters
                   </Button>
                 </div>
@@ -296,7 +296,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="bg-[#0a1628] py-16 lg:py-24">
+      <section className="bg-navy py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
           <h2 className="text-3xl font-bold text-white lg:text-5xl">
             Can&apos;t Find What You Need?
@@ -305,10 +305,10 @@ export default function ProductsPage() {
             We offer custom blade configurations for specialised applications. Contact our engineering team.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="h-12 bg-[#3b82f6] px-6 font-bold text-white hover:bg-[#2563eb]" asChild>
+            <Button size="lg" className="h-12 bg-accent px-6 font-bold text-white hover:bg-accent-dark" asChild>
               <Link href="/contact">Contact Engineering <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
-            <Button size="lg" variant="outline" className="h-12 border-2 border-white/30 bg-transparent px-6 font-bold text-white hover:border-white hover:bg-white hover:text-[#0a1628]" asChild>
+            <Button size="lg" variant="outline" className="h-12 border-2 border-white/30 bg-transparent px-6 font-bold text-white hover:border-white hover:bg-white hover:text-navy" asChild>
               <Link href="/resources">Download Catalog</Link>
             </Button>
           </div>

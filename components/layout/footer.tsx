@@ -65,13 +65,13 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="bg-[#0a1628] text-white">
+    <footer className="bg-navy text-white">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-6">
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center bg-[#3b82f6]">
+              <div className="flex h-10 w-10 items-center justify-center bg-accent">
                 <span className="text-2xl font-bold">C</span>
               </div>
               <span className="text-2xl font-bold tracking-wider">Coolman</span>
@@ -101,13 +101,13 @@ export function Footer() {
             <div className="mt-6 space-y-2 text-sm">
               <a 
                 href="mailto:sales@coolman.com.my"
-                className="block text-white/60 transition-colors hover:text-[#3b82f6]"
+                className="block text-white/60 transition-colors hover:text-accent"
               >
                 sales@coolman.com.my
               </a>
               <a 
                 href="tel:+60312345678"
-                className="block text-white/60 transition-colors hover:text-[#3b82f6]"
+                className="block text-white/60 transition-colors hover:text-accent"
               >
                 +60 3-1234 5678
               </a>
@@ -170,10 +170,10 @@ export function Footer() {
             <h3 className="mb-6 text-sm font-bold text-white">Get Started</h3>
             <Link
               href="/auth/register"
-              className="group inline-flex items-center gap-2 bg-[#3b82f6] px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#2563eb]"
+              className="group inline-flex items-center gap-2 bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-dark"
             >
               Become a Partner
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              <ArrowUpRight className="h-4 w-4" />
             </Link>
             <p className="mt-4 text-xs text-white/40">
               Join 500+ contractors and access exclusive B2B pricing.

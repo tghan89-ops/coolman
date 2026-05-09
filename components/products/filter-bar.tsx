@@ -91,8 +91,8 @@ export function FilterBar({
       {/* Materials */}
       <Collapsible open={materialOpen} onOpenChange={setMaterialOpen}>
         <CollapsibleTrigger className="flex w-full items-center justify-between py-2">
-          <span className="text-sm font-semibold text-[#0a1628]">Material</span>
-          <ChevronDown className={`h-4 w-4 text-[#64748b] transition-transform ${materialOpen ? 'rotate-180' : ''}`} />
+          <span className="text-sm font-semibold text-navy">Material</span>
+          <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform ${materialOpen ? 'rotate-180' : ''}`} />
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div className="space-y-3 pt-2">
@@ -101,22 +101,22 @@ export function FilterBar({
                 <Checkbox
                   checked={selectedMaterials.includes(material)}
                   onCheckedChange={() => handleMaterialToggle(material)}
-                  className="border-[#e2e8f0] data-[state=checked]:border-[#3b82f6] data-[state=checked]:bg-[#3b82f6]"
+                  className="border-rule data-[state=checked]:border-accent data-[state=checked]:bg-accent"
                 />
-                <span className="text-sm text-[#475569]">{getMaterialLabel(material)}</span>
+                <span className="text-sm text-ink-muted">{getMaterialLabel(material)}</span>
               </label>
             ))}
           </div>
         </CollapsibleContent>
       </Collapsible>
 
-      <div className="border-t border-[#e2e8f0]" />
+      <div className="border-t border-rule" />
 
       {/* Applications */}
       <Collapsible open={appOpen} onOpenChange={setAppOpen}>
         <CollapsibleTrigger className="flex w-full items-center justify-between py-2">
-          <span className="text-sm font-semibold text-[#0a1628]">Application</span>
-          <ChevronDown className={`h-4 w-4 text-[#64748b] transition-transform ${appOpen ? 'rotate-180' : ''}`} />
+          <span className="text-sm font-semibold text-navy">Application</span>
+          <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform ${appOpen ? 'rotate-180' : ''}`} />
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div className="space-y-3 pt-2">
@@ -125,22 +125,22 @@ export function FilterBar({
                 <Checkbox
                   checked={selectedApplications.includes(app)}
                   onCheckedChange={() => handleApplicationToggle(app)}
-                  className="border-[#e2e8f0] data-[state=checked]:border-[#3b82f6] data-[state=checked]:bg-[#3b82f6]"
+                  className="border-rule data-[state=checked]:border-accent data-[state=checked]:bg-accent"
                 />
-                <span className="text-sm text-[#475569]">{getApplicationLabel(app)}</span>
+                <span className="text-sm text-ink-muted">{getApplicationLabel(app)}</span>
               </label>
             ))}
           </div>
         </CollapsibleContent>
       </Collapsible>
 
-      <div className="border-t border-[#e2e8f0]" />
+      <div className="border-t border-rule" />
 
       {/* Machine Power */}
       <Collapsible open={powerOpen} onOpenChange={setPowerOpen}>
         <CollapsibleTrigger className="flex w-full items-center justify-between py-2">
-          <span className="text-sm font-semibold text-[#0a1628]">Machine Power</span>
-          <ChevronDown className={`h-4 w-4 text-[#64748b] transition-transform ${powerOpen ? 'rotate-180' : ''}`} />
+          <span className="text-sm font-semibold text-navy">Machine Power</span>
+          <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform ${powerOpen ? 'rotate-180' : ''}`} />
         </CollapsibleTrigger>
         <CollapsibleContent>
           <div className="space-y-3 pt-2">
@@ -149,9 +149,9 @@ export function FilterBar({
                 <Checkbox
                   checked={selectedMachinePower.includes(value)}
                   onCheckedChange={() => handlePowerToggle(value)}
-                  className="border-[#e2e8f0] data-[state=checked]:border-[#3b82f6] data-[state=checked]:bg-[#3b82f6]"
+                  className="border-rule data-[state=checked]:border-accent data-[state=checked]:bg-accent"
                 />
-                <span className="text-sm text-[#475569]">{label}</span>
+                <span className="text-sm text-ink-muted">{label}</span>
               </label>
             ))}
           </div>
@@ -161,14 +161,14 @@ export function FilterBar({
   )
 
   return (
-    <div className="rounded-2xl border border-[#e2e8f0] bg-white p-6">
+    <div className="rounded-2xl border border-rule bg-white p-6">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <h3 className="font-semibold text-[#0a1628]">Filters</h3>
+        <h3 className="font-semibold text-navy">Filters</h3>
         {totalFilters > 0 && (
           <button 
             onClick={clearAll}
-            className="flex items-center gap-1 text-sm text-[#3b82f6] hover:text-[#2563eb]"
+            className="flex items-center gap-1 text-sm text-accent hover:text-accent-dark"
           >
             <X className="h-3 w-3" />
             Clear ({totalFilters})
@@ -181,7 +181,7 @@ export function FilterBar({
         <CollapsibleTrigger asChild>
           <Button 
             variant="outline" 
-            className="w-full justify-between border-[#e2e8f0]"
+            className="w-full justify-between border-rule"
           >
             <span>Show filters</span>
             <ChevronDown className={`h-4 w-4 transition-transform ${mobileOpen ? 'rotate-180' : ''}`} />

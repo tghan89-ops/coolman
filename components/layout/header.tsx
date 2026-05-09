@@ -41,15 +41,15 @@ export function Header() {
   }, [])
 
   return (
-    <header className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-      scrolled 
-        ? 'bg-[#0a1628]/95 shadow-lg shadow-[#0a1628]/10 backdrop-blur-md' 
+    <header className={`fixed top-0 z-50 w-full transition-[background-color,box-shadow] ${
+      scrolled
+        ? 'bg-navy/95 shadow-lg shadow-navy/10 backdrop-blur-md'
         : 'bg-transparent'
     }`}>
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="group flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center bg-[#3b82f6] transition-transform duration-300 group-hover:scale-105">
+          <div className="flex h-10 w-10 items-center justify-center bg-accent">
             <span className="font-sans text-2xl font-bold text-white">C</span>
           </div>
           <span className="font-sans text-2xl font-bold tracking-wider text-white">
@@ -65,10 +65,10 @@ export function Header() {
               <button className="group relative flex items-center gap-1.5 px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white">
                 Products
                 <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
-                <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-[#3b82f6] transition-transform duration-300 group-hover:scale-x-100" />
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-accent transition-transform group-hover:scale-x-100" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48 border-[#1a2d47] bg-[#0a1628]">
+            <DropdownMenuContent align="start" className="w-48 border-navy-surface bg-navy">
               {productDropdownItems.map((item) => (
                 <DropdownMenuItem key={item.href} asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
                   <Link href={item.href}>{item.label}</Link>
@@ -85,7 +85,7 @@ export function Header() {
               className="group relative px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white"
             >
               {item.label}
-              <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-[#3b82f6] transition-transform duration-300 group-hover:scale-x-100" />
+              <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-accent transition-transform group-hover:scale-x-100" />
             </Link>
           ))}
         </nav>
@@ -112,7 +112,7 @@ export function Header() {
                   <ChevronDown className="h-3 w-3" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 border-[#1a2d47] bg-[#0a1628]">
+              <DropdownMenuContent align="end" className="w-48 border-navy-surface bg-navy">
                 {isAdmin ? (
                   <>
                     <DropdownMenuItem asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
@@ -144,12 +144,12 @@ export function Header() {
               </Link>
               <Button 
                 size="sm" 
-                className="group h-10 rounded-lg bg-[#3b82f6] px-5 text-sm font-medium text-white transition-all hover:bg-[#2563eb] hover:shadow-lg hover:shadow-[#3b82f6]/25"
+                className="group h-10 rounded-lg bg-accent px-5 text-sm font-medium text-white transition-[background-color,box-shadow] hover:bg-accent-dark hover:shadow-lg hover:shadow-accent/25"
                 asChild
               >
                 <Link href="/auth/register">
                   Get Started
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
@@ -166,14 +166,14 @@ export function Header() {
       </div>
 
       {/* Mobile Navigation */}
-      <div className={`lg:hidden overflow-hidden transition-all duration-300 ${
+      <div className={`lg:hidden overflow-hidden transition-[max-height,opacity] ${
         mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
       }`}>
-        <div className="border-t border-white/10 bg-[#0a1628]/98 backdrop-blur-lg">
+        <div className="border-t border-white/10 bg-navy/98 backdrop-blur-lg">
           <nav className="flex flex-col px-6 py-4">
             {/* Products Mobile */}
             <details className="border-b border-white/5 py-4">
-              <summary className="cursor-pointer text-base font-medium text-white transition-colors hover:text-[#3b82f6]">
+              <summary className="cursor-pointer text-base font-medium text-white transition-colors hover:text-accent">
                 Products
               </summary>
               <div className="mt-3 flex flex-col gap-2 pl-4">
@@ -181,7 +181,7 @@ export function Header() {
                   <Link 
                     key={item.href}
                     href={item.href} 
-                    className="text-sm text-white/70 transition-colors hover:text-[#3b82f6]"
+                    className="text-sm text-white/70 transition-colors hover:text-accent"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.label}
@@ -195,9 +195,8 @@ export function Header() {
               <Link 
                 key={item.href}
                 href={item.href} 
-                className="border-b border-white/5 py-4 text-base font-medium text-white transition-colors hover:text-[#3b82f6]"
+                className="border-b border-white/5 py-4 text-base font-medium text-white transition-colors hover:text-accent"
                 onClick={() => setMobileMenuOpen(false)}
-                style={{ animationDelay: `${index * 0.05}s` }}
               >
                 {item.label}
               </Link>
@@ -263,8 +262,8 @@ export function Header() {
                       Sign In
                     </Link>
                   </Button>
-                  <Button 
-                    className="h-12 bg-[#3b82f6] text-white hover:bg-[#2563eb]"
+                  <Button
+                    className="h-12 bg-accent text-white hover:bg-accent-dark"
                     asChild
                   >
                     <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>

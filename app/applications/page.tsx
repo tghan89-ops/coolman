@@ -55,15 +55,15 @@ export default function ApplicationsPage() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="bg-[#0a1628] pb-16 pt-32">
+      <section className="bg-navy pb-16 pt-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-[#3b82f6]">Applications</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-accent">Applications</p>
             <h1 className="mt-3 text-4xl font-bold tracking-tight text-white lg:text-5xl">
               Solutions for Every Material
             </h1>
             <p className="mt-6 text-lg text-white/60">
-              Our comprehensive range of diamond cutting tools is engineered to deliver optimal 
+              Our comprehensive range of diamond cutting tools is engineered to deliver optimal
               performance across all common construction materials.
             </p>
           </div>
@@ -75,40 +75,40 @@ export default function ApplicationsPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-16">
             {applications.map((app, index) => (
-              <div 
+              <div
                 key={app.id}
                 className={`grid items-center gap-12 lg:grid-cols-2 ${
                   index % 2 === 1 ? 'lg:flex-row-reverse' : ''
                 }`}
               >
                 <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-[#f1f5f9]">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-secondary">
                     <Image
                       src={app.image}
                       alt={app.title}
                       fill
-                      className="object-cover transition-transform duration-500 hover:scale-105"
+                      className="object-cover"
                     />
                   </div>
                 </div>
-                
+
                 <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-                  <h2 className="text-2xl font-bold text-[#0a1628] lg:text-3xl">{app.title}</h2>
-                  <p className="mt-4 text-[#64748b]">{app.description}</p>
-                  
+                  <h2 className="text-2xl font-bold text-navy lg:text-3xl">{app.title}</h2>
+                  <p className="mt-4 text-ink-muted">{app.description}</p>
+
                   <ul className="mt-6 grid grid-cols-2 gap-3">
                     {app.features.map((feature, i) => (
                       <li key={i} className="flex items-center gap-2">
-                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#3b82f6]/10">
-                          <Check className="h-3 w-3 text-[#3b82f6]" />
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/10">
+                          <Check className="h-3 w-3 text-accent" />
                         </div>
-                        <span className="text-sm text-[#475569]">{feature}</span>
+                        <span className="text-sm text-ink-muted">{feature}</span>
                       </li>
                     ))}
                   </ul>
-                  
-                  <Button 
-                    className="mt-8 rounded-xl bg-[#0a1628] text-white hover:bg-[#122036]"
+
+                  <Button
+                    className="mt-8 rounded-xl bg-navy text-white hover:bg-navy-light"
                     asChild
                   >
                     <Link href={`/products?material=${app.id}`}>
@@ -124,15 +124,15 @@ export default function ApplicationsPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#f8fafc] py-24">
+      <section className="bg-secondary py-24">
         <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold text-[#0a1628]">Need Help Selecting the Right Blade?</h2>
-          <p className="mx-auto mt-4 max-w-xl text-[#64748b]">
+          <h2 className="text-3xl font-bold text-navy">Need Help Selecting the Right Blade?</h2>
+          <p className="mx-auto mt-4 max-w-xl text-ink-muted">
             Our technical team can help you choose the optimal blade for your specific application and cutting conditions.
           </p>
-          <Button 
+          <Button
             size="lg"
-            className="mt-8 h-14 rounded-xl bg-[#3b82f6] px-8 text-white hover:bg-[#2563eb]"
+            className="mt-8 h-14 rounded-xl bg-accent px-8 text-white hover:bg-accent-dark"
             asChild
           >
             <Link href="/contact">

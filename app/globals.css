@@ -12,6 +12,7 @@
   --navy-surface: #1a2d47;
   --accent: #3b82f6;
   --accent-light: #60a5fa;
+  --accent-dark: #2563eb;
 
   /* Surfaces & rules */
   --paper: #fafaf7;
@@ -119,6 +120,7 @@
   --color-navy-surface: var(--navy-surface);
   --color-accent: var(--accent);
   --color-accent-light: var(--accent-light);
+  --color-accent-dark: var(--accent-dark);
 
   /* Surfaces */
   --color-paper: var(--paper);

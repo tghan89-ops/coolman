@@ -67,10 +67,10 @@ export default function WhyCoolmanPage() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="bg-[#0a1628] pb-16 pt-32">
+      <section className="bg-navy pb-16 pt-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-[#3b82f6]">Why Coolman</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-accent">Why Coolman</p>
             <h1 className="mt-3 text-4xl font-bold tracking-tight text-white lg:text-5xl">
               The Coolman Advantage
             </h1>
@@ -87,15 +87,15 @@ export default function WhyCoolmanPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {advantages.map((advantage, index) => (
-              <div 
+              <div
                 key={index}
-                className="hover-card group rounded-2xl border border-[#e2e8f0] bg-white p-8"
+                className="hover-card group rounded-2xl border border-rule bg-white p-8"
               >
-                <div className="inline-flex rounded-xl bg-[#3b82f6]/10 p-3 transition-colors group-hover:bg-[#3b82f6]">
-                  <advantage.icon className="h-6 w-6 text-[#3b82f6] transition-colors group-hover:text-white" />
+                <div className="inline-flex rounded-xl bg-accent/10 p-3 transition-colors group-hover:bg-accent">
+                  <advantage.icon className="h-6 w-6 text-accent transition-colors group-hover:text-white" />
                 </div>
-                <h3 className="mt-6 text-lg font-semibold text-[#0a1628]">{advantage.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#64748b]">{advantage.description}</p>
+                <h3 className="mt-6 text-lg font-semibold text-navy">{advantage.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">{advantage.description}</p>
               </div>
             ))}
           </div>
@@ -103,7 +103,7 @@ export default function WhyCoolmanPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-[#0a1628] py-24">
+      <section className="bg-navy py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-white">Trusted by Professionals</h2>
@@ -111,11 +111,11 @@ export default function WhyCoolmanPage() {
               Our track record speaks for itself. Join hundreds of contractors who rely on Coolman.
             </p>
           </div>
-          
+
           <div className="mt-16 grid grid-cols-2 gap-8 lg:grid-cols-4">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-4xl font-bold text-[#3b82f6] lg:text-5xl">{stat.value}</div>
+                <div className="text-4xl font-bold text-accent lg:text-5xl">{stat.value}</div>
                 <div className="mt-2 text-sm text-white/60">{stat.label}</div>
               </div>
             ))}
@@ -124,20 +124,20 @@ export default function WhyCoolmanPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-[#f8fafc] py-24">
+      <section className="bg-secondary py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-wider text-[#3b82f6]">Testimonials</p>
-            <h2 className="mt-3 text-3xl font-bold text-[#0a1628]">What Our Partners Say</h2>
+            <p className="text-sm font-semibold uppercase tracking-wider text-accent">Testimonials</p>
+            <h2 className="mt-3 text-3xl font-bold text-navy">What Our Partners Say</h2>
           </div>
           
           <div className="mt-16 grid gap-8 md:grid-cols-3">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="rounded-2xl bg-white p-8 shadow-sm">
-                <p className="text-[#475569]">&ldquo;{testimonial.quote}&rdquo;</p>
+                <p className="text-ink-muted">&ldquo;{testimonial.quote}&rdquo;</p>
                 <div className="mt-6">
-                  <p className="font-semibold text-[#0a1628]">{testimonial.author}</p>
-                  <p className="text-sm text-[#64748b]">{testimonial.role}</p>
+                  <p className="font-semibold text-navy">{testimonial.author}</p>
+                  <p className="text-sm text-ink-muted">{testimonial.role}</p>
                 </div>
               </div>
             ))}
@@ -148,14 +148,14 @@ export default function WhyCoolmanPage() {
       {/* CTA */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold text-[#0a1628]">Ready to Experience the Difference?</h2>
-          <p className="mx-auto mt-4 max-w-xl text-[#64748b]">
+          <h2 className="text-3xl font-bold text-navy">Ready to Experience the Difference?</h2>
+          <p className="mx-auto mt-4 max-w-xl text-ink-muted">
             Join 500+ professional contractors who trust Coolman for their diamond cutting needs.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button 
+            <Button
               size="lg"
-              className="h-14 rounded-xl bg-[#3b82f6] px-8 text-white hover:bg-[#2563eb]"
+              className="h-14 rounded-xl bg-accent px-8 text-white hover:bg-accent-dark"
               asChild
             >
               <Link href="/auth/register">
@@ -163,10 +163,10 @@ export default function WhyCoolmanPage() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button 
+            <Button
               size="lg"
               variant="outline"
-              className="h-14 rounded-xl border-[#e2e8f0] px-8"
+              className="h-14 rounded-xl border-rule px-8"
               asChild
             >
               <Link href="/contact">

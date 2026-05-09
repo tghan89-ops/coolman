@@ -45,15 +45,15 @@ export default function LoginPage() {
 
   return (
     <PublicLayout>
-      <div className="flex min-h-[calc(100vh-80px)] bg-[#0a1628]">
+      <div className="flex min-h-[calc(100vh-80px)] bg-navy">
         {/* Left Side - Form */}
         <div className="flex flex-1 items-center justify-center px-4 py-12">
           <div className="w-full max-w-md">
             <div className="text-center">
-              <h1 className="font-playfair text-3xl font-bold text-white md:text-4xl">
+              <h1 className="font-sans text-3xl font-bold text-white md:text-4xl">
                 {t.auth.login}
               </h1>
-              <p className="mt-3 text-gray-400">
+              <p className="mt-3 text-ink-muted">
                 Enter your credentials to access your account
               </p>
             </div>
@@ -66,7 +66,7 @@ export default function LoginPage() {
               )}
               
               <div className="space-y-2">
-                <Label htmlFor="email" className={`text-sm transition-colors ${focusedField === 'email' ? 'text-blue-400' : 'text-gray-400'}`}>
+                <Label htmlFor="email" className={`text-sm transition-colors ${focusedField === 'email' ? 'text-accent-light' : 'text-ink-muted'}`}>
                   {t.auth.email}
                 </Label>
                 <Input
@@ -78,12 +78,12 @@ export default function LoginPage() {
                   onFocus={() => setFocusedField('email')}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
+                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password" className={`text-sm transition-colors ${focusedField === 'password' ? 'text-blue-400' : 'text-gray-400'}`}>
+                <Label htmlFor="password" className={`text-sm transition-colors ${focusedField === 'password' ? 'text-accent-light' : 'text-ink-muted'}`}>
                   {t.auth.password}
                 </Label>
                 <div className="relative">
@@ -95,12 +95,12 @@ export default function LoginPage() {
                     onFocus={() => setFocusedField('password')}
                     onBlur={() => setFocusedField(null)}
                     required
-                    className="h-12 border-white/10 bg-white/5 pr-10 text-white placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
+                    className="h-12 border-white/10 bg-white/5 pr-10 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-white"
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
@@ -109,7 +109,7 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="group h-12 w-full bg-blue-600 text-white hover:bg-blue-500" 
+                className="group h-12 w-full bg-accent text-white hover:bg-accent-dark" 
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -120,7 +120,7 @@ export default function LoginPage() {
                 ) : (
                   <span className="flex items-center gap-2">
                     {t.auth.loginButton}
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-4 w-4" />
                   </span>
                 )}
               </Button>
@@ -131,19 +131,19 @@ export default function LoginPage() {
               <p className="text-xs font-medium uppercase tracking-wider text-gray-500">Demo Credentials</p>
               <div className="mt-3 space-y-2 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Admin:</span>
-                  <code className="rounded bg-white/5 px-2 py-0.5 text-blue-400">admin@coolman.com.my</code>
+                  <span className="text-ink-muted">Admin:</span>
+                  <code className="rounded bg-white/5 px-2 py-0.5 text-accent-light">admin@coolman.com.my</code>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-400">Password:</span>
-                  <code className="rounded bg-white/5 px-2 py-0.5 text-blue-400">admin123</code>
+                  <span className="text-ink-muted">Password:</span>
+                  <code className="rounded bg-white/5 px-2 py-0.5 text-accent-light">admin123</code>
                 </div>
               </div>
             </div>
               
-            <p className="mt-8 text-center text-sm text-gray-400">
+            <p className="mt-8 text-center text-sm text-ink-muted">
               {t.auth.noAccount}{' '}
-              <Link href="/auth/register" className="font-medium text-blue-400 transition-colors hover:text-blue-300">
+              <Link href="/auth/register" className="font-medium text-accent-light transition-colors hover:text-accent-light">
                 {t.auth.register}
               </Link>
             </p>
@@ -151,15 +151,15 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side - Visual */}
-        <div className="hidden w-1/2 items-center justify-center bg-gradient-to-br from-blue-600/20 to-blue-900/20 lg:flex">
+        <div className="hidden w-1/2 items-center justify-center bg-gradient-to-br from-accent/20 to-navy-surface/80 lg:flex">
           <div className="max-w-md p-12 text-center">
-            <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-blue-500/10 ring-1 ring-blue-500/20">
-              <span className="font-playfair text-4xl font-bold text-blue-400">C</span>
+            <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-accent/10 ring-1 ring-accent/20">
+              <span className="font-sans text-4xl font-bold text-accent-light">C</span>
             </div>
-            <h2 className="mt-8 font-playfair text-3xl font-bold text-white">
+            <h2 className="mt-8 font-sans text-3xl font-bold text-white">
               Welcome Back
             </h2>
-            <p className="mt-4 text-gray-400">
+            <p className="mt-4 text-ink-muted">
               Access your dashboard to manage orders, track shipments, and explore our complete product catalogue.
             </p>
           </div>
