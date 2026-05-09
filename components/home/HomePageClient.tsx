@@ -155,7 +155,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
                 key={index}
                 className="group cursor-pointer border-b border-r border-white/10 px-6 py-8 transition-colors last:border-r-0 hover:bg-white/5 md:border-b-0"
               >
-                <div className="font-sans text-4xl font-bold text-white md:text-5xl">{stat.value}</div>
+                <div className="font-mono font-sans text-4xl font-bold text-white md:text-5xl">{stat.value}</div>
                 <div className="mt-2 text-sm font-semibold text-white/40">{stat.label}</div>
               </div>
             ))}
@@ -256,7 +256,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
                 <div className={`absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent transition-opacity ${hoveredFeature === index ? 'opacity-100' : 'opacity-0'}`} />
 
                 <div className="relative">
-                  <div className="font-sans text-5xl font-bold text-accent">
+                  <div className="font-mono font-sans text-5xl font-bold text-accent">
                     {feature.stat}
                   </div>
                   <div className="mt-1 text-sm font-semibold text-white/40">{feature.statLabel}</div>

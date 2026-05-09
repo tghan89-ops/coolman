@@ -302,7 +302,7 @@ export function ProductDetailClient({ initialData }: { initialData: any }) {
                         {p.diameter} | {p.bondType} Bond
                       </p>
                       <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
-                        <p className="font-sans text-lg font-bold text-white">
+                        <p className="font-mono font-sans text-lg font-bold text-white">
                           {formatPrice(p.listPrice)}
                         </p>
                         <ArrowRight className="h-5 w-5 text-white/40 transition-colors group-hover:text-accent" />

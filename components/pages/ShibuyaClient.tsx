@@ -290,19 +290,19 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
                     {/* Specs grid */}
                     <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
                       <div>
-                        <p className="text-3xl font-bold text-white">{selectedMachine.motorPower}</p>
+                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.motorPower}</p>
                         <p className="mt-1 text-sm text-white/40">Motor Power</p>
                       </div>
                       <div>
-                        <p className="text-3xl font-bold text-white">{selectedMachine.maxDiameter}</p>
+                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.maxDiameter}</p>
                         <p className="mt-1 text-sm text-white/40">Max Diameter</p>
                       </div>
                       <div>
-                        <p className="text-3xl font-bold text-white">{selectedMachine.weight}</p>
+                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.weight}</p>
                         <p className="mt-1 text-sm text-white/40">Weight</p>
                       </div>
                       <div>
-                        <p className="text-3xl font-bold text-white">{selectedMachine.rpmRange}</p>
+                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.rpmRange}</p>
                         <p className="mt-1 text-sm text-white/40">RPM Range</p>
                       </div>
                     </div>
@@ -324,7 +324,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
                     <div className="mt-12 flex flex-wrap items-center gap-8">
                       <div>
                         <p className="text-sm text-white/40">Starting from</p>
-                        <p className="text-3xl font-bold text-white">{selectedMachine.price}</p>
+                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.price}</p>
                       </div>
                       <Link
                         href="/contact"
