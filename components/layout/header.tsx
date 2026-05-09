@@ -1,0 +1,282 @@
+"use client"
+
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { Menu, X, ChevronDown, User, LogOut, ArrowRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { useLanguage } from '@/lib/i18n/context'
+import { useAuth } from '@/lib/auth/context'
+
+const navItems = [
+  { label: 'Applications', href: '/applications' },
+  { label: 'Why Coolman', href: '/why-coolman' },
+  { label: 'Resources', href: '/resources' },
+  { label: 'Contact', href: '/contact' },
+]
+
+const productDropdownItems = [
+  { label: 'Diamond Tools', href: '/products' },
+  { label: 'Shibuya Core Drills', href: '/shibuya' },
+]
+
+export function Header() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const { language, toggleLanguage } = useLanguage()
+  const { user, isAuthenticated, isAdmin, logout } = useAuth()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <header className={`fixed top-0 z-50 w-full transition-all duration-300 ${
+      scrolled 
+        ? 'bg-[#0a1628]/95 shadow-lg shadow-[#0a1628]/10 backdrop-blur-md' 
+        : 'bg-transparent'
+    }`}>
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
+        {/* Logo */}
+        <Link href="/" className="group flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center bg-[#3b82f6] transition-transform duration-300 group-hover:scale-105">
+            <span className="font-sans text-2xl font-bold text-white">C</span>
+          </div>
+          <span className="font-sans text-2xl font-bold tracking-wider text-white">
+            Coolman
+          </span>
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-1 lg:flex">
+          {/* Products Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="group relative flex items-center gap-1.5 px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white">
+                Products
+                <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-[#3b82f6] transition-transform duration-300 group-hover:scale-x-100" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48 border-[#1a2d47] bg-[#0a1628]">
+              {productDropdownItems.map((item) => (
+                <DropdownMenuItem key={item.href} asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
+                  <Link href={item.href}>{item.label}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* Regular nav items */}
+          {navItems.map((item) => (
+            <Link 
+              key={item.href}
+              href={item.href} 
+              className="group relative px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white"
+            >
+              {item.label}
+              <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-[#3b82f6] transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+          ))}
+        </nav>
+
+        {/* Right side actions */}
+        <div className="flex items-center gap-3">
+          {/* Language Toggle */}
+          <button
+            onClick={toggleLanguage}
+            className="hidden rounded-md px-3 py-1.5 text-sm font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white sm:block"
+          >
+            {language}
+          </button>
+
+          {/* Auth buttons / User menu */}
+          {isAuthenticated ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="hidden items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20 lg:flex">
+                  <User className="h-4 w-4" />
+                  <span className="max-w-[100px] truncate">
+                    {user?.contractor?.companyName || 'Account'}
+                  </span>
+                  <ChevronDown className="h-3 w-3" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 border-[#1a2d47] bg-[#0a1628]">
+                {isAdmin ? (
+                  <>
+                    <DropdownMenuItem asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
+                      <Link href="/admin/orders">Orders Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
+                      <Link href="/admin/analytics">Analytics</Link>
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <DropdownMenuItem asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
+                    <Link href="/account">My Account</Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem onClick={logout} className="text-red-400 hover:bg-red-500/10 hover:text-red-300 focus:bg-red-500/10 focus:text-red-300">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="hidden items-center gap-3 lg:flex">
+              <Link 
+                href="/auth/login"
+                className="rounded-lg px-4 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                Sign In
+              </Link>
+              <Button 
+                size="sm" 
+                className="group h-10 rounded-lg bg-[#3b82f6] px-5 text-sm font-medium text-white transition-all hover:bg-[#2563eb] hover:shadow-lg hover:shadow-[#3b82f6]/25"
+                asChild
+              >
+                <Link href="/auth/register">
+                  Get Started
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              </Button>
+            </div>
+          )}
+
+          {/* Mobile menu button */}
+          <button
+            className="rounded-lg p-2 text-white transition-colors hover:bg-white/10 lg:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      <div className={`lg:hidden overflow-hidden transition-all duration-300 ${
+        mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+      }`}>
+        <div className="border-t border-white/10 bg-[#0a1628]/98 backdrop-blur-lg">
+          <nav className="flex flex-col px-6 py-4">
+            {/* Products Mobile */}
+            <details className="border-b border-white/5 py-4">
+              <summary className="cursor-pointer text-base font-medium text-white transition-colors hover:text-[#3b82f6]">
+                Products
+              </summary>
+              <div className="mt-3 flex flex-col gap-2 pl-4">
+                {productDropdownItems.map((item) => (
+                  <Link 
+                    key={item.href}
+                    href={item.href} 
+                    className="text-sm text-white/70 transition-colors hover:text-[#3b82f6]"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </details>
+
+            {/* Regular nav items */}
+            {navItems.map((item, index) => (
+              <Link 
+                key={item.href}
+                href={item.href} 
+                className="border-b border-white/5 py-4 text-base font-medium text-white transition-colors hover:text-[#3b82f6]"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                {item.label}
+              </Link>
+            ))}
+            
+            <div className="mt-4 flex flex-col gap-3">
+              <button
+                onClick={() => {
+                  toggleLanguage()
+                  setMobileMenuOpen(false)
+                }}
+                className="py-2 text-left text-sm text-white/60"
+              >
+                {language === 'EN' ? 'Switch to Bahasa Malaysia' : 'Switch to English'}
+              </button>
+
+              {isAuthenticated ? (
+                <>
+                  {isAdmin ? (
+                    <>
+                      <Link 
+                        href="/admin/orders" 
+                        className="py-2 text-white"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Orders Dashboard
+                      </Link>
+                      <Link 
+                        href="/admin/analytics" 
+                        className="py-2 text-white"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Analytics
+                      </Link>
+                    </>
+                  ) : (
+                    <Link 
+                      href="/account" 
+                      className="py-2 text-white"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      My Account
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => {
+                      logout()
+                      setMobileMenuOpen(false)
+                    }}
+                    className="py-2 text-left text-red-400"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <div className="flex flex-col gap-3 pt-4">
+                  <Button 
+                    variant="outline" 
+                    className="h-12 border-white/20 bg-transparent text-white hover:bg-white/10"
+                    asChild
+                  >
+                    <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                      Sign In
+                    </Link>
+                  </Button>
+                  <Button 
+                    className="h-12 bg-[#3b82f6] text-white hover:bg-[#2563eb]"
+                    asChild
+                  >
+                    <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
+                      Get Started
+                    </Link>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+  )
+}
