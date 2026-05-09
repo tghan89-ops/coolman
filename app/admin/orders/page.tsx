@@ -55,7 +55,7 @@ export default function AdminOrdersPage() {
     return (
       <AdminLayout>
         <div className="flex min-h-[50vh] items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500/30 border-t-blue-500" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent/30 border-t-accent" />
         </div>
       </AdminLayout>
     )
@@ -73,7 +73,7 @@ export default function AdminOrdersPage() {
           <h1 className="text-2xl font-bold text-white lg:text-3xl">
             {t.admin.orders.title}
           </h1>
-          <p className="mt-1 text-gray-400">Manage and track all customer orders</p>
+          <p className="mt-1 text-ink-muted">Manage and track all customer orders</p>
         </div>
 
         {/* Stats Cards */}
@@ -88,16 +88,16 @@ export default function AdminOrdersPage() {
               <div className="flex items-center gap-4">
                 <div className={cn(
                   "flex h-11 w-11 items-center justify-center rounded-xl",
-                  stat.color === 'blue' && 'bg-blue-500/10 text-blue-400',
-                  stat.color === 'amber' && 'bg-amber-500/10 text-amber-400',
-                  stat.color === 'cyan' && 'bg-cyan-500/10 text-cyan-400',
-                  stat.color === 'emerald' && 'bg-emerald-500/10 text-emerald-400'
+                  stat.color === 'blue' && 'bg-accent/10 text-accent-light',
+                  stat.color === 'amber' && 'bg-warn/10 text-warn',
+                  stat.color === 'cyan' && 'bg-accent/10 text-accent-light',
+                  stat.color === 'emerald' && 'bg-success/10 text-success'
                 )}>
                   <stat.icon className="h-5 w-5" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-white">{stat.value}</p>
-                  <p className="text-xs text-gray-400">{stat.label}</p>
+                  <p className="text-xs text-ink-muted">{stat.label}</p>
                 </div>
               </div>
             </div>
@@ -107,19 +107,19 @@ export default function AdminOrdersPage() {
         {/* Filters */}
         <div className="flex flex-col gap-4 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:flex-row">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted" />
             <Input
               placeholder={t.admin.orders.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="border-white/10 bg-white/5 pl-9 text-white placeholder:text-gray-500 focus:border-blue-500"
+              className="border-white/10 bg-white/5 pl-9 text-white placeholder:text-ink-muted focus:border-accent"
             />
           </div>
           <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as OrderStatus | 'all')}>
             <SelectTrigger className="w-full border-white/10 bg-white/5 text-white sm:w-[180px]">
               <SelectValue placeholder={t.admin.orders.filterByStatus} />
             </SelectTrigger>
-            <SelectContent className="border-white/10 bg-[#0a1628]">
+            <SelectContent className="border-white/10 bg-navy">
               <SelectItem value="all">{t.admin.orders.allStatuses}</SelectItem>
               <SelectItem value="Pending">{t.status.pending}</SelectItem>
               <SelectItem value="Acknowledged">{t.status.acknowledged}</SelectItem>
@@ -141,9 +141,9 @@ export default function AdminOrdersPage() {
             {filteredOrders.length === 0 ? (
               <div className="flex flex-col items-center py-12 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/5">
-                  <ShoppingCart className="h-8 w-8 text-gray-500" />
+                  <ShoppingCart className="h-8 w-8 text-ink-muted" />
                 </div>
-                <p className="mt-4 text-gray-400">{t.admin.orders.noOrders}</p>
+                <p className="mt-4 text-ink-muted">{t.admin.orders.noOrders}</p>
               </div>
             ) : (
               <>
@@ -151,7 +151,7 @@ export default function AdminOrdersPage() {
                 <div className="hidden overflow-x-auto lg:block">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/10 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                      <tr className="border-b border-white/10 text-left text-xs font-medium uppercase tracking-wider text-ink-muted">
                         <th className="pb-4">ID</th>
                         <th className="pb-4">{t.admin.orders.contractor}</th>
                         <th className="pb-4">{t.admin.orders.product}</th>
@@ -171,17 +171,17 @@ export default function AdminOrdersPage() {
                             order.isUrgent && "border-l-2 border-l-red-500 bg-red-500/5"
                           )}
                         >
-                          <td className="py-4 font-mono text-xs text-gray-400">{order.id}</td>
+                          <td className="py-4 font-mono text-xs text-ink-muted">{order.id}</td>
                           <td className="py-4">
                             <div>
                               <p className="font-medium text-white">{order.contractor.companyName}</p>
-                              <p className="text-xs text-gray-500">{order.contractor.contactName}</p>
+                              <p className="text-xs text-ink-muted">{order.contractor.contactName}</p>
                             </div>
                           </td>
                           <td className="py-4">
                             <div>
                               <p className="font-medium text-white">{order.product.name}</p>
-                              <p className="text-xs text-gray-500">{order.product.sku}</p>
+                              <p className="text-xs text-ink-muted">{order.product.sku}</p>
                             </div>
                           </td>
                           <td className="py-4 text-center text-white">{order.quantity}</td>
@@ -196,7 +196,7 @@ export default function AdminOrdersPage() {
                               {order.isUrgent && (
                                 <AlertTriangle className="h-4 w-4 text-red-400" />
                               )}
-                              <span className={cn("text-sm", order.isUrgent ? "font-medium text-red-400" : "text-gray-400")}>
+                              <span className={cn("text-sm", order.isUrgent ? "font-medium text-red-400" : "text-ink-muted")}>
                                 {order.responseTimeHours !== null ? formatHours(order.responseTimeHours) : '-'}
                               </span>
                             </div>
@@ -209,7 +209,7 @@ export default function AdminOrdersPage() {
                                 </Button>
                               )}
                               {order.status === 'Acknowledged' && (
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-500">
+                                <Button size="sm" className="bg-accent hover:bg-accent-dark">
                                   {t.admin.orders.fulfil}
                                 </Button>
                               )}
@@ -234,27 +234,27 @@ export default function AdminOrdersPage() {
                       <div className="flex items-start justify-between">
                         <div>
                           <p className="font-medium text-white">{order.contractor.companyName}</p>
-                          <p className="text-xs text-gray-500">{order.contractor.contactName}</p>
+                          <p className="text-xs text-ink-muted">{order.contractor.contactName}</p>
                         </div>
                         <OrderStatusBadge status={order.status} />
                       </div>
                       
                       <div className="mt-3 rounded-lg bg-white/[0.02] p-3">
                         <p className="font-medium text-white">{order.product.name}</p>
-                        <p className="text-xs text-gray-500">{order.product.sku}</p>
+                        <p className="text-xs text-ink-muted">{order.product.sku}</p>
                       </div>
 
                       <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
                         <div>
-                          <p className="text-gray-500">{t.admin.orders.quantity}</p>
+                          <p className="text-ink-muted">{t.admin.orders.quantity}</p>
                           <p className="font-medium text-white">{order.quantity}</p>
                         </div>
                         <div>
-                          <p className="text-gray-500">{t.admin.orders.total}</p>
+                          <p className="text-ink-muted">{t.admin.orders.total}</p>
                           <p className="font-medium text-white">{formatPrice(order.effectivePrice)}</p>
                         </div>
                         <div>
-                          <p className="text-gray-500">{t.admin.orders.responseTime}</p>
+                          <p className="text-ink-muted">{t.admin.orders.responseTime}</p>
                           <div className="flex items-center gap-1">
                             {order.isUrgent && <AlertTriangle className="h-3 w-3 text-red-400" />}
                             <p className={cn("font-medium", order.isUrgent ? "text-red-400" : "text-white")}>
@@ -278,7 +278,7 @@ export default function AdminOrdersPage() {
                           </Button>
                         )}
                         {order.status === 'Acknowledged' && (
-                          <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-500">
+                          <Button size="sm" className="flex-1 bg-accent hover:bg-accent-dark">
                             {t.admin.orders.fulfil}
                           </Button>
                         )}

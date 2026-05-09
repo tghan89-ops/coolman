@@ -45,7 +45,7 @@ export default function AdminAnalyticsPage() {
     return (
       <AdminLayout>
         <div className="flex min-h-[50vh] items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500/30 border-t-blue-500" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent/30 border-t-accent" />
         </div>
       </AdminLayout>
     )
@@ -64,13 +64,13 @@ export default function AdminAnalyticsPage() {
             <h1 className="text-2xl font-bold text-white lg:text-3xl">
               {t.admin.analytics.title}
             </h1>
-            <p className="mt-1 text-gray-400">Track performance and trends</p>
+            <p className="mt-1 text-ink-muted">Track performance and trends</p>
           </div>
           <Select value={dateRange} onValueChange={(v) => setDateRange(v as DateRange)}>
             <SelectTrigger className="w-[160px] border-white/10 bg-white/5 text-white">
               <SelectValue placeholder={t.admin.analytics.dateRange} />
             </SelectTrigger>
-            <SelectContent className="border-white/10 bg-[#0a1628]">
+            <SelectContent className="border-white/10 bg-navy">
               <SelectItem value="7d">{t.admin.analytics.last7Days}</SelectItem>
               <SelectItem value="30d">{t.admin.analytics.last30Days}</SelectItem>
               <SelectItem value="90d">{t.admin.analytics.last90Days}</SelectItem>
@@ -206,7 +206,7 @@ export default function AdminAnalyticsPage() {
             <div className="hidden overflow-x-auto md:block">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/10 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <tr className="border-b border-white/10 text-left text-xs font-medium uppercase tracking-wider text-ink-muted">
                     <th className="pb-4">{t.admin.analytics.contractor}</th>
                     <th className="pb-4">{t.admin.analytics.company}</th>
                     <th className="pb-4">{t.admin.analytics.lastOrder}</th>
@@ -218,8 +218,8 @@ export default function AdminAnalyticsPage() {
                   {contractorActivityData.map((contractor) => (
                     <tr key={contractor.contractorId} className="transition-colors hover:bg-white/[0.02]">
                       <td className="py-4 font-medium text-white">{contractor.contractorName}</td>
-                      <td className="py-4 text-gray-400">{contractor.companyName}</td>
-                      <td className="py-4 text-gray-400">
+                      <td className="py-4 text-ink-muted">{contractor.companyName}</td>
+                      <td className="py-4 text-ink-muted">
                         {contractor.lastOrderDate ? formatDate(contractor.lastOrderDate) : '-'}
                       </td>
                       <td className="py-4 text-center text-white">{contractor.totalOrders}</td>
@@ -239,19 +239,19 @@ export default function AdminAnalyticsPage() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="font-medium text-white">{contractor.contractorName}</p>
-                      <p className="text-sm text-gray-500">{contractor.companyName}</p>
+                      <p className="text-sm text-ink-muted">{contractor.companyName}</p>
                     </div>
                     <ContractorStatusBadge status={contractor.status} />
                   </div>
                   <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-gray-500">{t.admin.analytics.lastOrder}</p>
+                      <p className="text-ink-muted">{t.admin.analytics.lastOrder}</p>
                       <p className="font-medium text-white">
                         {contractor.lastOrderDate ? formatDate(contractor.lastOrderDate) : '-'}
                       </p>
                     </div>
                     <div>
-                      <p className="text-gray-500">{t.admin.analytics.totalOrders}</p>
+                      <p className="text-ink-muted">{t.admin.analytics.totalOrders}</p>
                       <p className="font-medium text-white">{contractor.totalOrders}</p>
                     </div>
                   </div>

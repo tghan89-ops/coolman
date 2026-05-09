@@ -37,7 +37,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     <PublicLayout>
 
       {/* ── BREADCRUMB ───────────────────────────────────────────── */}
-      <div className="border-b border-white/10 bg-[#0a1628]">
+      <div className="border-b border-white/10 bg-navy">
         <div className="mx-auto max-w-7xl px-6 py-4 lg:px-8">
           <nav className="flex items-center gap-2 text-sm">
             <Link href="/products" className="flex items-center gap-1 text-white/50 transition-colors hover:text-white">
@@ -51,7 +51,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       </div>
 
       {/* ── HERO + PRODUCT OVERVIEW ──────────────────────────────── */}
-      <section className="relative bg-[#0a1628]">
+      <section className="relative bg-navy">
         {/* Grid pattern */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)`,
@@ -69,7 +69,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 <span className="text-xs font-semibold text-white/60">{product.sku}</span>
               </div>
 
-              <div className="relative aspect-square overflow-hidden border border-white/10 bg-gradient-to-br from-[#122036] to-[#0a1628]">
+              <div className="relative aspect-square overflow-hidden border border-white/10 bg-gradient-to-br from-navy-light to-navy">
                 <Image
                   src={product.imagePlaceholder}
                   alt={product.name}
@@ -78,11 +78,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   priority
                 />
                 {/* Overlay tint */}
-                <div className="absolute inset-0 bg-[#0a1628]/20" />
+                <div className="absolute inset-0 bg-navy/20" />
 
                 {/* Material badge */}
-                <div className="absolute left-4 top-4 border border-[#3b82f6]/40 bg-[#3b82f6]/20 px-3 py-1 backdrop-blur-sm">
-                  <span className="text-xs font-bold tracking-wider text-[#3b82f6]">
+                <div className="absolute left-4 top-4 border border-accent/40 bg-accent/20 px-3 py-1 backdrop-blur-sm">
+                  <span className="text-xs font-bold tracking-wider text-accent">
                     {product.recommendedMaterials?.[0] ?? 'Premium'}
                   </span>
                 </div>
@@ -91,7 +91,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
               {/* Thumbnail row */}
               <div className="mt-4 grid grid-cols-4 gap-2">
                 {['/images/blade-granite.jpg', '/images/blade-concrete.jpg', '/images/blade-tile.jpg', '/images/hero-blade.jpg'].map((src, i) => (
-                  <div key={i} className="aspect-square cursor-pointer overflow-hidden border border-white/10 opacity-60 transition-all hover:border-[#3b82f6]/50 hover:opacity-100">
+                  <div key={i} className="aspect-square cursor-pointer overflow-hidden border border-white/10 opacity-60 transition-[border-color,opacity] hover:border-accent/50 hover:opacity-100">
                     <Image src={src} alt="" width={80} height={80} className="h-full w-full object-cover" />
                   </div>
                 ))}
@@ -100,7 +100,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
             {/* Right: Info */}
             <div className="flex flex-col justify-center">
-              <p className="font-sans text-sm font-bold tracking-[0.3em] text-[#3b82f6]">
+              <p className="font-sans text-sm font-bold tracking-[0.3em] text-accent">
                 {product.recommendedMaterials?.[0] ?? 'Diamond Blade'}
               </p>
               <h1 className="mt-3 font-sans text-4xl font-bold text-white lg:text-5xl">
@@ -119,7 +119,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-white/40">Machine power</p>
-                    <p className="mt-1 font-sans text-lg font-bold capitalize text-[#3b82f6]">{product.recommendedMachinePower}</p>
+                    <p className="mt-1 font-sans text-lg font-bold capitalize text-accent">{product.recommendedMachinePower}</p>
                   </div>
                 </div>
               </div>
@@ -139,7 +139,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 <p className="mb-3 text-xs font-bold tracking-wider text-white/40">Recommended Materials</p>
                 <div className="flex flex-wrap gap-2">
                   {product.recommendedMaterials.map((material) => (
-                    <span key={material} className="border border-[#3b82f6]/30 bg-[#3b82f6]/10 px-3 py-1 text-sm font-semibold text-[#3b82f6]">
+                    <span key={material} className="border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-semibold text-accent">
                       {material}
                     </span>
                   ))}
@@ -148,13 +148,13 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
               {/* CTA */}
               <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                <Button size="lg" className="group h-14 flex-1 bg-[#3b82f6] font-sans text-base font-bold text-white hover:bg-[#2563eb]" asChild>
+                <Button size="lg" className="group h-14 flex-1 bg-accent font-sans text-base font-bold text-white hover:bg-accent-dark" asChild>
                   <Link href={`/order-request?product=${product.id}`}>
                     Request Order
                     <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="h-14 border-2 border-white/30 bg-transparent font-sans font-bold text-white hover:border-white hover:bg-white hover:text-[#0a1628]" asChild>
+                <Button size="lg" variant="outline" className="h-14 border-2 border-white/30 bg-transparent font-sans font-bold text-white hover:border-white hover:bg-white hover:text-navy" asChild>
                   <Link href="/contact">Get Advice</Link>
                 </Button>
               </div>
@@ -164,9 +164,9 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       </section>
 
       {/* ── TABS: SPECS / APPLICATIONS / USAGE ───────────────────── */}
-      <section className="bg-[#f8fafc]">
+      <section className="bg-secondary">
         {/* Tab nav */}
-        <div className="border-b border-[#e2e8f0] bg-white">
+        <div className="border-b border-rule bg-white">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex gap-0">
               {(['specs', 'applications', 'usage'] as const).map((tab) => (
@@ -174,11 +174,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`relative px-8 py-5 font-sans text-sm font-bold capitalize transition-colors ${
-                    activeTab === tab ? 'text-[#0a1628]' : 'text-[#94a3b8] hover:text-[#64748b]'
+                    activeTab === tab ? 'text-navy' : 'text-ink-faint hover:text-ink-muted'
                   }`}
                 >
                   {tab === 'specs' ? 'Specifications' : tab === 'applications' ? 'Applications' : 'Usage Guide'}
-                  <span className={`absolute bottom-0 left-0 h-0.5 bg-[#3b82f6] transition-all duration-300 ${activeTab === tab ? 'w-full' : 'w-0'}`} />
+                  <span className={`absolute bottom-0 left-0 h-0.5 bg-accent transition-[width] ${activeTab === tab ? 'w-full' : 'w-0'}`} />
                 </button>
               ))}
             </div>
@@ -190,13 +190,13 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           {activeTab === 'specs' && (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {specs.map((spec) => (
-                <div key={spec.label} className="flex items-center gap-4 border border-[#e2e8f0] bg-white p-5">
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center bg-[#0a1628]">
-                    <spec.icon className="h-5 w-5 text-[#3b82f6]" />
+                <div key={spec.label} className="flex items-center gap-4 border border-rule bg-white p-5">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center bg-navy">
+                    <spec.icon className="h-5 w-5 text-accent" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold tracking-wider text-[#94a3b8]">{spec.label}</p>
-                    <p className="mt-0.5 font-sans text-lg font-bold text-[#0a1628]">{spec.value}</p>
+                    <p className="text-xs font-bold tracking-wider text-ink-faint">{spec.label}</p>
+                    <p className="mt-0.5 font-sans text-lg font-bold text-navy">{spec.value}</p>
                   </div>
                 </div>
               ))}
@@ -207,11 +207,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           {activeTab === 'applications' && (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {product.applications.map((app) => (
-                <div key={app} className="flex items-center gap-4 border border-[#e2e8f0] bg-white p-5">
-                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center bg-[#3b82f6]">
+                <div key={app} className="flex items-center gap-4 border border-rule bg-white p-5">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center bg-accent">
                     <Check className="h-4 w-4 text-white" />
                   </div>
-                  <p className="font-semibold text-[#0a1628]">{app}</p>
+                  <p className="font-semibold text-navy">{app}</p>
                 </div>
               ))}
             </div>
@@ -226,11 +226,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 { step: '03', title: 'Set Correct RPM', body: `Do not exceed ${product.maxRPM ?? 'rated'} RPM. Over-speeding causes premature failure.` },
                 { step: '04', title: 'Use Water Cooling', body: 'Wet cutting extends blade life significantly. Dry cutting is only recommended for short bursts.' },
               ].map((item) => (
-                <div key={item.step} className="flex gap-6 border border-[#e2e8f0] bg-white p-6">
-                  <div className="font-sans text-4xl font-bold text-[#e2e8f0]">{item.step}</div>
+                <div key={item.step} className="flex gap-6 border border-rule bg-white p-6">
+                  <div className="font-sans text-4xl font-bold text-rule">{item.step}</div>
                   <div>
-                    <h4 className="font-sans text-lg font-bold text-[#0a1628]">{item.title}</h4>
-                    <p className="mt-2 text-sm leading-relaxed text-[#64748b]">{item.body}</p>
+                    <h4 className="font-sans text-lg font-bold text-navy">{item.title}</h4>
+                    <p className="mt-2 text-sm leading-relaxed text-ink-muted">{item.body}</p>
                   </div>
                 </div>
               ))}
@@ -241,11 +241,11 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
       {/* ── RELATED PRODUCTS ─────────────────────────────────────── */}
       {relatedProducts.length > 0 && (
-        <section className="bg-[#0a1628] py-16 lg:py-24">
+        <section className="bg-navy py-16 lg:py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex items-end justify-between">
               <div>
-                <p className="font-sans text-sm font-bold tracking-[0.3em] text-[#3b82f6]">Related</p>
+                <p className="font-sans text-sm font-bold tracking-[0.3em] text-accent">Related</p>
                 <h2 className="mt-2 font-sans text-3xl font-bold text-white lg:text-4xl">You Might Also Need</h2>
               </div>
               <Link href="/products" className="group hidden items-center gap-2 font-sans text-sm font-bold text-white/60 transition-colors hover:text-white sm:flex">
@@ -263,7 +263,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       )}
 
       {/* ── CTA STRIP ────────────────────────────────────────────── */}
-      <section className="bg-[#3b82f6] py-12">
+      <section className="bg-accent py-12">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
             <div>
@@ -271,10 +271,10 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
               <p className="mt-1 text-white/80">Our engineers are available to help you choose the right blade.</p>
             </div>
             <div className="flex gap-3">
-              <Button className="h-12 bg-white px-6 font-sans font-bold text-[#0a1628] hover:bg-[#f1f5f9]" asChild>
+              <Button className="h-12 bg-white px-6 font-sans font-bold text-navy hover:bg-secondary" asChild>
                 <Link href={`/order-request?product=${product.id}`}>Request Order</Link>
               </Button>
-              <Button variant="outline" className="h-12 border-2 border-white bg-transparent px-6 font-sans font-bold text-white hover:bg-white hover:text-[#3b82f6]" asChild>
+              <Button variant="outline" className="h-12 border-2 border-white bg-transparent px-6 font-sans font-bold text-white hover:bg-white hover:text-accent" asChild>
                 <Link href="/contact">Talk to an Engineer</Link>
               </Button>
             </div>

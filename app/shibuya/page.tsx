@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ArrowDown, Play, Check } from 'lucide-react'
@@ -87,12 +87,6 @@ const craftsmanshipPoints = [
 
 export default function ShibuyaPage() {
   const [selectedModel, setSelectedModel] = useState(shibuyaModels[2])
-  const [isLoaded, setIsLoaded] = useState(false)
-
-  useEffect(() => {
-    setIsLoaded(true)
-  }, [])
-
   return (
     <PublicLayout>
 
@@ -115,33 +109,33 @@ export default function ShibuyaPage() {
         <div className="relative z-10 mx-auto max-w-7xl px-6 py-32 lg:px-8">
           <div className="max-w-3xl">
             {/* Origin badge */}
-            <div className={`mb-8 transition-all duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+            <div className="mb-8">
               <span className="inline-block border border-white/20 px-4 py-2 text-xs font-medium tracking-[0.3em] text-white/60">
                 ENGINEERED IN JAPAN
               </span>
             </div>
 
             {/* Headline */}
-            <h1 className={`text-5xl font-bold leading-[1.1] tracking-tight text-white transition-all delay-200 duration-1000 md:text-6xl lg:text-7xl ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <h1 className="text-5xl font-bold leading-[1.1] tracking-tight text-white md:text-6xl lg:text-7xl">
               Precision Without
               <span className="block text-white/40">Compromise</span>
             </h1>
 
             {/* Subheading */}
-            <p className={`mt-8 max-w-xl text-lg leading-relaxed text-white/50 transition-all delay-300 duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/50">
               Shibuya core drilling machines represent five decades of Japanese engineering excellence. Trusted by professionals who demand nothing less than perfection.
             </p>
 
             {/* CTA */}
-            <div className={`mt-12 flex flex-wrap gap-6 transition-all delay-500 duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+            <div className="mt-12 flex flex-wrap gap-6">
               <Link 
                 href="#models" 
-                className="group inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-semibold text-[#030508] transition-all hover:bg-white/90"
+                className="inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-semibold text-[#030508] transition-colors hover:bg-white/90"
               >
                 Explore Models
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
-              <button className="group inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-semibold text-white transition-all hover:border-white/40 hover:bg-white/5">
+              <button className="inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-semibold text-white transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30">
                   <Play className="h-3 w-3 fill-white" />
                 </div>
@@ -155,7 +149,7 @@ export default function ShibuyaPage() {
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
           <div className="flex flex-col items-center gap-3 text-white/30">
             <span className="text-xs tracking-[0.2em]">SCROLL</span>
-            <ArrowDown className="h-4 w-4 animate-bounce" />
+            <ArrowDown className="h-4 w-4" />
           </div>
         </div>
       </section>
@@ -163,11 +157,11 @@ export default function ShibuyaPage() {
       {/* Heritage Statement */}
       <section className="bg-[#f8f7f4] py-32">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <p className="text-sm font-medium tracking-[0.2em] text-[#0a1628]/40">SINCE 1973</p>
-          <h2 className="mt-8 text-3xl font-bold leading-snug tracking-tight text-[#0a1628] md:text-4xl lg:text-5xl">
+          <p className="text-sm font-medium tracking-[0.2em] text-navy/40">SINCE 1973</p>
+          <h2 className="mt-8 text-3xl font-bold leading-snug tracking-tight text-navy md:text-4xl lg:text-5xl">
             Five decades of relentless pursuit of perfection. Every Shibuya machine is a testament to Japanese craftsmanship.
           </h2>
-          <div className="mx-auto mt-12 h-px w-16 bg-[#0a1628]/20" />
+          <div className="mx-auto mt-12 h-px w-16 bg-navy/20" />
         </div>
       </section>
 
@@ -187,21 +181,21 @@ export default function ShibuyaPage() {
 
             {/* Content */}
             <div className="flex flex-col justify-center">
-              <p className="text-sm font-medium tracking-[0.2em] text-[#0a1628]/40">CRAFTSMANSHIP</p>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-[#0a1628] md:text-4xl">
+              <p className="text-sm font-medium tracking-[0.2em] text-navy/40">CRAFTSMANSHIP</p>
+              <h2 className="mt-4 text-3xl font-bold tracking-tight text-navy md:text-4xl">
                 Built to Last Generations
               </h2>
-              <p className="mt-6 text-lg leading-relaxed text-[#64748b]">
+              <p className="mt-6 text-lg leading-relaxed text-ink-muted">
                 Every Shibuya machine begins its life in our Osaka manufacturing facility, where traditional Japanese craftsmanship meets modern precision engineering.
               </p>
 
               <div className="mt-12 space-y-8">
                 {craftsmanshipPoints.map((point) => (
                   <div key={point.number} className="flex gap-6">
-                    <span className="text-sm font-medium text-[#0a1628]/20">{point.number}</span>
+                    <span className="text-sm font-medium text-navy/20">{point.number}</span>
                     <div>
-                      <h3 className="font-semibold text-[#0a1628]">{point.title}</h3>
-                      <p className="mt-1 text-sm text-[#64748b]">{point.description}</p>
+                      <h3 className="font-semibold text-navy">{point.title}</h3>
+                      <p className="mt-1 text-sm text-ink-muted">{point.description}</p>
                     </div>
                   </div>
                 ))}
@@ -227,7 +221,7 @@ export default function ShibuyaPage() {
               <button
                 key={model.id}
                 onClick={() => setSelectedModel(model)}
-                className={`px-6 py-3 text-sm font-medium transition-all ${
+                className={`px-6 py-3 text-sm font-medium transition-colors ${
                   selectedModel.id === model.id
                     ? 'bg-white text-[#030508]'
                     : 'text-white/50 hover:text-white'
@@ -252,7 +246,7 @@ export default function ShibuyaPage() {
 
             {/* Details */}
             <div className="flex flex-col justify-center">
-              <p className="text-sm font-medium tracking-[0.2em] text-[#3b82f6]">{selectedModel.tagline}</p>
+              <p className="text-sm font-medium tracking-[0.2em] text-accent">{selectedModel.tagline}</p>
               <h3 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
                 Shibuya {selectedModel.name}
               </h3>
@@ -286,7 +280,7 @@ export default function ShibuyaPage() {
                 <ul className="grid gap-3 sm:grid-cols-2">
                   {selectedModel.features.map((feature) => (
                     <li key={feature} className="flex items-center gap-3 text-sm text-white/70">
-                      <Check className="h-4 w-4 flex-shrink-0 text-[#3b82f6]" />
+                      <Check className="h-4 w-4 flex-shrink-0 text-accent" />
                       {feature}
                     </li>
                   ))}
@@ -301,7 +295,7 @@ export default function ShibuyaPage() {
                 </div>
                 <Link 
                   href="/contact" 
-                  className="inline-flex items-center gap-2 bg-[#3b82f6] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#2563eb]"
+                  className="inline-flex items-center gap-2 bg-accent px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent-dark"
                 >
                   Request Quote
                   <ArrowRight className="h-4 w-4" />
@@ -333,7 +327,7 @@ export default function ShibuyaPage() {
               </p>
               <Link 
                 href="/applications" 
-                className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white transition-all hover:gap-3"
+                className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white"
               >
                 View Applications
                 <ArrowRight className="h-4 w-4" />
@@ -348,34 +342,34 @@ export default function ShibuyaPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-16 lg:grid-cols-3">
             <div>
-              <p className="text-sm font-medium tracking-[0.2em] text-[#0a1628]/40">SUPPORT</p>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-[#0a1628]">
+              <p className="text-sm font-medium tracking-[0.2em] text-navy/40">SUPPORT</p>
+              <h2 className="mt-4 text-3xl font-bold tracking-tight text-navy">
                 We Stand Behind Every Machine
               </h2>
             </div>
             <div className="lg:col-span-2">
               <div className="grid gap-12 sm:grid-cols-2">
                 <div>
-                  <h3 className="text-lg font-semibold text-[#0a1628]">2-Year Warranty</h3>
-                  <p className="mt-2 text-[#64748b]">
+                  <h3 className="text-lg font-semibold text-navy">2-Year Warranty</h3>
+                  <p className="mt-2 text-ink-muted">
                     Comprehensive manufacturer warranty with full parts and labor coverage.
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-[#0a1628]">Local Service Center</h3>
-                  <p className="mt-2 text-[#64748b]">
+                  <h3 className="text-lg font-semibold text-navy">Local Service Center</h3>
+                  <p className="mt-2 text-ink-muted">
                     Dedicated service facility in Kuala Lumpur staffed by factory-trained technicians.
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-[#0a1628]">Spare Parts Stock</h3>
-                  <p className="mt-2 text-[#64748b]">
+                  <h3 className="text-lg font-semibold text-navy">Spare Parts Stock</h3>
+                  <p className="mt-2 text-ink-muted">
                     Full inventory of genuine Shibuya parts for rapid repairs and maintenance.
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-[#0a1628]">Operator Training</h3>
-                  <p className="mt-2 text-[#64748b]">
+                  <h3 className="text-lg font-semibold text-navy">Operator Training</h3>
+                  <p className="mt-2 text-ink-muted">
                     Complimentary training program included with every machine purchase.
                   </p>
                 </div>
@@ -397,14 +391,14 @@ export default function ShibuyaPage() {
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Link 
               href="/contact" 
-              className="inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-semibold text-[#030508] transition-all hover:bg-white/90"
+              className="inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-semibold text-[#030508] transition-colors hover:bg-white/90"
             >
               Schedule Demo
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link 
               href="/contact" 
-              className="inline-flex items-center gap-2 border border-white/20 px-8 py-4 text-sm font-semibold text-white transition-all hover:border-white/40 hover:bg-white/5"
+              className="inline-flex items-center gap-2 border border-white/20 px-8 py-4 text-sm font-semibold text-white transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5"
             >
               Download Brochure
             </Link>
