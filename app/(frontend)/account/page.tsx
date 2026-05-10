@@ -68,16 +68,17 @@ export default function AccountPage() {
                   Check your inbox for a link from Coolman.
                 </p>
                 {verificationSent ? (
-                  <p className="mt-2 text-sm text-green-400">Verification email resent — check your inbox.</p>
+                  <p className="mt-3 text-sm font-medium text-green-400">Verification email sent — check your inbox.</p>
                 ) : (
-                  <button
+                  <Button
                     type="button"
+                    size="sm"
                     onClick={resendVerification}
-                    className="mt-2 flex items-center gap-1 text-sm text-accent-light underline hover:text-accent"
+                    className="mt-3 gap-2 bg-amber-500 text-white hover:bg-amber-600"
                   >
-                    <Mail className="h-3 w-3" />
-                    Resend verification email
-                  </button>
+                    <Mail className="h-4 w-4" />
+                    Send verification email
+                  </Button>
                 )}
               </div>
             </div>
