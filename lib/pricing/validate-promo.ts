@@ -33,6 +33,6 @@ export async function validatePromoCode(
   return {
     valid: true,
     promo_discount_pct: promo.promo_discount_pct as number,
-    promoId: promo.id as string,
+    promoId: promo.id as unknown as string,
   }
 }

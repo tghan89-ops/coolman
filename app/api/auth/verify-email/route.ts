@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 
   await payload.update({
     collection: 'contractors',
-    id: contractor.id as string,
+    id: contractor.id as unknown as string,
     data: {
       email_verified_at: new Date().toISOString(),
       email_verification_token: null,

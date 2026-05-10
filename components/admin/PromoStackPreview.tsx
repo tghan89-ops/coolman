@@ -10,7 +10,7 @@ const EXAMPLE_TIERS = [
 const REFERENCE_PRICE = 100
 
 export function PromoStackPreview() {
-  const [promoPctField] = useFormFields(([fields]) => [fields['promo_discount_pct']])
+  const [promoPctField] = useFormFields((context) => [context[0]['promo_discount_pct']])
   const promoPct = (promoPctField?.value as number) ?? 0
 
   return (

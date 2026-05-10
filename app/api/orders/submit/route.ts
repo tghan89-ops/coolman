@@ -12,7 +12,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { calculateEffectivePrice, isWithinDiscountCap, isPriceStale } from '@/lib/pricing/calculate'
 import { validatePromoCode } from '@/lib/pricing/validate-promo'
-import { sql } from 'drizzle-orm'
+import { sql } from '@payloadcms/db-vercel-postgres'
 
 export async function POST(req: NextRequest) {
   // 1. Extract and verify contractor session cookie
@@ -213,6 +213,7 @@ export async function POST(req: NextRequest) {
     // 15. Create the order
     const order = await payload.create({
       collection: 'orders',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
         contractor: contractor.id,
         product: productId,
@@ -228,7 +229,7 @@ export async function POST(req: NextRequest) {
         duplicate_flag: isDuplicate,
         idempotency_key: idempotencyKey,
         ...(validatedPromoId ? { promo_code: validatedPromoId } : {}),
-      },
+      } as any,
       req: { transactionID } as any,
       overrideAccess: true,
     })
