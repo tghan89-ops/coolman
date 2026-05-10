@@ -9,7 +9,7 @@ export const Contractors: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'companyName',
-    defaultColumns: ['companyName', 'email', 'tier_discount_pct', 'deactivated_at'],
+    defaultColumns: ['companyName', 'email', 'tier_discount_pct', 'email_verified_at', 'deactivated_at'],
   },
   versions: true,
   access: {
@@ -51,6 +51,9 @@ export const Contractors: CollectionConfig = {
       },
       admin: {
         description: 'Permanent tier discount. 0.05 = 5%. Admin-only.',
+        components: {
+          Field: '@/components/admin/TierDiscountField#TierDiscountField',
+        },
       },
     },
     {
@@ -73,6 +76,22 @@ export const Contractors: CollectionConfig = {
       admin: {
         description: 'Soft delete timestamp. Set to deactivate. Never hard-delete contractors.',
       },
+    },
+    // Auth support fields — hidden from admin UI
+    {
+      name: 'email_verification_token',
+      type: 'text',
+      admin: { hidden: true },
+    },
+    {
+      name: 'email_verification_sent_at',
+      type: 'date',
+      admin: { hidden: true },
+    },
+    {
+      name: 'registration_ip',
+      type: 'text',
+      admin: { hidden: true },
     },
   ],
 }
