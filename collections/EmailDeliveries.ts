@@ -7,9 +7,9 @@ export const EmailDeliveries: CollectionConfig = {
     defaultColumns: ['recipient', 'status', 'sent_at', 'order'],
   },
   access: {
-    create: () => true,
+    create: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
     read: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
-    update: () => true,
+    update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
     delete: () => false,
   },
   fields: [

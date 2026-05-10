@@ -7,9 +7,9 @@ export const CronRuns: CollectionConfig = {
     defaultColumns: ['job_name', 'status', 'started_at', 'completed_at', 'rows_processed'],
   },
   access: {
-    create: () => true,
+    create: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
     read: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
-    update: () => true,
+    update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
     delete: () => false,
   },
   fields: [

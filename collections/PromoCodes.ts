@@ -51,8 +51,11 @@ export const PromoCodes: CollectionConfig = {
       name: 'usage_count',
       type: 'number',
       defaultValue: 0,
+      access: {
+        update: () => false,
+      },
       admin: {
-        description: 'Current redemption count. Incremented server-side only.',
+        description: 'Current redemption count. Incremented server-side only via atomic SQL.',
         readOnly: true,
       },
     },

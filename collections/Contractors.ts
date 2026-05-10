@@ -46,6 +46,9 @@ export const Contractors: CollectionConfig = {
       min: 0,
       max: 1,
       defaultValue: 0,
+      access: {
+        update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
+      },
       admin: {
         description: 'Permanent tier discount. 0.05 = 5%. Admin-only.',
       },
@@ -53,6 +56,9 @@ export const Contractors: CollectionConfig = {
     {
       name: 'email_verified_at',
       type: 'date',
+      access: {
+        update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
+      },
       admin: {
         description: 'Set when contractor verifies their email. Null = unverified.',
         readOnly: true,
@@ -61,6 +67,9 @@ export const Contractors: CollectionConfig = {
     {
       name: 'deactivated_at',
       type: 'date',
+      access: {
+        update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
+      },
       admin: {
         description: 'Soft delete timestamp. Set to deactivate. Never hard-delete contractors.',
       },

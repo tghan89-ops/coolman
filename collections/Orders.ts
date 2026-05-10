@@ -99,6 +99,7 @@ export const Orders: CollectionConfig = {
       name: 'idempotency_key',
       type: 'text',
       required: true,
+      unique: true,
       admin: { description: 'Client-generated UUID. Scoped to contractor for uniqueness.' },
     },
     {

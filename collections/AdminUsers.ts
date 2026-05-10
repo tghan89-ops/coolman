@@ -13,7 +13,7 @@ export const AdminUsers: CollectionConfig = {
   },
   versions: true,
   access: {
-    read: ({ req: { user } }) => !!(user as any),
+    read: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
     create: ({ req: { user } }) =>
       (user as any)?.collection === 'adminUsers' && (user as any)?.role === 'admin',
     update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
@@ -35,6 +35,10 @@ export const AdminUsers: CollectionConfig = {
         { label: 'Marketing', value: 'marketing' },
       ],
       defaultValue: 'marketing',
+      access: {
+        update: ({ req: { user } }) =>
+          (user as any)?.collection === 'adminUsers' && (user as any)?.role === 'admin',
+      },
       admin: {
         description: 'Admin = full access. Marketing = content upload only.',
       },

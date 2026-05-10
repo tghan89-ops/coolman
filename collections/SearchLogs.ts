@@ -66,8 +66,9 @@ export const SearchLogs: CollectionConfig = {
     },
     {
       name: 'submitted_order_id',
-      type: 'text',
-      admin: { description: 'Order ID if this search led to an order submission' },
+      type: 'relationship',
+      relationTo: 'orders',
+      admin: { description: 'Order if this search led to an order submission' },
     },
   ],
 }
