@@ -3,7 +3,7 @@ import config from '@payload-config'
 
 export type PromoValidationResult =
   | { valid: true; promo_discount_pct: number; promoId: string }
-  | { valid: false; reason: 'not_found' | 'inactive' | 'expired' | 'usage_cap_reached' }
+  | { valid: false; reason: 'not_found' | 'inactive' | 'not_yet_active' | 'expired' | 'usage_cap_reached' }
 
 /**
  * Validates a promo code against the live DB.
@@ -26,7 +26,7 @@ export async function validatePromoCode(
   const promo = result.docs[0]
 
   if (!promo.active) return { valid: false, reason: 'inactive' }
-  if (new Date(promo.valid_from as string) > now) return { valid: false, reason: 'expired' }
+  if (new Date(promo.valid_from as string) > now) return { valid: false, reason: 'not_yet_active' }
   if (new Date(promo.valid_until as string) < now) return { valid: false, reason: 'expired' }
   if ((promo.usage_count as number) >= (promo.usage_cap as number)) return { valid: false, reason: 'usage_cap_reached' }
 

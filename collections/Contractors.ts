@@ -81,16 +81,19 @@ export const Contractors: CollectionConfig = {
     {
       name: 'email_verification_token',
       type: 'text',
+      required: false,
       admin: { hidden: true },
     },
     {
       name: 'email_verification_sent_at',
       type: 'date',
+      required: false,
       admin: { hidden: true },
     },
     {
       name: 'registration_ip',
       type: 'text',
+      required: false,
       admin: { hidden: true },
     },
   ],

@@ -1,7 +1,7 @@
 'use client'
 
 import { useField } from '@payloadcms/ui'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 const WARN_ABOVE = 0.30
 
@@ -9,11 +9,20 @@ export function TierDiscountField({ path }: { path: string }) {
   const { value, setValue, showError } = useField<number>({ path })
   const [pendingValue, setPendingValue] = useState<number | null>(null)
   const [showConfirm, setShowConfirm] = useState(false)
+  const [inputValue, setInputValue] = useState<string>(
+    value !== undefined && value !== null ? String(value) : '0'
+  )
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // Keep inputValue in sync when Payload updates value externally (e.g. on load)
+  useEffect(() => {
+    setInputValue(value !== undefined && value !== null ? String(value) : '0')
+  }, [value])
 
   const displayValue = value ?? 0
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setInputValue(e.target.value)
     const num = parseFloat(e.target.value) || 0
     if (num > WARN_ABOVE) {
       setPendingValue(num)
@@ -32,6 +41,7 @@ export function TierDiscountField({ path }: { path: string }) {
   function handleCancel() {
     setShowConfirm(false)
     setPendingValue(null)
+    setInputValue(String(displayValue))
     if (inputRef.current) inputRef.current.value = String(displayValue)
   }
 
@@ -46,7 +56,7 @@ export function TierDiscountField({ path }: { path: string }) {
         step="0.01"
         min="0"
         max="1"
-        defaultValue={displayValue}
+        value={inputValue}
         onChange={handleChange}
         className="field-input"
         style={{

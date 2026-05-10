@@ -145,6 +145,11 @@ export async function POST(req: NextRequest) {
       overrideAccess: true,
     })
 
+    if ((freshContractor as any).deactivated_at) {
+      await payload.db.rollbackTransaction(transactionID)
+      return NextResponse.json({ error: 'Your account has been deactivated. Please contact Alan.' }, { status: 403 })
+    }
+
     const tierDiscountPct = (freshContractor as any).tier_discount_pct ?? 0
     const listPrice = (product as any).listPrice ?? 0
     if (!listPrice || listPrice <= 0) {
@@ -163,6 +168,7 @@ export async function POST(req: NextRequest) {
         const reasons: Record<string, string> = {
           not_found: 'Promo code not found.',
           inactive: 'This promo code is no longer active.',
+          not_yet_active: 'This promo code is not yet valid.',
           expired: 'This promo code has expired.',
           usage_cap_reached: 'This promo code has reached its usage limit.',
         }
