@@ -34,12 +34,15 @@ export async function POST(req: NextRequest) {
     if (!meRes.ok) throw new Error('Session invalid')
     const meData = await meRes.json()
     contractor = meData.user
+    if (!contractor?.id) {
+      return NextResponse.json({ error: 'Invalid or expired session' }, { status: 401 })
+    }
   } catch {
     return NextResponse.json({ error: 'Invalid or expired session' }, { status: 401 })
   }
 
   // 2. Explicit collection assertion — admin sessions must NOT reach this route
-  if (contractor?.collection !== undefined && contractor.collection !== 'contractors') {
+  if (contractor?.collection !== 'contractors') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
@@ -58,11 +61,14 @@ export async function POST(req: NextRequest) {
   if (!productId || !quantity || !deliveryAddress || !idempotencyKey) {
     return NextResponse.json({ error: 'productId, quantity, deliveryAddress, and idempotencyKey are required' }, { status: 400 })
   }
-  if (typeof quantity !== 'number' || quantity < 1) {
+  if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 1) {
     return NextResponse.json({ error: 'quantity must be a positive integer' }, { status: 400 })
   }
 
   const transactionID = await payload.db.beginTransaction()
+  if (!transactionID) {
+    return NextResponse.json({ error: 'Order submission failed. Please try again.' }, { status: 500 })
+  }
 
   try {
     // 5. Read settings (all checks inside the transaction)
@@ -141,6 +147,10 @@ export async function POST(req: NextRequest) {
 
     const tierDiscountPct = (freshContractor as any).tier_discount_pct ?? 0
     const listPrice = (product as any).listPrice ?? 0
+    if (!listPrice || listPrice <= 0) {
+      await payload.db.rollbackTransaction(transactionID)
+      return NextResponse.json({ error: 'Product price is not available. Please contact Alan.' }, { status: 422 })
+    }
 
     // 11. Validate promo code (if provided)
     let promoDiscountPct = 0
@@ -225,9 +235,15 @@ export async function POST(req: NextRequest) {
 
     // 16. Increment promo usage_count atomically (if promo used)
     if (validatedPromoId) {
-      await drizzle.execute(
-        sql`UPDATE "promo_codes" SET usage_count = usage_count + 1 WHERE id = ${validatedPromoId}`,
-      )
+      try {
+        await drizzle.execute(
+          sql`UPDATE "promo_codes" SET usage_count = usage_count + 1 WHERE id = ${validatedPromoId}`,
+        )
+      } catch (promoErr) {
+        await payload.db.rollbackTransaction(transactionID).catch(() => {})
+        console.error('[orders/submit] promo usage increment failed', promoErr)
+        return NextResponse.json({ error: 'Order submission failed. Please try again.' }, { status: 500 })
+      }
     }
 
     // 17. Queue email delivery (order write commits FIRST — email is decoupled)
