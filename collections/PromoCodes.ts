@@ -64,5 +64,14 @@ export const PromoCodes: CollectionConfig = {
       type: 'checkbox',
       defaultValue: true,
     },
+    {
+      name: 'stacking_preview',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/admin/PromoStackPreview#PromoStackPreview',
+        },
+      },
+    },
   ],
 }
