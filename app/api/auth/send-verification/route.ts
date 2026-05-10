@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { generateVerificationToken } from '@/lib/auth/verify-email'
-import { sendEmail } from '@/lib/email/send'
+import { sendVerificationEmail } from '@/lib/auth/verify-email'
 
 // POST /api/auth/send-verification
 // Body: { contractorId: string }
+// Requires: valid session cookie belonging to the contractorId (prevents email flooding)
 export async function POST(req: NextRequest) {
   try {
     const { contractorId } = await req.json()
     if (!contractorId) return NextResponse.json({ error: 'contractorId required' }, { status: 400 })
 
-    // Only allow the contractor themselves to trigger a verification email for their own account
+    // Only allow the contractor themselves to trigger a resend for their own account
     const cookieStore = await cookies()
     const sessionToken = cookieStore.get('coolman-token')?.value
 
@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
 
-    // Verify the session belongs to the contractor making the request
     try {
       const meRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'}/api/contractors/me`, {
         headers: { Cookie: `coolman-token=${sessionToken}` },
@@ -43,32 +42,11 @@ export async function POST(req: NextRequest) {
     if (!contractor) return NextResponse.json({ error: 'Contractor not found' }, { status: 404 })
     if (contractor.email_verified_at) return NextResponse.json({ message: 'Already verified' })
 
-    const token = generateVerificationToken()
-    const now = new Date().toISOString()
-
-    await payload.update({
-      collection: 'contractors',
-      id: contractorId,
-      data: {
-        email_verification_token: token,
-        email_verification_sent_at: now,
-      },
-      overrideAccess: true,
-    })
-
-    const verifyUrl = `${process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'}/auth/verify-email?token=${token}`
-
-    await sendEmail({
-      to: contractor.email as string,
-      subject: 'Verify your Coolman account email',
-      html: `
-        <p>Welcome to Coolman, ${(contractor as any).companyName}.</p>
-        <p>Click the link below to verify your email address and unlock your contract pricing:</p>
-        <p><a href="${verifyUrl}">${verifyUrl}</a></p>
-        <p>This link expires in 24 hours.</p>
-        <p>If you did not register, ignore this email.</p>
-      `,
-    })
+    await sendVerificationEmail(
+      contractor.id,
+      contractor.email as string,
+      (contractor as any).companyName ?? '',
+    )
 
     return NextResponse.json({ message: 'Verification email sent' })
   } catch (err) {

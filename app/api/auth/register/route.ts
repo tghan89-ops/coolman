@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { sendVerificationEmail } from '@/lib/auth/verify-email'
 
 function getClientIp(req: NextRequest): string {
   const forwarded = req.headers.get('x-forwarded-for')
@@ -58,11 +59,11 @@ export async function POST(req: NextRequest) {
     })
 
     // Trigger verification email (fire-and-forget)
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'}/api/auth/send-verification`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contractorId: contractor.id }),
-    }).catch(err => console.error('[register] verification email failed:', err))
+    sendVerificationEmail(
+      contractor.id,
+      contractor.email as string,
+      (contractor as any).companyName ?? '',
+    ).catch(err => console.error('[register] verification email failed:', err))
 
     return NextResponse.json({ id: contractor.id, email: contractor.email }, { status: 201 })
   } catch (err: any) {
