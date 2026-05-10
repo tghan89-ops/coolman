@@ -24,7 +24,7 @@ export const Contractors: CollectionConfig = {
       if ((user as any).collection === 'adminUsers') return true
       return { id: { equals: (user as any).id } }
     },
-    delete: () => false,
+    delete: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
   },
   fields: [
     {
