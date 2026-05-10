@@ -1,5 +1,8 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { calculateEffectivePrice, isWithinDiscountCap, isPriceStale } from '../pricing/calculate'
+
+vi.mock('payload', () => ({ getPayload: vi.fn() }))
+vi.mock('@payload-config', () => ({ default: {} }))
 
 describe('calculateEffectivePrice', () => {
   it('no discounts — returns list price as effective price', () => {
@@ -66,5 +69,62 @@ describe('isPriceStale', () => {
 
   it('over tolerance — stale', () => {
     expect(isPriceStale(100.02, 100.00)).toBe(true)
+  })
+})
+
+describe('validatePromoCode', () => {
+  beforeEach(() => { vi.clearAllMocks(); vi.resetModules() })
+
+  it('not_found when code does not exist', async () => {
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue({
+      find: vi.fn().mockResolvedValue({ docs: [] }),
+    } as any)
+    const { validatePromoCode } = await import('../pricing/validate-promo')
+    const result = await validatePromoCode('FAKECODE')
+    expect(result.valid).toBe(false)
+    if (!result.valid) expect(result.reason).toBe('not_found')
+  })
+
+  it('inactive promo returns inactive', async () => {
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue({
+      find: vi.fn().mockResolvedValue({
+        docs: [{ active: false, valid_from: '2026-01-01', valid_until: '2027-01-01', usage_count: 0, usage_cap: 100, promo_discount_pct: 0.10 }],
+      }),
+    } as any)
+    const { validatePromoCode } = await import('../pricing/validate-promo')
+    const result = await validatePromoCode('INACTIVE')
+    expect(result.valid).toBe(false)
+    if (!result.valid) expect(result.reason).toBe('inactive')
+  })
+
+  it('usage cap reached returns usage_cap_reached', async () => {
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue({
+      find: vi.fn().mockResolvedValue({
+        docs: [{ active: true, valid_from: '2026-01-01', valid_until: '2027-12-31', usage_count: 100, usage_cap: 100, promo_discount_pct: 0.10 }],
+      }),
+    } as any)
+    const { validatePromoCode } = await import('../pricing/validate-promo')
+    const result = await validatePromoCode('CAPCODE')
+    expect(result.valid).toBe(false)
+    if (!result.valid) expect(result.reason).toBe('usage_cap_reached')
+  })
+
+  it('valid promo returns promo_discount_pct', async () => {
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue({
+      find: vi.fn().mockResolvedValue({
+        docs: [{ id: 'promo-1', active: true, valid_from: '2026-01-01', valid_until: '2027-12-31', usage_count: 0, usage_cap: 100, promo_discount_pct: 0.15 }],
+      }),
+    } as any)
+    const { validatePromoCode } = await import('../pricing/validate-promo')
+    const result = await validatePromoCode('RAYA15')
+    expect(result.valid).toBe(true)
+    if (result.valid) {
+      expect(result.promo_discount_pct).toBe(0.15)
+      expect(result.promoId).toBe('promo-1')
+    }
   })
 })
