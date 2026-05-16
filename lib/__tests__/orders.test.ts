@@ -5,13 +5,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 vi.mock('payload', () => ({ getPayload: vi.fn() }))
 vi.mock('@payload-config', () => ({ default: {} }))
 
-// Mock next/headers for cookies
-vi.mock('next/headers', () => ({
-  cookies: vi.fn().mockResolvedValue({
-    get: vi.fn().mockReturnValue({ value: 'test-session-token' }),
-  }),
-}))
-
 // Mock drizzle-orm (imported by the route for sql tagged template)
 vi.mock('drizzle-orm', () => ({
   sql: (strings: TemplateStringsArray, ...values: any[]) => ({ strings, values }),
@@ -32,8 +25,7 @@ vi.mock('@/lib/pricing/validate-promo', () => ({
   validatePromoCode: vi.fn().mockResolvedValue({ valid: false, reason: 'not_found' }),
 }))
 
-// Mock global fetch for /api/contractors/me
-const mockMeResponse = {
+const defaultContractorAuth = {
   user: {
     id: 'contractor-1',
     email: 'test@example.com',
@@ -43,6 +35,7 @@ const mockMeResponse = {
 }
 
 const buildMockPayload = (overrides: Record<string, any> = {}) => ({
+  auth: vi.fn().mockResolvedValue(defaultContractorAuth),
   db: {
     beginTransaction: vi.fn().mockResolvedValue('txn-123'),
     commitTransaction: vi.fn().mockResolvedValue(undefined),
@@ -71,10 +64,6 @@ describe('POST /api/orders/submit', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.resetModules()
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => mockMeResponse,
-    }))
   })
 
   it('kill switch returns 423', async () => {
@@ -244,11 +233,11 @@ describe('POST /api/orders/submit', () => {
 
   it('OV2-3 — admin session hitting the contractor submit route returns 403', async () => {
     const { getPayload } = await import('payload')
-    vi.mocked(getPayload).mockResolvedValue(buildMockPayload() as any)
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ user: { id: 'admin-1', email: 'alan@coolman.com.my', collection: 'adminUsers' } }),
-    }))
+    vi.mocked(getPayload).mockResolvedValue(buildMockPayload({
+      auth: vi.fn().mockResolvedValue({
+        user: { id: 'admin-1', email: 'alan@coolman.com.my', collection: 'adminUsers' },
+      }),
+    }) as any)
 
     const { POST } = await import('../../app/api/orders/submit/route')
     const req = new Request('http://localhost/api/orders/submit', {

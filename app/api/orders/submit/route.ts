@@ -7,7 +7,6 @@
 // The email cron (Group 6) delivers queued emails.
 
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { calculateEffectivePrice, isWithinDiscountCap, isPriceStale } from '@/lib/pricing/calculate'
@@ -15,28 +14,17 @@ import { validatePromoCode } from '@/lib/pricing/validate-promo'
 import { sql } from '@payloadcms/db-vercel-postgres'
 
 export async function POST(req: NextRequest) {
-  // 1. Extract and verify contractor session cookie
-  const cookieStore = await cookies()
-  const sessionToken = cookieStore.get('coolman-token')?.value
-
-  if (!sessionToken) {
-    return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
-  }
-
   const payload = await getPayload({ config })
 
-  // Authenticate contractor via Payload session
+  // 1. Authenticate via Payload's native header-based auth (no internal HTTP fetch).
+  //    Reads the cookie out of req.headers and resolves to the auth-collection user.
   let contractor: any
   try {
-    const meRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'}/api/contractors/me`, {
-      headers: { Cookie: `coolman-token=${sessionToken}` },
-    })
-    if (!meRes.ok) throw new Error('Session invalid')
-    const meData = await meRes.json()
-    contractor = meData.user
-    if (!contractor?.id) {
-      return NextResponse.json({ error: 'Invalid or expired session' }, { status: 401 })
+    const { user } = await payload.auth({ headers: req.headers })
+    if (!user?.id) {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
+    contractor = user
   } catch {
     return NextResponse.json({ error: 'Invalid or expired session' }, { status: 401 })
   }
@@ -260,6 +248,7 @@ export async function POST(req: NextRequest) {
       data: {
         order: order.id,
         recipient: alanEmail,
+        email_type: 'order_confirmation',
         status: 'queued',
         retry_count: 0,
       },
