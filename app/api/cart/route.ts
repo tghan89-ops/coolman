@@ -15,7 +15,17 @@ async function resolveContractor(req: Request) {
   const session = await payload.auth({ headers: hdrs })
   const user = (session as any)?.user
   if (!user || user.collection !== 'contractors') return { payload, user: null }
-  const fresh = await payload.findByID({ collection: 'contractors', id: user.id })
+  // Coerce id (see /api/account/profile for rationale): Payload sometimes
+  // hands back user.id as a numeric string, and the Contractors read access
+  // filter does strict id equality — without coercion findByID returns null
+  // and every cart request 401s.
+  const contractorId: string | number =
+    typeof user.id === 'string' && /^\d+$/.test(user.id) ? Number(user.id) : user.id
+  const fresh = await payload.findByID({
+    collection: 'contractors',
+    id: contractorId,
+    overrideAccess: true,
+  })
   return { payload, user: fresh }
 }
 
