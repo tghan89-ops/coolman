@@ -419,7 +419,7 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
                 {!showPriceBreakdown && (
                   <div className="rounded bg-muted px-3 py-2 text-xs text-muted-foreground">
                     {isContractor
-                      ? 'Verify your email to unlock your contract price.'
+                      ? 'Verify your email to place order.'
                       : 'Log in for your contract price.'}
                   </div>
                 )}
