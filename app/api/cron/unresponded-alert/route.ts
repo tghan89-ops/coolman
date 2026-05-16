@@ -68,7 +68,8 @@ export async function GET(req: NextRequest) {
 
     // 5. Recipients — ALERT_RECIPIENTS CSV preferred, ALAN_EMAIL fallback.
     const recipientsCsv = (process.env.ALERT_RECIPIENTS ?? '').trim()
-    const fallback = process.env.ALAN_EMAIL ?? 'alan@coolman.com.my'
+    // TEMP TEST RECIPIENT — see TODOS Group 6: switch back to Alan's email before launch.
+    const fallback = (process.env.ALAN_EMAIL || 'ghtan@sonicon.com.my').trim()
     const recipients = recipientsCsv
       ? recipientsCsv.split(',').map((s) => s.trim()).filter(Boolean)
       : [fallback]

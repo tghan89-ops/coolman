@@ -255,7 +255,8 @@ export async function POST(req: NextRequest) {
     // 17. Queue email delivery (order write commits FIRST — email is decoupled)
     // Use `||` not `??` so an empty-string env var also falls through; trim to
     // strip stray whitespace that would fail Payload's email field validator.
-    const alanEmail = (process.env.ALAN_EMAIL || 'alan@coolman.com.my').trim()
+    // TEMP TEST RECIPIENT — see TODOS Group 6: switch back to Alan's email before launch.
+    const alanEmail = (process.env.ALAN_EMAIL || 'ghtan@sonicon.com.my').trim()
     await payload.create({
       collection: 'emailDeliveries',
       data: {

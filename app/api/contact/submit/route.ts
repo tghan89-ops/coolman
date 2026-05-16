@@ -45,7 +45,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Submission too large.' }, { status: 400 })
     }
 
-    const recipient = process.env.COOLMAN_CONTACT_RECIPIENT ?? 'sales@coolman.com.my'
+    // TEMP TEST RECIPIENT — see TODOS Group 6: switch back to sales@coolman.com.my before launch.
+    const recipient = (process.env.COOLMAN_CONTACT_RECIPIENT || 'ghtan@sonicon.com.my').trim()
 
     const html = `
       <div style="font-family:system-ui,sans-serif;line-height:1.5;color:#0a1628">
