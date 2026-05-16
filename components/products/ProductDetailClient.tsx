@@ -39,10 +39,13 @@ export function ProductDetailClient({
   const keyOf = (v: any, fallback: number): string | number =>
     v == null ? fallback : typeof v === 'object' ? (v.id ?? fallback) : v
 
-  const materials: any[] = Array.isArray(data.recommendedMaterials) ? data.recommendedMaterials : []
+  // Field names match collections/Products.ts. Earlier prototype names
+  // (recommendedMaterials / recommendedMachinePower / recommendedCuttingVolume)
+  // were leftovers from the seed data and returned empty on real Payload docs.
+  const materials: any[] = Array.isArray(data.materials) ? data.materials : []
   const applications: any[] = Array.isArray(data.applications) ? data.applications : []
   const primaryMaterial = labelOf(materials[0])
-  const machinePowerLabel = labelOf(data.recommendedMachinePower)
+  const machineTierLabel = labelOf(data.machineTier)
 
   // Resolve image URL from Payload media relation. If the product has no image
   // uploaded yet, we render a clean "no image" panel instead of substituting an
@@ -75,7 +78,7 @@ export function ProductDetailClient({
     { label: 'Segment Height', value: labelOf(data.segmentHeight), icon: Ruler },
     { label: 'Bond Type', value: bondLabel(data.bondType), icon: Shield },
     { label: 'Max RPM', value: data.maxRPM ?? 'See manual', icon: Zap },
-    { label: 'Cutting Volume', value: labelOf(data.recommendedCuttingVolume), icon: RotateCcw },
+    { label: 'Machine Tier', value: machineTierLabel, icon: RotateCcw },
   ]
 
   // Related products from Payload (depth:2 resolves these to full objects)
@@ -193,7 +196,7 @@ export function ProductDetailClient({
                   />
                   <div className="text-right">
                     <p className="text-xs text-white/40">Machine power</p>
-                    <p className="mt-1 font-sans text-lg font-bold capitalize text-accent">{machinePowerLabel}</p>
+                    <p className="mt-1 font-sans text-lg font-bold capitalize text-accent">{machineTierLabel || '—'}</p>
                   </div>
                 </div>
               </div>
@@ -389,7 +392,7 @@ export function ProductDetailClient({
                     </div>
                     <div className="flex flex-1 flex-col p-5">
                       <p className="font-sans text-xs font-semibold tracking-wider text-accent">
-                        {labelOf(p.recommendedMaterials?.[0]) || 'Universal'}
+                        {labelOf(p.materials?.[0]) || 'Universal'}
                       </p>
                       <h3 className="mt-2 font-sans text-lg font-bold text-white transition-colors group-hover:text-accent">
                         {p.name}

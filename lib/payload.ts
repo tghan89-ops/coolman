@@ -44,13 +44,13 @@ export async function filterProducts(params: {
       where.category = { equals: params.category }
     }
     if (params.materials?.length) {
-      where.recommendedMaterials = { in: params.materials }
+      where.materials = { in: params.materials }
     }
     if (params.applications?.length) {
       where.applications = { in: params.applications }
     }
     if (params.machinePower?.length) {
-      where.recommendedMachinePower = { in: params.machinePower }
+      where.machineTier = { in: params.machinePower }
     }
 
     const result = await payload.find({
