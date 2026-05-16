@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { AddressSelector, type CartAddress } from '@/components/cart/AddressSelector'
 import { useAuth } from '@/lib/auth/context'
 import { useCart } from '@/lib/cart/context'
 import { useLanguage } from '@/lib/i18n/context'
@@ -18,7 +19,7 @@ import { formatPrice, formatPercentage } from '@/lib/utils/formatting'
 export function CartPageClient() {
   const { t } = useLanguage()
   const { user, isAuthenticated, isLoading: authLoading } = useAuth()
-  const { state, setLineQuantity, removeLine } = useCart()
+  const { state, setLineQuantity, removeLine, refresh: refreshCart } = useCart()
 
   const submissionIdempotencyKeyRef = useRef<string>(
     typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `sub_${Date.now()}`,
@@ -30,8 +31,8 @@ export function CartPageClient() {
   const [submitError, setSubmitError] = useState('')
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [stalePrice, setStalePrice] = useState<number | null>(null)
+  const [selectedAddress, setSelectedAddress] = useState<CartAddress | null>(null)
 
-  const deliveryAddress = ((user as any)?.contractor?.deliveryAddress ?? '').toString()
   const isEmailVerified = Boolean((user as any)?.contractor?.email_verified_at)
   const showBreakdown = isAuthenticated && isEmailVerified
 
@@ -47,7 +48,7 @@ export function CartPageClient() {
         body: JSON.stringify({
           submissionIdempotencyKey: submissionIdempotencyKeyRef.current,
           lines: state.items.map((it) => ({ productId: it.productId, quantity: it.quantity })),
-          deliveryAddress,
+          addressId: selectedAddress?.id ?? null,
           notes,
           promoCode: appliedPromoCode || undefined,
           clientEffectiveTotal: confirmedTotal ?? state.subtotalEffective,
@@ -63,6 +64,9 @@ export function CartPageClient() {
         return
       }
       setSubmitSuccess(true)
+      // Server cleared the cart inside its transaction — sync the client
+      // state so the header badge + any back-navigation reflect the empty cart.
+      refreshCart().catch(() => {})
     } catch {
       setSubmitError('Network error.')
     } finally {
@@ -217,35 +221,10 @@ export function CartPageClient() {
                 <CardTitle>{t.order.pricing}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-xs font-semibold uppercase tracking-widest">
-                      {t.account.deliveryAddress}
-                    </Label>
-                    <Link href="/account" className="text-xs font-semibold text-accent-dark underline">
-                      Edit
-                    </Link>
-                  </div>
-                  {deliveryAddress ? (
-                    <Textarea
-                      value={deliveryAddress}
-                      readOnly
-                      rows={3}
-                      className="resize-none border-border/40 bg-muted/40 text-sm"
-                    />
-                  ) : (
-                    <div className="rounded-lg border border-warn/30 bg-warn/10 px-3 py-2 text-sm">
-                      <p className="font-semibold text-warn">No delivery address on file.</p>
-                      <p className="mt-1 text-muted-foreground">
-                        Add one in{' '}
-                        <Link href="/account" className="font-semibold underline">
-                          My Account
-                        </Link>
-                        .
-                      </p>
-                    </div>
-                  )}
-                </div>
+                <AddressSelector
+                  selectedId={selectedAddress?.id ?? null}
+                  onSelect={setSelectedAddress}
+                />
 
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">{t.order.listPrice}</span>
@@ -337,7 +316,7 @@ export function CartPageClient() {
                   className="mt-2 w-full"
                   size="lg"
                   disabled={
-                    isSubmitting || !deliveryAddress || state.items.length === 0 || stalePrice !== null
+                    isSubmitting || !selectedAddress || state.items.length === 0 || stalePrice !== null
                   }
                   onClick={() => handleSubmit()}
                 >

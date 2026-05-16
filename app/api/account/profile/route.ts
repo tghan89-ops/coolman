@@ -21,12 +21,20 @@ export async function PUT(req: NextRequest) {
   if (Object.keys(next).length === 0)
     return NextResponse.json({ error: 'no_fields' }, { status: 400 })
 
+  // Coerce id to number when the session hands back a numeric string —
+  // Payload's access-control where filter does strict comparison, and a
+  // string/number mismatch on Postgres IDs causes the update to silently
+  // no-op (200 OK, nothing written). overrideAccess is safe here: we've
+  // already gated on collection === 'contractors' above and we only allow
+  // the deliveryAddress field through.
+  const contractorId: string | number =
+    typeof user.id === 'string' && /^\d+$/.test(user.id) ? Number(user.id) : user.id
+
   const updated = await payload.update({
     collection: 'contractors',
-    id: user.id,
+    id: contractorId,
     data: next,
-    overrideAccess: false,
-    user,
+    overrideAccess: true,
   })
 
   return NextResponse.json({

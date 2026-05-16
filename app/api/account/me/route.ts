@@ -9,11 +9,15 @@ export async function GET(req: NextRequest) {
   if (!user || user.collection !== 'contractors')
     return NextResponse.json({ user: null }, { status: 401 })
 
+  // Coerce id (see /api/account/profile for rationale — string/number mismatch
+  // on Postgres IDs makes access-controlled reads silently miss the row).
+  const contractorId: string | number =
+    typeof user.id === 'string' && /^\d+$/.test(user.id) ? Number(user.id) : user.id
+
   const full = await payload.findByID({
     collection: 'contractors',
-    id: user.id,
-    overrideAccess: false,
-    user,
+    id: contractorId,
+    overrideAccess: true,
     depth: 0,
   })
 
