@@ -217,18 +217,35 @@ export function CartPageClient() {
                 <CardTitle>{t.order.pricing}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {!deliveryAddress && (
-                  <div className="rounded-lg border border-warn/30 bg-warn/10 px-3 py-2 text-sm">
-                    <p className="font-semibold text-warn">No delivery address on file.</p>
-                    <p className="mt-1 text-muted-foreground">
-                      Add one in{' '}
-                      <Link href="/account" className="font-semibold underline">
-                        My Account
-                      </Link>
-                      .
-                    </p>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs font-semibold uppercase tracking-widest">
+                      {t.account.deliveryAddress}
+                    </Label>
+                    <Link href="/account" className="text-xs font-semibold text-accent-dark underline">
+                      Edit
+                    </Link>
                   </div>
-                )}
+                  {deliveryAddress ? (
+                    <Textarea
+                      value={deliveryAddress}
+                      readOnly
+                      rows={3}
+                      className="resize-none border-border/40 bg-muted/40 text-sm"
+                    />
+                  ) : (
+                    <div className="rounded-lg border border-warn/30 bg-warn/10 px-3 py-2 text-sm">
+                      <p className="font-semibold text-warn">No delivery address on file.</p>
+                      <p className="mt-1 text-muted-foreground">
+                        Add one in{' '}
+                        <Link href="/account" className="font-semibold underline">
+                          My Account
+                        </Link>
+                        .
+                      </p>
+                    </div>
+                  )}
+                </div>
 
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">{t.order.listPrice}</span>
