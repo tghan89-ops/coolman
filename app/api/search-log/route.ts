@@ -81,53 +81,52 @@ export async function POST(req: NextRequest) {
     try {
       const payload = await getPayload({ config })
 
-      // Product-view ping: try to append to the most recent search row from
-      // this contractor in the last 10 minutes. If none, fall through to
-      // creating a fresh minimal row.
+      // Product-view ping: only meaningful for logged-in contractors. Anonymous
+      // product views are dropped to avoid polluting the log with rows that
+      // carry no attribution.
       if (viewedProductId && !query && resultCount === 0 && viewedProductIds.length === 0) {
-        if (contractorId) {
-          const since = new Date(Date.now() - ATTACH_WINDOW_MS).toISOString()
-          const { docs } = await payload.find({
-            collection: 'searchLogs',
-            where: {
-              and: [
-                { contractor: { equals: contractorId } },
-                { createdAt: { greater_than: since } },
-              ],
-            },
-            sort: '-createdAt',
-            limit: 1,
-            depth: 0,
-            overrideAccess: true,
-          })
-          const last = docs[0] as any
-          if (last) {
-            const existing: Array<{ productId?: string }> = Array.isArray(last.viewed_product_ids)
-              ? last.viewed_product_ids
-              : []
-            const already = existing.some((row) => row?.productId === viewedProductId)
-            if (!already) {
-              await payload.update({
-                collection: 'searchLogs',
-                id: last.id,
-                data: {
-                  viewed_product_ids: [...existing, { productId: viewedProductId }],
-                } as any,
-                overrideAccess: true,
-              })
-            }
-            return
+        if (!contractorId) return
+        const since = new Date(Date.now() - ATTACH_WINDOW_MS).toISOString()
+        const { docs } = await payload.find({
+          collection: 'searchLogs',
+          where: {
+            and: [
+              { contractor: { equals: contractorId } },
+              { createdAt: { greater_than: since } },
+            ],
+          },
+          sort: '-createdAt',
+          limit: 1,
+          depth: 0,
+          overrideAccess: true,
+        })
+        const last = docs[0] as any
+        if (last) {
+          const existing: Array<{ productId?: string }> = Array.isArray(last.viewed_product_ids)
+            ? last.viewed_product_ids
+            : []
+          const already = existing.some((row) => row?.productId === viewedProductId)
+          if (!already) {
+            await payload.update({
+              collection: 'searchLogs',
+              id: last.id,
+              data: {
+                viewed_product_ids: [...existing, { productId: viewedProductId }],
+              } as any,
+              overrideAccess: true,
+            })
           }
+          return
         }
-        // No recent search to attach to — write a minimal row so the view
-        // still shows up in the log.
+        // Logged-in contractor opened a product with no recent search — write
+        // a minimal row so the view still shows up tied to their account.
         await payload.create({
           collection: 'searchLogs',
           data: {
             query: '',
             query_normalized: '',
             result_count: 0,
-            ...(contractorId ? { contractor: contractorId } : {}),
+            contractor: contractorId,
             viewed_product_ids: [{ productId: viewedProductId }],
           } as any,
           overrideAccess: true,

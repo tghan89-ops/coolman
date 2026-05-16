@@ -180,6 +180,30 @@ describe('POST /api/search-log', () => {
     expect(arg.data.contractor).toBe(7)
   })
 
+  it('product view: anonymous (no contractor session) is dropped — no row created', async () => {
+    const { getPayload } = await import('payload')
+    const mockFind = vi.fn()
+    const mockUpdate = vi.fn()
+    const mockCreate = vi.fn()
+    const mockAuth = vi.fn().mockResolvedValue({ user: null })
+    vi.mocked(getPayload).mockResolvedValue(
+      buildMockPayload({
+        find: mockFind,
+        update: mockUpdate,
+        create: mockCreate,
+        auth: mockAuth,
+      }) as any,
+    )
+
+    const res = await post({ viewedProductId: 'prod-anon' })
+    expect(res.status).toBe(202)
+    await runAfter()
+
+    expect(mockFind).not.toHaveBeenCalled()
+    expect(mockUpdate).not.toHaveBeenCalled()
+    expect(mockCreate).not.toHaveBeenCalled()
+  })
+
   it('a failed background write never throws to the caller', async () => {
     const { getPayload } = await import('payload')
     const mockCreate = vi.fn().mockRejectedValue(new Error('db down'))
