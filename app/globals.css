@@ -19,6 +19,11 @@
   --rule: #e5e2da;
   --white: #ffffff;
 
+  /* Shibuya cinematic palette — used only on the Shibuya marketing page.
+     Darker than --navy and warmer than --paper on purpose. Do not generalise. */
+  --shibuya-ink: #030508;
+  --shibuya-paper: #f8f7f4;
+
   /* Ink */
   --ink: #0a1628;
   --ink-muted: #475569;
@@ -125,6 +130,8 @@
   /* Surfaces */
   --color-paper: var(--paper);
   --color-rule: var(--rule);
+  --color-shibuya-ink: var(--shibuya-ink);
+  --color-shibuya-paper: var(--shibuya-paper);
 
   /* Ink */
   --color-ink: var(--ink);

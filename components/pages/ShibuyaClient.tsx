@@ -121,9 +121,9 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
     <PublicLayout>
 
       {/* Hero - Cinematic reveal */}
-      <section className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-[#030508]">
+      <section className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-shibuya-ink">
         {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#030508]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-shibuya-ink" />
 
         {/* Background image */}
         <div className="absolute inset-0 opacity-40">
@@ -160,7 +160,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
             <div className="mt-12 flex flex-wrap gap-6">
               <Link
                 href="#models"
-                className="inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-semibold text-[#030508] transition-colors hover:bg-white/90"
+                className="inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink transition-colors hover:bg-white/90"
               >
                 {heroPrimaryLabel}
                 <ArrowRight className="h-4 w-4" />
@@ -185,7 +185,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
       </section>
 
       {/* Heritage Statement */}
-      <section className="bg-[#f8f7f4] py-32">
+      <section className="bg-shibuya-paper py-32">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
           <p className="text-sm font-medium tracking-[0.2em] text-navy/40">SINCE {heritageSince}</p>
           <h2 className="mt-8 text-3xl font-bold leading-snug tracking-tight text-navy md:text-4xl lg:text-5xl">
@@ -200,7 +200,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
             {/* Image */}
-            <div className="relative aspect-[4/5] overflow-hidden bg-[#f8f7f4]">
+            <div className="relative aspect-[4/5] overflow-hidden bg-shibuya-paper">
               <Image
                 src={craftImageUrl}
                 alt="Shibuya precision engineering"
@@ -236,7 +236,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
       </section>
 
       {/* Models - Premium showcase */}
-      <section id="models" className="bg-[#030508] py-32">
+      <section id="models" className="bg-shibuya-ink py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-20 text-center">
             <p className="text-sm font-medium tracking-[0.2em] text-white/40">THE RANGE</p>
@@ -255,7 +255,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
                     onClick={() => setSelectedMachine(machine)}
                     className={`px-6 py-3 text-sm font-medium transition-colors ${
                       selectedMachine?.modelId === machine.modelId
-                        ? 'bg-white text-[#030508]'
+                        ? 'bg-white text-shibuya-ink'
                         : 'text-white/50 hover:text-white'
                     }`}
                   >
@@ -350,7 +350,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#030508]/90 via-[#030508]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-shibuya-ink/90 via-shibuya-ink/50 to-transparent" />
         <div className="relative z-10 flex h-full items-center">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="max-w-xl">
@@ -374,7 +374,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
       </section>
 
       {/* Support */}
-      <section className="bg-[#f8f7f4] py-32">
+      <section className="bg-shibuya-paper py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-16 lg:grid-cols-3">
             <div>
@@ -398,7 +398,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#030508] py-32">
+      <section className="bg-shibuya-ink py-32">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
           <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
             {ctaHeadline}
@@ -409,7 +409,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Link
               href={ctaPrimaryHref}
-              className="inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-semibold text-[#030508] transition-colors hover:bg-white/90"
+              className="inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink transition-colors hover:bg-white/90"
             >
               {ctaPrimaryLabel}
               <ArrowRight className="h-4 w-4" />

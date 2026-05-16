@@ -42,6 +42,8 @@ All colors are defined as CSS custom properties in [`app/globals.css`](app/globa
 | `--success` | `#0F8A4F` | Order acknowledged, in stock, fulfilment confirmed. **Desaturated** — never `#10B981`. |
 | `--warn` | `#D97706` | Low stock, response-overdue alerts. **Desaturated** — never `#F59E0B`. |
 | `--danger` | `#B91C1C` | Validation errors, kill-switch banner, destructive confirms. **Desaturated** — never `#DC2626`. |
+| `--shibuya-ink` | `#030508` | Shibuya marketing page only. Blacker than `--navy` for cinematic posture. Do not use elsewhere. |
+| `--shibuya-paper` | `#F8F7F4` | Shibuya marketing page only. Slightly warmer than `--paper`. Do not use elsewhere. |
 
 ### Dark mode (admin dashboards by default; site dark mode is V2)
 
