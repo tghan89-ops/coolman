@@ -44,14 +44,25 @@ export async function POST(req: NextRequest) {
 
   // 4. Parse request body
   const body = await req.json()
-  const { productId, quantity, deliveryAddress, notes, promoCode, idempotencyKey, clientEffectivePrice } = body
+  const { productId: rawProductId, quantity, deliveryAddress, notes, promoCode, idempotencyKey, clientEffectivePrice } = body
 
-  if (!productId || !quantity || !deliveryAddress || !idempotencyKey) {
+  if (!rawProductId || !quantity || !deliveryAddress || !idempotencyKey) {
     return NextResponse.json({ error: 'productId, quantity, deliveryAddress, and idempotencyKey are required' }, { status: 400 })
   }
   if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 1) {
     return NextResponse.json({ error: 'quantity must be a positive integer' }, { status: 400 })
   }
+
+  // Coerce relation IDs: Postgres collections use integer PKs, but the client
+  // sends strings from the URL (?product=2). Pass numeric strings as numbers.
+  const productId: string | number =
+    typeof rawProductId === 'string' && /^\d+$/.test(rawProductId)
+      ? Number(rawProductId)
+      : rawProductId
+  const contractorRelId: string | number =
+    typeof contractor.id === 'string' && /^\d+$/.test(contractor.id)
+      ? Number(contractor.id)
+      : contractor.id
 
   const transactionID = await payload.db.beginTransaction()
   if (!transactionID) {
@@ -82,7 +93,7 @@ export async function POST(req: NextRequest) {
     const recentOrders = await payload.find({
       collection: 'orders',
       where: {
-        contractor: { equals: contractor.id },
+        contractor: { equals: contractorRelId },
         submitted_at: { greater_than: oneHourAgo },
       },
       limit: 0,
@@ -100,7 +111,7 @@ export async function POST(req: NextRequest) {
       collection: 'orders',
       where: {
         idempotency_key: { equals: idempotencyKey },
-        contractor: { equals: contractor.id },
+        contractor: { equals: contractorRelId },
       },
       limit: 1,
       req: { transactionID } as any,
@@ -128,7 +139,7 @@ export async function POST(req: NextRequest) {
     // 10. Fetch fresh contractor data (for fresh tier_discount_pct)
     const freshContractor = await payload.findByID({
       collection: 'contractors',
-      id: contractor.id,
+      id: contractorRelId,
       req: { transactionID } as any,
       overrideAccess: true,
     })
@@ -200,7 +211,7 @@ export async function POST(req: NextRequest) {
     // Raw SQL FOR UPDATE — Payload's local API doesn't support row-level locking
     const drizzle = (payload.db as any).drizzle
     const duplicateCheck = await drizzle.execute(
-      sql`SELECT id FROM orders WHERE contractor_id = ${contractor.id} AND product_id = ${productId} AND submitted_at > ${windowStart} LIMIT 1 FOR UPDATE`,
+      sql`SELECT id FROM orders WHERE contractor_id = ${contractorRelId} AND product_id = ${productId} AND submitted_at > ${windowStart} LIMIT 1 FOR UPDATE`,
     )
     const isDuplicate = (duplicateCheck?.rows?.length ?? duplicateCheck?.length ?? 0) > 0
 
@@ -209,7 +220,7 @@ export async function POST(req: NextRequest) {
       collection: 'orders',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: {
-        contractor: contractor.id,
+        contractor: contractorRelId,
         product: productId,
         quantity,
         delivery_address: deliveryAddress,
