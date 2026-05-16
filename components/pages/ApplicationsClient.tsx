@@ -8,57 +8,6 @@ import { Button } from '@/components/ui/button'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { useLanguage } from '@/lib/i18n/context'
 
-const defaultSections = [
-  {
-    id: 'concrete',
-    title: 'Concrete Cutting',
-    description: 'Heavy-duty diamond blades engineered for reinforced concrete, cured slabs, and structural elements.',
-    features: ['Reinforced concrete', 'Cured concrete slabs', 'Concrete blocks', 'Precast elements'],
-    image: 'https://placehold.co/800x600/0a1628/3b82f6?text=CONCRETE',
-    relatedProducts: [],
-  },
-  {
-    id: 'granite',
-    title: 'Granite & Natural Stone',
-    description: 'Precision blades for cutting granite countertops, natural stone, and hard rock materials.',
-    features: ['Granite slabs', 'Natural stone', 'Hard rock', 'Quartz surfaces'],
-    image: 'https://placehold.co/800x600/0a1628/3b82f6?text=GRANITE',
-    relatedProducts: [],
-  },
-  {
-    id: 'marble',
-    title: 'Marble & Soft Stone',
-    description: 'Specialized segments for clean, chip-free cuts in marble, limestone, and soft stone.',
-    features: ['Marble slabs', 'Limestone', 'Travertine', 'Soft stone'],
-    image: 'https://placehold.co/800x600/0a1628/3b82f6?text=MARBLE',
-    relatedProducts: [],
-  },
-  {
-    id: 'tile',
-    title: 'Tile & Ceramics',
-    description: 'Fine-grit diamond blades for precise cuts in porcelain, ceramic tiles, and glass.',
-    features: ['Porcelain tiles', 'Ceramic tiles', 'Glass tiles', 'Mosaic work'],
-    image: 'https://placehold.co/800x600/0a1628/3b82f6?text=TILE',
-    relatedProducts: [],
-  },
-  {
-    id: 'asphalt',
-    title: 'Asphalt Cutting',
-    description: 'Durable blades designed for roadwork, asphalt overlays, and pavement cutting.',
-    features: ['Road repairs', 'Pavement cutting', 'Asphalt overlays', 'Utility trenching'],
-    image: 'https://placehold.co/800x600/0a1628/3b82f6?text=ASPHALT',
-    relatedProducts: [],
-  },
-  {
-    id: 'brick',
-    title: 'Brick & Masonry',
-    description: 'All-purpose blades for cutting brick, block, and general masonry materials.',
-    features: ['Clay brick', 'Concrete blocks', 'Pavers', 'Masonry walls'],
-    image: 'https://placehold.co/800x600/0a1628/3b82f6?text=BRICK',
-    relatedProducts: [],
-  },
-]
-
 export function ApplicationsClient({ initialData }: { initialData: any }) {
   const { language, t } = useLanguage()
   const pick = (en?: string | null, bm?: string | null): string => {
@@ -73,7 +22,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
 
   const heroTitle = pick(data?.heroTitle, data?.heroTitleBM) || t.pages.applications.fallbackHeroTitle
   const heroSubtitle = pick(data?.heroSubtitle, data?.heroSubtitleBM) || t.pages.applications.fallbackHeroSubtitle
-  const sections: any[] = data?.sections?.length ? data.sections : defaultSections
+  const sections: any[] = data?.sections?.length ? data.sections : t.pages.applications.defaultSections
 
   return (
     <PublicLayout>

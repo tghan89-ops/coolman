@@ -29,41 +29,9 @@ const ICONS: Record<string, LucideIcon> = {
   barChart3: BarChart3,
 }
 
-const fallback = {
-  hero: {
-    eyebrow: 'Why Coolman',
-    title: 'The Coolman Advantage',
-    lede: 'More than just tools - we provide complete cutting solutions and ongoing partnership for contractors who demand excellence.',
-  },
-  advantages: [
-    { iconKey: 'zap', title: 'Superior Cutting Performance', body: 'Our diamond segments are formulated for 40% faster cutting speeds while maintaining precision.' },
-    { iconKey: 'shield', title: 'Extended Blade Life', body: 'Proprietary bonding technology delivers up to 3x longer operational life.' },
-    { iconKey: 'award', title: '25+ Years of Excellence', body: 'Since 1998, engineering cutting solutions for Malaysian contractors.' },
-    { iconKey: 'truck', title: 'Rapid Fulfillment', body: 'Same-day dispatch for orders placed before 2pm.' },
-    { iconKey: 'headphones', title: 'Technical Partnership', body: 'Dedicated engineering support to help you select the right tools.' },
-    { iconKey: 'barChart3', title: 'B2B Pricing Advantage', body: 'Registered contractors enjoy exclusive pricing tiers.' },
-  ],
-  statsSection: { title: 'Trusted by Professionals', subtitle: 'Our track record speaks for itself.' },
-  stats: [
-    { value: '500+', label: 'Active Contractors' },
-    { value: '50,000+', label: 'Projects Completed' },
-    { value: '99.2%', label: 'On-Time Delivery' },
-    { value: '4.9/5', label: 'Customer Rating' },
-  ],
-  testimonialsSection: { eyebrow: 'Testimonials', title: 'What Our Partners Say' },
-  testimonials: [] as Array<{ quote: string; author: string; role: string }>,
-  cta: {
-    title: 'Ready to Experience the Difference?',
-    body: 'Join 500+ professional contractors who trust Coolman.',
-    primaryLabel: 'Become a Partner',
-    primaryHref: '/auth/register',
-    secondaryLabel: 'Contact Sales',
-    secondaryHref: '/contact',
-  },
-}
-
 export function WhyCoolmanClient({ initialData }: { initialData: any }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const fallback = t.pages.whyCoolman
   const pick = (en?: string | null, bm?: string | null): string => {
     if (language === 'BM' && bm && bm.trim()) return bm
     return en ?? ''
@@ -74,13 +42,13 @@ export function WhyCoolmanClient({ initialData }: { initialData: any }) {
     depth: 1,
   })
 
-  const heroData = data?.hero ?? fallback.hero
+  const heroData = data?.hero ?? {}
   const advantages: any[] = data?.advantages?.length ? data.advantages : fallback.advantages
-  const statsSectionData = data?.statsSection ?? fallback.statsSection
+  const statsSectionData = data?.statsSection ?? {}
   const stats: any[] = data?.stats?.length ? data.stats : fallback.stats
-  const testimonialsSectionData = data?.testimonialsSection ?? fallback.testimonialsSection
-  const testimonials: any[] = data?.testimonials?.length ? data.testimonials : fallback.testimonials
-  const ctaData = data?.cta ?? fallback.cta
+  const testimonialsSectionData = data?.testimonialsSection ?? {}
+  const testimonials: any[] = data?.testimonials?.length ? data.testimonials : []
+  const ctaData = data?.cta ?? {}
 
   const heroEyebrow = pick(heroData?.eyebrow, heroData?.eyebrowBM) || fallback.hero.eyebrow
   const heroTitle = pick(heroData?.title, heroData?.titleBM) || fallback.hero.title

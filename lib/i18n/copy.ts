@@ -86,12 +86,31 @@ export interface CopyStructure {
       ctaTitle: string
       ctaMessage: string
       contactSupport: string
+      defaultSections: Array<{
+        id: string
+        title: string
+        description: string
+        features: string[]
+      }>
     }
     whyCoolman: {
       heroEyebrow: string
       ctaTitle: string
       ctaMessage: string
       ctaButton: string
+      hero: { eyebrow: string; title: string; lede: string }
+      advantages: Array<{ iconKey: string; title: string; body: string }>
+      statsSection: { title: string; subtitle: string }
+      stats: Array<{ value: string; label: string }>
+      testimonialsSection: { eyebrow: string; title: string }
+      cta: {
+        title: string
+        body: string
+        primaryLabel: string
+        primaryHref: string
+        secondaryLabel: string
+        secondaryHref: string
+      }
     }
     resources: {
       heroEyebrow: string
@@ -523,12 +542,49 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaTitle: 'Need Help Selecting the Right Blade?',
         ctaMessage: 'Our technical team can help you choose the optimal blade for your specific application and cutting conditions.',
         contactSupport: 'Contact Technical Support',
+        defaultSections: [
+          { id: 'concrete', title: 'Concrete Cutting', description: 'Heavy-duty diamond blades engineered for reinforced concrete, cured slabs, and structural elements.', features: ['Reinforced concrete', 'Cured concrete slabs', 'Concrete blocks', 'Precast elements'] },
+          { id: 'granite', title: 'Granite & Natural Stone', description: 'Precision blades for cutting granite countertops, natural stone, and hard rock materials.', features: ['Granite slabs', 'Natural stone', 'Hard rock', 'Quartz surfaces'] },
+          { id: 'marble', title: 'Marble & Soft Stone', description: 'Specialized segments for clean, chip-free cuts in marble, limestone, and soft stone.', features: ['Marble slabs', 'Limestone', 'Travertine', 'Soft stone'] },
+          { id: 'tile', title: 'Tile & Ceramics', description: 'Fine-grit diamond blades for precise cuts in porcelain, ceramic tiles, and glass.', features: ['Porcelain tiles', 'Ceramic tiles', 'Glass tiles', 'Mosaic work'] },
+          { id: 'asphalt', title: 'Asphalt Cutting', description: 'Durable blades designed for roadwork, asphalt overlays, and pavement cutting.', features: ['Road repairs', 'Pavement cutting', 'Asphalt overlays', 'Utility trenching'] },
+          { id: 'brick', title: 'Brick & Masonry', description: 'All-purpose blades for cutting brick, block, and general masonry materials.', features: ['Clay brick', 'Concrete blocks', 'Pavers', 'Masonry walls'] },
+        ],
       },
       whyCoolman: {
         heroEyebrow: 'Why Coolman',
         ctaTitle: 'Ready to Experience the Coolman Difference?',
         ctaMessage: 'Join the contractors who trust Coolman for performance, reliability and support.',
         ctaButton: 'Get in Touch',
+        hero: {
+          eyebrow: 'Why Coolman',
+          title: 'The Coolman Advantage',
+          lede: 'More than just tools - we provide complete cutting solutions and ongoing partnership for contractors who demand excellence.',
+        },
+        advantages: [
+          { iconKey: 'zap', title: 'Superior Cutting Performance', body: 'Our diamond segments are formulated for 40% faster cutting speeds while maintaining precision.' },
+          { iconKey: 'shield', title: 'Extended Blade Life', body: 'Proprietary bonding technology delivers up to 3x longer operational life.' },
+          { iconKey: 'award', title: '25+ Years of Excellence', body: 'Since 1998, engineering cutting solutions for Malaysian contractors.' },
+          { iconKey: 'truck', title: 'Rapid Fulfillment', body: 'Same-day dispatch for orders placed before 2pm.' },
+          { iconKey: 'headphones', title: 'Technical Partnership', body: 'Dedicated engineering support to help you select the right tools.' },
+          { iconKey: 'barChart3', title: 'B2B Pricing Advantage', body: 'Registered contractors enjoy exclusive pricing tiers.' },
+        ],
+        statsSection: { title: 'Trusted by Professionals', subtitle: 'Our track record speaks for itself.' },
+        stats: [
+          { value: '500+', label: 'Active Contractors' },
+          { value: '50,000+', label: 'Projects Completed' },
+          { value: '99.2%', label: 'On-Time Delivery' },
+          { value: '4.9/5', label: 'Customer Rating' },
+        ],
+        testimonialsSection: { eyebrow: 'Testimonials', title: 'What Our Partners Say' },
+        cta: {
+          title: 'Ready to Experience the Difference?',
+          body: 'Join 500+ professional contractors who trust Coolman.',
+          primaryLabel: 'Become a Partner',
+          primaryHref: '/auth/register',
+          secondaryLabel: 'Contact Sales',
+          secondaryHref: '/contact',
+        },
       },
       resources: {
         heroEyebrow: 'Resources',
@@ -958,12 +1014,49 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaTitle: 'Perlukan Bantuan Memilih Bilah Yang Tepat?',
         ctaMessage: 'Pasukan teknikal kami boleh membantu anda memilih bilah optimum untuk aplikasi dan keadaan pemotongan anda.',
         contactSupport: 'Hubungi Sokongan Teknikal',
+        defaultSections: [
+          { id: 'concrete', title: 'Pemotongan Konkrit', description: 'Bilah berlian tugas berat yang direka untuk konkrit bertetulang, papak terawat dan elemen struktur.', features: ['Konkrit bertetulang', 'Papak konkrit terawat', 'Blok konkrit', 'Elemen pratuang'] },
+          { id: 'granite', title: 'Granit & Batu Asli', description: 'Bilah ketepatan untuk memotong meja granit, batu asli dan bahan batu keras.', features: ['Papak granit', 'Batu asli', 'Batu keras', 'Permukaan kuarza'] },
+          { id: 'marble', title: 'Marmar & Batu Lembut', description: 'Segmen khusus untuk pemotongan bersih dan bebas serpihan pada marmar, batu kapur dan batu lembut.', features: ['Papak marmar', 'Batu kapur', 'Travertin', 'Batu lembut'] },
+          { id: 'tile', title: 'Jubin & Seramik', description: 'Bilah berlian halus untuk pemotongan tepat pada porselin, jubin seramik dan kaca.', features: ['Jubin porselin', 'Jubin seramik', 'Jubin kaca', 'Kerja mozek'] },
+          { id: 'asphalt', title: 'Pemotongan Asfalt', description: 'Bilah tahan lasak yang direka untuk kerja jalan, lapisan asfalt dan pemotongan turapan.', features: ['Pembaikan jalan', 'Pemotongan turapan', 'Lapisan asfalt', 'Parit utiliti'] },
+          { id: 'brick', title: 'Bata & Tembok', description: 'Bilah serba guna untuk memotong bata, blok dan bahan tembok am.', features: ['Bata tanah liat', 'Blok konkrit', 'Penurap', 'Dinding tembok'] },
+        ],
       },
       whyCoolman: {
         heroEyebrow: 'Kenapa Coolman',
         ctaTitle: 'Sedia Untuk Merasai Perbezaan Coolman?',
         ctaMessage: 'Sertai kontraktor yang mempercayai Coolman untuk prestasi, kebolehpercayaan dan sokongan.',
         ctaButton: 'Hubungi Kami',
+        hero: {
+          eyebrow: 'Kenapa Coolman',
+          title: 'Kelebihan Coolman',
+          lede: 'Lebih daripada sekadar alat - kami menyediakan penyelesaian pemotongan lengkap dan perkongsian berterusan untuk kontraktor yang menuntut kecemerlangan.',
+        },
+        advantages: [
+          { iconKey: 'zap', title: 'Prestasi Pemotongan Unggul', body: 'Segmen berlian kami diformulasi untuk kelajuan pemotongan 40% lebih pantas sambil mengekalkan ketepatan.' },
+          { iconKey: 'shield', title: 'Hayat Bilah Yang Panjang', body: 'Teknologi pengikatan proprietari memberikan hayat operasi sehingga 3x lebih lama.' },
+          { iconKey: 'award', title: '25+ Tahun Kecemerlangan', body: 'Sejak 1998, mereka bentuk penyelesaian pemotongan untuk kontraktor Malaysia.' },
+          { iconKey: 'truck', title: 'Penghantaran Pantas', body: 'Penghantaran pada hari yang sama untuk pesanan sebelum 2 petang.' },
+          { iconKey: 'headphones', title: 'Perkongsian Teknikal', body: 'Sokongan kejuruteraan khusus untuk membantu anda memilih alat yang tepat.' },
+          { iconKey: 'barChart3', title: 'Kelebihan Harga B2B', body: 'Kontraktor berdaftar menikmati harga eksklusif berperingkat.' },
+        ],
+        statsSection: { title: 'Dipercayai Oleh Profesional', subtitle: 'Rekod prestasi kami bercakap sendiri.' },
+        stats: [
+          { value: '500+', label: 'Kontraktor Aktif' },
+          { value: '50,000+', label: 'Projek Disiapkan' },
+          { value: '99.2%', label: 'Penghantaran Tepat Masa' },
+          { value: '4.9/5', label: 'Penilaian Pelanggan' },
+        ],
+        testimonialsSection: { eyebrow: 'Testimoni', title: 'Apa Kata Rakan Kongsi Kami' },
+        cta: {
+          title: 'Sedia Merasai Perbezaannya?',
+          body: 'Sertai 500+ kontraktor profesional yang mempercayai Coolman.',
+          primaryLabel: 'Jadi Rakan Kongsi',
+          primaryHref: '/auth/register',
+          secondaryLabel: 'Hubungi Jualan',
+          secondaryHref: '/contact',
+        },
       },
       resources: {
         heroEyebrow: 'Sumber',
