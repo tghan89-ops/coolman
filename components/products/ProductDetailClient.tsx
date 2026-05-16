@@ -47,8 +47,26 @@ export function ProductDetailClient({
   // uploaded yet, we render a clean "no image" panel instead of substituting an
   // unrelated stock blade photo (which used to mislead admins into thinking the
   // upload had worked).
-  const imageUrl: string | null =
+  const heroImageUrl: string | null =
     typeof data.image === 'object' && data.image?.url ? data.image.url : null
+
+  // Gallery photos from the Products `photos` array field. Each entry is
+  // { id, photo: media } once depth>=1 has resolved it. Filter out anything
+  // that didn't resolve to a usable URL so we never render a broken thumbnail.
+  const galleryUrls: string[] = Array.isArray(data.photos)
+    ? data.photos
+        .map((row: any) =>
+          typeof row?.photo === 'object' && row.photo?.url ? (row.photo.url as string) : null,
+        )
+        .filter((u: string | null): u is string => !!u)
+    : []
+
+  // Combined image strip: hero first, then any additional gallery photos.
+  const allImageUrls: string[] = heroImageUrl
+    ? [heroImageUrl, ...galleryUrls]
+    : galleryUrls
+  const [activeImageIdx, setActiveImageIdx] = useState(0)
+  const imageUrl: string | null = allImageUrls[activeImageIdx] ?? heroImageUrl
 
   const specs = [
     { label: 'Diameter', value: labelOf(data.diameter), icon: Ruler },
@@ -126,6 +144,28 @@ export function ProductDetailClient({
                   </span>
                 </div>
               </div>
+
+              {/* Gallery thumbnails — only renders when admin has uploaded
+                  extra photos in the `photos` array field on the product. */}
+              {allImageUrls.length > 1 && (
+                <div className="mt-4 grid grid-cols-4 gap-3">
+                  {allImageUrls.map((url, i) => (
+                    <button
+                      key={`${url}-${i}`}
+                      type="button"
+                      onClick={() => setActiveImageIdx(i)}
+                      className={`relative aspect-square overflow-hidden border transition-colors ${
+                        i === activeImageIdx
+                          ? 'border-accent'
+                          : 'border-white/10 hover:border-white/30'
+                      }`}
+                      aria-label={`View photo ${i + 1}`}
+                    >
+                      <Image src={url} alt={`${data.name} photo ${i + 1}`} fill className="object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Right: Info */}
