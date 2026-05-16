@@ -39,7 +39,7 @@ export default buildConfig({
   admin: {
     user: AdminUsers.slug,
     components: {
-      beforeDashboard: ['@/components/admin/DashboardWidgets#default'],
+      // beforeDashboard: ['@/components/admin/DashboardWidgets#default'], // temporarily disabled to isolate 500 error
     },
     livePreview: {
       breakpoints: [
