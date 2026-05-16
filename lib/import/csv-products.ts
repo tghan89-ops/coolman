@@ -151,15 +151,20 @@ export async function importProducts(rows: ProductCsvRow[], payload: Payload): P
       continue
     }
 
+    // Normalize SKU to uppercase on both sides of the lookup so a re-upload
+    // with different casing ("a1" vs "A1") updates the same product instead
+    // of silently creating a duplicate.
+    const skuNormalized = row.sku.toUpperCase()
+
     const existing = await payload.find({
       collection: 'products',
-      where: { sku: { equals: row.sku } },
+      where: { sku: { equals: skuNormalized } },
       limit: 1,
       overrideAccess: true,
     })
 
     const data: Record<string, unknown> = {
-      sku: row.sku,
+      sku: skuNormalized,
       name: row.name,
       nameBM: row.nameBM,
       description: row.description,
@@ -170,7 +175,10 @@ export async function importProducts(rows: ProductCsvRow[], payload: Payload): P
     if (row.arborSize) data.arborSize = row.arborSize
     if (row.segmentHeight) data.segmentHeight = row.segmentHeight
     if (row.bondType) data.bondType = row.bondType
-    if (row.maxRPM && Number.isFinite(Number(row.maxRPM))) data.maxRPM = Number(row.maxRPM)
+    if (row.maxRPM) {
+      const rpm = Number(row.maxRPM)
+      if (Number.isFinite(rpm) && rpm > 0) data.maxRPM = rpm
+    }
     if (row.youtubeUrl) data.youtubeUrl = row.youtubeUrl
 
     try {

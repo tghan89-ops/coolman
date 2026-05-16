@@ -13,7 +13,7 @@ import { getAdminSession } from '@/lib/auth/admin-session'
 export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const admin = await getAdminSession(req.headers)
   if (!admin) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const { id } = await ctx.params

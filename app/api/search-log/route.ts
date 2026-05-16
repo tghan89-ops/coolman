@@ -15,7 +15,10 @@ function normalize(q: string): string {
   return q
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '') // strip accents
+    // Strip Unicode combining marks (accents). Escaped form is encoding-safe —
+    // a literal-range regex breaks if the file gets re-saved as anything other
+    // than UTF-8 or a tool normalizes the source.
+    .replace(new RegExp('[\\u0300-\\u036f]', 'g'), '')
     .replace(/\s+/g, ' ')
     .trim()
 }

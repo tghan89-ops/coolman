@@ -2,12 +2,14 @@ import type { CollectionConfig } from 'payload'
 
 // Photo/image uploads only. Anything outside this list is rejected before it ever
 // touches blob storage — keeps the upload surface from being used to host arbitrary files.
+// JPEG/PNG/WebP only. SVG is excluded because it can carry embedded <script>
+// (stored XSS in admin previews and public pages). GIF is excluded because it
+// isn't part of the product photography brief and sharp won't generate the
+// responsive variants we ship to cards.
 const ALLOWED_IMAGE_MIME_TYPES = [
   'image/jpeg',
   'image/png',
   'image/webp',
-  'image/gif',
-  'image/svg+xml',
 ]
 
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024 // 5 MB
