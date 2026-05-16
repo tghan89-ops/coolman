@@ -90,5 +90,13 @@ export const Settings: GlobalConfig = {
           'Max contractor registrations from one IP per day. Prevents fake account flooding to scrape prices.',
       },
     },
+    {
+      name: 'order_notify_emails',
+      type: 'text',
+      admin: {
+        description:
+          'Comma-separated email addresses that receive the "new order received" notification when a contractor places an order. Example: alan@coolman.com.my, sales@coolman.com.my. Leave blank to fall back to the ALAN_EMAIL environment variable.',
+      },
+    },
   ],
 }

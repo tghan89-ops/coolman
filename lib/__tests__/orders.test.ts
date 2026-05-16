@@ -53,7 +53,7 @@ const buildMockPayload = (overrides: Record<string, any> = {}) => ({
   find: vi.fn().mockResolvedValue({ docs: [], totalDocs: 0 }),
   findByID: vi.fn().mockImplementation(({ collection }: { collection: string }) => {
     if (collection === 'products') return { id: 'prod-1', listPrice: 100, name: 'Test Blade' }
-    if (collection === 'contractors') return { id: 'contractor-1', tier_discount_pct: 0.10, email_verified_at: '2026-01-01' }
+    if (collection === 'contractors') return { id: 'contractor-1', email: 'contractor@test.com', tier_discount_pct: 0.10, email_verified_at: '2026-01-01' }
     return null
   }),
   create: vi.fn().mockResolvedValue({ id: 'order-1', order_status: 'pending' }),
@@ -254,5 +254,79 @@ describe('POST /api/orders/submit', () => {
     expect(res.status).toBe(403)
     const body = await res.json()
     expect(body.error).toBe('Forbidden')
+  })
+
+  it('queues one email per Settings.order_notify_emails recipient + one for contractor', async () => {
+    const { getPayload } = await import('payload')
+    const createCalls: any[] = []
+    const mockCreate = vi.fn().mockImplementation((args: any) => {
+      createCalls.push(args)
+      if (args.collection === 'orders') return { id: 'order-99', order_status: 'pending' }
+      return { id: `delivery-${createCalls.length}` }
+    })
+    const mockUpdate = vi.fn().mockResolvedValue({})
+    vi.mocked(getPayload).mockResolvedValue(buildMockPayload({
+      findGlobal: vi.fn().mockResolvedValue({
+        orders_paused: false,
+        order_rate_limit_per_hour: 20,
+        duplicate_window_minutes: 10,
+        max_combined_discount_pct: 0.40,
+        order_notify_emails: 'alan@coolman.com.my, sales@coolman.com.my, , bad-email',
+      }),
+      create: mockCreate,
+      update: mockUpdate,
+    }) as any)
+
+    const { POST } = await import('../../app/api/orders/submit/route')
+    const req = new Request('http://localhost/api/orders/submit', {
+      method: 'POST',
+      body: JSON.stringify({ productId: 'prod-1', quantity: 1, deliveryAddress: '123 Test St', idempotencyKey: crypto.randomUUID() }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const res = await POST(req as any)
+    expect(res.status).toBe(201)
+    const deliveryCreates = createCalls.filter((c) => c.collection === 'emailDeliveries')
+    const recipients = deliveryCreates.map((c) => c.data.recipient).sort()
+    expect(recipients).toEqual([
+      'alan@coolman.com.my',
+      'contractor@test.com',
+      'sales@coolman.com.my',
+    ])
+  })
+
+  it('falls back to ALAN_EMAIL env when Settings.order_notify_emails is blank', async () => {
+    process.env.ALAN_EMAIL = 'fallback@coolman.com.my'
+    const { getPayload } = await import('payload')
+    const createCalls: any[] = []
+    const mockCreate = vi.fn().mockImplementation((args: any) => {
+      createCalls.push(args)
+      if (args.collection === 'orders') return { id: 'order-100', order_status: 'pending' }
+      return { id: `delivery-${createCalls.length}` }
+    })
+    vi.mocked(getPayload).mockResolvedValue(buildMockPayload({
+      findGlobal: vi.fn().mockResolvedValue({
+        orders_paused: false,
+        order_rate_limit_per_hour: 20,
+        duplicate_window_minutes: 10,
+        max_combined_discount_pct: 0.40,
+        order_notify_emails: '',
+      }),
+      create: mockCreate,
+      update: vi.fn().mockResolvedValue({}),
+    }) as any)
+
+    const { POST } = await import('../../app/api/orders/submit/route')
+    const req = new Request('http://localhost/api/orders/submit', {
+      method: 'POST',
+      body: JSON.stringify({ productId: 'prod-1', quantity: 1, deliveryAddress: '123 Test St', idempotencyKey: crypto.randomUUID() }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const res = await POST(req as any)
+    expect(res.status).toBe(201)
+    const recipients = createCalls
+      .filter((c) => c.collection === 'emailDeliveries')
+      .map((c) => c.data.recipient)
+      .sort()
+    expect(recipients).toEqual(['contractor@test.com', 'fallback@coolman.com.my'])
   })
 })

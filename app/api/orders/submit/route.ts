@@ -253,31 +253,61 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 17. Queue email delivery (order write commits FIRST — email is decoupled)
-    // Use `||` not `??` so an empty-string env var also falls through; trim to
-    // strip stray whitespace that would fail Payload's email field validator.
-    // TEMP TEST RECIPIENT — see TODOS Group 6: switch back to Alan's email before launch.
-    const alanEmail = (process.env.ALAN_EMAIL || 'ghtan@sonicon.com.my').trim()
-    const deliveryRow = await payload.create({
-      collection: 'emailDeliveries',
-      data: {
-        order: order.id,
-        recipient: alanEmail,
-        email_type: 'order_confirmation',
-        status: 'queued',
-        retry_count: 0,
-      },
-      req: { transactionID } as any,
-      overrideAccess: true,
-    })
+    // 17. Resolve admin notification recipients
+    //   Priority: Settings.order_notify_emails (comma-separated, admin-editable)
+    //   Fallback: ALAN_EMAIL env var
+    //   This is admin-editable from the Payload admin UI under Globals → Settings.
+    const notifyRaw: string = (s.order_notify_emails ?? '').toString()
+    const adminRecipients: string[] = notifyRaw
+      .split(',')
+      .map((e: string) => e.trim())
+      .filter((e: string) => e.length > 0 && /\S+@\S+\.\S+/.test(e))
+    if (adminRecipients.length === 0) {
+      const envFallback = (process.env.ALAN_EMAIL || '').trim()
+      if (envFallback) adminRecipients.push(envFallback)
+    }
 
-    // Commit the transaction — order and email queue row land together
+    const contractorEmail = ((freshContractor as any).email ?? '').toString().trim()
+
+    // Queue one emailDeliveries row per recipient (admin + contractor)
+    const queuedRows: Array<{ id: number | string; recipient: string; kind: 'admin' | 'contractor' }> = []
+    for (const rcpt of adminRecipients) {
+      const row = await payload.create({
+        collection: 'emailDeliveries',
+        data: {
+          order: order.id,
+          recipient: rcpt,
+          email_type: 'order_confirmation',
+          status: 'queued',
+          retry_count: 0,
+        },
+        req: { transactionID } as any,
+        overrideAccess: true,
+      })
+      queuedRows.push({ id: row.id, recipient: rcpt, kind: 'admin' })
+    }
+    if (contractorEmail && /\S+@\S+\.\S+/.test(contractorEmail)) {
+      const row = await payload.create({
+        collection: 'emailDeliveries',
+        data: {
+          order: order.id,
+          recipient: contractorEmail,
+          email_type: 'order_confirmation',
+          status: 'queued',
+          retry_count: 0,
+        },
+        req: { transactionID } as any,
+        overrideAccess: true,
+      })
+      queuedRows.push({ id: row.id, recipient: contractorEmail, kind: 'contractor' })
+    }
+
+    // Commit the transaction — order and email queue rows land together
     await payload.db.commitTransaction(transactionID)
 
-    // 18. Send the email synchronously AFTER commit so a Resend failure can never
-    //     roll back a confirmed order. We update the delivery row in place so the
-    //     audit log reflects what really happened. (Proper queue drainer with
-    //     retries is TODOS Group 6 R3-R5 — this is the simple V1-UAT path.)
+    // 18. Send the emails synchronously AFTER commit so a Resend failure can never
+    //     roll back a confirmed order. We update each delivery row in place so the
+    //     audit log reflects what really happened.
     try {
       const productRel: any = (order as any).product
       const productName =
@@ -287,11 +317,15 @@ export async function POST(req: NextRequest) {
       const productSku =
         productRel && typeof productRel === 'object' ? productRel.sku ?? '' : ''
       const orderTotal = breakdown.effectivePrice * quantity
-      const subject = `New order #${order.id} — ${productName} × ${quantity}`
-      const html = `
+      const contractorName =
+        (freshContractor as any).company_name ?? (freshContractor as any).email ?? 'Contractor'
+
+      const adminSubject = `New order #${order.id} — ${productName} × ${quantity}`
+      const adminHtml = `
         <h2>New order received</h2>
         <p><strong>Order ID:</strong> ${order.id}</p>
-        <p><strong>Contractor:</strong> ${(freshContractor as any).company_name ?? (freshContractor as any).email}</p>
+        <p><strong>Contractor:</strong> ${contractorName}</p>
+        <p><strong>Contractor email:</strong> ${contractorEmail}</p>
         <p><strong>Product:</strong> ${productName} (${productSku})</p>
         <p><strong>Quantity:</strong> ${quantity}</p>
         <p><strong>List price:</strong> RM ${listPrice.toFixed(2)}</p>
@@ -303,28 +337,54 @@ export async function POST(req: NextRequest) {
         ${notes ? `<p><strong>Notes:</strong><br/>${String(notes).replace(/\n/g, '<br/>')}</p>` : ''}
         ${isDuplicate ? '<p><strong>⚠️ Flagged as possible duplicate</strong> (same product within last 10 minutes).</p>' : ''}
       `
-      const result = await sendEmail({ to: alanEmail, subject, html })
-      if (result.success) {
-        await payload.update({
-          collection: 'emailDeliveries',
-          id: deliveryRow.id,
-          data: {
-            status: 'sent',
-            sent_at: new Date().toISOString(),
-            ...(result.messageId ? { resend_message_id: result.messageId } : {}),
-          } as any,
-          overrideAccess: true,
-        })
-      } else {
-        await payload.update({
-          collection: 'emailDeliveries',
-          id: deliveryRow.id,
-          data: {
-            status: 'failed',
-            last_error: result.error ?? 'unknown',
-          } as any,
-          overrideAccess: true,
-        })
+
+      // Contractor confirmation — shows full effective-price stack-up per DESIGN.md
+      const contractorSubject = `Order #${order.id} received — Coolman`
+      const contractorHtml = `
+        <h2>Thank you — we've received your order</h2>
+        <p>Hi ${contractorName},</p>
+        <p>Your order request has been received. Alan or the Coolman team will contact you shortly to confirm details and arrange delivery.</p>
+        <p><strong>Order ID:</strong> ${order.id}</p>
+        <p><strong>Product:</strong> ${productName}${productSku ? ` (${productSku})` : ''}</p>
+        <p><strong>Quantity:</strong> ${quantity}</p>
+        <h3>Price breakdown</h3>
+        <table cellpadding="4" style="border-collapse:collapse;">
+          <tr><td>List price</td><td style="text-align:right;font-family:monospace;">RM ${listPrice.toFixed(2)}</td></tr>
+          <tr><td>Your tier discount</td><td style="text-align:right;font-family:monospace;">−${(tierDiscountPct * 100).toFixed(0)}%</td></tr>
+          <tr><td>Promo discount</td><td style="text-align:right;font-family:monospace;">−${(promoDiscountPct * 100).toFixed(0)}%</td></tr>
+          <tr><td><strong>Effective price per unit</strong></td><td style="text-align:right;font-family:monospace;"><strong>RM ${breakdown.effectivePrice.toFixed(2)}</strong></td></tr>
+          <tr><td><strong>Order total (${quantity} × ${breakdown.effectivePrice.toFixed(2)})</strong></td><td style="text-align:right;font-family:monospace;"><strong>RM ${orderTotal.toFixed(2)}</strong></td></tr>
+        </table>
+        <p style="margin-top:16px;">If anything looks wrong, reply to this email or call Coolman directly.</p>
+        <p>— Coolman</p>
+      `
+
+      for (const q of queuedRows) {
+        const subject = q.kind === 'admin' ? adminSubject : contractorSubject
+        const html = q.kind === 'admin' ? adminHtml : contractorHtml
+        const result = await sendEmail({ to: q.recipient, subject, html })
+        if (result.success) {
+          await payload.update({
+            collection: 'emailDeliveries',
+            id: q.id,
+            data: {
+              status: 'sent',
+              sent_at: new Date().toISOString(),
+              ...(result.messageId ? { resend_message_id: result.messageId } : {}),
+            } as any,
+            overrideAccess: true,
+          })
+        } else {
+          await payload.update({
+            collection: 'emailDeliveries',
+            id: q.id,
+            data: {
+              status: 'failed',
+              last_error: result.error ?? 'unknown',
+            } as any,
+            overrideAccess: true,
+          })
+        }
       }
     } catch (mailErr) {
       console.error('[orders/submit] email send threw', mailErr)
