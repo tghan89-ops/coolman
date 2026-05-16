@@ -15,6 +15,19 @@ function startOfTodayISO(): string {
 }
 
 export default async function DashboardWidgets() {
+  try {
+    return await DashboardWidgetsInner()
+  } catch (err) {
+    console.error('[DashboardWidgets] render error:', err)
+    return (
+      <div style={{ marginBottom: 32, padding: '12px 16px', border: '1px solid var(--theme-warning-500, #D97706)', borderRadius: 8, fontSize: 13 }}>
+        Dashboard widgets could not load — database may still be initialising. Refresh in a moment.
+      </div>
+    )
+  }
+}
+
+async function DashboardWidgetsInner() {
   const payload = await getPayload({ config })
 
   const todayStart = startOfTodayISO()
@@ -24,7 +37,7 @@ export default async function DashboardWidgets() {
     payload.find({ collection: 'orders', where: { order_status: { equals: 'pending' } }, limit: 0, overrideAccess: true }),
     payload.find({ collection: 'orders', where: { duplicate_flag: { equals: true }, order_status: { equals: 'pending' } }, limit: 0, overrideAccess: true }),
     payload.find({ collection: 'orders', where: { order_status: { equals: 'pending' } }, sort: 'submitted_at', limit: 1, overrideAccess: true }),
-    payload.findGlobal({ slug: 'settings', overrideAccess: true }),
+    payload.findGlobal({ slug: 'settings', overrideAccess: true }).catch(() => null),
     payload.find({ collection: 'products', limit: 1000, depth: 0, overrideAccess: true }),
   ])
 
@@ -38,7 +51,7 @@ export default async function DashboardWidgets() {
   const readinessPct = totalProducts === 0 ? 0 : Math.round((completeProducts / totalProducts) * 100)
   const readinessLow = readinessPct < 80
 
-  const s = settings as { orders_paused?: boolean; alert_threshold_hours?: number }
+  const s = (settings ?? {}) as { orders_paused?: boolean; alert_threshold_hours?: number }
   const thresholdHours = s.alert_threshold_hours ?? 24
 
   let oldestAgeHours: number | null = null
