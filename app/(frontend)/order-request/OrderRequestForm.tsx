@@ -28,6 +28,7 @@ export interface OrderRequestProduct {
 interface OrderRequestFormProps {
   product: OrderRequestProduct | null
   productId: string | null
+  initialQuantity?: number
 }
 
 const DRAFT_KEY = 'coolman_order_draft'
@@ -61,14 +62,14 @@ function clearDraft() {
   } catch { /* ignore */ }
 }
 
-export function OrderRequestForm({ product, productId }: OrderRequestFormProps) {
+export function OrderRequestForm({ product, productId, initialQuantity = 1 }: OrderRequestFormProps) {
   const { t } = useLanguage()
   const { user, isAuthenticated, isLoading: authLoading, isContractor } = useAuth()
 
   // Idempotency key — generated once on mount, never changes
   const idempotencyKeyRef = useRef<string>(crypto.randomUUID())
 
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(initialQuantity)
   const [deliveryAddress, setDeliveryAddress] = useState('')
   const [notes, setNotes] = useState('')
   const [promoCode, setPromoCode] = useState('')

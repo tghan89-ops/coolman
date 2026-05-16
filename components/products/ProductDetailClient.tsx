@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronRight, ArrowRight, ArrowLeft, Check, Zap, Shield, RotateCcw, Ruler } from 'lucide-react'
+import { ChevronRight, ArrowRight, ArrowLeft, Check, Zap, Shield, RotateCcw, Ruler, Minus, Plus } from 'lucide-react'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
@@ -25,6 +25,8 @@ export function ProductDetailClient({
   })
 
   const [activeTab, setActiveTab] = useState<'specs' | 'applications' | 'usage'>('specs')
+  const [quantity, setQuantity] = useState(1)
+  const orderHref = `/order-request?product=${data.id}&qty=${quantity}`
 
   // Payload relations come back as objects ({id, name, nameBM, ...}); plain seeds may still be strings/numbers.
   const labelOf = (v: any): string => {
@@ -178,10 +180,42 @@ export function ProductDetailClient({
                 </div>
               </div>
 
+              {/* Quantity selector */}
+              <div className="mt-8">
+                <p className="mb-3 text-xs font-bold tracking-wider text-white/40">Quantity</p>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    disabled={quantity <= 1}
+                    aria-label="Decrease quantity"
+                    className="flex h-12 w-12 items-center justify-center border border-white/20 bg-white/5 text-white transition-colors hover:border-accent hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <input
+                    type="number"
+                    min={1}
+                    value={quantity}
+                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    aria-label="Quantity"
+                    className="font-mono h-12 w-20 border border-white/20 bg-white/5 text-center text-lg font-bold text-white focus:border-accent focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => q + 1)}
+                    aria-label="Increase quantity"
+                    className="flex h-12 w-12 items-center justify-center border border-white/20 bg-white/5 text-white transition-colors hover:border-accent hover:bg-accent/10"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
               {/* CTA */}
-              <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button size="lg" className="group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent" asChild>
-                  <Link href={`/order-request?product=${data.id}`}>
+                  <Link href={orderHref}>
                     Request Order
                     <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
                   </Link>
@@ -355,7 +389,7 @@ export function ProductDetailClient({
             </div>
             <div className="flex gap-3">
               <Button className="h-12 bg-white px-6 font-sans font-bold text-navy hover:bg-secondary" asChild>
-                <Link href={`/order-request?product=${data.id}`}>Request Order</Link>
+                <Link href={orderHref}>Request Order</Link>
               </Button>
               <Button variant="outline" className="h-12 border-2 border-white bg-transparent px-6 font-sans font-bold text-white hover:bg-white hover:text-accent" asChild>
                 <Link href="/contact">Talk to an Engineer</Link>

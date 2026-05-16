@@ -1,14 +1,16 @@
 import { getProductById } from '@/lib/payload'
 import { OrderRequestForm, type OrderRequestProduct } from './OrderRequestForm'
+import { parseInitialQuantity } from './parse-qty'
 
 export const dynamic = 'force-dynamic'
 
 export default async function OrderRequestPage({
   searchParams,
 }: {
-  searchParams: Promise<{ product?: string }>
+  searchParams: Promise<{ product?: string; qty?: string }>
 }) {
-  const { product: productId } = await searchParams
+  const { product: productId, qty } = await searchParams
+  const initialQuantity = parseInitialQuantity(qty)
 
   let product: OrderRequestProduct | null = null
   if (productId) {
@@ -29,5 +31,11 @@ export default async function OrderRequestPage({
     }
   }
 
-  return <OrderRequestForm product={product} productId={productId ?? null} />
+  return (
+    <OrderRequestForm
+      product={product}
+      productId={productId ?? null}
+      initialQuantity={initialQuantity}
+    />
+  )
 }
