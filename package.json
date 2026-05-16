@@ -11,7 +11,9 @@
     "test": "vitest run",
     "e2e": "playwright test",
     "e2e:install": "playwright install",
-    "seed": "tsx scripts/seed.ts"
+    "seed": "tsx scripts/seed.ts",
+    "payload": "payload",
+    "migrate": "payload migrate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
