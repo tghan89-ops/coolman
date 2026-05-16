@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/lib/i18n/context'
 import { AuthProvider } from '@/lib/auth/context'
+import { CartProvider } from '@/lib/cart/context'
 import '../globals.css'
 
 const plexSans = IBM_Plex_Sans({
@@ -39,7 +40,9 @@ export default function FrontendLayout({
       <body className={`${plexSans.variable} ${plexMono.variable} font-sans antialiased`}>
         <LanguageProvider>
           <AuthProvider>
-            {children}
+            <CartProvider>
+              {children}
+            </CartProvider>
           </AuthProvider>
         </LanguageProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
