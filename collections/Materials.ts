@@ -1,4 +1,10 @@
 import type { CollectionConfig } from 'payload'
+import {
+  readOptionList,
+  createOptionList,
+  updateOptionList,
+  deleteOptionList,
+} from '@/lib/access/optionLists'
 
 export const Materials: CollectionConfig = {
   slug: 'materials',
@@ -7,11 +13,10 @@ export const Materials: CollectionConfig = {
     defaultColumns: ['name', 'nameBM'],
   },
   access: {
-    read: () => true,
-    create: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
-    update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
-    delete: ({ req: { user } }) =>
-      (user as any)?.collection === 'adminUsers' && (user as any)?.role === 'admin',
+    read: readOptionList,
+    create: createOptionList,
+    update: updateOptionList,
+    delete: deleteOptionList,
   },
   fields: [
     {

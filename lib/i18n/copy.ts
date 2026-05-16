@@ -62,6 +62,11 @@ export interface CopyStructure {
     relatedProducts: string
     suitedFor: string
     videoDemo: string
+    priceList: string
+    priceContract: string
+    priceYourTier: string
+    priceLogInForContract: string
+    priceYouSave: string
   }
   order: {
     title: string
@@ -250,6 +255,11 @@ export const COPY: Record<Language, CopyStructure> = {
       relatedProducts: 'Related Products',
       suitedFor: 'Suited For',
       videoDemo: 'Video Demonstration',
+      priceList: 'List Price',
+      priceContract: 'Your Contract Price',
+      priceYourTier: 'Your tier discount',
+      priceLogInForContract: 'Log in to see your contract price',
+      priceYouSave: 'You save',
     },
     order: {
       title: 'Order Request',
@@ -436,6 +446,11 @@ export const COPY: Record<Language, CopyStructure> = {
       relatedProducts: 'Produk Berkaitan',
       suitedFor: 'Sesuai Untuk',
       videoDemo: 'Demonstrasi Video',
+      priceList: 'Harga Senarai',
+      priceContract: 'Harga Kontrak Anda',
+      priceYourTier: 'Diskaun tahap anda',
+      priceLogInForContract: 'Log masuk untuk lihat harga kontrak anda',
+      priceYouSave: 'Anda jimat',
     },
     order: {
       title: 'Permintaan Pesanan',

@@ -177,4 +177,93 @@ describe('POST /api/orders/submit', () => {
     expect(res.status).toBe(500)
     expect(mockCreate).toHaveBeenCalledTimes(2)
   })
+
+  it('R11 — stale price returns 409 with fresh server price, order not created', async () => {
+    const { getPayload } = await import('payload')
+    const calc = await import('@/lib/pricing/calculate')
+    vi.mocked(calc.isPriceStale).mockReturnValue(true)
+    const mockCreate = vi.fn().mockResolvedValue({ id: 'order-x', order_status: 'pending' })
+    vi.mocked(getPayload).mockResolvedValue(buildMockPayload({ create: mockCreate }) as any)
+
+    const { POST } = await import('../../app/api/orders/submit/route')
+    const req = new Request('http://localhost/api/orders/submit', {
+      method: 'POST',
+      body: JSON.stringify({
+        productId: 'prod-1',
+        quantity: 1,
+        deliveryAddress: '123 Test St',
+        idempotencyKey: crypto.randomUUID(),
+        clientEffectivePrice: 50,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const res = await POST(req as any)
+    expect(res.status).toBe(409)
+    const body = await res.json()
+    expect(body.error).toBe('price_updated')
+    expect(body.serverEffectivePerUnit).toBe(90)
+    expect(mockCreate).not.toHaveBeenCalled()
+    vi.mocked(calc.isPriceStale).mockReturnValue(false)
+  })
+
+  it('R12 — combined discount over cap returns 422, order not created', async () => {
+    const { getPayload } = await import('payload')
+    const calc = await import('@/lib/pricing/calculate')
+    // Force cap-breach branch on the route's own check
+    vi.mocked(calc.isWithinDiscountCap).mockReturnValueOnce(false)
+    const mockCreate = vi.fn().mockResolvedValue({ id: 'order-y', order_status: 'pending' })
+    vi.mocked(getPayload).mockResolvedValue(
+      buildMockPayload({
+        create: mockCreate,
+        findByID: vi.fn().mockImplementation(({ collection }: { collection: string }) => {
+          if (collection === 'products') return { id: 'prod-1', listPrice: 100, name: 'Test Blade' }
+          if (collection === 'contractors')
+            return { id: 'contractor-1', tier_discount_pct: 0.30, email_verified_at: '2026-01-01' }
+          return null
+        }),
+      }) as any,
+    )
+
+    const { POST } = await import('../../app/api/orders/submit/route')
+    const req = new Request('http://localhost/api/orders/submit', {
+      method: 'POST',
+      body: JSON.stringify({
+        productId: 'prod-1',
+        quantity: 1,
+        deliveryAddress: '123 Test St',
+        idempotencyKey: crypto.randomUUID(),
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const res = await POST(req as any)
+    expect(res.status).toBe(422)
+    const body = await res.json()
+    expect(body.error).toMatch(/exceeds the maximum allowed discount/i)
+    expect(mockCreate).not.toHaveBeenCalled()
+  })
+
+  it('OV2-3 — admin session hitting the contractor submit route returns 403', async () => {
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue(buildMockPayload() as any)
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ user: { id: 'admin-1', email: 'alan@coolman.com.my', collection: 'adminUsers' } }),
+    }))
+
+    const { POST } = await import('../../app/api/orders/submit/route')
+    const req = new Request('http://localhost/api/orders/submit', {
+      method: 'POST',
+      body: JSON.stringify({
+        productId: 'prod-1',
+        quantity: 1,
+        deliveryAddress: '123 Test St',
+        idempotencyKey: crypto.randomUUID(),
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const res = await POST(req as any)
+    expect(res.status).toBe(403)
+    const body = await res.json()
+    expect(body.error).toBe('Forbidden')
+  })
 })

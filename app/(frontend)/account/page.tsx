@@ -56,35 +56,6 @@ export default function AccountPage() {
   return (
     <PublicLayout>
       <div className="min-h-screen bg-navy">
-        {/* Unverified email banner */}
-        {isContractor && !user?.contractor?.email_verified_at && (
-          <div className="mx-auto max-w-4xl px-4 pt-6">
-            <div className="flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
-              <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
-              <div className="flex-1">
-                <p className="font-semibold text-amber-200">Email not yet verified</p>
-                <p className="mt-1 text-sm text-amber-200/70">
-                  Verify your email to see your contract prices and submit orders.
-                  Check your inbox for a link from Coolman.
-                </p>
-                {verificationSent ? (
-                  <p className="mt-3 text-sm font-medium text-green-400">Verification email sent — check your inbox.</p>
-                ) : (
-                  <Button
-                    type="button"
-                    size="sm"
-                    onClick={resendVerification}
-                    className="mt-3 gap-2 bg-amber-500 text-white hover:bg-amber-600"
-                  >
-                    <Mail className="h-4 w-4" />
-                    Send verification email
-                  </Button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Header Section */}
         <section className="border-b border-white/10 py-10 lg:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -97,8 +68,8 @@ export default function AccountPage() {
                   {user.contractor?.companyName || user.email}
                 </p>
               </div>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={logout}
                 className="border-white/20 text-white hover:bg-white/10"
               >
@@ -106,6 +77,33 @@ export default function AccountPage() {
                 {t.nav.logout}
               </Button>
             </div>
+
+            {/* Unverified email banner — inline under the heading */}
+            {isContractor && !user?.contractor?.email_verified_at && (
+              <div className="mt-6 flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
+                <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                <div className="flex-1">
+                  <p className="font-semibold text-amber-200">Email not yet verified</p>
+                  <p className="mt-1 text-sm text-amber-200/70">
+                    Verify your email to see your contract prices and submit orders.
+                    Check your inbox for a link from Coolman.
+                  </p>
+                  {verificationSent ? (
+                    <p className="mt-3 text-sm font-medium text-green-400">Verification email sent — check your inbox.</p>
+                  ) : (
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={resendVerification}
+                      className="mt-3 gap-2 bg-amber-500 text-white hover:bg-amber-600"
+                    >
+                      <Mail className="h-4 w-4" />
+                      Send verification email
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 

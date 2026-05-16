@@ -9,6 +9,8 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
+    "e2e": "playwright test",
+    "e2e:install": "playwright install",
     "seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
@@ -53,6 +55,7 @@
     "cmdk": "1.1.1",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.6.0",
+    "exceljs": "^4.4.0",
     "graphql": "^16.14.0",
     "input-otp": "1.4.2",
     "lucide-react": "^0.564.0",
@@ -73,6 +76,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59.1",
     "@swc-node/register": "^1.11.1",
     "@tailwindcss/postcss": "^4.2.0",
     "@types/node": "^22",

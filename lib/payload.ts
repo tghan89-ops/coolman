@@ -6,13 +6,17 @@ async function getPayloadClient() {
 }
 
 export async function getProducts(): Promise<any[]> {
-  const payload = await getPayloadClient()
-  const result = await payload.find({
-    collection: 'products',
-    limit: 200,
-    sort: 'name',
-  })
-  return result.docs
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection: 'products',
+      limit: 200,
+      sort: 'name',
+    })
+    return result.docs
+  } catch {
+    return []
+  }
 }
 
 export async function getProductById(id: string): Promise<any | null> {
@@ -31,31 +35,39 @@ export async function filterProducts(params: {
   machinePower?: string[]
   category?: string
 }): Promise<any[]> {
-  const payload = await getPayloadClient()
-  const where: Record<string, unknown> = {}
+  try {
+    const payload = await getPayloadClient()
+    const where: Record<string, unknown> = {}
 
-  if (params.category) {
-    where.category = { equals: params.category }
-  }
-  if (params.materials?.length) {
-    where.recommendedMaterials = { in: params.materials }
-  }
-  if (params.applications?.length) {
-    where.applications = { in: params.applications }
-  }
-  if (params.machinePower?.length) {
-    where.recommendedMachinePower = { in: params.machinePower }
-  }
+    if (params.category) {
+      where.category = { equals: params.category }
+    }
+    if (params.materials?.length) {
+      where.recommendedMaterials = { in: params.materials }
+    }
+    if (params.applications?.length) {
+      where.applications = { in: params.applications }
+    }
+    if (params.machinePower?.length) {
+      where.recommendedMachinePower = { in: params.machinePower }
+    }
 
-  const result = await payload.find({
-    collection: 'products',
-    where,
-    limit: 200,
-  })
-  return result.docs
+    const result = await payload.find({
+      collection: 'products',
+      where,
+      limit: 200,
+    })
+    return result.docs
+  } catch {
+    return []
+  }
 }
 
 export async function getGlobal(slug: string): Promise<any> {
-  const payload = await getPayloadClient()
-  return payload.findGlobal({ slug: slug as any })
+  try {
+    const payload = await getPayloadClient()
+    return await payload.findGlobal({ slug: slug as any })
+  } catch {
+    return null
+  }
 }

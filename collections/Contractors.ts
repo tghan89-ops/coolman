@@ -6,6 +6,10 @@ export const Contractors: CollectionConfig = {
     tokenExpiration: 7200,
     maxLoginAttempts: 5,
     lockTime: 600 * 1000,
+    cookies: {
+      sameSite: 'Lax',
+      secure: process.env.NODE_ENV === 'production',
+    },
   },
   admin: {
     useAsTitle: 'companyName',

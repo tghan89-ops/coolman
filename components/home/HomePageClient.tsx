@@ -60,7 +60,10 @@ export function HomePageClient({ initialData }: { initialData: any }) {
     depth: 1,
   })
 
-  const [activeApplication, setActiveApplication] = useState('concrete')
+  const cmsApplications: Array<{ id: string; label: string; image: string }> = data?.applicationList ?? applications
+  const cmsFeatures: Array<{ title: string; description: string; stat: string; statLabel: string }> = data?.features ?? features
+
+  const [activeApplication, setActiveApplication] = useState(() => cmsApplications[0]?.id ?? 'concrete')
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
@@ -69,7 +72,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
     setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top })
   }
 
-  const currentApp = applications.find(a => a.id === activeApplication)
+  const currentApp = cmsApplications.find(a => a.id === activeApplication)
 
   // Payload-driven data with fallbacks
   const heroBadge = data?.hero?.badge ?? 'Trusted by 500+ Malaysian Contractors'
@@ -179,7 +182,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
 
           {/* Interactive material tabs */}
           <div className="mt-12 flex flex-wrap gap-0 border-b border-rule">
-            {applications.map((app) => (
+            {cmsApplications.map((app) => (
               <button
                 key={app.id}
                 onClick={() => setActiveApplication(app.id)}
@@ -246,7 +249,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
           </div>
 
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, index) => (
+            {cmsFeatures.map((feature, index) => (
               <div
                 key={index}
                 className="group relative cursor-pointer overflow-hidden border border-white/10 bg-white/5 p-8 backdrop-blur-sm transition-[border-color,background-color] hover:border-accent/50 hover:bg-white/10"

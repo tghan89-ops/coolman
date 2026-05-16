@@ -4,7 +4,7 @@ export const Orders: CollectionConfig = {
   slug: 'orders',
   admin: {
     useAsTitle: 'idempotency_key',
-    defaultColumns: ['contractor', 'product', 'order_status', 'submitted_at'],
+    defaultColumns: ['contractor', 'product', 'order_status', 'duplicate_flag', 'submitted_at'],
   },
   access: {
     create: ({ req: { user } }) => (user as any)?.collection === 'contractors',
@@ -17,6 +17,25 @@ export const Orders: CollectionConfig = {
     delete: () => false,
   },
   fields: [
+    {
+      name: '_acknowledge',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/components/admin/AcknowledgeButton#AcknowledgeButton',
+        },
+      },
+    },
+    {
+      name: '_priceStackUp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/admin/OrderPriceStackUp#OrderPriceStackUp',
+        },
+      },
+    },
     {
       name: 'contractor',
       type: 'relationship',

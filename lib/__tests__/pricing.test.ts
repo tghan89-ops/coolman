@@ -112,6 +112,32 @@ describe('validatePromoCode', () => {
     if (!result.valid) expect(result.reason).toBe('usage_cap_reached')
   })
 
+  it('not-yet-active promo (valid_from in the future) returns not_yet_active', async () => {
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue({
+      find: vi.fn().mockResolvedValue({
+        docs: [{ active: true, valid_from: '2099-01-01', valid_until: '2099-12-31', usage_count: 0, usage_cap: 100, promo_discount_pct: 0.10 }],
+      }),
+    } as any)
+    const { validatePromoCode } = await import('../pricing/validate-promo')
+    const result = await validatePromoCode('EARLYBIRD')
+    expect(result.valid).toBe(false)
+    if (!result.valid) expect(result.reason).toBe('not_yet_active')
+  })
+
+  it('expired promo (valid_until in the past) returns expired', async () => {
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue({
+      find: vi.fn().mockResolvedValue({
+        docs: [{ active: true, valid_from: '2020-01-01', valid_until: '2020-12-31', usage_count: 0, usage_cap: 100, promo_discount_pct: 0.10 }],
+      }),
+    } as any)
+    const { validatePromoCode } = await import('../pricing/validate-promo')
+    const result = await validatePromoCode('OLDRAYA')
+    expect(result.valid).toBe(false)
+    if (!result.valid) expect(result.reason).toBe('expired')
+  })
+
   it('valid promo returns promo_discount_pct', async () => {
     const { getPayload } = await import('payload')
     vi.mocked(getPayload).mockResolvedValue({
