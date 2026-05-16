@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ChevronRight, ArrowRight, ArrowLeft, Check, Zap, Shield, RotateCcw, Ruler, Minus, Plus } from 'lucide-react'
@@ -29,6 +29,21 @@ export function ProductDetailClient({
   const [activeTab, setActiveTab] = useState<'specs' | 'applications' | 'usage'>('specs')
   const [quantity, setQuantity] = useState(1)
   const nextHref = `/products/${data.id}`
+
+  // Log this product view. Server attaches it to the contractor's most recent
+  // search row (last 10 min) so the log reads "searched X then viewed Y".
+  // Keyed on initialData.id so we only fire once per actual page, not on every
+  // useLivePreview re-render.
+  useEffect(() => {
+    const productId = initialData?.id
+    if (!productId) return
+    fetch('/api/search-log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ viewedProductId: String(productId) }),
+      keepalive: true,
+    }).catch(() => {})
+  }, [initialData?.id])
 
   // Payload relations come back as objects ({id, name, nameBM, ...}); plain seeds may still be strings/numbers.
   const labelOf = (v: any): string => {

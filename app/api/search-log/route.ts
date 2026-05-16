@@ -4,11 +4,22 @@
 // set + result count after each search; we acknowledge immediately (202) and do
 // the DB write in the background via `after()` so the shopper never waits on it.
 // A failed write is swallowed — analytics must never break the catalogue.
+//
+// Two modes:
+//   1. Search event   — body has `query` (+ optional resultCount/viewedProductIds)
+//                       → creates a new searchLogs row.
+//   2. Product view   — body has `viewedProductId` (singular)
+//                       → appends to the contractor's most recent search row
+//                         from the last 10 min (so it reads "searched X then
+//                         viewed Y"). Falls back to creating a minimal row if
+//                         no recent search exists.
 
 import { NextRequest, NextResponse } from 'next/server'
 import { after } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+
+const ATTACH_WINDOW_MS = 10 * 60 * 1000 // 10 minutes
 
 function normalize(q: string): string {
   return q
@@ -38,9 +49,13 @@ export async function POST(req: NextRequest) {
   const viewedProductIds: string[] = Array.isArray(body?.viewedProductIds)
     ? body.viewedProductIds.filter((x: unknown) => typeof x === 'string').slice(0, 20)
     : []
+  const viewedProductId: string | null =
+    typeof body?.viewedProductId === 'string' && body.viewedProductId.length > 0
+      ? body.viewedProductId.slice(0, 64)
+      : null
 
-  // Empty query AND no result info → nothing worth logging.
-  if (!query && resultCount === 0 && viewedProductIds.length === 0) {
+  // Nothing worth logging.
+  if (!query && resultCount === 0 && viewedProductIds.length === 0 && !viewedProductId) {
     return NextResponse.json({ ok: true, skipped: true }, { status: 202 })
   }
 
@@ -65,6 +80,62 @@ export async function POST(req: NextRequest) {
   after(async () => {
     try {
       const payload = await getPayload({ config })
+
+      // Product-view ping: try to append to the most recent search row from
+      // this contractor in the last 10 minutes. If none, fall through to
+      // creating a fresh minimal row.
+      if (viewedProductId && !query && resultCount === 0 && viewedProductIds.length === 0) {
+        if (contractorId) {
+          const since = new Date(Date.now() - ATTACH_WINDOW_MS).toISOString()
+          const { docs } = await payload.find({
+            collection: 'searchLogs',
+            where: {
+              and: [
+                { contractor: { equals: contractorId } },
+                { createdAt: { greater_than: since } },
+              ],
+            },
+            sort: '-createdAt',
+            limit: 1,
+            depth: 0,
+            overrideAccess: true,
+          })
+          const last = docs[0] as any
+          if (last) {
+            const existing: Array<{ productId?: string }> = Array.isArray(last.viewed_product_ids)
+              ? last.viewed_product_ids
+              : []
+            const already = existing.some((row) => row?.productId === viewedProductId)
+            if (!already) {
+              await payload.update({
+                collection: 'searchLogs',
+                id: last.id,
+                data: {
+                  viewed_product_ids: [...existing, { productId: viewedProductId }],
+                } as any,
+                overrideAccess: true,
+              })
+            }
+            return
+          }
+        }
+        // No recent search to attach to — write a minimal row so the view
+        // still shows up in the log.
+        await payload.create({
+          collection: 'searchLogs',
+          data: {
+            query: '',
+            query_normalized: '',
+            result_count: 0,
+            ...(contractorId ? { contractor: contractorId } : {}),
+            viewed_product_ids: [{ productId: viewedProductId }],
+          } as any,
+          overrideAccess: true,
+        })
+        return
+      }
+
+      // Normal search event → fresh row.
       await payload.create({
         collection: 'searchLogs',
         data: {
