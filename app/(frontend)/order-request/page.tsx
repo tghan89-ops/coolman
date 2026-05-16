@@ -214,7 +214,7 @@ function OrderRequestContent() {
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
                 <Check className="h-8 w-8 text-success" />
               </div>
-              <h2 className="mt-6 font-sans text-2xl font-bold text-white">{t.order.success}</h2>
+              <h2 className="mt-6 font-sans text-2xl font-bold text-ink">{t.order.success}</h2>
               <p className="mt-2 text-muted-foreground">{t.order.successMessage}</p>
               <div className="mt-8 flex gap-4">
                 <Button asChild><Link href="/account">{t.nav.myAccount}</Link></Button>
@@ -233,7 +233,7 @@ function OrderRequestContent() {
     <PublicLayout>
       <div className="mx-auto max-w-4xl px-4 py-12 lg:py-16">
         {draftRestored && (
-          <div className="mb-4 flex items-center justify-between rounded-lg border border-accent/30 bg-accent/10 px-4 py-2 text-sm text-accent-light">
+          <div className="mb-4 flex items-center justify-between rounded-lg border border-accent/30 bg-accent/10 px-4 py-2 text-sm text-accent-dark">
             <span>Draft restored from your last visit.</span>
             <button
               type="button"
@@ -245,7 +245,7 @@ function OrderRequestContent() {
           </div>
         )}
 
-        <h1 className="font-sans text-3xl font-bold text-white">{t.order.title}</h1>
+        <h1 className="font-sans text-3xl font-bold text-ink sm:text-4xl">{t.order.title}</h1>
 
         <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
           {/* Left: Form */}
@@ -261,7 +261,7 @@ function OrderRequestContent() {
                     <span className="text-lg font-bold text-muted-foreground/50">{product.diameter}</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white">{product.name}</h3>
+                    <h3 className="font-semibold text-ink">{product.name}</h3>
                     <p className="text-sm text-muted-foreground">SKU: {product.sku}</p>
                     <p className="mt-1 font-mono text-lg font-bold text-accent">
                       {formatPrice(listPrice)} / unit
@@ -352,7 +352,7 @@ function OrderRequestContent() {
               <CardContent className="space-y-4">
                 {/* Stale price notice */}
                 {stalePriceInfo && (
-                  <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-200">
+                  <div className="rounded-lg border border-warn/30 bg-warn/10 p-3 text-sm text-warn">
                     <p className="font-semibold">Price has changed</p>
                     <p className="mt-1">
                       New effective total:{' '}
@@ -382,7 +382,7 @@ function OrderRequestContent() {
                 {/* List price row */}
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">{t.order.listPrice} ({quantity}x)</span>
-                  <span className="font-mono font-medium text-white">{formatPrice(listPrice * quantity)}</span>
+                  <span className="font-mono font-medium text-ink">{formatPrice(listPrice * quantity)}</span>
                 </div>
 
                 {/* Tier discount row — verified contractors only */}
@@ -395,7 +395,7 @@ function OrderRequestContent() {
 
                 {/* Gate message for unverified / non-contractor */}
                 {!showPriceBreakdown && (
-                  <div className="rounded bg-white/5 px-3 py-2 text-xs text-muted-foreground">
+                  <div className="rounded bg-muted px-3 py-2 text-xs text-muted-foreground">
                     {isContractor
                       ? 'Verify your email to unlock your contract price.'
                       : 'Log in for your contract price.'}
@@ -438,14 +438,14 @@ function OrderRequestContent() {
 
                 {/* Total */}
                 <div className="flex justify-between pt-2 text-lg font-bold">
-                  <span className="text-white">{t.order.total}</span>
-                  <span className="font-mono text-accent">
+                  <span className="text-ink">{t.order.total}</span>
+                  <span className="font-mono text-accent-dark">
                     {showPriceBreakdown ? formatPrice(effectiveTotal) : formatPrice(listPrice * quantity)}
                   </span>
                 </div>
 
                 {submitError && (
-                  <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-400">
+                  <div className="rounded-lg border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
                     {submitError}
                   </div>
                 )}

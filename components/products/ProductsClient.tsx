@@ -174,13 +174,13 @@ export function ProductsClient({
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
             <p className="text-sm font-bold tracking-wider text-accent">Diamond Tools</p>
-            <h1 className="mt-4 text-5xl font-bold text-white lg:text-6xl">
+            <h1 className="mt-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
               Industrial Diamond<br />Cutting Tools
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-white/60">
               Industrial-grade blades engineered for precision cutting across granite, concrete, tile, and more. Built for professionals who demand performance.
             </p>
-            <div className="mt-10 flex gap-12 border-t border-white/10 pt-8">
+            <div className="mt-10 flex flex-wrap gap-x-12 gap-y-6 border-t border-white/10 pt-8">
               <div>
                 <div className="text-3xl font-bold text-white">{products.length}+</div>
                 <div className="text-sm font-semibold text-white/40">Products</div>

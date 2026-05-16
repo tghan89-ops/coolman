@@ -26,6 +26,17 @@ export function ProductDetailClient({
 
   const [activeTab, setActiveTab] = useState<'specs' | 'applications' | 'usage'>('specs')
 
+  // Payload relations come back as objects ({id, name, nameBM, ...}); plain seeds may still be strings.
+  const labelOf = (v: any): string =>
+    v == null ? '' : typeof v === 'string' ? v : (v.name ?? v.nameBM ?? '')
+  const keyOf = (v: any, fallback: number): string | number =>
+    v == null ? fallback : typeof v === 'string' ? v : (v.id ?? fallback)
+
+  const materials: any[] = Array.isArray(data.recommendedMaterials) ? data.recommendedMaterials : []
+  const applications: any[] = Array.isArray(data.applications) ? data.applications : []
+  const primaryMaterial = labelOf(materials[0])
+  const machinePowerLabel = labelOf(data.recommendedMachinePower)
+
   // Resolve image URL from Payload media relation
   const imageUrl: string =
     typeof data.image === 'object' && data.image?.url
@@ -35,12 +46,12 @@ export function ProductDetailClient({
       : '/images/blade-granite.jpg'
 
   const specs = [
-    { label: 'Diameter', value: data.diameter, icon: Ruler },
-    { label: 'Arbor Size', value: data.arborSize, icon: Ruler },
-    { label: 'Segment Height', value: data.segmentHeight, icon: Ruler },
-    { label: 'Bond Type', value: data.bondType, icon: Shield },
+    { label: 'Diameter', value: labelOf(data.diameter) || data.diameter, icon: Ruler },
+    { label: 'Arbor Size', value: labelOf(data.arborSize) || data.arborSize, icon: Ruler },
+    { label: 'Segment Height', value: labelOf(data.segmentHeight) || data.segmentHeight, icon: Ruler },
+    { label: 'Bond Type', value: labelOf(data.bondType) || data.bondType, icon: Shield },
     { label: 'Max RPM', value: data.maxRPM ?? 'See manual', icon: Zap },
-    { label: 'Cutting Volume', value: data.recommendedCuttingVolume, icon: RotateCcw },
+    { label: 'Cutting Volume', value: labelOf(data.recommendedCuttingVolume) || data.recommendedCuttingVolume, icon: RotateCcw },
   ]
 
   // Related products from Payload (depth:2 resolves these to full objects)
@@ -98,7 +109,7 @@ export function ProductDetailClient({
                 {/* Material badge */}
                 <div className="absolute left-4 top-4 border border-accent/40 bg-accent/20 px-3 py-1">
                   <span className="text-xs font-bold tracking-wider text-accent">
-                    {data.recommendedMaterials?.[0] ?? 'Premium'}
+                    {primaryMaterial || 'Premium'}
                   </span>
                 </div>
               </div>
@@ -116,7 +127,7 @@ export function ProductDetailClient({
             {/* Right: Info */}
             <div className="flex flex-col justify-center">
               <p className="font-sans text-sm font-bold tracking-[0.3em] text-accent">
-                {data.recommendedMaterials?.[0] ?? 'Diamond Blade'}
+                {primaryMaterial || 'Diamond Blade'}
               </p>
               <h1 className="mt-3 font-sans text-4xl font-bold text-white lg:text-5xl">
                 {data.name}
@@ -137,7 +148,7 @@ export function ProductDetailClient({
                   />
                   <div className="text-right">
                     <p className="text-xs text-white/40">Machine power</p>
-                    <p className="mt-1 font-sans text-lg font-bold capitalize text-accent">{data.recommendedMachinePower}</p>
+                    <p className="mt-1 font-sans text-lg font-bold capitalize text-accent">{machinePowerLabel}</p>
                   </div>
                 </div>
               </div>
@@ -156,9 +167,9 @@ export function ProductDetailClient({
               <div className="mt-8">
                 <p className="mb-3 text-xs font-bold tracking-wider text-white/40">Recommended Materials</p>
                 <div className="flex flex-wrap gap-2">
-                  {(data.recommendedMaterials ?? []).map((material: string) => (
-                    <span key={material} className="border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-semibold text-accent">
-                      {material}
+                  {materials.map((material: any, i: number) => (
+                    <span key={keyOf(material, i)} className="border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-semibold text-accent">
+                      {labelOf(material)}
                     </span>
                   ))}
                 </div>
@@ -186,12 +197,12 @@ export function ProductDetailClient({
         {/* Tab nav */}
         <div className="border-b border-rule bg-white">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex gap-0">
+            <div className="flex gap-0 overflow-x-auto">
               {(['specs', 'applications', 'usage'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`relative px-8 py-5 font-sans text-sm font-bold capitalize transition-colors ${
+                  className={`relative whitespace-nowrap px-4 py-5 font-sans text-sm font-bold capitalize transition-colors sm:px-8 ${
                     activeTab === tab ? 'text-navy' : 'text-ink-faint hover:text-ink-muted'
                   }`}
                 >
@@ -224,12 +235,12 @@ export function ProductDetailClient({
           {/* Applications tab */}
           {activeTab === 'applications' && (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {(data.applications ?? []).map((app: string) => (
-                <div key={app} className="flex items-center gap-4 border border-rule bg-white p-5">
+              {applications.map((app: any, i: number) => (
+                <div key={keyOf(app, i)} className="flex items-center gap-4 border border-rule bg-white p-5">
                   <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center bg-accent">
                     <Check className="h-4 w-4 text-white" />
                   </div>
-                  <p className="font-semibold text-navy">{app}</p>
+                  <p className="font-semibold text-navy">{labelOf(app)}</p>
                 </div>
               ))}
             </div>
@@ -304,13 +315,13 @@ export function ProductDetailClient({
                     </div>
                     <div className="flex flex-1 flex-col p-5">
                       <p className="font-sans text-xs font-semibold tracking-wider text-accent">
-                        {p.recommendedMaterials?.[0] || 'Universal'}
+                        {labelOf(p.recommendedMaterials?.[0]) || 'Universal'}
                       </p>
                       <h3 className="mt-2 font-sans text-lg font-bold text-white transition-colors group-hover:text-accent">
                         {p.name}
                       </h3>
                       <p className="mt-1 text-sm text-white/60">
-                        {p.diameter} | {p.bondType} Bond
+                        {p.diameter} | {labelOf(p.bondType)} Bond
                       </p>
                       <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
                         <PriceDisplay

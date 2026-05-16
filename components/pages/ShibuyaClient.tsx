@@ -146,7 +146,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
             </div>
 
             {/* Headline */}
-            <h1 className="text-5xl font-bold leading-[1.1] tracking-tight text-white md:text-6xl lg:text-7xl">
+            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
               {heroLine1}
               <span className="block text-white/40">{heroLine2}</span>
             </h1>

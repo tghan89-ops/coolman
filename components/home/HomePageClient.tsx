@@ -124,7 +124,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
             </div>
 
             {/* Headline */}
-            <h1 className="font-sans text-5xl font-bold leading-[0.95] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-6xl">
+            <h1 className="font-sans text-4xl font-bold leading-[0.95] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-6xl">
               {heroLine1}
               <span className="block text-accent">{heroLine2}</span>
               <span className="block">{heroLine3}</span>

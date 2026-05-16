@@ -80,22 +80,22 @@ export default function AccountPage() {
 
             {/* Unverified email banner — inline under the heading */}
             {isContractor && !user?.contractor?.email_verified_at && (
-              <div className="mt-6 flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
-                <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+              <div className="mt-6 flex items-start gap-3 rounded-lg border border-warn/40 bg-warn/10 p-4">
+                <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-warn" />
                 <div className="flex-1">
-                  <p className="font-semibold text-amber-200">Email not yet verified</p>
-                  <p className="mt-1 text-sm text-amber-200/70">
+                  <p className="font-semibold text-white">Email not yet verified</p>
+                  <p className="mt-1 text-sm text-ink-muted">
                     Verify your email to see your contract prices and submit orders.
                     Check your inbox for a link from Coolman.
                   </p>
                   {verificationSent ? (
-                    <p className="mt-3 text-sm font-medium text-green-400">Verification email sent — check your inbox.</p>
+                    <p className="mt-3 text-sm font-medium text-success">Verification email sent, check your inbox.</p>
                   ) : (
                     <Button
                       type="button"
                       size="sm"
                       onClick={resendVerification}
-                      className="mt-3 gap-2 bg-amber-500 text-white hover:bg-amber-600"
+                      className="mt-3 gap-2 bg-warn text-white hover:bg-warn/90"
                     >
                       <Mail className="h-4 w-4" />
                       Send verification email
