@@ -27,7 +27,7 @@ const productDropdownItems = [
   { label: 'Shibuya Core Drills', href: '/shibuya' },
 ]
 
-export function Header() {
+export function Header({ variant = 'default' }: { variant?: 'default' | 'transparent' }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { language, toggleLanguage } = useLanguage()
@@ -41,12 +41,12 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const bgClass = variant === 'transparent'
+    ? (scrolled ? 'bg-navy shadow-lg shadow-navy/10' : 'bg-transparent')
+    : 'bg-navy'
+
   return (
-    <header className={`fixed top-0 z-50 w-full transition-[background-color,box-shadow] ${
-      scrolled
-        ? 'bg-navy shadow-lg shadow-navy/10'
-        : 'bg-transparent'
-    }`}>
+    <header className={`fixed top-0 z-50 w-full transition-[background-color,box-shadow] ${bgClass}`}>
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="group flex items-center gap-3">

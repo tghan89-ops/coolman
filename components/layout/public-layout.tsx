@@ -11,7 +11,7 @@ interface PublicLayoutProps {
 export function PublicLayout({ children, headerVariant = 'default' }: PublicLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
+      <Header variant={headerVariant} />
       <main className={`flex-1${headerVariant === 'default' ? ' pt-20' : ''}`}>
         {children}
       </main>
