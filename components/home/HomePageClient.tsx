@@ -319,7 +319,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
       {/* ── CTA ──────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-accent py-24 lg:py-32">
         <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `linear-gradient(45deg, #000 25%, transparent 25%), linear-gradient(-45deg, #000 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #000 75%), linear-gradient(-45deg, transparent 75%, #000 75%)`,
+          backgroundImage: `linear-gradient(45deg, var(--navy) 25%, transparent 25%), linear-gradient(-45deg, var(--navy) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--navy) 75%), linear-gradient(-45deg, transparent 75%, var(--navy) 75%)`,
           backgroundSize: '20px 20px',
           backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
         }} />
