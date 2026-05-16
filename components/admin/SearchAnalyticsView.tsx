@@ -19,6 +19,7 @@ import config from '@payload-config'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import type { AdminViewServerProps } from 'payload'
+import { DefaultTemplate } from '@payloadcms/next/templates'
 
 type Win = 7 | 30 | 90
 
@@ -59,6 +60,7 @@ const Empty: React.FC<{ msg: string }> = ({ msg }) => (
 
 const SearchAnalyticsView: React.FC<AdminViewServerProps> = async ({
   initPageResult,
+  params,
   searchParams,
 }) => {
   // Block non-admins. Payload's admin layout already enforces this, but
@@ -205,6 +207,16 @@ const SearchAnalyticsView: React.FC<AdminViewServerProps> = async ({
   )
 
   return (
+    <DefaultTemplate
+      i18n={initPageResult.req.i18n}
+      locale={initPageResult.locale}
+      params={params}
+      payload={initPageResult.req.payload}
+      permissions={initPageResult.permissions}
+      searchParams={searchParams}
+      user={initPageResult.req.user ?? undefined}
+      visibleEntities={initPageResult.visibleEntities}
+    >
     <div style={{ padding: '24px 32px', maxWidth: 1100 }}>
       <header style={{ marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div>
@@ -351,6 +363,7 @@ const SearchAnalyticsView: React.FC<AdminViewServerProps> = async ({
         </Link>
       </p>
     </div>
+    </DefaultTemplate>
   )
 }
 
