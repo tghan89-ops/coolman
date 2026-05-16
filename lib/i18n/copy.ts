@@ -12,6 +12,15 @@ export interface CopyStructure {
     logout: string
     adminOrders: string
     adminAnalytics: string
+    cart: string
+  }
+  cart: {
+    title: string
+    empty: string
+    removeLine: string
+    lineTotal: string
+    checkout: string
+    added: string
   }
   hero: {
     headline: string
@@ -75,6 +84,8 @@ export interface CopyStructure {
     priceYourTier: string
     priceLogInForContract: string
     priceYouSave: string
+    loginToOrder: string
+    addToCart: string
   }
   order: {
     title: string
@@ -113,6 +124,9 @@ export interface CopyStructure {
     status: string
     date: string
     viewDetails: string
+    deliveryAddress: string
+    saveAddress: string
+    addressSaved: string
   }
   status: {
     pending: string
@@ -213,6 +227,15 @@ export const COPY: Record<Language, CopyStructure> = {
       logout: 'Logout',
       adminOrders: 'Orders',
       adminAnalytics: 'Analytics',
+      cart: 'Cart',
+    },
+    cart: {
+      title: 'Your Cart',
+      empty: 'Your cart is empty.',
+      removeLine: 'Remove',
+      lineTotal: 'Line total',
+      checkout: 'Submit Order',
+      added: 'Added',
     },
     hero: {
       headline: 'The Right Blade for Every Cut',
@@ -276,6 +299,8 @@ export const COPY: Record<Language, CopyStructure> = {
       priceYourTier: 'Your tier discount',
       priceLogInForContract: 'Log in to see your contract price',
       priceYouSave: 'You save',
+      loginToOrder: 'Log in to place order',
+      addToCart: 'Add to Cart',
     },
     order: {
       title: 'Order Request',
@@ -314,6 +339,9 @@ export const COPY: Record<Language, CopyStructure> = {
       status: 'Status',
       date: 'Date',
       viewDetails: 'View',
+      deliveryAddress: 'Delivery Address',
+      saveAddress: 'Save address',
+      addressSaved: 'Saved.',
     },
     status: {
       pending: 'Pending',
@@ -412,6 +440,15 @@ export const COPY: Record<Language, CopyStructure> = {
       logout: 'Log Keluar',
       adminOrders: 'Pesanan',
       adminAnalytics: 'Analitik',
+      cart: 'Troli',
+    },
+    cart: {
+      title: 'Troli Anda',
+      empty: 'Troli anda kosong.',
+      removeLine: 'Buang',
+      lineTotal: 'Jumlah baris',
+      checkout: 'Hantar Pesanan',
+      added: 'Ditambah',
     },
     hero: {
       headline: 'Bilah Tepat untuk Setiap Potongan',
@@ -475,6 +512,8 @@ export const COPY: Record<Language, CopyStructure> = {
       priceYourTier: 'Diskaun tahap anda',
       priceLogInForContract: 'Log masuk untuk lihat harga kontrak anda',
       priceYouSave: 'Anda jimat',
+      loginToOrder: 'Log masuk untuk membuat pesanan',
+      addToCart: 'Tambah ke Troli',
     },
     order: {
       title: 'Permintaan Pesanan',
@@ -513,6 +552,9 @@ export const COPY: Record<Language, CopyStructure> = {
       status: 'Status',
       date: 'Tarikh',
       viewDetails: 'Lihat',
+      deliveryAddress: 'Alamat Penghantaran',
+      saveAddress: 'Simpan alamat',
+      addressSaved: 'Disimpan.',
     },
     status: {
       pending: 'Menunggu',

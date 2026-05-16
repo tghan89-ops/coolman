@@ -8,6 +8,7 @@ import { useLivePreview } from '@payloadcms/live-preview-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
+import { AddToCartButton } from '@/components/cart/AddToCartButton'
 
 export function ProductDetailClient({
   initialData,
@@ -26,7 +27,7 @@ export function ProductDetailClient({
 
   const [activeTab, setActiveTab] = useState<'specs' | 'applications' | 'usage'>('specs')
   const [quantity, setQuantity] = useState(1)
-  const orderHref = `/order-request?product=${data.id}&qty=${quantity}`
+  const nextHref = `/products/${data.id}`
 
   // Payload relations come back as objects ({id, name, nameBM, ...}); plain seeds may still be strings/numbers.
   const labelOf = (v: any): string => {
@@ -214,12 +215,7 @@ export function ProductDetailClient({
 
               {/* CTA */}
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button size="lg" className="group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent" asChild>
-                  <Link href={orderHref}>
-                    Request Order
-                    <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </Button>
+                <AddToCartButton productId={data.id} quantity={quantity} nextHref={nextHref} />
                 <Button size="lg" variant="outline" className="h-14 border-2 border-white/30 bg-transparent font-sans font-bold text-white hover:border-white hover:bg-white hover:text-navy" asChild>
                   <Link href="/contact">Request a quote</Link>
                 </Button>
@@ -388,9 +384,7 @@ export function ProductDetailClient({
               <p className="mt-1 text-white/80">Our engineers are available to help you choose the right blade.</p>
             </div>
             <div className="flex gap-3">
-              <Button className="h-12 bg-white px-6 font-sans font-bold text-navy hover:bg-secondary" asChild>
-                <Link href={orderHref}>Request Order</Link>
-              </Button>
+              <AddToCartButton productId={data.id} quantity={quantity} nextHref={nextHref} />
               <Button variant="outline" className="h-12 border-2 border-white bg-transparent px-6 font-sans font-bold text-white hover:bg-white hover:text-accent" asChild>
                 <Link href="/contact">Talk to an Engineer</Link>
               </Button>

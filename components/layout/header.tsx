@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useLanguage } from '@/lib/i18n/context'
 import { useAuth } from '@/lib/auth/context'
+import { CartBadge } from '@/components/cart/CartBadge'
 
 const navItems = [
   { label: 'Applications', href: '/applications' },
@@ -92,6 +93,7 @@ export function Header() {
 
         {/* Right side actions */}
         <div className="flex items-center gap-3">
+          <CartBadge />
           {/* Language Toggle */}
           <button
             onClick={toggleLanguage}
