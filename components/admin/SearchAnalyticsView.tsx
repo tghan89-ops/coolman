@@ -257,9 +257,10 @@ const SearchAnalyticsView: React.FC<AdminViewServerProps> = async ({
           .sa-bar-row { display: flex; align-items: flex-end; gap: 2px; height: 120px; padding: 4px 0; }
           .sa-bar { position: relative; flex: 1; min-width: 2px; border-radius: 2px 2px 0 0; transition: filter 120ms ease-out, transform 120ms ease-out; cursor: default; }
           .sa-bar:hover { filter: brightness(1.25); transform: scaleY(1.04); transform-origin: bottom; }
-          .sa-bar .sa-tip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--theme-elevation-900, #111); color: #fff; font-size: 11px; line-height: 1.3; padding: 4px 8px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 80ms ease-out; z-index: 5; }
+          .sa-bar .sa-tip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1a1a1a !important; color: #ffffff !important; font-size: 11px; line-height: 1.3; padding: 5px 9px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 80ms ease-out; z-index: 5; box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
           .sa-bar:hover .sa-tip { opacity: 1; }
-          .sa-bar .sa-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: var(--theme-elevation-900, #111); }
+          .sa-bar .sa-tip * { color: #ffffff !important; }
+          .sa-bar .sa-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: #1a1a1a; }
         `}</style>
         {total === 0 ? (
           <Empty msg="No searches in this window yet." />
