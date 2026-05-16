@@ -251,24 +251,35 @@ const SearchAnalyticsView: React.FC<AdminViewServerProps> = async ({
 
       {/* Per-day bar chart */}
       <Card title="Searches per day">
+        {/* Scoped CSS for instant hover tooltip + bar highlight. Native HTML
+            `title=` tooltips have a ~1s OS-level delay, so we render our own. */}
+        <style>{`
+          .sa-bar-row { display: flex; align-items: flex-end; gap: 2px; height: 120px; padding: 4px 0; }
+          .sa-bar { position: relative; flex: 1; min-width: 2px; border-radius: 2px 2px 0 0; transition: filter 120ms ease-out, transform 120ms ease-out; cursor: default; }
+          .sa-bar:hover { filter: brightness(1.25); transform: scaleY(1.04); transform-origin: bottom; }
+          .sa-bar .sa-tip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--theme-elevation-900, #111); color: #fff; font-size: 11px; line-height: 1.3; padding: 4px 8px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 80ms ease-out; z-index: 5; }
+          .sa-bar:hover .sa-tip { opacity: 1; }
+          .sa-bar .sa-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: var(--theme-elevation-900, #111); }
+        `}</style>
         {total === 0 ? (
           <Empty msg="No searches in this window yet." />
         ) : (
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 120, padding: '4px 0' }}>
+          <div className="sa-bar-row">
             {perDayArr.map(([key, value]) => {
               const h = Math.max(2, Math.round((value / maxDay) * 110))
               return (
                 <div
                   key={key}
-                  title={`${fmtDayLabel(key)} — ${value} search${value === 1 ? '' : 'es'}`}
+                  className="sa-bar"
                   style={{
-                    flex: 1,
                     height: h,
                     background: value === 0 ? 'var(--theme-elevation-100)' : 'var(--theme-success-500)',
-                    borderRadius: '2px 2px 0 0',
-                    minWidth: 2,
                   }}
-                />
+                >
+                  <span className="sa-tip">
+                    {fmtDayLabel(key)} — {value} search{value === 1 ? '' : 'es'}
+                  </span>
+                </div>
               )
             })}
           </div>
