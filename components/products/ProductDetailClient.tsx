@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
 import { bondLabel } from '@/lib/products/bond-label'
+import { extractYouTubeId, youTubeEmbedUrl } from '@/lib/products/youtube'
 
 export function ProductDetailClient({
   initialData,
@@ -93,6 +94,11 @@ export function ProductDetailClient({
     { label: 'Max RPM', value: data.maxRPM ?? 'See manual', icon: Zap },
     { label: 'Machine Tier', value: machineTierLabel, icon: RotateCcw },
   ]
+
+  // Product video — Alan pastes a YouTube URL in admin; we parse it to an ID
+  // and render an embed. If the URL is missing or unparseable we render
+  // nothing rather than a broken player.
+  const youTubeId = extractYouTubeId(data.youtubeUrl)
 
   // Related products from Payload (depth:2 resolves these to full objects)
   const relatedProducts: any[] = Array.isArray(data.relatedProducts)
@@ -336,7 +342,25 @@ export function ProductDetailClient({
 
           {/* Usage Guide tab */}
           {activeTab === 'usage' && (
-            <div className="grid gap-6 lg:grid-cols-2">
+            <div className="space-y-8">
+              {youTubeId && (
+                <div>
+                  <p className="mb-3 text-xs font-bold tracking-wider text-ink-faint">
+                    Product Video
+                  </p>
+                  <div className="relative aspect-video w-full overflow-hidden border border-rule bg-navy">
+                    <iframe
+                      src={youTubeEmbedUrl(youTubeId)}
+                      title={`${data.name} — product video`}
+                      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full"
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="grid gap-6 lg:grid-cols-2">
               {[
                 { step: '01', title: 'Inspect Before Use', body: 'Check for cracks, warping, or damage before mounting. Never use a damaged blade.' },
                 { step: '02', title: 'Correct Mounting', body: 'Ensure the arbor size matches your machine. Tighten securely with the correct flange.' },
@@ -351,6 +375,7 @@ export function ProductDetailClient({
                   </div>
                 </div>
               ))}
+              </div>
             </div>
           )}
         </div>
