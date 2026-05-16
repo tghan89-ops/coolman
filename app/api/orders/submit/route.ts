@@ -253,7 +253,9 @@ export async function POST(req: NextRequest) {
     }
 
     // 17. Queue email delivery (order write commits FIRST — email is decoupled)
-    const alanEmail = process.env.ALAN_EMAIL ?? 'alan@coolman.com.my'
+    // Use `||` not `??` so an empty-string env var also falls through; trim to
+    // strip stray whitespace that would fail Payload's email field validator.
+    const alanEmail = (process.env.ALAN_EMAIL || 'alan@coolman.com.my').trim()
     await payload.create({
       collection: 'emailDeliveries',
       data: {
@@ -274,6 +276,13 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     await payload.db.rollbackTransaction(transactionID).catch(() => {})
     console.error('[orders/submit]', err)
+    try {
+      const anyErr = err as any
+      const inner = anyErr?.data?.errors ?? anyErr?.cause?.errors
+      if (inner) {
+        console.error('[orders/submit] field errors:', JSON.stringify(inner, null, 2))
+      }
+    } catch {}
     return NextResponse.json({ error: 'Order submission failed. Please try again.' }, { status: 500 })
   }
 }
