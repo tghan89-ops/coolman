@@ -26,11 +26,14 @@ export function ProductDetailClient({
 
   const [activeTab, setActiveTab] = useState<'specs' | 'applications' | 'usage'>('specs')
 
-  // Payload relations come back as objects ({id, name, nameBM, ...}); plain seeds may still be strings.
-  const labelOf = (v: any): string =>
-    v == null ? '' : typeof v === 'string' ? v : (v.name ?? v.nameBM ?? '')
+  // Payload relations come back as objects ({id, name, nameBM, ...}); plain seeds may still be strings/numbers.
+  const labelOf = (v: any): string => {
+    if (v == null) return ''
+    if (typeof v === 'object') return v.name ?? v.nameBM ?? ''
+    return String(v)
+  }
   const keyOf = (v: any, fallback: number): string | number =>
-    v == null ? fallback : typeof v === 'string' ? v : (v.id ?? fallback)
+    v == null ? fallback : typeof v === 'object' ? (v.id ?? fallback) : v
 
   const materials: any[] = Array.isArray(data.recommendedMaterials) ? data.recommendedMaterials : []
   const applications: any[] = Array.isArray(data.applications) ? data.applications : []
@@ -46,12 +49,12 @@ export function ProductDetailClient({
       : '/images/blade-granite.jpg'
 
   const specs = [
-    { label: 'Diameter', value: labelOf(data.diameter) || data.diameter, icon: Ruler },
-    { label: 'Arbor Size', value: labelOf(data.arborSize) || data.arborSize, icon: Ruler },
-    { label: 'Segment Height', value: labelOf(data.segmentHeight) || data.segmentHeight, icon: Ruler },
-    { label: 'Bond Type', value: labelOf(data.bondType) || data.bondType, icon: Shield },
+    { label: 'Diameter', value: labelOf(data.diameter), icon: Ruler },
+    { label: 'Arbor Size', value: labelOf(data.arborSize), icon: Ruler },
+    { label: 'Segment Height', value: labelOf(data.segmentHeight), icon: Ruler },
+    { label: 'Bond Type', value: labelOf(data.bondType), icon: Shield },
     { label: 'Max RPM', value: data.maxRPM ?? 'See manual', icon: Zap },
-    { label: 'Cutting Volume', value: labelOf(data.recommendedCuttingVolume) || data.recommendedCuttingVolume, icon: RotateCcw },
+    { label: 'Cutting Volume', value: labelOf(data.recommendedCuttingVolume), icon: RotateCcw },
   ]
 
   // Related products from Payload (depth:2 resolves these to full objects)
