@@ -69,17 +69,11 @@ export const HomePage: GlobalConfig = {
       name: 'applicationList',
       type: 'array',
       admin: { description: 'Application categories shown in the homepage selector.' },
-      defaultValue: [
-        { id: 'concrete', label: 'Concrete', image: '/images/blade-concrete.jpg' },
-        { id: 'granite', label: 'Granite', image: '/images/blade-granite.jpg' },
-        { id: 'marble', label: 'Marble', image: '/images/blade-granite.jpg' },
-        { id: 'tile', label: 'Tile & Ceramic', image: '/images/blade-tile.jpg' },
-      ],
       fields: [
         { name: 'id', type: 'text', required: true, admin: { description: 'URL-safe slug e.g. concrete' } },
         { name: 'label', type: 'text', required: true },
         { name: 'labelBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'image', type: 'text', required: true, admin: { description: 'Path or URL to image' } },
+        { name: 'image', type: 'upload', relationTo: 'media', admin: { description: 'Upload an image. Leave blank to use the built-in default for this slot.' } },
       ],
     },
     {
