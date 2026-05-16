@@ -107,10 +107,10 @@ All colors are defined as CSS custom properties in [`app/globals.css`](app/globa
 Every page composed from these primitives:
 
 ### Top navigation
-- Translucent navy `rgba(10, 22, 40, 0.92)` with `backdrop-filter: blur(8px)`.
-- Sticky. 64px tall. Brand mark left, primary nav center, account/cart right.
-- Brand mark: `Cool` in white + `man` in `--accent`. JetBrains Mono not used for the wordmark — IBM Plex Sans 600.
-- Active link underlined with 2px `--accent` rule, no background fill.
+- Transparent over hero; flips to solid `--navy` once the page scrolls past 20px. No `backdrop-filter` blur — the impeccable audit found the frosted state decorative and inconsistent with Industrial Premium posture (Hilti and Husqvarna both ship solid headers). The mobile drawer is also solid `--navy`.
+- Sticky. 80px tall. Brand mark left, primary nav center, account/CTA right.
+- Brand mark: `Cool` in white + `man` in `--accent`. IBM Plex Sans 600. JetBrains Mono is never used for the wordmark.
+- Active link underlined with 2px `--accent` rule on hover, no background fill.
 
 ### Hero (homepage only)
 - 70vh, full-bleed.

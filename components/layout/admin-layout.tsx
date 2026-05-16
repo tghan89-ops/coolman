@@ -47,7 +47,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                 <span className="text-sm font-bold text-white">C</span>
               </div>
               <div>
-                <span className="text-lg font-bold text-white">Coolman</span>
+                <span className="text-lg font-bold text-white">Cool<span className="text-accent">man</span></span>
                 <span className="ml-1 text-xs text-accent-light">Admin</span>
               </div>
             </Link>

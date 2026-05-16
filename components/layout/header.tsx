@@ -53,7 +53,7 @@ export function Header() {
             <span className="font-sans text-2xl font-bold text-white">C</span>
           </div>
           <span className="font-sans text-2xl font-bold tracking-wider text-white">
-            Coolman
+            Cool<span className="text-accent">man</span>
           </span>
         </Link>
 

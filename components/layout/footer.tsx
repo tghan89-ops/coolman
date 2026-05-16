@@ -74,7 +74,7 @@ export function Footer() {
               <div className="flex h-10 w-10 items-center justify-center bg-accent">
                 <span className="text-2xl font-bold">C</span>
               </div>
-              <span className="text-2xl font-bold tracking-wider">Coolman</span>
+              <span className="text-2xl font-bold tracking-wider">Cool<span className="text-accent">man</span></span>
             </Link>
             <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">
               Industrial-grade diamond cutting tools engineered for precision and durability. 
