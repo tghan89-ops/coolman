@@ -18,11 +18,15 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
     if (language === 'BM' && bm && bm.trim()) return bm
     return en ?? ''
   }
-  const { data } = useLivePreview({
-    initialData,
+  const { data: liveData } = useLivePreview({
+    initialData: initialData ?? {},
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
     depth: 2,
   })
+  // Tolerate a missing global (e.g. fresh production DB where ShibuyaPage
+  // hasn't been seeded yet) — every field below falls back to a hardcoded
+  // default already, but only if `data` itself is an object.
+  const data: any = liveData ?? initialData ?? {}
 
   const [selectedMachine, setSelectedMachine] = useState<any>(null)
 
