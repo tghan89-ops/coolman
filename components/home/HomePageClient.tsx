@@ -71,6 +71,10 @@ export function HomePageClient({ initialData }: { initialData: any }) {
   const heroPrimaryCtaLabel = pick(data?.hero?.primaryCtaLabel ?? 'Explore Products', data?.hero?.primaryCtaLabelBM)
   const heroSecondaryCtaLabel = pick(data?.hero?.secondaryCtaLabel ?? 'See applications', data?.hero?.secondaryCtaLabelBM)
 
+  // Uploaded hero image (Payload Media doc) — fallback to bundled asset if none uploaded.
+  const heroImageUrl: string = (typeof data?.hero?.heroImage === 'object' && data?.hero?.heroImage?.url) || '/images/hero-blade.jpg'
+  const heroImageAlt: string = (typeof data?.hero?.heroImage === 'object' && data?.hero?.heroImage?.alt) || 'Diamond blade cutting'
+
   const stats: Array<{ value: string; label: string; labelBM?: string }> = data?.stats ?? defaultStats
 
   const ctaHeadline = pick(data?.ctaSection?.headline ?? 'Ready to Elevate\nYour Operations?', data?.ctaSection?.headlineBM)
@@ -104,7 +108,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
         }} />
 
         <div className="absolute right-0 top-0 h-full w-1/2 opacity-40 lg:opacity-60">
-          <Image src="/images/hero-blade.jpg" alt="Diamond blade cutting" fill className="object-cover" priority />
+          <Image src={heroImageUrl} alt={heroImageAlt} fill className="object-cover" priority unoptimized={heroImageUrl.startsWith('http')} />
           <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/80 to-transparent" />
         </div>
 
