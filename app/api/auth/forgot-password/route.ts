@@ -34,12 +34,14 @@ export async function POST(req: NextRequest) {
 
     let token: string | null = null
     try {
+      // Payload v3: forgotPassword returns the token as a string directly,
+      // not wrapped in { token }. See node_modules/payload/dist/auth/operations/forgotPassword.d.ts
       const result = await payload.forgotPassword({
         collection: 'contractors',
         data: { email: normalisedEmail },
         disableEmail: true,
       })
-      token = (result as unknown as { token?: string })?.token ?? null
+      token = typeof result === 'string' ? result : null
       if (!token) {
         console.error('[forgot-password] Payload forgotPassword returned no token for:', normalisedEmail, result)
       }
@@ -71,6 +73,16 @@ export async function POST(req: NextRequest) {
       })
       if (!result.success) {
         console.error('[forgot-password] sendEmail failed for', normalisedEmail, result.error)
+      } else if (result.messageId === 'dev-no-send') {
+        // Local UAT — RESEND_API_KEY is blank, so the email wrapper swallowed
+        // the send. Print the reset link prominently so it can be copy-pasted
+        // into a browser without needing a real Resend account.
+        console.log('\n========================================')
+        console.log('[forgot-password] DEV MODE — no email sent.')
+        console.log('Recipient:', normalisedEmail)
+        console.log('Reset link (copy this into your browser):')
+        console.log(link)
+        console.log('========================================\n')
       } else {
         console.log('[forgot-password] reset email sent to', normalisedEmail, 'messageId:', result.messageId)
       }
