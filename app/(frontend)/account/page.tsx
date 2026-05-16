@@ -54,6 +54,7 @@ export default async function AccountPage() {
           effectivePrice: perUnit * qty,
           status: titleCase(String(o.order_status ?? 'pending')) as AccountOrder['status'],
           submittedAt: o.submitted_at,
+          submissionId: o.submission_id ?? o.idempotency_key ?? String(o.id),
         }
       })
     }

@@ -1,12 +1,13 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Package, ShoppingCart, LogOut, ArrowRight, Percent, AlertCircle, Mail } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { OrderStatusBadge } from '@/components/shared/status-badge'
+import { DeliveryAddressForm } from '@/components/account/DeliveryAddressForm'
 import { useLanguage } from '@/lib/i18n/context'
 import { useAuth } from '@/lib/auth/context'
 import { formatPrice, formatDate } from '@/lib/utils/formatting'
@@ -19,6 +20,7 @@ export interface AccountOrder {
   effectivePrice: number
   status: OrderStatus
   submittedAt: string
+  submissionId?: string
 }
 
 export function AccountClient({ orders }: { orders: AccountOrder[] }) {
@@ -44,6 +46,16 @@ export function AccountClient({ orders }: { orders: AccountOrder[] }) {
   }, [isLoading, isAuthenticated, router])
 
   const userOrders = orders
+
+  const groupedOrders = useMemo(() => {
+    const map = new Map<string, AccountOrder[]>()
+    for (const o of userOrders) {
+      const key = o.submissionId ?? o.id
+      if (!map.has(key)) map.set(key, [])
+      map.get(key)!.push(o)
+    }
+    return Array.from(map.entries())
+  }, [userOrders])
 
   if (isLoading) {
     return (
@@ -162,6 +174,17 @@ export function AccountClient({ orders }: { orders: AccountOrder[] }) {
           </div>
         </section>
 
+        {/* Delivery Address */}
+        {isContractor && (
+          <section className="py-4">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <DeliveryAddressForm
+                initialAddress={user.contractor?.deliveryAddress ?? ''}
+              />
+            </div>
+          </section>
+        )}
+
         {/* Orders Section */}
         <section className="py-8">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -187,82 +210,50 @@ export function AccountClient({ orders }: { orders: AccountOrder[] }) {
                     </Button>
                   </div>
                 ) : (
-                  <>
-                    {/* Desktop Table */}
-                    <div className="hidden overflow-x-auto md:block">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-white/10 text-left text-xs font-medium uppercase tracking-wider text-ink-muted">
-                            <th className="pb-4">{t.account.orderId}</th>
-                            <th className="pb-4">{t.account.product}</th>
-                            <th className="pb-4 text-center">{t.account.quantity}</th>
-                            <th className="pb-4 text-right">{t.account.total}</th>
-                            <th className="pb-4">{t.account.status}</th>
-                            <th className="pb-4">{t.account.date}</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/5">
-                          {userOrders.map((order) => (
-                            <tr key={order.id} className="group">
-                              <td className="py-4 font-mono text-sm text-ink-muted">{order.id}</td>
-                              <td className="py-4">
-                                <div>
-                                  <p className="font-medium text-white">{order.product.name}</p>
-                                  <p className="text-xs text-ink-muted">{order.product.sku}</p>
-                                </div>
-                              </td>
-                              <td className="py-4 text-center text-white">{order.quantity}</td>
-                              <td className="py-4 text-right font-medium text-white">
-                                {formatPrice(order.effectivePrice)}
-                              </td>
-                              <td className="py-4">
-                                <OrderStatusBadge status={order.status} />
-                              </td>
-                              <td className="py-4 text-ink-muted">
-                                {formatDate(order.submittedAt)}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {/* Mobile Cards */}
-                    <div className="space-y-4 md:hidden">
-                      {userOrders.map((order) => (
+                  <div className="space-y-4">
+                    {groupedOrders.map(([submissionKey, lines]) => {
+                      const submissionTotal = lines.reduce((sum, l) => sum + l.effectivePrice, 0)
+                      const submittedAt = lines[0]?.submittedAt
+                      const status = lines[0]?.status
+                      const shortKey = submissionKey.slice(0, 8)
+                      return (
                         <div
-                          key={order.id}
-                          className="rounded-xl border border-white/10 bg-white/[0.02] p-4"
+                          key={submissionKey}
+                          className="rounded-xl border border-white/10 bg-white/[0.02] p-4 md:p-6"
                         >
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <p className="font-medium text-white">{order.product.name}</p>
-                              <p className="text-xs text-ink-muted">{order.product.sku}</p>
+                          <div className="flex flex-col gap-2 border-b border-white/10 pb-3 md:flex-row md:items-center md:justify-between">
+                            <div className="flex items-center gap-3">
+                              <p className="font-mono text-xs text-ink-muted">#{shortKey}</p>
+                              <OrderStatusBadge status={status} />
                             </div>
-                            <OrderStatusBadge status={order.status} />
-                          </div>
-                          <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                            <div>
-                              <p className="text-ink-muted">{t.account.quantity}</p>
-                              <p className="font-medium text-white">{order.quantity}</p>
-                            </div>
-                            <div>
-                              <p className="text-ink-muted">{t.account.total}</p>
-                              <p className="font-medium text-white">{formatPrice(order.effectivePrice)}</p>
-                            </div>
-                            <div>
-                              <p className="text-ink-muted">{t.account.orderId}</p>
-                              <p className="font-mono text-xs text-ink-muted">{order.id}</p>
-                            </div>
-                            <div>
-                              <p className="text-ink-muted">{t.account.date}</p>
-                              <p className="text-ink-muted">{formatDate(order.submittedAt)}</p>
+                            <div className="flex items-center gap-4 text-sm">
+                              <span className="text-ink-muted">{submittedAt ? formatDate(submittedAt) : ''}</span>
+                              <span className="font-mono font-semibold text-white">
+                                {formatPrice(submissionTotal)}
+                              </span>
                             </div>
                           </div>
+                          <ul className="mt-3 divide-y divide-white/5">
+                            {lines.map((line) => (
+                              <li
+                                key={line.id}
+                                className="flex flex-col gap-1 py-3 md:flex-row md:items-center md:justify-between"
+                              >
+                                <div>
+                                  <p className="font-medium text-white">{line.product.name}</p>
+                                  <p className="font-mono text-xs text-ink-muted">{line.product.sku}</p>
+                                </div>
+                                <div className="flex items-center gap-4 text-sm">
+                                  <span className="text-ink-muted">×{line.quantity}</span>
+                                  <span className="font-mono text-white">{formatPrice(line.effectivePrice)}</span>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      ))}
-                    </div>
-                  </>
+                      )
+                    })}
+                  </div>
                 )}
               </div>
             </div>
