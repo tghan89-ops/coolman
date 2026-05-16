@@ -381,12 +381,14 @@ export function ProductsClient({
                 <>
                 <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                   {pagedProducts.map((product: any) => {
-                    const cardImageUrl: string =
+                    // Payload returns the upload relation as the full media doc at depth>=1.
+                    // If it ever arrives as a bare ID (number/string), there's no URL to render —
+                    // show a clean placeholder so missing photos look obviously missing, not like
+                    // a stock photo of an unrelated blade.
+                    const cardImageUrl: string | null =
                       typeof product.image === 'object' && product.image?.url
                         ? product.image.url
-                        : typeof product.image === 'string'
-                        ? product.image
-                        : '/images/blade-granite.jpg'
+                        : null
                     return (
                       <Link
                         key={product.id}
@@ -394,13 +396,19 @@ export function ProductsClient({
                         className="group relative flex flex-col overflow-hidden border border-rule bg-white transition-[border-color,box-shadow] hover:border-accent/30 hover:shadow-lg"
                       >
                         <div className="relative aspect-square overflow-hidden bg-secondary">
-                          <Image
-                            src={cardImageUrl}
-                            alt={product.name}
-                            width={400}
-                            height={400}
-                            className="h-full w-full object-cover"
-                          />
+                          {cardImageUrl ? (
+                            <Image
+                              src={cardImageUrl}
+                              alt={product.name}
+                              width={400}
+                              height={400}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center bg-navy/5 text-center text-xs font-mono uppercase tracking-widest text-ink-muted">
+                              No image
+                            </div>
+                          )}
                           <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
                               <div className="flex items-center gap-2 bg-accent-dark px-6 py-3 font-sans text-sm font-semibold text-white">

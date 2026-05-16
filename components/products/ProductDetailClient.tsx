@@ -43,13 +43,12 @@ export function ProductDetailClient({
   const primaryMaterial = labelOf(materials[0])
   const machinePowerLabel = labelOf(data.recommendedMachinePower)
 
-  // Resolve image URL from Payload media relation
-  const imageUrl: string =
-    typeof data.image === 'object' && data.image?.url
-      ? data.image.url
-      : typeof data.image === 'string'
-      ? data.image
-      : '/images/blade-granite.jpg'
+  // Resolve image URL from Payload media relation. If the product has no image
+  // uploaded yet, we render a clean "no image" panel instead of substituting an
+  // unrelated stock blade photo (which used to mislead admins into thinking the
+  // upload had worked).
+  const imageUrl: string | null =
+    typeof data.image === 'object' && data.image?.url ? data.image.url : null
 
   const specs = [
     { label: 'Diameter', value: labelOf(data.diameter), icon: Ruler },
@@ -102,15 +101,23 @@ export function ProductDetailClient({
               </div>
 
               <div className="relative aspect-square overflow-hidden border border-white/10 bg-navy-light">
-                <Image
-                  src={imageUrl}
-                  alt={data.name}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                {/* Overlay tint */}
-                <div className="absolute inset-0 bg-navy/20" />
+                {imageUrl ? (
+                  <>
+                    <Image
+                      src={imageUrl}
+                      alt={data.name}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    {/* Overlay tint */}
+                    <div className="absolute inset-0 bg-navy/20" />
+                  </>
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-center text-xs font-mono uppercase tracking-widest text-ink-muted">
+                    No image uploaded
+                  </div>
+                )}
 
                 {/* Material badge */}
                 <div className="absolute left-4 top-4 border border-accent/40 bg-accent/20 px-3 py-1">
@@ -118,15 +125,6 @@ export function ProductDetailClient({
                     {primaryMaterial || 'Premium'}
                   </span>
                 </div>
-              </div>
-
-              {/* Thumbnail row */}
-              <div className="mt-4 grid grid-cols-4 gap-2">
-                {['/images/blade-granite.jpg', '/images/blade-concrete.jpg', '/images/blade-tile.jpg', '/images/hero-blade.jpg'].map((src, i) => (
-                  <div key={i} className="aspect-square cursor-pointer overflow-hidden border border-white/10 opacity-60 transition-[border-color,opacity] hover:border-accent/50 hover:opacity-100">
-                    <Image src={src} alt="" width={80} height={80} className="h-full w-full object-cover" />
-                  </div>
-                ))}
               </div>
             </div>
 
@@ -317,12 +315,8 @@ export function ProductDetailClient({
             </div>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedProducts.map((p: any) => {
-                const relatedImageUrl: string =
-                  typeof p.image === 'object' && p.image?.url
-                    ? p.image.url
-                    : typeof p.image === 'string'
-                    ? p.image
-                    : '/images/blade-granite.jpg'
+                const relatedImageUrl: string | null =
+                  typeof p.image === 'object' && p.image?.url ? p.image.url : null
                 return (
                   <Link
                     key={p.id}
@@ -330,13 +324,19 @@ export function ProductDetailClient({
                     className="group relative flex flex-col overflow-hidden border border-white/10 bg-white/5 transition-[border-color,box-shadow] hover:border-accent/30 hover:shadow-lg"
                   >
                     <div className="relative aspect-square overflow-hidden bg-navy-light">
-                      <Image
-                        src={relatedImageUrl}
-                        alt={p.name}
-                        width={400}
-                        height={400}
-                        className="h-full w-full object-cover"
-                      />
+                      {relatedImageUrl ? (
+                        <Image
+                          src={relatedImageUrl}
+                          alt={p.name}
+                          width={400}
+                          height={400}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-center text-xs font-mono uppercase tracking-widest text-ink-muted">
+                          No image
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
                           <div className="flex items-center gap-2 bg-accent-dark px-6 py-3 font-sans text-sm font-semibold text-white">

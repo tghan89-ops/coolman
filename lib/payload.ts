@@ -12,6 +12,7 @@ export async function getProducts(): Promise<any[]> {
       collection: 'products',
       limit: 200,
       sort: 'name',
+      depth: 2,
     })
     return result.docs
   } catch {
@@ -22,7 +23,7 @@ export async function getProducts(): Promise<any[]> {
 export async function getProductById(id: string): Promise<any | null> {
   try {
     const payload = await getPayloadClient()
-    const product = await payload.findByID({ collection: 'products', id })
+    const product = await payload.findByID({ collection: 'products', id, depth: 2 })
     return product
   } catch {
     return null
