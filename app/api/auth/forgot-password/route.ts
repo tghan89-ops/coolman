@@ -14,26 +14,48 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'email required' }, { status: 400 })
     }
 
+    const normalisedEmail = email.toLowerCase().trim()
     const payload = await getPayload({ config })
+
+    // Confirm the contractor exists before invoking forgotPassword so we can
+    // log a clear reason when no email is sent. We still return a neutral
+    // response to the client either way.
+    const lookup = await payload.find({
+      collection: 'contractors',
+      where: { email: { equals: normalisedEmail } },
+      limit: 1,
+      overrideAccess: true,
+    })
+
+    if (lookup.docs.length === 0) {
+      console.warn('[forgot-password] no contractor found for email:', normalisedEmail)
+      return NextResponse.json({ message: 'If that email exists, a reset link has been sent.' })
+    }
 
     let token: string | null = null
     try {
       const result = await payload.forgotPassword({
         collection: 'contractors',
-        data: { email: email.toLowerCase().trim() },
+        data: { email: normalisedEmail },
         disableEmail: true,
       })
       token = (result as unknown as { token?: string })?.token ?? null
-    } catch {
-      // unknown email — fall through to the neutral response
+      if (!token) {
+        console.error('[forgot-password] Payload forgotPassword returned no token for:', normalisedEmail, result)
+      }
+    } catch (err) {
+      console.error('[forgot-password] payload.forgotPassword threw for', normalisedEmail, err)
       token = null
     }
 
     if (token) {
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? ''
+      const baseUrl =
+        process.env.NEXT_PUBLIC_SERVER_URL ??
+        process.env.NEXT_PUBLIC_SITE_URL ??
+        new URL(req.url).origin
       const link = `${baseUrl}/auth/reset-password?token=${encodeURIComponent(token)}`
-      await sendEmail({
-        to: email,
+      const result = await sendEmail({
+        to: normalisedEmail,
         subject: 'Reset your Coolman password',
         html: `
           <div style="font-family: system-ui, sans-serif; max-width: 560px; padding: 24px;">
@@ -42,10 +64,16 @@ export async function POST(req: NextRequest) {
             <p style="margin: 24px 0;">
               <a href="${link}" style="background:#3B82F6;color:#fff;padding:12px 20px;text-decoration:none;font-weight:600;border-radius:6px;">Reset password</a>
             </p>
+            <p style="font-size: 13px; color: #475569; word-break: break-all;">Or copy this link: ${link}</p>
             <p style="font-size: 13px; color: #64748B;">If you didn't ask for this, you can safely ignore this email — your password won't change.</p>
           </div>
         `,
       })
+      if (!result.success) {
+        console.error('[forgot-password] sendEmail failed for', normalisedEmail, result.error)
+      } else {
+        console.log('[forgot-password] reset email sent to', normalisedEmail, 'messageId:', result.messageId)
+      }
     }
 
     return NextResponse.json({ message: 'If that email exists, a reset link has been sent.' })
