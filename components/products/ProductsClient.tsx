@@ -318,31 +318,17 @@ export function ProductsClient({
       <section className="bg-secondary py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
-          {/* Contractor-pricing prompt — shown only when the visitor cannot see
-              a contract price yet. Card cells can't host a nested <a>, so the
-              login link lives here at the page level. */}
-          {(priceMode === 'public' || priceMode === 'unverified') && (
+          {/* Account-pending-verification prompt only. Public visitors
+              get no contract-pricing banner — GH chose to keep the catalogue
+              free of login-nag copy (2026-05-16). */}
+          {priceMode === 'unverified' && (
             <div className="mb-8 flex flex-col items-start justify-between gap-3 border border-rule bg-white px-5 py-4 sm:flex-row sm:items-center">
               <div>
-                <p className="text-sm font-bold text-navy">
-                  {priceMode === 'public'
-                    ? 'Contractors see your own contract price'
-                    : 'Account pending verification'}
-                </p>
+                <p className="text-sm font-bold text-navy">Account pending verification</p>
                 <p className="mt-0.5 text-sm text-ink-muted">
-                  {priceMode === 'public'
-                    ? 'Log in to see tier-discounted pricing on every product.'
-                    : "Once Coolman verifies your account, your contract pricing will show here."}
+                  Once Coolman verifies your account, your contract pricing will show here.
                 </p>
               </div>
-              {priceMode === 'public' && (
-                <Link
-                  href="/auth/login"
-                  className="whitespace-nowrap text-sm font-bold text-accent-dark hover:text-accent"
-                >
-                  Log in →
-                </Link>
-              )}
             </div>
           )}
 

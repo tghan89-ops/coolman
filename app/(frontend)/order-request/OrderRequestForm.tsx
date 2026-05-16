@@ -327,22 +327,24 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
               </CardContent>
             </Card>
 
-            {/* Delivery Address */}
-            <Card className="border-border/30">
-              <CardHeader>
-                <CardTitle className="text-lg">{t.order.deliveryAddress}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  value={deliveryAddress}
-                  onChange={e => setDeliveryAddress(e.target.value)}
-                  onBlur={handleDraftSave}
-                  rows={3}
-                  className="resize-none border-border/40"
-                  required
-                />
-              </CardContent>
-            </Card>
+            {/* Delivery address is hidden on the order page by design
+                (GH 2026-05-16). Address comes from the contractor's
+                account record and is submitted silently. If missing,
+                the contractor is asked to update it in My Account. */}
+            {!deliveryAddress && (
+              <Card className="border-warn/30 bg-warn/5">
+                <CardContent className="py-4 text-sm">
+                  <p className="font-semibold text-warn">No delivery address on file.</p>
+                  <p className="mt-1 text-muted-foreground">
+                    Please add your delivery address in{' '}
+                    <Link href="/account" className="font-semibold text-accent-dark underline">
+                      My Account
+                    </Link>{' '}
+                    before submitting an order.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Notes */}
             <Card className="border-border/30">
@@ -464,6 +466,9 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
                   </span>
                 </div>
 
+                {/* Visual break so Total doesn't collide with status/submit (GH 2026-05-16) */}
+                <Separator className="mt-2 bg-border/30" />
+
                 {submitError && (
                   <div className="rounded-lg border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
                     {submitError}
@@ -472,9 +477,9 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
 
                 <Button
                   type="submit"
-                  className="w-full"
+                  className="mt-2 w-full"
                   size="lg"
-                  disabled={isSubmitting || !!stalePriceInfo}
+                  disabled={isSubmitting || !!stalePriceInfo || !deliveryAddress}
                 >
                   {isSubmitting ? t.order.submitting : t.order.submit}
                 </Button>

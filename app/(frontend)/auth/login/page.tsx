@@ -107,8 +107,17 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <Button 
-                type="submit" 
+              <div className="text-right text-sm">
+                <Link
+                  href="/auth/forgot-password"
+                  className="font-medium text-accent-light transition-colors hover:text-white"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              <Button
+                type="submit"
                 className="group h-12 w-full bg-accent-dark text-white hover:bg-accent"
                 disabled={isLoading}
               >
