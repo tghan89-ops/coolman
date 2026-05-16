@@ -9,27 +9,6 @@ import { Button } from '@/components/ui/button'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { useLanguage } from '@/lib/i18n/context'
 
-const applications = [
-  { id: 'concrete', label: 'Concrete', image: '/images/blade-concrete.jpg' },
-  { id: 'granite', label: 'Granite', image: '/images/blade-granite.jpg' },
-  { id: 'marble', label: 'Marble', image: '/images/blade-granite.jpg' },
-  { id: 'tile', label: 'Tile & Ceramic', image: '/images/blade-tile.jpg' },
-]
-
-const defaultStats = [
-  { value: '25+', label: 'Years' },
-  { value: '500+', label: 'Contractors' },
-  { value: '50K+', label: 'Projects' },
-  { value: '99%', label: 'On-Time' },
-]
-
-const features = [
-  { title: 'Superior Cutting Speed', description: '40% faster cutting compared to standard blades.', stat: '40%', statLabel: 'Faster' },
-  { title: 'Extended Blade Life', description: 'Proprietary bonding technology ensures longer life.', stat: '3×', statLabel: 'Longer' },
-  { title: 'Rapid Fulfillment', description: 'Same-day dispatch for orders placed before 2pm.', stat: '24h', statLabel: 'Delivery' },
-  { title: 'Technical Support', description: 'Dedicated team to help optimise your operations.', stat: '24/7', statLabel: 'Support' },
-]
-
 export function HomePageClient({ initialData }: { initialData: any }) {
   const { data } = useLivePreview({
     initialData,
@@ -37,17 +16,51 @@ export function HomePageClient({ initialData }: { initialData: any }) {
     depth: 1,
   })
   const { language, t } = useLanguage()
+  const fb = t.home.fallback
 
-  // EN/BM picker — BM if selected AND populated, else EN fallback.
-  const pick = (en?: string | null, bm?: string | null): string => {
-    if (language === 'BM' && bm && bm.trim()) return bm
-    return en ?? ''
+  // BM-mode CMS-blank falls back to copy.ts BM (not CMS EN). copyFallback is already language-correct.
+  const pickL = (en: string | null | undefined, bm: string | null | undefined, copyFallback: string): string => {
+    if (language === 'BM') {
+      if (bm && bm.trim()) return bm
+      return copyFallback
+    }
+    if (en && en.trim()) return en
+    return copyFallback
   }
 
-  const cmsApplications: Array<{ id: string; label: string; labelBM?: string; image: string }> = data?.applicationList ?? applications
-  const cmsFeatures: Array<{ title: string; titleBM?: string; description: string; descriptionBM?: string; stat: string; statLabel: string; statLabelBM?: string }> = data?.features ?? features
+  // Per-index merge: CMS overrides copy.ts only when filled. Otherwise copy.ts wins.
+  const cmsApplications: any[] = data?.applicationList?.length ? data.applicationList : []
+  const applications = fb.applicationList.map((copyItem, i) => {
+    const cms = cmsApplications[i] ?? {}
+    const cmsImage = typeof cms.image === 'object' && cms.image?.url ? cms.image.url : typeof cms.image === 'string' ? cms.image : ''
+    return {
+      id: cms.id || copyItem.id,
+      label: pickL(cms.label, cms.labelBM, copyItem.label),
+      image: cmsImage || copyItem.image,
+    }
+  })
 
-  const [activeApplication, setActiveApplication] = useState(() => cmsApplications[0]?.id ?? 'concrete')
+  const cmsStats: any[] = data?.stats?.length ? data.stats : []
+  const stats = fb.stats.map((copyItem, i) => {
+    const cms = cmsStats[i] ?? {}
+    return {
+      value: cms.value || copyItem.value,
+      label: pickL(cms.label, cms.labelBM, copyItem.label),
+    }
+  })
+
+  const cmsFeatures: any[] = data?.features?.length ? data.features : []
+  const features = fb.features.map((copyItem, i) => {
+    const cms = cmsFeatures[i] ?? {}
+    return {
+      title: pickL(cms.title, cms.titleBM, copyItem.title),
+      description: pickL(cms.description, cms.descriptionBM, copyItem.description),
+      stat: cms.stat || copyItem.stat,
+      statLabel: pickL(cms.statLabel, cms.statLabelBM, copyItem.statLabel),
+    }
+  })
+
+  const [activeApplication, setActiveApplication] = useState(() => applications[0]?.id ?? 'concrete')
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
@@ -56,34 +69,26 @@ export function HomePageClient({ initialData }: { initialData: any }) {
     setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top })
   }
 
-  const currentApp = cmsApplications.find(a => a.id === activeApplication)
-  const currentAppLabel = pick(currentApp?.label, currentApp?.labelBM) || currentApp?.label || ''
+  const currentApp = applications.find(a => a.id === activeApplication) ?? applications[0]
+  const currentAppLabel = currentApp?.label ?? ''
 
-  // Hero — CMS with BM fallback to EN
-  const heroBadge = pick(data?.hero?.badge ?? 'Trusted by 500+ Malaysian Contractors', data?.hero?.badgeBM)
-  const heroLine1 = pick(data?.hero?.headlineLine1 ?? 'Industrial', data?.hero?.headlineLine1BM)
-  const heroLine2 = pick(data?.hero?.headlineLine2 ?? 'Diamond Tools', data?.hero?.headlineLine2BM)
-  const heroLine3 = pick(data?.hero?.headlineLine3 ?? 'Built for Performance', data?.hero?.headlineLine3BM)
-  const heroSubheadline = pick(
-    data?.hero?.subheadline ?? 'Industrial-grade cutting solutions engineered for concrete, granite, marble, and more. Built to meet the demanding standards of professional contractors.',
-    data?.hero?.subheadlineBM
-  )
-  const heroPrimaryCtaLabel = pick(data?.hero?.primaryCtaLabel ?? 'Explore Products', data?.hero?.primaryCtaLabelBM)
-  const heroSecondaryCtaLabel = pick(data?.hero?.secondaryCtaLabel ?? 'See applications', data?.hero?.secondaryCtaLabelBM)
+  const heroData = data?.hero ?? {}
+  const heroBadge = pickL(heroData.badge, heroData.badgeBM, fb.hero.badge)
+  const heroLine1 = pickL(heroData.headlineLine1, heroData.headlineLine1BM, fb.hero.line1)
+  const heroLine2 = pickL(heroData.headlineLine2, heroData.headlineLine2BM, fb.hero.line2)
+  const heroLine3 = pickL(heroData.headlineLine3, heroData.headlineLine3BM, fb.hero.line3)
+  const heroSubheadline = pickL(heroData.subheadline, heroData.subheadlineBM, fb.hero.subheadline)
+  const heroPrimaryCtaLabel = pickL(heroData.primaryCtaLabel, heroData.primaryCtaLabelBM, fb.hero.primaryCtaLabel)
+  const heroSecondaryCtaLabel = pickL(heroData.secondaryCtaLabel, heroData.secondaryCtaLabelBM, fb.hero.secondaryCtaLabel)
 
-  // Uploaded hero image (Payload Media doc) — fallback to bundled asset if none uploaded.
-  const heroImageUrl: string = (typeof data?.hero?.heroImage === 'object' && data?.hero?.heroImage?.url) || '/images/hero-blade.jpg'
-  const heroImageAlt: string = (typeof data?.hero?.heroImage === 'object' && data?.hero?.heroImage?.alt) || 'Diamond blade cutting'
+  const heroImageUrl: string = (typeof heroData.heroImage === 'object' && heroData.heroImage?.url) || '/images/hero-blade.jpg'
+  const heroImageAlt: string = (typeof heroData.heroImage === 'object' && heroData.heroImage?.alt) || fb.hero.imageAlt
 
-  const stats: Array<{ value: string; label: string; labelBM?: string }> = data?.stats ?? defaultStats
-
-  const ctaHeadline = pick(data?.ctaSection?.headline ?? 'Ready to Elevate\nYour Operations?', data?.ctaSection?.headlineBM)
-  const ctaSubheadline = pick(
-    data?.ctaSection?.subheadline ?? 'Join 500+ professional contractors who trust Coolman for their diamond cutting needs.',
-    data?.ctaSection?.subheadlineBM
-  )
-  const ctaPrimaryLabel = pick(data?.ctaSection?.primaryCtaLabel ?? 'Request Consultation', data?.ctaSection?.primaryCtaLabelBM)
-  const ctaSecondaryLabel = pick(data?.ctaSection?.secondaryCtaLabel ?? 'Download Catalog', data?.ctaSection?.secondaryCtaLabelBM)
+  const ctaData = data?.ctaSection ?? {}
+  const ctaHeadline = pickL(ctaData.headline, ctaData.headlineBM, fb.ctaSection.headline)
+  const ctaSubheadline = pickL(ctaData.subheadline, ctaData.subheadlineBM, fb.ctaSection.subheadline)
+  const ctaPrimaryLabel = pickL(ctaData.primaryCtaLabel, ctaData.primaryCtaLabelBM, fb.ctaSection.primaryCtaLabel)
+  const ctaSecondaryLabel = pickL(ctaData.secondaryCtaLabel, ctaData.secondaryCtaLabelBM, fb.ctaSection.secondaryCtaLabel)
 
   const viewBladesLabel = t.home.viewBladesSuffix
     ? `${t.home.viewBladesPrefix} ${currentAppLabel} ${t.home.viewBladesSuffix}`.replace(/\s+/g, ' ').trim()
@@ -153,7 +158,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
                 className="group cursor-pointer border-b border-r border-white/10 px-6 py-8 transition-colors last:border-r-0 hover:bg-white/5 md:border-b-0"
               >
                 <div className="font-mono font-sans text-4xl font-bold text-white md:text-5xl">{stat.value}</div>
-                <div className="mt-2 text-sm font-semibold text-white/40">{pick(stat.label, stat.labelBM)}</div>
+                <div className="mt-2 text-sm font-semibold text-white/40">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -174,7 +179,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
           </h2>
 
           <div className="mt-12 flex flex-wrap gap-0 border-b border-rule">
-            {cmsApplications.map((app) => (
+            {applications.map((app) => (
               <button
                 key={app.id}
                 onClick={() => setActiveApplication(app.id)}
@@ -182,7 +187,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
                   activeApplication === app.id ? 'text-navy' : 'text-ink-faint hover:text-ink-muted'
                 }`}
               >
-                {pick(app.label, app.labelBM)}
+                {app.label}
                 <span className={`absolute bottom-0 left-0 h-1 bg-accent transition-[width] ${activeApplication === app.id ? 'w-full' : 'w-0'}`} />
               </button>
             ))}
@@ -239,7 +244,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
           </div>
 
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {cmsFeatures.map((feature, index) => (
+            {features.map((feature, index) => (
               <div
                 key={index}
                 className="group relative cursor-pointer overflow-hidden border border-white/10 bg-white/5 p-8 transition-[border-color,background-color] hover:border-accent/50 hover:bg-white/10"
@@ -250,10 +255,10 @@ export function HomePageClient({ initialData }: { initialData: any }) {
                   <div className="font-mono font-sans text-5xl font-bold text-accent">
                     {feature.stat}
                   </div>
-                  <div className="mt-1 text-sm font-semibold text-white/40">{pick(feature.statLabel, feature.statLabelBM)}</div>
+                  <div className="mt-1 text-sm font-semibold text-white/40">{feature.statLabel}</div>
 
-                  <h3 className="mt-6 font-sans text-lg font-bold text-white">{pick(feature.title, feature.titleBM)}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">{pick(feature.description, feature.descriptionBM)}</p>
+                  <h3 className="mt-6 font-sans text-lg font-bold text-white">{feature.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/60">{feature.description}</p>
 
                   <div className={`mt-6 flex items-center gap-2 text-accent transition-opacity ${hoveredFeature === index ? 'opacity-100' : 'opacity-0'}`}>
                     <span className="text-sm font-bold">{t.cta.explore}</span>

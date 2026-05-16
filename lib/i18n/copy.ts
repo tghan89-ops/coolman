@@ -66,6 +66,27 @@ export interface CopyStructure {
       tileDesc: string
       priceFrom: string
     }
+    fallback: {
+      hero: {
+        badge: string
+        line1: string
+        line2: string
+        line3: string
+        subheadline: string
+        primaryCtaLabel: string
+        secondaryCtaLabel: string
+        imageAlt: string
+      }
+      applicationList: Array<{ id: string; label: string; image: string }>
+      stats: Array<{ value: string; label: string }>
+      features: Array<{ title: string; description: string; stat: string; statLabel: string }>
+      ctaSection: {
+        headline: string
+        subheadline: string
+        primaryCtaLabel: string
+        secondaryCtaLabel: string
+      }
+    }
   }
   filters: {
     title: string
@@ -521,6 +542,42 @@ export const COPY: Record<Language, CopyStructure> = {
         tileName: 'Tile Blade',
         tileDesc: 'Precision ceramic cutting',
         priceFrom: 'From RM',
+      },
+      fallback: {
+        hero: {
+          badge: 'Trusted by 500+ Malaysian Contractors',
+          line1: 'Industrial',
+          line2: 'Diamond Tools',
+          line3: 'Built for Performance',
+          subheadline: 'Industrial-grade cutting solutions engineered for concrete, granite, marble, and more. Built to meet the demanding standards of professional contractors.',
+          primaryCtaLabel: 'Explore Products',
+          secondaryCtaLabel: 'See applications',
+          imageAlt: 'Diamond blade cutting',
+        },
+        applicationList: [
+          { id: 'concrete', label: 'Concrete', image: '/images/blade-concrete.jpg' },
+          { id: 'granite', label: 'Granite', image: '/images/blade-granite.jpg' },
+          { id: 'marble', label: 'Marble', image: '/images/blade-granite.jpg' },
+          { id: 'tile', label: 'Tile & Ceramic', image: '/images/blade-tile.jpg' },
+        ],
+        stats: [
+          { value: '25+', label: 'Years' },
+          { value: '500+', label: 'Contractors' },
+          { value: '50K+', label: 'Projects' },
+          { value: '99%', label: 'On-Time' },
+        ],
+        features: [
+          { title: 'Superior Cutting Speed', description: '40% faster cutting compared to standard blades.', stat: '40%', statLabel: 'Faster' },
+          { title: 'Extended Blade Life', description: 'Proprietary bonding technology ensures longer life.', stat: '3×', statLabel: 'Longer' },
+          { title: 'Rapid Fulfillment', description: 'Same-day dispatch for orders placed before 2pm.', stat: '24h', statLabel: 'Delivery' },
+          { title: 'Technical Support', description: 'Dedicated team to help optimise your operations.', stat: '24/7', statLabel: 'Support' },
+        ],
+        ctaSection: {
+          headline: 'Ready to Elevate\nYour Operations?',
+          subheadline: 'Join 500+ professional contractors who trust Coolman for their diamond cutting needs.',
+          primaryCtaLabel: 'Request Consultation',
+          secondaryCtaLabel: 'Download Catalog',
+        },
       },
     },
     filters: {
@@ -993,6 +1050,42 @@ export const COPY: Record<Language, CopyStructure> = {
         tileName: 'Bilah Jubin',
         tileDesc: 'Pemotongan seramik tepat',
         priceFrom: 'Dari RM',
+      },
+      fallback: {
+        hero: {
+          badge: 'Dipercayai oleh 500+ Kontraktor Malaysia',
+          line1: 'Alat Berlian',
+          line2: 'Industri',
+          line3: 'Dibina untuk Prestasi',
+          subheadline: 'Penyelesaian pemotongan gred industri direka untuk konkrit, granit, marmar dan banyak lagi. Dibina untuk memenuhi standard kontraktor profesional yang menuntut.',
+          primaryCtaLabel: 'Terokai Produk',
+          secondaryCtaLabel: 'Lihat aplikasi',
+          imageAlt: 'Pemotongan bilah berlian',
+        },
+        applicationList: [
+          { id: 'concrete', label: 'Konkrit', image: '/images/blade-concrete.jpg' },
+          { id: 'granite', label: 'Granit', image: '/images/blade-granite.jpg' },
+          { id: 'marble', label: 'Marmar', image: '/images/blade-granite.jpg' },
+          { id: 'tile', label: 'Jubin & Seramik', image: '/images/blade-tile.jpg' },
+        ],
+        stats: [
+          { value: '25+', label: 'Tahun' },
+          { value: '500+', label: 'Kontraktor' },
+          { value: '50K+', label: 'Projek' },
+          { value: '99%', label: 'Tepat Masa' },
+        ],
+        features: [
+          { title: 'Kelajuan Pemotongan Unggul', description: 'Pemotongan 40% lebih pantas berbanding bilah standard.', stat: '40%', statLabel: 'Lebih Pantas' },
+          { title: 'Hayat Bilah Panjang', description: 'Teknologi pengikatan proprietari memastikan hayat lebih panjang.', stat: '3×', statLabel: 'Lebih Lama' },
+          { title: 'Penghantaran Pantas', description: 'Penghantaran hari yang sama untuk pesanan sebelum 2 petang.', stat: '24j', statLabel: 'Penghantaran' },
+          { title: 'Sokongan Teknikal', description: 'Pasukan khusus untuk membantu mengoptimumkan operasi anda.', stat: '24/7', statLabel: 'Sokongan' },
+        ],
+        ctaSection: {
+          headline: 'Sedia Untuk Meningkatkan\nOperasi Anda?',
+          subheadline: 'Sertai 500+ kontraktor profesional yang mempercayai Coolman untuk keperluan pemotongan berlian mereka.',
+          primaryCtaLabel: 'Minta Perundingan',
+          secondaryCtaLabel: 'Muat Turun Katalog',
+        },
       },
     },
     filters: {
