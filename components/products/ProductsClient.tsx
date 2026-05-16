@@ -322,7 +322,7 @@ export function ProductsClient({
               a contract price yet. Card cells can't host a nested <a>, so the
               login link lives here at the page level. */}
           {(priceMode === 'public' || priceMode === 'unverified') && (
-            <div className="mb-8 flex flex-col items-start justify-between gap-3 border-l-4 border-accent bg-white px-5 py-4 sm:flex-row sm:items-center">
+            <div className="mb-8 flex flex-col items-start justify-between gap-3 border border-rule bg-white px-5 py-4 sm:flex-row sm:items-center">
               <div>
                 <p className="text-sm font-bold text-navy">
                   {priceMode === 'public'
