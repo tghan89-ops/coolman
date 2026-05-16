@@ -12,6 +12,7 @@ import config from '@payload-config'
 import { calculateEffectivePrice, isWithinDiscountCap, isPriceStale } from '@/lib/pricing/calculate'
 import { validatePromoCode } from '@/lib/pricing/validate-promo'
 import { sql } from '@payloadcms/db-vercel-postgres'
+import { sendEmail } from '@/lib/email/send'
 
 export async function POST(req: NextRequest) {
   const payload = await getPayload({ config })
@@ -257,7 +258,7 @@ export async function POST(req: NextRequest) {
     // strip stray whitespace that would fail Payload's email field validator.
     // TEMP TEST RECIPIENT — see TODOS Group 6: switch back to Alan's email before launch.
     const alanEmail = (process.env.ALAN_EMAIL || 'ghtan@sonicon.com.my').trim()
-    await payload.create({
+    const deliveryRow = await payload.create({
       collection: 'emailDeliveries',
       data: {
         order: order.id,
@@ -272,6 +273,63 @@ export async function POST(req: NextRequest) {
 
     // Commit the transaction — order and email queue row land together
     await payload.db.commitTransaction(transactionID)
+
+    // 18. Send the email synchronously AFTER commit so a Resend failure can never
+    //     roll back a confirmed order. We update the delivery row in place so the
+    //     audit log reflects what really happened. (Proper queue drainer with
+    //     retries is TODOS Group 6 R3-R5 — this is the simple V1-UAT path.)
+    try {
+      const productRel: any = (order as any).product
+      const productName =
+        productRel && typeof productRel === 'object'
+          ? productRel.name ?? `#${productId}`
+          : `#${productId}`
+      const productSku =
+        productRel && typeof productRel === 'object' ? productRel.sku ?? '' : ''
+      const orderTotal = breakdown.effectivePrice * quantity
+      const subject = `New order #${order.id} — ${productName} × ${quantity}`
+      const html = `
+        <h2>New order received</h2>
+        <p><strong>Order ID:</strong> ${order.id}</p>
+        <p><strong>Contractor:</strong> ${(freshContractor as any).company_name ?? (freshContractor as any).email}</p>
+        <p><strong>Product:</strong> ${productName} (${productSku})</p>
+        <p><strong>Quantity:</strong> ${quantity}</p>
+        <p><strong>List price:</strong> RM ${listPrice.toFixed(2)}</p>
+        <p><strong>Tier discount:</strong> ${(tierDiscountPct * 100).toFixed(0)}%</p>
+        <p><strong>Promo discount:</strong> ${(promoDiscountPct * 100).toFixed(0)}%</p>
+        <p><strong>Effective price per unit:</strong> RM ${breakdown.effectivePrice.toFixed(2)}</p>
+        <p><strong>Order total:</strong> RM ${orderTotal.toFixed(2)}</p>
+        <p><strong>Delivery address:</strong><br/>${String(deliveryAddress).replace(/\n/g, '<br/>')}</p>
+        ${notes ? `<p><strong>Notes:</strong><br/>${String(notes).replace(/\n/g, '<br/>')}</p>` : ''}
+        ${isDuplicate ? '<p><strong>⚠️ Flagged as possible duplicate</strong> (same product within last 10 minutes).</p>' : ''}
+      `
+      const result = await sendEmail({ to: alanEmail, subject, html })
+      if (result.success) {
+        await payload.update({
+          collection: 'emailDeliveries',
+          id: deliveryRow.id,
+          data: {
+            status: 'sent',
+            sent_at: new Date().toISOString(),
+            ...(result.messageId ? { resend_message_id: result.messageId } : {}),
+          } as any,
+          overrideAccess: true,
+        })
+      } else {
+        await payload.update({
+          collection: 'emailDeliveries',
+          id: deliveryRow.id,
+          data: {
+            status: 'failed',
+            last_error: result.error ?? 'unknown',
+          } as any,
+          overrideAccess: true,
+        })
+      }
+    } catch (mailErr) {
+      console.error('[orders/submit] email send threw', mailErr)
+      // Order already committed — never propagate a mail failure to the client.
+    }
 
     return NextResponse.json({ order }, { status: 201 })
   } catch (err) {
