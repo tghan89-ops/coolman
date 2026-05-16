@@ -20,7 +20,7 @@ export default function NotFound() {
             <Button asChild className="bg-accent-dark text-white hover:bg-accent">
               <Link href="/">Back to home</Link>
             </Button>
-            <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white/10">
+            <Button asChild variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white dark:bg-transparent">
               <Link href="/products">Browse products</Link>
             </Button>
           </div>
