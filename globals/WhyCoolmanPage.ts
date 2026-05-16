@@ -11,6 +11,8 @@ const ICON_OPTIONS = [
   { label: 'BarChart3 (analytics)', value: 'barChart3' },
 ]
 
+const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+
 export const WhyCoolmanPage: GlobalConfig = {
   slug: 'why-coolman-page',
   access: { read: () => true },
@@ -25,13 +27,16 @@ export const WhyCoolmanPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'eyebrow', type: 'text', defaultValue: 'Why Coolman' },
+        { name: 'eyebrowBM', type: 'text', admin: bmDesc },
         { name: 'title', type: 'text', defaultValue: 'The Coolman Advantage' },
+        { name: 'titleBM', type: 'text', admin: bmDesc },
         {
           name: 'lede',
           type: 'textarea',
           defaultValue:
             'More than just tools - we provide complete cutting solutions and ongoing partnership for contractors who demand excellence.',
         },
+        { name: 'ledeBM', type: 'textarea', admin: bmDesc },
       ],
     },
     {
@@ -49,7 +54,9 @@ export const WhyCoolmanPage: GlobalConfig = {
       fields: [
         { name: 'iconKey', type: 'select', required: true, options: ICON_OPTIONS, defaultValue: 'zap' },
         { name: 'title', type: 'text', required: true },
+        { name: 'titleBM', type: 'text', admin: bmDesc },
         { name: 'body', type: 'textarea', required: true },
+        { name: 'bodyBM', type: 'textarea', admin: bmDesc },
       ],
     },
     {
@@ -57,7 +64,9 @@ export const WhyCoolmanPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'title', type: 'text', defaultValue: 'Trusted by Professionals' },
+        { name: 'titleBM', type: 'text', admin: bmDesc },
         { name: 'subtitle', type: 'textarea', defaultValue: 'Our track record speaks for itself. Join hundreds of contractors who rely on Coolman.' },
+        { name: 'subtitleBM', type: 'textarea', admin: bmDesc },
       ],
     },
     {
@@ -70,8 +79,9 @@ export const WhyCoolmanPage: GlobalConfig = {
         { value: '4.9/5', label: 'Customer Rating' },
       ],
       fields: [
-        { name: 'value', type: 'text', required: true },
+        { name: 'value', type: 'text', required: true, admin: { description: 'Numeric display — not translated.' } },
         { name: 'label', type: 'text', required: true },
+        { name: 'labelBM', type: 'text', admin: bmDesc },
       ],
     },
     {
@@ -79,7 +89,9 @@ export const WhyCoolmanPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'eyebrow', type: 'text', defaultValue: 'Testimonials' },
+        { name: 'eyebrowBM', type: 'text', admin: bmDesc },
         { name: 'title', type: 'text', defaultValue: 'What Our Partners Say' },
+        { name: 'titleBM', type: 'text', admin: bmDesc },
       ],
     },
     {
@@ -92,8 +104,10 @@ export const WhyCoolmanPage: GlobalConfig = {
       ],
       fields: [
         { name: 'quote', type: 'textarea', required: true },
-        { name: 'author', type: 'text', required: true },
+        { name: 'quoteBM', type: 'textarea', admin: bmDesc },
+        { name: 'author', type: 'text', required: true, admin: { description: 'Person name — not translated.' } },
         { name: 'role', type: 'text', required: true },
+        { name: 'roleBM', type: 'text', admin: bmDesc },
       ],
     },
     {
@@ -101,10 +115,14 @@ export const WhyCoolmanPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'title', type: 'text', defaultValue: 'Ready to Experience the Difference?' },
+        { name: 'titleBM', type: 'text', admin: bmDesc },
         { name: 'body', type: 'textarea', defaultValue: 'Join 500+ professional contractors who trust Coolman for their diamond cutting needs.' },
+        { name: 'bodyBM', type: 'textarea', admin: bmDesc },
         { name: 'primaryLabel', type: 'text', defaultValue: 'Become a Partner' },
+        { name: 'primaryLabelBM', type: 'text', admin: bmDesc },
         { name: 'primaryHref', type: 'text', defaultValue: '/auth/register' },
         { name: 'secondaryLabel', type: 'text', defaultValue: 'Contact Sales' },
+        { name: 'secondaryLabelBM', type: 'text', admin: bmDesc },
         { name: 'secondaryHref', type: 'text', defaultValue: '/contact' },
       ],
     },

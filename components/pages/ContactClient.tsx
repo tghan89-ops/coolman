@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Mail, Phone, MapPin, Send, Check, ArrowRight, Clock, MessageSquare } from 'lucide-react'
+import { Mail, Phone, MapPin, Check, ArrowRight, Clock, MessageSquare } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -17,18 +17,23 @@ export function ContactClient({ initialData }: { initialData: any }) {
     depth: 1,
   })
 
-  const { t } = useLanguage()
+  const { language, t } = useLanguage()
+  const pick = (en?: string | null, bm?: string | null): string => {
+    if (language === 'BM' && bm && bm.trim()) return bm
+    return en ?? ''
+  }
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [focusedField, setFocusedField] = useState<string | null>(null)
 
-  const heroTitle = data?.heroTitle ?? t.nav.contact
-  const heroSubtitle = data?.heroSubtitle ?? 'Have questions about our products or need a custom quote? Our team is ready to help you find the perfect solution.'
+  const heroTitle = pick(data?.heroTitle, data?.heroTitleBM) || t.nav.contact
+  const heroSubtitle = pick(data?.heroSubtitle, data?.heroSubtitleBM) || t.pages.contact.fallbackHeroSubtitle
   const phone = data?.phone ?? '+60 3-1234 5678'
   const email = data?.email ?? 'sales@coolman.com.my'
-  const address = data?.address ?? 'No. 123, Jalan Industri 1, Kawasan Perindustrian Batu Caves, 68100 Selangor'
+  const address = pick(data?.address, data?.addressBM) || 'No. 123, Jalan Industri 1, Kawasan Perindustrian Batu Caves, 68100 Selangor'
   const whatsappNumber = data?.whatsappNumber ?? ''
+  const responseTime = data?.responseTime || '< 4 hours'
 
   const whatsappHref = whatsappNumber
     ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}`
@@ -53,14 +58,14 @@ export function ContactClient({ initialData }: { initialData: any }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      const data = await res.json().catch(() => ({}))
+      const respData = await res.json().catch(() => ({}))
       if (!res.ok) {
-        setSubmitError(data?.error || 'Something went wrong. Please try again.')
+        setSubmitError(respData?.error || t.pages.contact.formError)
       } else {
         setSubmitted(true)
       }
     } catch {
-      setSubmitError('Network error. Please check your connection and try again.')
+      setSubmitError(t.pages.contact.networkError)
     } finally {
       setIsSubmitting(false)
     }
@@ -72,7 +77,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
       <section className="bg-navy py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-            Get in touch
+            {t.pages.contact.heroEyebrow}
           </p>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-[40px]">
             {heroTitle}
@@ -94,24 +99,24 @@ export function ContactClient({ initialData }: { initialData: any }) {
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-success/10 ring-4 ring-success/20">
                     <Check className="h-10 w-10 text-success" />
                   </div>
-                  <h3 className="mt-6 text-2xl font-bold text-white">Message Sent!</h3>
+                  <h3 className="mt-6 text-2xl font-bold text-white">{t.pages.contact.successTitle}</h3>
                   <p className="mt-3 text-ink-muted">
-                    Thank you for reaching out. We&apos;ll get back to you within 24 hours.
+                    {t.pages.contact.successMessage}
                   </p>
                   <Button
                     variant="outline"
                     className="mt-8 border-white/20 text-white hover:bg-white/10"
                     onClick={() => setSubmitted(false)}
                   >
-                    Send another message
+                    {t.pages.contact.sendAnother}
                   </Button>
                 </div>
               ) : (
                 <>
                   <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-white">Send us a message</h2>
+                    <h2 className="text-2xl font-bold text-white">{t.pages.contact.formTitle}</h2>
                     <p className="mt-2 text-ink-muted">
-                      Fill out the form below and we&apos;ll respond within 24 hours.
+                      {t.pages.contact.formSubtitle}
                     </p>
                   </div>
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -128,12 +133,12 @@ export function ContactClient({ initialData }: { initialData: any }) {
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div className="group space-y-2">
                         <Label htmlFor="name" className={`text-sm transition-colors ${focusedField === 'name' ? 'text-accent-light' : 'text-ink-muted'}`}>
-                          Name *
+                          {t.pages.contact.formNameLabel}
                         </Label>
                         <Input
                           id="name"
                           name="name"
-                          placeholder="Your name"
+                          placeholder={t.pages.contact.formNamePlaceholder}
                           required
                           onFocus={() => setFocusedField('name')}
                           onBlur={() => setFocusedField(null)}
@@ -142,12 +147,12 @@ export function ContactClient({ initialData }: { initialData: any }) {
                       </div>
                       <div className="group space-y-2">
                         <Label htmlFor="company" className={`text-sm transition-colors ${focusedField === 'company' ? 'text-accent-light' : 'text-ink-muted'}`}>
-                          Company
+                          {t.pages.contact.formCompanyLabel}
                         </Label>
                         <Input
                           id="company"
                           name="company"
-                          placeholder="Company name"
+                          placeholder={t.pages.contact.formCompanyPlaceholder}
                           onFocus={() => setFocusedField('company')}
                           onBlur={() => setFocusedField(null)}
                           className="border-white/10 bg-white/5 text-white placeholder:text-ink-muted focus:border-accent focus:ring-accent/20"
@@ -156,13 +161,13 @@ export function ContactClient({ initialData }: { initialData: any }) {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email" className={`text-sm transition-colors ${focusedField === 'email' ? 'text-accent-light' : 'text-ink-muted'}`}>
-                        Email *
+                        {t.pages.contact.formEmailLabel}
                       </Label>
                       <Input
                         id="email"
                         name="email"
                         type="email"
-                        placeholder="name@company.com"
+                        placeholder={t.pages.contact.formEmailPlaceholder}
                         required
                         onFocus={() => setFocusedField('email')}
                         onBlur={() => setFocusedField(null)}
@@ -171,13 +176,13 @@ export function ContactClient({ initialData }: { initialData: any }) {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="phone" className={`text-sm transition-colors ${focusedField === 'phone' ? 'text-accent-light' : 'text-ink-muted'}`}>
-                        Phone
+                        {t.pages.contact.formPhoneLabel}
                       </Label>
                       <Input
                         id="phone"
                         name="phone"
                         type="tel"
-                        placeholder="+60 12-345 6789"
+                        placeholder={t.pages.contact.formPhonePlaceholder}
                         onFocus={() => setFocusedField('phone')}
                         onBlur={() => setFocusedField(null)}
                         className="border-white/10 bg-white/5 text-white placeholder:text-ink-muted focus:border-accent focus:ring-accent/20"
@@ -185,12 +190,12 @@ export function ContactClient({ initialData }: { initialData: any }) {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="message" className={`text-sm transition-colors ${focusedField === 'message' ? 'text-accent-light' : 'text-ink-muted'}`}>
-                        Message *
+                        {t.pages.contact.formMessageLabel}
                       </Label>
                       <Textarea
                         id="message"
                         name="message"
-                        placeholder="Tell us about your requirements..."
+                        placeholder={t.pages.contact.formMessagePlaceholder}
                         rows={5}
                         required
                         onFocus={() => setFocusedField('message')}
@@ -206,11 +211,11 @@ export function ContactClient({ initialData }: { initialData: any }) {
                       {isSubmitting ? (
                         <span className="flex items-center gap-2">
                           <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                          Sending...
+                          {t.pages.contact.formSubmitting}
                         </span>
                       ) : (
                         <span className="flex items-center gap-2">
-                          Send Message
+                          {t.pages.contact.formSubmit}
                           <ArrowRight className="h-4 w-4" />
                         </span>
                       )}
@@ -222,29 +227,28 @@ export function ContactClient({ initialData }: { initialData: any }) {
 
             {/* Contact Info */}
             <div className="space-y-6">
-              {/* Info Cards */}
               {[
                 {
                   icon: Phone,
-                  title: 'Phone',
+                  title: t.pages.contact.phoneTitle,
                   content: phone,
-                  subtitle: 'Mon-Fri 9am-6pm MYT',
-                  color: 'blue'
+                  subtitle: t.pages.contact.phoneSubtitle,
+                  color: 'blue',
                 },
                 {
                   icon: Mail,
-                  title: 'Email',
+                  title: t.pages.contact.emailTitle,
                   content: email,
-                  subtitle: 'We reply within 24 hours',
-                  color: 'emerald'
+                  subtitle: t.pages.contact.emailSubtitle,
+                  color: 'emerald',
                 },
                 {
                   icon: MapPin,
-                  title: 'Office',
+                  title: t.pages.contact.officeTitle,
                   content: address.split(',')[0] ?? address,
                   subtitle: address.split(',').slice(1).join(',').trim() || undefined,
-                  color: 'amber'
-                }
+                  color: 'amber',
+                },
               ].map((item, index) => (
                 <div
                   key={index}
@@ -273,20 +277,20 @@ export function ContactClient({ initialData }: { initialData: any }) {
               <div className="rounded-xl border border-accent/20 bg-accent/5 p-6">
                 <div className="flex items-center gap-3">
                   <Clock className="h-5 w-5 text-accent-light" />
-                  <span className="text-sm font-medium text-accent-light">Average Response Time</span>
+                  <span className="text-sm font-medium text-accent-light">{t.pages.contact.responseTimeLabel}</span>
                 </div>
-                <p className="mt-2 text-3xl font-bold text-white">{"< 4 hours"}</p>
-                <p className="mt-1 text-sm text-ink-muted">During business hours</p>
+                <p className="mt-2 text-3xl font-bold text-white">{responseTime}</p>
+                <p className="mt-1 text-sm text-ink-muted">{t.pages.contact.responseTimeSubtitle}</p>
               </div>
 
               {/* Live Chat Card */}
               <div className="rounded-xl border border-white/10 bg-white/[0.02] p-6">
                 <div className="flex items-center gap-3">
                   <MessageSquare className="h-5 w-5 text-ink-muted" />
-                  <span className="text-sm font-medium text-white">Prefer live chat?</span>
+                  <span className="text-sm font-medium text-white">{t.pages.contact.liveChatLabel}</span>
                 </div>
                 <p className="mt-2 text-sm text-ink-muted">
-                  Chat with our support team in real-time via WhatsApp.
+                  {t.pages.contact.liveChatMessage}
                 </p>
                 <Button
                   variant="outline"
@@ -294,7 +298,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                   asChild
                 >
                   <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
-                    Open WhatsApp
+                    {t.pages.contact.openWhatsapp}
                   </a>
                 </Button>
               </div>

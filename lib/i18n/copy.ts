@@ -76,6 +76,97 @@ export interface CopyStructure {
     showingResults: string
     noResults: string
   }
+  pages: {
+    applications: {
+      heroEyebrow: string
+      fallbackHeroTitle: string
+      fallbackHeroSubtitle: string
+      viewBladesPrefix: string
+      viewBladesSuffix: string
+      ctaTitle: string
+      ctaMessage: string
+      contactSupport: string
+    }
+    whyCoolman: {
+      heroEyebrow: string
+      ctaTitle: string
+      ctaMessage: string
+      ctaButton: string
+    }
+    resources: {
+      heroEyebrow: string
+      fallbackHeroTitle: string
+      fallbackHeroSubtitle: string
+      emptyTitle: string
+      emptyMessage: string
+      emptyButton: string
+      playVideo: string
+      openPdf: string
+      faqEyebrow: string
+      faqHeading: string
+      ctaTitle: string
+      ctaMessage: string
+      ctaButton: string
+    }
+    contact: {
+      heroEyebrow: string
+      fallbackHeroSubtitle: string
+      formTitle: string
+      formSubtitle: string
+      formNameLabel: string
+      formNamePlaceholder: string
+      formCompanyLabel: string
+      formCompanyPlaceholder: string
+      formEmailLabel: string
+      formEmailPlaceholder: string
+      formPhoneLabel: string
+      formPhonePlaceholder: string
+      formMessageLabel: string
+      formMessagePlaceholder: string
+      formSubmit: string
+      formSubmitting: string
+      formSuccess: string
+      formError: string
+      networkError: string
+      successTitle: string
+      successMessage: string
+      sendAnother: string
+      infoHeading: string
+      phoneTitle: string
+      phoneSubtitle: string
+      emailTitle: string
+      emailSubtitle: string
+      officeTitle: string
+      responseTimeLabel: string
+      responseTimeSubtitle: string
+      liveChatLabel: string
+      liveChatMessage: string
+      openWhatsapp: string
+    }
+    shibuya: {
+      heroEyebrow: string
+      heroPrimaryLabel: string
+      heroSecondaryLabel: string
+      scroll: string
+      sincePrefix: string
+      modelsEyebrow: string
+      modelsHeadline: string
+      modelNamePrefix: string
+      motorPowerLabel: string
+      maxDiameterLabel: string
+      weightLabel: string
+      rpmRangeLabel: string
+      keyFeaturesLabel: string
+      startingFromLabel: string
+      requestQuote: string
+      inActionEyebrow: string
+      inActionCtaLabel: string
+      supportEyebrow: string
+      ctaTitle: string
+      ctaMessage: string
+      ctaButton: string
+    }
+  }
   products: {
     heroEyebrow: string
     heroHeadlineLine1: string
@@ -422,6 +513,97 @@ export const COPY: Record<Language, CopyStructure> = {
       showingResults: 'Showing {count} products',
       noResults: 'No products match your filters',
     },
+    pages: {
+      applications: {
+        heroEyebrow: 'Applications',
+        fallbackHeroTitle: 'Solutions for Every Material',
+        fallbackHeroSubtitle: 'Our comprehensive range of diamond cutting tools is engineered to deliver optimal performance across all common construction materials.',
+        viewBladesPrefix: 'View',
+        viewBladesSuffix: 'Blades',
+        ctaTitle: 'Need Help Selecting the Right Blade?',
+        ctaMessage: 'Our technical team can help you choose the optimal blade for your specific application and cutting conditions.',
+        contactSupport: 'Contact Technical Support',
+      },
+      whyCoolman: {
+        heroEyebrow: 'Why Coolman',
+        ctaTitle: 'Ready to Experience the Coolman Difference?',
+        ctaMessage: 'Join the contractors who trust Coolman for performance, reliability and support.',
+        ctaButton: 'Get in Touch',
+      },
+      resources: {
+        heroEyebrow: 'Resources',
+        fallbackHeroTitle: 'Technical Resources & Downloads',
+        fallbackHeroSubtitle: 'Access product catalogs, technical guides, and educational content to help you get the most from your diamond cutting tools.',
+        emptyTitle: 'Catalogue arriving soon',
+        emptyMessage: "We're finalising the latest PDFs and video guides. In the meantime, ask our team for the file you need.",
+        emptyButton: 'Request a copy',
+        playVideo: 'Play video',
+        openPdf: 'Open PDF',
+        faqEyebrow: 'FAQ',
+        faqHeading: 'Frequently Asked Questions',
+        ctaTitle: 'Need Technical Assistance?',
+        ctaMessage: 'Our engineering team is ready to help with blade selection, technical questions, and application support.',
+        ctaButton: 'Contact Technical Support',
+      },
+      contact: {
+        heroEyebrow: 'Get in touch',
+        fallbackHeroSubtitle: 'Have questions about our products or need a custom quote? Our team is ready to help you find the perfect solution.',
+        formTitle: 'Send us a message',
+        formSubtitle: "Fill out the form below and we'll respond within 24 hours.",
+        formNameLabel: 'Name *',
+        formNamePlaceholder: 'Your name',
+        formCompanyLabel: 'Company',
+        formCompanyPlaceholder: 'Company name',
+        formEmailLabel: 'Email *',
+        formEmailPlaceholder: 'name@company.com',
+        formPhoneLabel: 'Phone',
+        formPhonePlaceholder: '+60 12-345 6789',
+        formMessageLabel: 'Message *',
+        formMessagePlaceholder: 'Tell us about your requirements...',
+        formSubmit: 'Send Message',
+        formSubmitting: 'Sending...',
+        formSuccess: 'Thanks — we will be in touch shortly.',
+        formError: 'Something went wrong. Please try again.',
+        networkError: 'Network error. Please check your connection and try again.',
+        successTitle: 'Message Sent!',
+        successMessage: "Thank you for reaching out. We'll get back to you within 24 hours.",
+        sendAnother: 'Send another message',
+        infoHeading: 'Get in touch',
+        phoneTitle: 'Phone',
+        phoneSubtitle: 'Mon-Fri 9am-6pm MYT',
+        emailTitle: 'Email',
+        emailSubtitle: 'We reply within 24 hours',
+        officeTitle: 'Office',
+        responseTimeLabel: 'Average Response Time',
+        responseTimeSubtitle: 'During business hours',
+        liveChatLabel: 'Prefer live chat?',
+        liveChatMessage: 'Chat with our support team in real-time via WhatsApp.',
+        openWhatsapp: 'Open WhatsApp',
+      },
+      shibuya: {
+        heroEyebrow: 'Shibuya',
+        heroPrimaryLabel: 'Explore Models',
+        heroSecondaryLabel: 'Watch Film',
+        scroll: 'SCROLL',
+        sincePrefix: 'SINCE',
+        modelsEyebrow: 'THE RANGE',
+        modelsHeadline: 'Choose Your Machine',
+        modelNamePrefix: 'Shibuya',
+        motorPowerLabel: 'Motor Power',
+        maxDiameterLabel: 'Max Diameter',
+        weightLabel: 'Weight',
+        rpmRangeLabel: 'RPM Range',
+        keyFeaturesLabel: 'KEY FEATURES',
+        startingFromLabel: 'Starting from',
+        requestQuote: 'Request Quote',
+        inActionEyebrow: 'IN THE FIELD',
+        inActionCtaLabel: 'View Applications',
+        supportEyebrow: 'SUPPORT',
+        ctaTitle: 'Want a Shibuya Demo?',
+        ctaMessage: 'Speak to our team for a live walkthrough and pricing.',
+        ctaButton: 'Request a Demo',
+      },
+    },
     products: {
       heroEyebrow: 'Diamond Tools',
       heroHeadlineLine1: 'Industrial Diamond',
@@ -765,6 +947,97 @@ export const COPY: Record<Language, CopyStructure> = {
       clearAll: 'Kosongkan Semua',
       showingResults: 'Menunjukkan {count} produk',
       noResults: 'Tiada produk sepadan dengan tapisan anda',
+    },
+    pages: {
+      applications: {
+        heroEyebrow: 'Aplikasi',
+        fallbackHeroTitle: 'Penyelesaian untuk Setiap Bahan',
+        fallbackHeroSubtitle: 'Rangkaian alat pemotong berlian kami direka untuk memberikan prestasi optimum merentas semua bahan binaan biasa.',
+        viewBladesPrefix: 'Lihat Bilah',
+        viewBladesSuffix: '',
+        ctaTitle: 'Perlukan Bantuan Memilih Bilah Yang Tepat?',
+        ctaMessage: 'Pasukan teknikal kami boleh membantu anda memilih bilah optimum untuk aplikasi dan keadaan pemotongan anda.',
+        contactSupport: 'Hubungi Sokongan Teknikal',
+      },
+      whyCoolman: {
+        heroEyebrow: 'Kenapa Coolman',
+        ctaTitle: 'Sedia Untuk Merasai Perbezaan Coolman?',
+        ctaMessage: 'Sertai kontraktor yang mempercayai Coolman untuk prestasi, kebolehpercayaan dan sokongan.',
+        ctaButton: 'Hubungi Kami',
+      },
+      resources: {
+        heroEyebrow: 'Sumber',
+        fallbackHeroTitle: 'Sumber Teknikal & Muat Turun',
+        fallbackHeroSubtitle: 'Akses katalog produk, panduan teknikal dan kandungan pendidikan untuk memanfaatkan sepenuhnya alat pemotong berlian anda.',
+        emptyTitle: 'Katalog akan tiba tidak lama lagi',
+        emptyMessage: 'Kami sedang memuktamadkan PDF dan panduan video terkini. Sementara itu, hubungi pasukan kami untuk fail yang anda perlukan.',
+        emptyButton: 'Minta salinan',
+        playVideo: 'Mainkan video',
+        openPdf: 'Buka PDF',
+        faqEyebrow: 'Soalan Lazim',
+        faqHeading: 'Soalan Yang Kerap Ditanya',
+        ctaTitle: 'Perlukan Bantuan Teknikal?',
+        ctaMessage: 'Pasukan kejuruteraan kami sedia membantu dengan pemilihan bilah, soalan teknikal dan sokongan aplikasi.',
+        ctaButton: 'Hubungi Sokongan Teknikal',
+      },
+      contact: {
+        heroEyebrow: 'Hubungi kami',
+        fallbackHeroSubtitle: 'Ada soalan tentang produk kami atau perlukan sebut harga tersuai? Pasukan kami sedia membantu anda mencari penyelesaian yang sesuai.',
+        formTitle: 'Hantar mesej kepada kami',
+        formSubtitle: 'Isi borang di bawah dan kami akan membalas dalam masa 24 jam.',
+        formNameLabel: 'Nama *',
+        formNamePlaceholder: 'Nama anda',
+        formCompanyLabel: 'Syarikat',
+        formCompanyPlaceholder: 'Nama syarikat',
+        formEmailLabel: 'Emel *',
+        formEmailPlaceholder: 'nama@syarikat.com',
+        formPhoneLabel: 'Telefon',
+        formPhonePlaceholder: '+60 12-345 6789',
+        formMessageLabel: 'Mesej *',
+        formMessagePlaceholder: 'Beritahu kami tentang keperluan anda...',
+        formSubmit: 'Hantar Mesej',
+        formSubmitting: 'Menghantar...',
+        formSuccess: 'Terima kasih — kami akan menghubungi anda tidak lama lagi.',
+        formError: 'Terdapat ralat. Sila cuba lagi.',
+        networkError: 'Ralat rangkaian. Sila semak sambungan anda dan cuba lagi.',
+        successTitle: 'Mesej Dihantar!',
+        successMessage: 'Terima kasih kerana menghubungi kami. Kami akan membalas dalam masa 24 jam.',
+        sendAnother: 'Hantar mesej lain',
+        infoHeading: 'Hubungi kami',
+        phoneTitle: 'Telefon',
+        phoneSubtitle: 'Isnin-Jumaat 9 pagi-6 petang MYT',
+        emailTitle: 'Emel',
+        emailSubtitle: 'Kami membalas dalam masa 24 jam',
+        officeTitle: 'Pejabat',
+        responseTimeLabel: 'Masa Respons Purata',
+        responseTimeSubtitle: 'Semasa waktu perniagaan',
+        liveChatLabel: 'Mahu sembang langsung?',
+        liveChatMessage: 'Sembang dengan pasukan sokongan kami secara langsung melalui WhatsApp.',
+        openWhatsapp: 'Buka WhatsApp',
+      },
+      shibuya: {
+        heroEyebrow: 'Shibuya',
+        heroPrimaryLabel: 'Terokai Model',
+        heroSecondaryLabel: 'Tonton Filem',
+        scroll: 'SKROL',
+        sincePrefix: 'SEJAK',
+        modelsEyebrow: 'RANGKAIAN',
+        modelsHeadline: 'Pilih Mesin Anda',
+        modelNamePrefix: 'Shibuya',
+        motorPowerLabel: 'Kuasa Motor',
+        maxDiameterLabel: 'Diameter Maksimum',
+        weightLabel: 'Berat',
+        rpmRangeLabel: 'Julat RPM',
+        keyFeaturesLabel: 'CIRI UTAMA',
+        startingFromLabel: 'Bermula dari',
+        requestQuote: 'Minta Sebut Harga',
+        inActionEyebrow: 'DI LAPANGAN',
+        inActionCtaLabel: 'Lihat Aplikasi',
+        supportEyebrow: 'SOKONGAN',
+        ctaTitle: 'Mahukan Demo Shibuya?',
+        ctaMessage: 'Bercakap dengan pasukan kami untuk tunjuk cara langsung dan harga.',
+        ctaButton: 'Minta Demo',
+      },
     },
     products: {
       heroEyebrow: 'Alat Berlian',

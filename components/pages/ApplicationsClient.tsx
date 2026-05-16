@@ -6,6 +6,7 @@ import { ArrowRight, Check } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { useLivePreview } from '@payloadcms/live-preview-react'
+import { useLanguage } from '@/lib/i18n/context'
 
 const defaultSections = [
   {
@@ -59,14 +60,19 @@ const defaultSections = [
 ]
 
 export function ApplicationsClient({ initialData }: { initialData: any }) {
+  const { language, t } = useLanguage()
+  const pick = (en?: string | null, bm?: string | null): string => {
+    if (language === 'BM' && bm && bm.trim()) return bm
+    return en ?? ''
+  }
   const { data } = useLivePreview({
     initialData,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
     depth: 2,
   })
 
-  const heroTitle = data?.heroTitle ?? 'Solutions for Every Material'
-  const heroSubtitle = data?.heroSubtitle ?? 'Our comprehensive range of diamond cutting tools is engineered to deliver optimal performance across all common construction materials.'
+  const heroTitle = pick(data?.heroTitle, data?.heroTitleBM) || t.pages.applications.fallbackHeroTitle
+  const heroSubtitle = pick(data?.heroSubtitle, data?.heroSubtitleBM) || t.pages.applications.fallbackHeroSubtitle
   const sections: any[] = data?.sections?.length ? data.sections : defaultSections
 
   return (
@@ -75,7 +81,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
       <section className="bg-navy pb-16 pt-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-accent">Applications</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-accent">{t.pages.applications.heroEyebrow}</p>
             <h1 className="mt-3 text-4xl font-bold tracking-tight text-white lg:text-5xl">
               {heroTitle}
             </h1>
@@ -92,8 +98,8 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
           <div className="grid gap-16">
             {sections.map((section: any, index: number) => {
               const sectionId = section.id ?? `section-${index}`
-              const sectionTitle = section.title ?? ''
-              const sectionDescription = section.description ?? ''
+              const sectionTitle = pick(section.title, section.titleBM) || ''
+              const sectionDescription = pick(section.description, section.descriptionBM) || ''
               const sectionFeatures: string[] = section.features ?? []
               const sectionImage =
                 typeof section.image === 'object' && section.image?.url
@@ -142,7 +148,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
                       asChild
                     >
                       <Link href={`/products?material=${sectionId}`}>
-                        View {sectionTitle} Blades
+                        {`${t.pages.applications.viewBladesPrefix} ${sectionTitle}${t.pages.applications.viewBladesSuffix ? ' ' + t.pages.applications.viewBladesSuffix : ''}`}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
@@ -157,9 +163,9 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
       {/* CTA */}
       <section className="bg-secondary py-24">
         <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold text-navy">Need Help Selecting the Right Blade?</h2>
+          <h2 className="text-3xl font-bold text-navy">{t.pages.applications.ctaTitle}</h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-muted">
-            Our technical team can help you choose the optimal blade for your specific application and cutting conditions.
+            {t.pages.applications.ctaMessage}
           </p>
           <Button
             size="lg"
@@ -167,7 +173,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
             asChild
           >
             <Link href="/contact">
-              Contact Technical Support
+              {t.pages.applications.contactSupport}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>

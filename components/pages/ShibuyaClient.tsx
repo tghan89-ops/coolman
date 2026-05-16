@@ -6,12 +6,18 @@ import Link from 'next/link'
 import { ArrowRight, ArrowDown, Play, Check } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { useLivePreview } from '@payloadcms/live-preview-react'
+import { useLanguage } from '@/lib/i18n/context'
 
 interface ShibuyaClientProps {
   initialData: any
 }
 
 export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
+  const { language, t } = useLanguage()
+  const pick = (en?: string | null, bm?: string | null): string => {
+    if (language === 'BM' && bm && bm.trim()) return bm
+    return en ?? ''
+  }
   const { data } = useLivePreview({
     initialData,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
@@ -26,95 +32,52 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
   }, [data.machines])
 
   // ── Hero ────────────────────────────────────────────────────────────────────
-  const heroBadge = data.hero?.badge ?? 'ENGINEERED IN JAPAN'
-  const heroLine1 = data.hero?.headlineLine1 ?? 'Precision Without'
-  const heroLine2 = data.hero?.headlineLine2 ?? 'Compromise'
+  const heroBadge = pick(data.hero?.badge, data.hero?.badgeBM) || 'ENGINEERED IN JAPAN'
+  const heroLine1 = pick(data.hero?.headlineLine1, data.hero?.headlineLine1BM) || 'Precision Without'
+  const heroLine2 = pick(data.hero?.headlineLine2, data.hero?.headlineLine2BM) || 'Compromise'
   const heroSubheadline =
-    data.hero?.subheadline ??
+    pick(data.hero?.subheadline, data.hero?.subheadlineBM) ||
     'Shibuya core drilling machines represent five decades of Japanese engineering excellence. Trusted by professionals who demand nothing less than perfection.'
-  const heroPrimaryLabel = 'Explore Models'
-  const heroSecondaryLabel = 'Watch Film'
   const heroImageUrl = data.hero?.heroImage?.url ?? '/images/shibuya-hero.jpg'
 
   // ── Heritage ────────────────────────────────────────────────────────────────
   const heritageSince = data.heritage?.since ?? '1973'
   const heritageStatement =
-    data.heritage?.statement ??
+    pick(data.heritage?.statement, data.heritage?.statementBM) ||
     'Five decades of relentless pursuit of perfection. Every Shibuya machine is a testament to Japanese craftsmanship.'
 
   // ── Craftsmanship ───────────────────────────────────────────────────────────
-  const craftEyebrow = data.craftsmanship?.sectionLabel ?? 'CRAFTSMANSHIP'
-  const craftHeadline = data.craftsmanship?.title ?? 'Built to Last Generations'
+  const craftEyebrow = pick(data.craftsmanship?.sectionLabel, data.craftsmanship?.sectionLabelBM) || 'CRAFTSMANSHIP'
+  const craftHeadline = pick(data.craftsmanship?.title, data.craftsmanship?.titleBM) || 'Built to Last Generations'
   const craftBody =
-    data.craftsmanship?.body ??
+    pick(data.craftsmanship?.body, data.craftsmanship?.bodyBM) ||
     'Every Shibuya machine begins its life in our Osaka manufacturing facility, where traditional Japanese craftsmanship meets modern precision engineering.'
-  const craftPoints = data.craftsmanship?.points ?? [
-    {
-      number: '01',
-      title: 'Precision Manufacturing',
-      description: 'Every component machined to tolerances of 0.01mm in our Osaka facility.',
-    },
-    {
-      number: '02',
-      title: 'Quality Materials',
-      description: 'Aircraft-grade aluminum housings and hardened steel gearing throughout.',
-    },
-    {
-      number: '03',
-      title: 'Rigorous Testing',
-      description: '72-hour continuous operation test before any machine leaves the factory.',
-    },
-    {
-      number: '04',
-      title: 'Hand Assembly',
-      description: 'Final assembly by master technicians with decades of experience.',
-    },
-  ]
+  const craftPoints = data.craftsmanship?.points ?? []
   const craftImageUrl = data.craftsmanship?.image?.url ?? '/images/shibuya-detail.jpg'
 
   // ── Machines ────────────────────────────────────────────────────────────────
   const machines: any[] = data.machines ?? []
 
   // ── InAction ────────────────────────────────────────────────────────────────
-  const inActionEyebrow = 'IN THE FIELD'
-  const inActionHeadline = data.inAction?.title ?? 'Built for Real Work'
+  const inActionHeadline = pick(data.inAction?.title, data.inAction?.titleBM) || 'Built for Real Work'
   const inActionBody =
-    data.inAction?.body ??
+    pick(data.inAction?.body, data.inAction?.bodyBM) ||
     'From high-rise construction to infrastructure projects, Shibuya machines perform flawlessly in the most demanding conditions.'
-  const inActionCtaLabel = 'View Applications'
   const inActionCtaHref = '/applications'
   const inActionImageUrl = data.inAction?.image?.url ?? '/images/shibuya-action.jpg'
 
   // ── Support ─────────────────────────────────────────────────────────────────
-  const supportEyebrow = 'SUPPORT'
-  const supportHeadline = data.support?.title ?? 'We Stand Behind Every Machine'
-  const supportItems = data.support?.items ?? [
-    {
-      title: '2-Year Warranty',
-      description: 'Comprehensive manufacturer warranty with full parts and labor coverage.',
-    },
-    {
-      title: 'Local Service Center',
-      description: 'Dedicated service facility in Kuala Lumpur staffed by factory-trained technicians.',
-    },
-    {
-      title: 'Spare Parts Stock',
-      description: 'Full inventory of genuine Shibuya parts for rapid repairs and maintenance.',
-    },
-    {
-      title: 'Operator Training',
-      description: 'Complimentary training program included with every machine purchase.',
-    },
-  ]
+  const supportHeadline = pick(data.support?.title, data.support?.titleBM) || 'We Stand Behind Every Machine'
+  const supportItems = data.support?.items ?? []
 
   // ── CTA ─────────────────────────────────────────────────────────────────────
-  const ctaHeadline = data.cta?.headline ?? 'Experience the Difference'
+  const ctaHeadline = pick(data.cta?.headline, data.cta?.headlineBM) || 'Experience the Difference'
   const ctaSubheadline =
-    data.cta?.subheadline ??
+    pick(data.cta?.subheadline, data.cta?.subheadlineBM) ||
     'Schedule a demonstration at your site or visit our showroom to see Shibuya performance firsthand.'
-  const ctaPrimaryLabel = data.cta?.primaryCtaLabel ?? 'Request a demo'
+  const ctaPrimaryLabel = pick(data.cta?.primaryCtaLabel, data.cta?.primaryCtaLabelBM) || 'Request a demo'
   const ctaPrimaryHref = '/contact'
-  const ctaSecondaryLabel = data.cta?.secondaryCtaLabel ?? 'Download Brochure'
+  const ctaSecondaryLabel = pick(data.cta?.secondaryCtaLabel, data.cta?.secondaryCtaLabelBM) || 'Download Brochure'
   const ctaSecondaryHref = '/contact'
 
   return (
@@ -162,14 +125,14 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
                 href="#models"
                 className="inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink transition-colors hover:bg-white/90"
               >
-                {heroPrimaryLabel}
+                {t.pages.shibuya.heroPrimaryLabel}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <button className="inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-semibold text-white transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30">
                   <Play className="h-3 w-3 fill-white" />
                 </div>
-                {heroSecondaryLabel}
+                {t.pages.shibuya.heroSecondaryLabel}
               </button>
             </div>
           </div>
@@ -178,7 +141,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
         {/* Scroll indicator */}
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
           <div className="flex flex-col items-center gap-3 text-white/30">
-            <span className="text-xs tracking-[0.2em]">SCROLL</span>
+            <span className="text-xs tracking-[0.2em]">{t.pages.shibuya.scroll}</span>
             <ArrowDown className="h-4 w-4" />
           </div>
         </div>
@@ -187,7 +150,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
       {/* Heritage Statement */}
       <section className="bg-shibuya-paper py-32">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <p className="text-sm font-medium tracking-[0.2em] text-navy/40">SINCE {heritageSince}</p>
+          <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{t.pages.shibuya.sincePrefix} {heritageSince}</p>
           <h2 className="mt-8 text-3xl font-bold leading-snug tracking-tight text-navy md:text-4xl lg:text-5xl">
             {heritageStatement}
           </h2>
@@ -224,8 +187,8 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
                   <div key={point.number} className="flex gap-6">
                     <span className="text-sm font-medium text-navy/20">{point.number}</span>
                     <div>
-                      <h3 className="font-semibold text-navy">{point.title}</h3>
-                      <p className="mt-1 text-sm text-ink-muted">{point.description}</p>
+                      <h3 className="font-semibold text-navy">{pick(point.title, point.titleBM)}</h3>
+                      <p className="mt-1 text-sm text-ink-muted">{pick(point.description, point.descriptionBM)}</p>
                     </div>
                   </div>
                 ))}
@@ -239,9 +202,9 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
       <section id="models" className="bg-shibuya-ink py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-20 text-center">
-            <p className="text-sm font-medium tracking-[0.2em] text-white/40">THE RANGE</p>
+            <p className="text-sm font-medium tracking-[0.2em] text-white/40">{t.pages.shibuya.modelsEyebrow}</p>
             <h2 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
-              Choose Your Machine
+              {t.pages.shibuya.modelsHeadline}
             </h2>
           </div>
 
@@ -279,42 +242,42 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
 
                   {/* Details */}
                   <div className="flex flex-col justify-center">
-                    <p className="text-sm font-medium tracking-[0.2em] text-accent">{selectedMachine.tagline}</p>
+                    <p className="text-sm font-medium tracking-[0.2em] text-accent">{pick(selectedMachine.tagline, selectedMachine.taglineBM)}</p>
                     <h3 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
-                      Shibuya {selectedMachine.name}
+                      {t.pages.shibuya.modelNamePrefix} {selectedMachine.name}
                     </h3>
                     <p className="mt-6 text-lg leading-relaxed text-white/50">
-                      {selectedMachine.description}
+                      {pick(selectedMachine.description, selectedMachine.descriptionBM)}
                     </p>
 
                     {/* Specs grid */}
                     <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
                       <div>
                         <p className="font-mono text-3xl font-bold text-white">{selectedMachine.motorPower}</p>
-                        <p className="mt-1 text-sm text-white/40">Motor Power</p>
+                        <p className="mt-1 text-sm text-white/40">{t.pages.shibuya.motorPowerLabel}</p>
                       </div>
                       <div>
                         <p className="font-mono text-3xl font-bold text-white">{selectedMachine.maxDiameter}</p>
-                        <p className="mt-1 text-sm text-white/40">Max Diameter</p>
+                        <p className="mt-1 text-sm text-white/40">{t.pages.shibuya.maxDiameterLabel}</p>
                       </div>
                       <div>
                         <p className="font-mono text-3xl font-bold text-white">{selectedMachine.weight}</p>
-                        <p className="mt-1 text-sm text-white/40">Weight</p>
+                        <p className="mt-1 text-sm text-white/40">{t.pages.shibuya.weightLabel}</p>
                       </div>
                       <div>
                         <p className="font-mono text-3xl font-bold text-white">{selectedMachine.rpmRange}</p>
-                        <p className="mt-1 text-sm text-white/40">RPM Range</p>
+                        <p className="mt-1 text-sm text-white/40">{t.pages.shibuya.rpmRangeLabel}</p>
                       </div>
                     </div>
 
                     {/* Features */}
                     <div className="mt-12">
-                      <p className="mb-4 text-sm font-medium text-white/40">KEY FEATURES</p>
+                      <p className="mb-4 text-sm font-medium text-white/40">{t.pages.shibuya.keyFeaturesLabel}</p>
                       <ul className="grid gap-3 sm:grid-cols-2">
                         {(selectedMachine.features ?? []).map((featureObj: any, idx: number) => (
                           <li key={idx} className="flex items-center gap-3 text-sm text-white/70">
                             <Check className="h-4 w-4 flex-shrink-0 text-accent" />
-                            {featureObj.feature}
+                            {pick(featureObj.feature, featureObj.featureBM)}
                           </li>
                         ))}
                       </ul>
@@ -323,14 +286,14 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
                     {/* Price and CTA */}
                     <div className="mt-12 flex flex-wrap items-center gap-8">
                       <div>
-                        <p className="text-sm text-white/40">Starting from</p>
+                        <p className="text-sm text-white/40">{t.pages.shibuya.startingFromLabel}</p>
                         <p className="font-mono text-3xl font-bold text-white">{selectedMachine.price}</p>
                       </div>
                       <Link
                         href="/contact"
                         className="inline-flex items-center gap-2 bg-accent-dark px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent"
                       >
-                        Request Quote
+                        {t.pages.shibuya.requestQuote}
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     </div>
@@ -354,7 +317,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
         <div className="relative z-10 flex h-full items-center">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="max-w-xl">
-              <p className="text-sm font-medium tracking-[0.2em] text-white/40">{inActionEyebrow}</p>
+              <p className="text-sm font-medium tracking-[0.2em] text-white/40">{t.pages.shibuya.inActionEyebrow}</p>
               <h2 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
                 {inActionHeadline}
               </h2>
@@ -365,7 +328,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
                 href={inActionCtaHref}
                 className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white"
               >
-                {inActionCtaLabel}
+                {t.pages.shibuya.inActionCtaLabel}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -378,7 +341,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-16 lg:grid-cols-3">
             <div>
-              <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{supportEyebrow}</p>
+              <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{t.pages.shibuya.supportEyebrow}</p>
               <h2 className="mt-4 text-3xl font-bold tracking-tight text-navy">
                 {supportHeadline}
               </h2>
@@ -387,8 +350,8 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
               <div className="grid gap-12 sm:grid-cols-2">
                 {supportItems.map((item: any, idx: number) => (
                   <div key={idx}>
-                    <h3 className="text-lg font-semibold text-navy">{item.title}</h3>
-                    <p className="mt-2 text-ink-muted">{item.description}</p>
+                    <h3 className="text-lg font-semibold text-navy">{pick(item.title, item.titleBM)}</h3>
+                    <p className="mt-2 text-ink-muted">{pick(item.description, item.descriptionBM)}</p>
                   </div>
                 ))}
               </div>

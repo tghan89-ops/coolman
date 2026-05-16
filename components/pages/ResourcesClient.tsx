@@ -5,60 +5,25 @@ import { FileText, Download, Play, BookOpen, ArrowRight } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { useLivePreview } from '@payloadcms/live-preview-react'
+import { useLanguage } from '@/lib/i18n/context'
 
 const defaultDownloads = [
-  {
-    title: 'Product Catalog 2024',
-    description: 'Complete catalog with specifications, pricing, and application guides for all our diamond cutting tools.',
-    file: null,
-  },
-  {
-    title: 'Blade Selection Guide',
-    description: 'Technical guide to help you choose the right blade for your specific material and cutting conditions.',
-    file: null,
-  },
-  {
-    title: 'Safety Guidelines',
-    description: 'Comprehensive safety guidelines for diamond blade operation and maintenance.',
-    file: null,
-  },
-  {
-    title: 'Technical Specifications',
-    description: 'Detailed technical specifications including segment configurations, RPM ratings, and compatibility.',
-    file: null,
-  },
+  { title: 'Product Catalog 2024', description: 'Complete catalog with specifications, pricing, and application guides for all our diamond cutting tools.', file: null },
+  { title: 'Blade Selection Guide', description: 'Technical guide to help you choose the right blade for your specific material and cutting conditions.', file: null },
+  { title: 'Safety Guidelines', description: 'Comprehensive safety guidelines for diamond blade operation and maintenance.', file: null },
+  { title: 'Technical Specifications', description: 'Detailed technical specifications including segment configurations, RPM ratings, and compatibility.', file: null },
 ]
 
 const defaultVideos = [
-  {
-    title: 'Cutting Best Practices',
-    description: 'Video series covering optimal cutting techniques, machine setup, and safety procedures.',
-    youtubeUrl: '',
-  },
-  {
-    title: 'Product Demonstrations',
-    description: 'See our diamond blades in action across various applications and materials.',
-    youtubeUrl: '',
-  },
+  { title: 'Cutting Best Practices', description: 'Video series covering optimal cutting techniques, machine setup, and safety procedures.', youtubeUrl: '' },
+  { title: 'Product Demonstrations', description: 'See our diamond blades in action across various applications and materials.', youtubeUrl: '' },
 ]
 
-const faqs = [
-  {
-    question: 'How do I select the right blade for my application?',
-    answer: 'Consider the material you are cutting, the hardness, whether it is reinforced, and the type of cut (wet or dry). Our Blade Selection Guide provides detailed recommendations, or contact our technical team for personalized advice.'
-  },
-  {
-    question: 'What is the difference between segmented and continuous rim blades?',
-    answer: 'Segmented blades have gaps between segments for aggressive cutting and cooling, ideal for concrete and masonry. Continuous rim blades provide smoother cuts with less chipping, perfect for tile and stone.'
-  },
-  {
-    question: 'How do I maximize blade life?',
-    answer: 'Use the correct blade for your material, maintain proper RPM and feed rates, ensure adequate water flow for wet cutting, and allow the blade to cut rather than forcing it.'
-  },
-  {
-    question: 'Do you offer bulk pricing for contractors?',
-    answer: 'Yes, registered contractors receive tiered pricing based on volume. Create a contractor account to view your pricing tier and available discounts.'
-  },
+const defaultFaqs = [
+  { question: 'How do I select the right blade for my application?', answer: 'Consider the material you are cutting, the hardness, whether it is reinforced, and the type of cut (wet or dry). Our Blade Selection Guide provides detailed recommendations, or contact our technical team for personalized advice.' },
+  { question: 'What is the difference between segmented and continuous rim blades?', answer: 'Segmented blades have gaps between segments for aggressive cutting and cooling, ideal for concrete and masonry. Continuous rim blades provide smoother cuts with less chipping, perfect for tile and stone.' },
+  { question: 'How do I maximize blade life?', answer: 'Use the correct blade for your material, maintain proper RPM and feed rates, ensure adequate water flow for wet cutting, and allow the blade to cut rather than forcing it.' },
+  { question: 'Do you offer bulk pricing for contractors?', answer: 'Yes, registered contractors receive tiered pricing based on volume. Create a contractor account to view your pricing tier and available discounts.' },
 ]
 
 function getDownloadIcon(title: string) {
@@ -69,16 +34,22 @@ function getDownloadIcon(title: string) {
 }
 
 export function ResourcesClient({ initialData }: { initialData: any }) {
+  const { language, t } = useLanguage()
+  const pick = (en?: string | null, bm?: string | null): string => {
+    if (language === 'BM' && bm && bm.trim()) return bm
+    return en ?? ''
+  }
   const { data } = useLivePreview({
     initialData,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
     depth: 2,
   })
 
-  const heroTitle = data?.heroTitle ?? 'Technical Resources & Downloads'
-  const heroSubtitle = data?.heroSubtitle ?? 'Access product catalogs, technical guides, and educational content to help you get the most from your diamond cutting tools.'
+  const heroTitle = pick(data?.heroTitle, data?.heroTitleBM) || t.pages.resources.fallbackHeroTitle
+  const heroSubtitle = pick(data?.heroSubtitle, data?.heroSubtitleBM) || t.pages.resources.fallbackHeroSubtitle
   const downloads: any[] = data?.downloads?.length ? data.downloads : defaultDownloads
   const videos: any[] = data?.videos?.length ? data.videos : defaultVideos
+  const faqs: any[] = data?.faqs?.length ? data.faqs : defaultFaqs
 
   function fileUrl(file: any): string | null {
     if (!file) return null
@@ -87,13 +58,22 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
     return null
   }
 
-  // Only surface items that actually navigate somewhere.
   const allResources = [
     ...downloads
-      .map((d: any) => ({ ...d, type: 'download', href: fileUrl(d.file) }))
+      .map((d: any) => ({
+        type: 'download' as const,
+        title: pick(d.title, d.titleBM),
+        description: pick(d.description, d.descriptionBM),
+        href: fileUrl(d.file),
+      }))
       .filter((d) => d.href),
     ...videos
-      .map((v: any) => ({ ...v, type: 'video', href: (v.youtubeUrl || '').trim() || null }))
+      .map((v: any) => ({
+        type: 'video' as const,
+        title: pick(v.title, v.titleBM),
+        description: pick(v.description, v.descriptionBM),
+        href: (v.youtubeUrl || '').trim() || null,
+      }))
       .filter((v) => v.href),
   ]
 
@@ -103,7 +83,7 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
       <section className="bg-navy pb-16 pt-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-accent">Resources</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-accent">{t.pages.resources.heroEyebrow}</p>
             <h1 className="mt-3 text-4xl font-bold tracking-tight text-white lg:text-5xl">
               {heroTitle}
             </h1>
@@ -122,17 +102,12 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
               <div className="mx-auto inline-flex rounded-xl bg-secondary p-3">
                 <FileText className="h-6 w-6 text-ink-muted" />
               </div>
-              <h3 className="mt-6 text-lg font-semibold text-navy">Catalogue arriving soon</h3>
+              <h3 className="mt-6 text-lg font-semibold text-navy">{t.pages.resources.emptyTitle}</h3>
               <p className="mt-3 text-sm text-ink-muted">
-                We&apos;re finalising the latest PDFs and video guides. In the meantime, ask our team for the file you need.
+                {t.pages.resources.emptyMessage}
               </p>
-              <Button
-                size="sm"
-                variant="outline"
-                className="mt-6 border-rule"
-                asChild
-              >
-                <Link href="/contact">Request a copy</Link>
+              <Button size="sm" variant="outline" className="mt-6 border-rule" asChild>
+                <Link href="/contact">{t.pages.resources.emptyButton}</Link>
               </Button>
             </div>
           ) : (
@@ -160,7 +135,7 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
 
                     <span className="mt-6 flex items-center gap-2 text-sm font-medium text-accent-dark transition-colors group-hover:text-accent">
                       {isVideo ? <Play className="h-4 w-4" /> : <Download className="h-4 w-4" />}
-                      {isVideo ? 'Play video' : 'Open PDF'}
+                      {isVideo ? t.pages.resources.playVideo : t.pages.resources.openPdf}
                     </span>
                   </a>
                 )
@@ -174,17 +149,21 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
       <section className="bg-secondary py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-wider text-accent">FAQ</p>
-            <h2 className="mt-3 text-3xl font-bold text-navy">Frequently Asked Questions</h2>
+            <p className="text-sm font-semibold uppercase tracking-wider text-accent">{t.pages.resources.faqEyebrow}</p>
+            <h2 className="mt-3 text-3xl font-bold text-navy">{t.pages.resources.faqHeading}</h2>
           </div>
 
           <div className="mx-auto mt-16 max-w-3xl divide-y divide-rule">
-            {faqs.map((faq, index) => (
-              <div key={index} className="py-6">
-                <h3 className="text-lg font-semibold text-navy">{faq.question}</h3>
-                <p className="mt-3 text-ink-muted">{faq.answer}</p>
-              </div>
-            ))}
+            {faqs.map((faq, index) => {
+              const q = pick(faq.question, faq.questionBM) || ''
+              const a = pick(faq.answer, faq.answerBM) || ''
+              return (
+                <div key={index} className="py-6">
+                  <h3 className="text-lg font-semibold text-navy">{q}</h3>
+                  <p className="mt-3 text-ink-muted">{a}</p>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -192,17 +171,13 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
       {/* CTA */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold text-navy">Need Technical Assistance?</h2>
+          <h2 className="text-3xl font-bold text-navy">{t.pages.resources.ctaTitle}</h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-muted">
-            Our engineering team is ready to help with blade selection, technical questions, and application support.
+            {t.pages.resources.ctaMessage}
           </p>
-          <Button
-            size="lg"
-            className="mt-8 h-14 rounded-xl bg-accent-dark px-8 text-white hover:bg-accent"
-            asChild
-          >
+          <Button size="lg" className="mt-8 h-14 rounded-xl bg-accent-dark px-8 text-white hover:bg-accent" asChild>
             <Link href="/contact">
-              Contact Technical Support
+              {t.pages.resources.ctaButton}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>

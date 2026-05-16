@@ -1,5 +1,8 @@
 import type { GlobalConfig } from 'payload'
 
+const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+const notTranslated = { description: 'Not translated — numeric/spec value shown in both languages.' }
+
 export const ShibuyaPage: GlobalConfig = {
   slug: 'shibuya-page',
   access: { read: () => true },
@@ -14,9 +17,13 @@ export const ShibuyaPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'badge', type: 'text', defaultValue: 'ENGINEERED IN JAPAN' },
+        { name: 'badgeBM', type: 'text', admin: bmDesc },
         { name: 'headlineLine1', type: 'text', defaultValue: 'Precision Without' },
+        { name: 'headlineLine1BM', type: 'text', admin: bmDesc },
         { name: 'headlineLine2', type: 'text', defaultValue: 'Compromise' },
+        { name: 'headlineLine2BM', type: 'text', admin: bmDesc },
         { name: 'subheadline', type: 'textarea', defaultValue: 'Shibuya core drilling machines represent five decades of Japanese engineering excellence.' },
+        { name: 'subheadlineBM', type: 'textarea', admin: bmDesc },
         { name: 'heroImage', type: 'upload', relationTo: 'media' },
       ],
     },
@@ -24,8 +31,9 @@ export const ShibuyaPage: GlobalConfig = {
       name: 'heritage',
       type: 'group',
       fields: [
-        { name: 'since', type: 'text', defaultValue: 'SINCE 1973' },
+        { name: 'since', type: 'text', defaultValue: '1973', admin: { description: 'Year only e.g. 1973 — the SINCE prefix is added automatically.' } },
         { name: 'statement', type: 'textarea', defaultValue: 'Five decades of relentless pursuit of perfection. Every Shibuya machine is a testament to Japanese craftsmanship.' },
+        { name: 'statementBM', type: 'textarea', admin: bmDesc },
       ],
     },
     {
@@ -33,8 +41,11 @@ export const ShibuyaPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'sectionLabel', type: 'text', defaultValue: 'CRAFTSMANSHIP' },
+        { name: 'sectionLabelBM', type: 'text', admin: bmDesc },
         { name: 'title', type: 'text', defaultValue: 'Built to Last Generations' },
+        { name: 'titleBM', type: 'text', admin: bmDesc },
         { name: 'body', type: 'textarea', defaultValue: 'Every Shibuya machine begins its life in our Osaka manufacturing facility.' },
+        { name: 'bodyBM', type: 'textarea', admin: bmDesc },
         { name: 'image', type: 'upload', relationTo: 'media' },
         {
           name: 'points',
@@ -46,9 +57,11 @@ export const ShibuyaPage: GlobalConfig = {
             { number: '04', title: 'Hand Assembly', description: 'Final assembly by master technicians with decades of experience.' },
           ],
           fields: [
-            { name: 'number', type: 'text', required: true },
+            { name: 'number', type: 'text', required: true, admin: notTranslated },
             { name: 'title', type: 'text', required: true },
+            { name: 'titleBM', type: 'text', admin: bmDesc },
             { name: 'description', type: 'textarea', required: true },
+            { name: 'descriptionBM', type: 'textarea', admin: bmDesc },
           ],
         },
       ],
@@ -64,20 +77,25 @@ export const ShibuyaPage: GlobalConfig = {
         { modelId: 'ts-402', name: 'TS-402', tagline: 'Maximum Performance', description: 'The pinnacle of core drilling technology...', motorPower: '4,800W', maxDiameter: '402mm', weight: '28kg', rpmRange: '180-720', price: 'RM 22,000', features: [{ feature: 'Maximum drilling capacity' }, { feature: 'Hydraulic feed system' }, { feature: 'Remote operation capable' }, { feature: 'Continuous duty rated' }] },
       ],
       fields: [
-        { name: 'modelId', type: 'text', required: true, admin: { description: 'Internal ID e.g. ts-132' } },
-        { name: 'name', type: 'text', required: true },
+        { name: 'modelId', type: 'text', required: true, admin: { description: 'Internal ID e.g. ts-132 — not translated.' } },
+        { name: 'name', type: 'text', required: true, admin: { description: 'Model name e.g. TS-132 — not translated.' } },
         { name: 'tagline', type: 'text', required: true },
+        { name: 'taglineBM', type: 'text', admin: bmDesc },
         { name: 'description', type: 'textarea', required: true },
-        { name: 'motorPower', type: 'text', required: true, admin: { description: 'e.g. 1,500W' } },
-        { name: 'maxDiameter', type: 'text', required: true, admin: { description: 'e.g. 132mm' } },
-        { name: 'weight', type: 'text', required: true, admin: { description: 'e.g. 8.5kg' } },
-        { name: 'rpmRange', type: 'text', required: true, admin: { description: 'e.g. 580-2,100' } },
-        { name: 'price', type: 'text', required: true, admin: { description: 'Display price string e.g. RM 4,500' } },
+        { name: 'descriptionBM', type: 'textarea', admin: bmDesc },
+        { name: 'motorPower', type: 'text', required: true, admin: { description: 'e.g. 1,500W — not translated.' } },
+        { name: 'maxDiameter', type: 'text', required: true, admin: { description: 'e.g. 132mm — not translated.' } },
+        { name: 'weight', type: 'text', required: true, admin: { description: 'e.g. 8.5kg — not translated.' } },
+        { name: 'rpmRange', type: 'text', required: true, admin: { description: 'e.g. 580-2,100 — not translated.' } },
+        { name: 'price', type: 'text', required: true, admin: { description: 'Display price string e.g. RM 4,500 — not translated.' } },
         { name: 'image', type: 'upload', relationTo: 'media' },
         {
           name: 'features',
           type: 'array',
-          fields: [{ name: 'feature', type: 'text', required: true }],
+          fields: [
+            { name: 'feature', type: 'text', required: true },
+            { name: 'featureBM', type: 'text', admin: bmDesc },
+          ],
         },
       ],
     },
@@ -86,7 +104,9 @@ export const ShibuyaPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'title', type: 'text', defaultValue: 'Built for Real Work' },
+        { name: 'titleBM', type: 'text', admin: bmDesc },
         { name: 'body', type: 'textarea', defaultValue: 'From high-rise construction to infrastructure projects, Shibuya machines perform flawlessly.' },
+        { name: 'bodyBM', type: 'textarea', admin: bmDesc },
         { name: 'image', type: 'upload', relationTo: 'media' },
       ],
     },
@@ -95,6 +115,7 @@ export const ShibuyaPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'title', type: 'text', defaultValue: 'We Stand Behind Every Machine' },
+        { name: 'titleBM', type: 'text', admin: bmDesc },
         {
           name: 'items',
           type: 'array',
@@ -106,7 +127,9 @@ export const ShibuyaPage: GlobalConfig = {
           ],
           fields: [
             { name: 'title', type: 'text', required: true },
+            { name: 'titleBM', type: 'text', admin: bmDesc },
             { name: 'description', type: 'textarea', required: true },
+            { name: 'descriptionBM', type: 'textarea', admin: bmDesc },
           ],
         },
       ],
@@ -116,9 +139,13 @@ export const ShibuyaPage: GlobalConfig = {
       type: 'group',
       fields: [
         { name: 'headline', type: 'text', defaultValue: 'Experience the Difference' },
+        { name: 'headlineBM', type: 'text', admin: bmDesc },
         { name: 'subheadline', type: 'textarea', defaultValue: 'Schedule a demonstration at your site or visit our showroom.' },
+        { name: 'subheadlineBM', type: 'textarea', admin: bmDesc },
         { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Request a demo' },
+        { name: 'primaryCtaLabelBM', type: 'text', admin: bmDesc },
         { name: 'secondaryCtaLabel', type: 'text', defaultValue: 'Download Brochure' },
+        { name: 'secondaryCtaLabelBM', type: 'text', admin: bmDesc },
       ],
     },
   ],

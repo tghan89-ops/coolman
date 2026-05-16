@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
+const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+
 export const ContactPage: GlobalConfig = {
   slug: 'contact-page',
   access: { read: () => true },
@@ -10,11 +12,15 @@ export const ContactPage: GlobalConfig = {
   },
   fields: [
     { name: 'heroTitle', type: 'text', defaultValue: 'Contact Us' },
+    { name: 'heroTitleBM', type: 'text', admin: bmDesc },
     { name: 'heroSubtitle', type: 'textarea' },
-    { name: 'phone', type: 'text' },
-    { name: 'email', type: 'email' },
+    { name: 'heroSubtitleBM', type: 'textarea', admin: bmDesc },
+    { name: 'phone', type: 'text', admin: { description: 'Phone number — not translated.' } },
+    { name: 'email', type: 'email', admin: { description: 'Email address — not translated.' } },
     { name: 'address', type: 'textarea' },
-    { name: 'mapEmbedUrl', type: 'text', admin: { description: 'Google Maps embed URL' } },
-    { name: 'whatsappNumber', type: 'text', admin: { description: 'Full number with country code e.g. 601XXXXXXXX' } },
+    { name: 'addressBM', type: 'textarea', admin: bmDesc },
+    { name: 'mapEmbedUrl', type: 'text', admin: { description: 'Google Maps embed URL — not translated.' } },
+    { name: 'whatsappNumber', type: 'text', admin: { description: 'Full number with country code e.g. 601XXXXXXXX — not translated.' } },
+    { name: 'responseTime', type: 'text', defaultValue: '< 4 hours', admin: { description: 'Average response time value (numeric/short text — not translated).' } },
   ],
 }
