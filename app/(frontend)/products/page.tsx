@@ -2,7 +2,7 @@ import { headers } from 'next/headers'
 import { getProducts } from '@/lib/payload'
 import { ProductsClient } from '@/components/products/ProductsClient'
 import { getContractorSession } from '@/lib/auth/contractor-session'
-import { resolvePriceDisplayMode } from '@/components/products/PriceDisplay'
+import { resolvePriceDisplayMode } from '@/lib/pricing/display-mode'
 
 // Per-request render: every contractor sees their own tier-adjusted prices.
 // We trade the ISR cache for per-contractor pricing accuracy.

@@ -17,8 +17,11 @@ import Link from 'next/link'
 import { formatPrice } from '@/lib/utils/formatting'
 import { calculateEffectivePrice } from '@/lib/pricing/calculate'
 import { COPY, type Language } from '@/lib/i18n/copy'
+import { resolvePriceDisplayMode, type PriceDisplayMode } from '@/lib/pricing/display-mode'
 
-export type PriceDisplayMode = 'public' | 'unverified' | 'verifiedNoTier' | 'verifiedWithTier'
+// Re-export so existing client-side imports keep working.
+export { resolvePriceDisplayMode }
+export type { PriceDisplayMode }
 export type PriceDisplayTone = 'light' | 'dark'
 
 export interface PriceDisplayProps {
@@ -106,18 +109,5 @@ export function PriceDisplay({
   )
 }
 
-/**
- * Pure helper for the four-state decision. Exposed so the server page can
- * compute the mode once and pass it in, and so tests can cover each branch.
- */
-export function resolvePriceDisplayMode(opts: {
-  isAuthenticated: boolean
-  isContractor: boolean
-  isVerified: boolean
-  tierDiscountPct: number
-}): PriceDisplayMode {
-  if (!opts.isAuthenticated || !opts.isContractor) return 'public'
-  if (!opts.isVerified) return 'unverified'
-  if (opts.tierDiscountPct <= 0) return 'verifiedNoTier'
-  return 'verifiedWithTier'
-}
+// resolvePriceDisplayMode lives in lib/pricing/display-mode.ts (server-safe)
+// and is re-exported from this file for convenience.

@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import { getProductById } from '@/lib/payload'
 import { ProductDetailClient } from '@/components/products/ProductDetailClient'
 import { getContractorSession } from '@/lib/auth/contractor-session'
-import { resolvePriceDisplayMode } from '@/components/products/PriceDisplay'
+import { resolvePriceDisplayMode } from '@/lib/pricing/display-mode'
 
 // Per-request render so we can show each contractor their own contract price.
 export const dynamic = 'force-dynamic'

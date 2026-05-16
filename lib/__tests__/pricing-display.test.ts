@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { resolvePriceDisplayMode } from '@/components/products/PriceDisplay'
+import { resolvePriceDisplayMode } from '@/lib/pricing/display-mode'
 
 describe('resolvePriceDisplayMode', () => {
   it('public — no auth → public', () => {
