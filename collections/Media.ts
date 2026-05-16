@@ -12,8 +12,6 @@ const ALLOWED_IMAGE_MIME_TYPES = [
   'image/webp',
 ]
 
-const MAX_UPLOAD_BYTES = 5 * 1024 * 1024 // 5 MB
-
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
@@ -26,6 +24,9 @@ export const Media: CollectionConfig = {
     // through sharp, so this happens before the blob hits storage — phone
     // uploads at 4000+px get scaled down to a sane web size. Smaller images
     // are left untouched (`withoutEnlargement: true`).
+    // The auto-resize is the user-facing "size limit" — we deliberately do not
+    // reject oversized originals. The global 25 MB cap in payload.config.ts is
+    // the abuse stop; everything under that gets shrunk in-place by sharp.
     resizeOptions: {
       width: 2000,
       height: 2000,
@@ -37,22 +38,6 @@ export const Media: CollectionConfig = {
     imageSizes: [
       { name: 'thumbnail', width: 400, height: 400, fit: 'inside', withoutEnlargement: true },
       { name: 'card', width: 800, height: 800, fit: 'inside', withoutEnlargement: true },
-    ],
-  },
-  hooks: {
-    // Second line of defence behind the global busboy fileSize limit — gives a
-    // clean validation error instead of a stream abort, and survives any future
-    // change to the global config.
-    beforeValidate: [
-      ({ req }) => {
-        const file = (req as any).file
-        if (file && typeof file.size === 'number' && file.size > MAX_UPLOAD_BYTES) {
-          const sizeMb = (file.size / 1024 / 1024).toFixed(1)
-          throw new Error(
-            `Picture is too large — maximum is 5 MB, this one is ${sizeMb} MB. Please resize and try again.`,
-          )
-        }
-      },
     ],
   },
   fields: [
