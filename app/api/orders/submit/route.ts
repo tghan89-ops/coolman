@@ -160,7 +160,7 @@ export async function POST(req: NextRequest) {
         collection: 'addresses',
         id: addressId as any,
         overrideAccess: false,
-        user,
+        user: contractor,
       })
       const snap = String((addr as any)?.addressText ?? '').trim()
       if (!snap) {
