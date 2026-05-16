@@ -109,6 +109,13 @@ export const Orders: CollectionConfig = {
       type: 'date',
     },
     {
+      name: 'alerted_at',
+      type: 'date',
+      admin: {
+        description: 'Set when the hour-23 unresponded-order alert email has been sent for this order.',
+      },
+    },
+    {
       name: 'duplicate_flag',
       type: 'checkbox',
       defaultValue: false,

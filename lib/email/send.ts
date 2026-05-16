@@ -31,7 +31,7 @@ export async function sendEmail(params: SendEmailParams): Promise<SendEmailResul
     const { Resend } = await import('resend')
     const resend = new Resend(apiKey)
 
-    const from = params.from ?? (process.env.RESEND_FROM_EMAIL ?? 'orders@tx.coolman.my')
+    const from = params.from ?? (process.env.RESEND_FROM_EMAIL ?? 'orders@tx.coolman.com.my')
 
     const { data, error } = await resend.emails.send({
       from,

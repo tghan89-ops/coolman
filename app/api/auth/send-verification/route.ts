@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { sendVerificationEmail } from '@/lib/auth/verify-email'
+import { getContractorSession } from '@/lib/auth/contractor-session'
 
 // POST /api/auth/send-verification
 // Body: { contractorId: string }
@@ -13,24 +13,12 @@ export async function POST(req: NextRequest) {
     if (!contractorId) return NextResponse.json({ error: 'contractorId required' }, { status: 400 })
 
     // Only allow the contractor themselves to trigger a resend for their own account
-    const cookieStore = await cookies()
-    const sessionToken = cookieStore.get('coolman-token')?.value
-
-    if (!sessionToken) {
+    const session = await getContractorSession(req.headers)
+    if (!session) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 })
     }
-
-    try {
-      const meRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'}/api/contractors/me`, {
-        headers: { Cookie: `coolman-token=${sessionToken}` },
-      })
-      if (!meRes.ok) return NextResponse.json({ error: 'Invalid session' }, { status: 401 })
-      const meData = await meRes.json()
-      if (meData.user?.id !== contractorId) {
-        return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-      }
-    } catch {
-      return NextResponse.json({ error: 'Authentication error' }, { status: 401 })
+    if (String(session.id) !== String(contractorId)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     const payload = await getPayload({ config })

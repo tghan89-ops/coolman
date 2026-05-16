@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/unresponded-alert",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

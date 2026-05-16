@@ -25,6 +25,15 @@ export const EmailDeliveries: CollectionConfig = {
       required: true,
     },
     {
+      name: 'email_type',
+      type: 'select',
+      options: [
+        { label: 'Order confirmation', value: 'order_confirmation' },
+        { label: 'Unresponded alert', value: 'unresponded_alert' },
+      ],
+      admin: { description: 'Which template the send-worker should render for this row.' },
+    },
+    {
       name: 'resend_message_id',
       type: 'text',
       admin: { description: 'Message ID returned by Resend on send' },
