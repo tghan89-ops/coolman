@@ -9,6 +9,7 @@ import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
+import { bondLabel } from '@/lib/products/bond-label'
 
 export function ProductDetailClient({
   initialData,
@@ -72,7 +73,7 @@ export function ProductDetailClient({
     { label: 'Diameter', value: labelOf(data.diameter), icon: Ruler },
     { label: 'Arbor Size', value: labelOf(data.arborSize), icon: Ruler },
     { label: 'Segment Height', value: labelOf(data.segmentHeight), icon: Ruler },
-    { label: 'Bond Type', value: labelOf(data.bondType), icon: Shield },
+    { label: 'Bond Type', value: bondLabel(data.bondType), icon: Shield },
     { label: 'Max RPM', value: data.maxRPM ?? 'See manual', icon: Zap },
     { label: 'Cutting Volume', value: labelOf(data.recommendedCuttingVolume), icon: RotateCcw },
   ]
@@ -394,7 +395,7 @@ export function ProductDetailClient({
                         {p.name}
                       </h3>
                       <p className="mt-1 text-sm text-white/60">
-                        {p.diameter} | {labelOf(p.bondType)} Bond
+                        {p.diameter} | {bondLabel(p.bondType)} Bond
                       </p>
                       <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
                         <PriceDisplay

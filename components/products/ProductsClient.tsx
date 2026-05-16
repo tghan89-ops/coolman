@@ -9,6 +9,7 @@ import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils/formatting'
 import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
+import { bondLabel } from '@/lib/products/bond-label'
 
 const PAGE_SIZE = 24
 
@@ -429,7 +430,7 @@ export function ProductsClient({
                             {product.name}
                           </h3>
                           <p className="mt-1 text-sm text-ink-muted">
-                            {product.diameter} | {(typeof product.bondType === 'object' && product.bondType !== null ? product.bondType.name : product.bondType) || 'Standard'} Bond
+                            {product.diameter} | {bondLabel(product.bondType) || 'Standard'} Bond
                           </p>
                           <div className="mt-4 flex items-center justify-between border-t border-rule pt-4">
                             <PriceDisplay
