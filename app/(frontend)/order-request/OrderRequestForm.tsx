@@ -22,6 +22,7 @@ export interface OrderRequestProduct {
   name: string
   listPrice: number
   diameter?: string | number
+  imageUrl?: string | null
 }
 
 interface OrderRequestFormProps {
@@ -264,8 +265,19 @@ export function OrderRequestForm({ product, productId }: OrderRequestFormProps) 
               </CardHeader>
               <CardContent>
                 <div className="flex gap-4">
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg border border-border/30 bg-muted/50">
-                    <span className="text-lg font-bold text-muted-foreground/50">{product.diameter}</span>
+                  <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border/30 bg-muted/50">
+                    {product.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-lg font-bold text-muted-foreground/50">
+                        {product.diameter}
+                      </span>
+                    )}
                   </div>
                   <div>
                     <h3 className="font-semibold text-ink">{product.name}</h3>

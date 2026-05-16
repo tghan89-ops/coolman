@@ -14,12 +14,17 @@ export default async function OrderRequestPage({
   if (productId) {
     const raw = await getProductById(productId)
     if (raw) {
+      const imageUrl: string | null =
+        raw.image && typeof raw.image === 'object' && typeof raw.image.url === 'string'
+          ? raw.image.url
+          : null
       product = {
         id: raw.id,
         sku: raw.sku,
         name: raw.name,
         listPrice: raw.listPrice,
         diameter: raw.diameter,
+        imageUrl,
       }
     }
   }
