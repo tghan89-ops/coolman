@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronRight, ArrowRight, ArrowLeft, Check, Zap, Shield, RotateCcw, Ruler, Minus, Plus } from 'lucide-react'
+import { ChevronRight, ArrowRight, ArrowLeft, Check, Zap, Shield, RotateCcw, Ruler, Minus, Plus, Play } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
@@ -79,12 +79,29 @@ export function ProductDetailClient({
         .filter((u: string | null): u is string => !!u)
     : []
 
-  // Combined image strip: hero first, then any additional gallery photos.
-  const allImageUrls: string[] = heroImageUrl
-    ? [heroImageUrl, ...galleryUrls]
-    : galleryUrls
+  // Gallery items — photos first, then (if set) a video tile that opens the
+  // YouTube player in place of the hero image. Shopee-style: clicking the
+  // video thumbnail swaps the main panel to an iframe, no separate tab.
+  const youTubeId = extractYouTubeId(data.youtubeUrl)
+  type MediaItem =
+    | { kind: 'image'; url: string }
+    | { kind: 'video'; videoId: string; thumb: string }
+  const photoItems: MediaItem[] = [
+    ...(heroImageUrl ? [{ kind: 'image' as const, url: heroImageUrl }] : []),
+    ...galleryUrls.map((url) => ({ kind: 'image' as const, url })),
+  ]
+  const mediaItems: MediaItem[] = youTubeId
+    ? [
+        ...photoItems,
+        {
+          kind: 'video' as const,
+          videoId: youTubeId,
+          thumb: `https://i.ytimg.com/vi/${youTubeId}/hqdefault.jpg`,
+        },
+      ]
+    : photoItems
   const [activeImageIdx, setActiveImageIdx] = useState(0)
-  const imageUrl: string | null = allImageUrls[activeImageIdx] ?? heroImageUrl
+  const activeMedia: MediaItem | undefined = mediaItems[activeImageIdx]
 
   const specs = [
     { label: 'Diameter', value: labelOf(data.diameter), icon: Ruler },
@@ -94,11 +111,6 @@ export function ProductDetailClient({
     { label: 'Max RPM', value: data.maxRPM ?? 'See manual', icon: Zap },
     { label: 'Machine Tier', value: machineTierLabel, icon: RotateCcw },
   ]
-
-  // Product video — Alan pastes a YouTube URL in admin; we parse it to an ID
-  // and render an embed. If the URL is missing or unparseable we render
-  // nothing rather than a broken player.
-  const youTubeId = extractYouTubeId(data.youtubeUrl)
 
   // Related products from Payload (depth:2 resolves these to full objects)
   const relatedProducts: any[] = Array.isArray(data.relatedProducts)
@@ -142,10 +154,19 @@ export function ProductDetailClient({
               </div>
 
               <div className="relative aspect-square overflow-hidden border border-white/10 bg-navy-light">
-                {imageUrl ? (
+                {activeMedia?.kind === 'video' ? (
+                  <iframe
+                    src={`${youTubeEmbedUrl(activeMedia.videoId)}?autoplay=1&rel=0`}
+                    title={`${data.name} — product video`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full"
+                  />
+                ) : activeMedia?.kind === 'image' ? (
                   <>
                     <Image
-                      src={imageUrl}
+                      src={activeMedia.url}
                       alt={data.name}
                       fill
                       className="object-cover"
@@ -160,21 +181,25 @@ export function ProductDetailClient({
                   </div>
                 )}
 
-                {/* Material badge */}
-                <div className="absolute left-4 top-4 border border-accent/40 bg-accent/20 px-3 py-1">
-                  <span className="text-xs font-bold tracking-wider text-accent">
-                    {primaryMaterial || 'Premium'}
-                  </span>
-                </div>
+                {/* Material badge — hide while the video is playing so it
+                    doesn't sit on top of the iframe. */}
+                {activeMedia?.kind !== 'video' && (
+                  <div className="absolute left-4 top-4 border border-accent/40 bg-accent/20 px-3 py-1">
+                    <span className="text-xs font-bold tracking-wider text-accent">
+                      {primaryMaterial || 'Premium'}
+                    </span>
+                  </div>
+                )}
               </div>
 
-              {/* Gallery thumbnails — only renders when admin has uploaded
-                  extra photos in the `photos` array field on the product. */}
-              {allImageUrls.length > 1 && (
+              {/* Gallery thumbnails — photos plus, if admin pasted a YouTube
+                  URL, a video tile at the end. Clicking the video tile swaps
+                  the main panel to the player (Shopee-style). */}
+              {mediaItems.length > 1 && (
                 <div className="mt-4 grid grid-cols-4 gap-3">
-                  {allImageUrls.map((url, i) => (
+                  {mediaItems.map((item, i) => (
                     <button
-                      key={`${url}-${i}`}
+                      key={item.kind === 'video' ? `video-${item.videoId}` : `${item.url}-${i}`}
                       type="button"
                       onClick={() => setActiveImageIdx(i)}
                       className={`relative aspect-square overflow-hidden border transition-colors ${
@@ -182,9 +207,26 @@ export function ProductDetailClient({
                           ? 'border-accent'
                           : 'border-white/10 hover:border-white/30'
                       }`}
-                      aria-label={`View photo ${i + 1}`}
+                      aria-label={item.kind === 'video' ? 'Play product video' : `View photo ${i + 1}`}
                     >
-                      <Image src={url} alt={`${data.name} photo ${i + 1}`} fill className="object-cover" />
+                      {item.kind === 'video' ? (
+                        <>
+                          <Image
+                            src={item.thumb}
+                            alt="Product video"
+                            fill
+                            unoptimized
+                            className="object-cover"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-navy/50">
+                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/95 shadow">
+                              <Play className="h-4 w-4 fill-navy text-navy" />
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <Image src={item.url} alt={`${data.name} photo ${i + 1}`} fill className="object-cover" />
+                      )}
                     </button>
                   ))}
                 </div>
@@ -342,25 +384,7 @@ export function ProductDetailClient({
 
           {/* Usage Guide tab */}
           {activeTab === 'usage' && (
-            <div className="space-y-8">
-              {youTubeId && (
-                <div>
-                  <p className="mb-3 text-xs font-bold tracking-wider text-ink-faint">
-                    Product Video
-                  </p>
-                  <div className="relative aspect-video w-full overflow-hidden border border-rule bg-navy">
-                    <iframe
-                      src={youTubeEmbedUrl(youTubeId)}
-                      title={`${data.name} — product video`}
-                      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full"
-                    />
-                  </div>
-                </div>
-              )}
-              <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid gap-6 lg:grid-cols-2">
               {[
                 { step: '01', title: 'Inspect Before Use', body: 'Check for cracks, warping, or damage before mounting. Never use a damaged blade.' },
                 { step: '02', title: 'Correct Mounting', body: 'Ensure the arbor size matches your machine. Tighten securely with the correct flange.' },
@@ -375,7 +399,6 @@ export function ProductDetailClient({
                   </div>
                 </div>
               ))}
-              </div>
             </div>
           )}
         </div>
