@@ -68,9 +68,9 @@ export default buildConfig({
   globals: [HomePage, ApplicationsPage, ResourcesPage, ContactPage, ShibuyaPage, WhyCoolmanPage, Settings],
   db: vercelPostgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL || '',
+      connectionString: process.env.DATABASE_URI || process.env.POSTGRES_URL || '',
     },
-    push: false,
+    push: true,
   }),
   upload: {
     limits: {
