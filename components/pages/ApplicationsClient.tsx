@@ -10,9 +10,13 @@ import { useLanguage } from '@/lib/i18n/context'
 
 export function ApplicationsClient({ initialData }: { initialData: any }) {
   const { language, t } = useLanguage()
-  const pick = (en?: string | null, bm?: string | null): string => {
-    if (language === 'BM' && bm && bm.trim()) return bm
-    return en ?? ''
+  const pickL = (en: string | null | undefined, bm: string | null | undefined, copyFallback: string): string => {
+    if (language === 'BM') {
+      if (bm && bm.trim()) return bm
+      return copyFallback
+    }
+    if (en && en.trim()) return en
+    return copyFallback
   }
   const { data } = useLivePreview({
     initialData,
@@ -20,9 +24,21 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
     depth: 2,
   })
 
-  const heroTitle = pick(data?.heroTitle, data?.heroTitleBM) || t.pages.applications.fallbackHeroTitle
-  const heroSubtitle = pick(data?.heroSubtitle, data?.heroSubtitleBM) || t.pages.applications.fallbackHeroSubtitle
-  const sections: any[] = data?.sections?.length ? data.sections : t.pages.applications.defaultSections
+  const heroTitle = pickL(data?.heroTitle, data?.heroTitleBM, t.pages.applications.fallbackHeroTitle)
+  const heroSubtitle = pickL(data?.heroSubtitle, data?.heroSubtitleBM, t.pages.applications.fallbackHeroSubtitle)
+  // Merge: copy.ts defaults are language-correct; CMS sections override per-index when filled.
+  // CMS schema has no `features` field, so features always come from copy.ts.
+  const cmsSections: any[] = data?.sections?.length ? data.sections : []
+  const sections = t.pages.applications.defaultSections.map((copyItem, i) => {
+    const cms = cmsSections[i] ?? {}
+    return {
+      id: copyItem.id,
+      title: pickL(cms.title, cms.titleBM, copyItem.title),
+      description: pickL(cms.description, cms.descriptionBM, copyItem.description),
+      features: copyItem.features,
+      image: cms.image,
+    }
+  })
 
   return (
     <PublicLayout>
@@ -47,8 +63,8 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
           <div className="grid gap-16">
             {sections.map((section: any, index: number) => {
               const sectionId = section.id ?? `section-${index}`
-              const sectionTitle = pick(section.title, section.titleBM) || ''
-              const sectionDescription = pick(section.description, section.descriptionBM) || ''
+              const sectionTitle = section.title
+              const sectionDescription = section.description
               const sectionFeatures: string[] = section.features ?? []
               const sectionImage =
                 typeof section.image === 'object' && section.image?.url

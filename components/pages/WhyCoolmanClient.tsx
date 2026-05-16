@@ -32,9 +32,14 @@ const ICONS: Record<string, LucideIcon> = {
 export function WhyCoolmanClient({ initialData }: { initialData: any }) {
   const { language, t } = useLanguage()
   const fallback = t.pages.whyCoolman
-  const pick = (en?: string | null, bm?: string | null): string => {
-    if (language === 'BM' && bm && bm.trim()) return bm
-    return en ?? ''
+  // copyFallback is already in the active language (EN or BM) from copy.ts
+  const pickL = (en: string | null | undefined, bm: string | null | undefined, copyFallback: string): string => {
+    if (language === 'BM') {
+      if (bm && bm.trim()) return bm
+      return copyFallback
+    }
+    if (en && en.trim()) return en
+    return copyFallback
   }
   const { data } = useLivePreview({
     initialData,
@@ -43,27 +48,44 @@ export function WhyCoolmanClient({ initialData }: { initialData: any }) {
   })
 
   const heroData = data?.hero ?? {}
-  const advantages: any[] = data?.advantages?.length ? data.advantages : fallback.advantages
+  const cmsAdvantages: any[] = data?.advantages?.length ? data.advantages : []
+  const advantages = fallback.advantages.map((copyItem, i) => {
+    const cms = cmsAdvantages[i] ?? {}
+    return {
+      iconKey: cms.iconKey || copyItem.iconKey,
+      title: pickL(cms.title, cms.titleBM, copyItem.title),
+      body: pickL(cms.body, cms.bodyBM, copyItem.body),
+      id: cms.id ?? i,
+    }
+  })
   const statsSectionData = data?.statsSection ?? {}
-  const stats: any[] = data?.stats?.length ? data.stats : fallback.stats
+  const cmsStats: any[] = data?.stats?.length ? data.stats : []
+  const stats = fallback.stats.map((copyItem, i) => {
+    const cms = cmsStats[i] ?? {}
+    return {
+      value: cms.value || copyItem.value,
+      label: pickL(cms.label, cms.labelBM, copyItem.label),
+      id: cms.id ?? i,
+    }
+  })
   const testimonialsSectionData = data?.testimonialsSection ?? {}
   const testimonials: any[] = data?.testimonials?.length ? data.testimonials : []
   const ctaData = data?.cta ?? {}
 
-  const heroEyebrow = pick(heroData?.eyebrow, heroData?.eyebrowBM) || fallback.hero.eyebrow
-  const heroTitle = pick(heroData?.title, heroData?.titleBM) || fallback.hero.title
-  const heroLede = pick(heroData?.lede, heroData?.ledeBM) || fallback.hero.lede
+  const heroEyebrow = pickL(heroData?.eyebrow, heroData?.eyebrowBM, fallback.hero.eyebrow)
+  const heroTitle = pickL(heroData?.title, heroData?.titleBM, fallback.hero.title)
+  const heroLede = pickL(heroData?.lede, heroData?.ledeBM, fallback.hero.lede)
 
-  const statsTitle = pick(statsSectionData?.title, statsSectionData?.titleBM) || fallback.statsSection.title
-  const statsSubtitle = pick(statsSectionData?.subtitle, statsSectionData?.subtitleBM) || fallback.statsSection.subtitle
+  const statsTitle = pickL(statsSectionData?.title, statsSectionData?.titleBM, fallback.statsSection.title)
+  const statsSubtitle = pickL(statsSectionData?.subtitle, statsSectionData?.subtitleBM, fallback.statsSection.subtitle)
 
-  const testimonialsEyebrow = pick(testimonialsSectionData?.eyebrow, testimonialsSectionData?.eyebrowBM) || fallback.testimonialsSection.eyebrow
-  const testimonialsTitle = pick(testimonialsSectionData?.title, testimonialsSectionData?.titleBM) || fallback.testimonialsSection.title
+  const testimonialsEyebrow = pickL(testimonialsSectionData?.eyebrow, testimonialsSectionData?.eyebrowBM, fallback.testimonialsSection.eyebrow)
+  const testimonialsTitle = pickL(testimonialsSectionData?.title, testimonialsSectionData?.titleBM, fallback.testimonialsSection.title)
 
-  const ctaTitle = pick(ctaData?.title, ctaData?.titleBM) || fallback.cta.title
-  const ctaBody = pick(ctaData?.body, ctaData?.bodyBM) || fallback.cta.body
-  const ctaPrimaryLabel = pick(ctaData?.primaryLabel, ctaData?.primaryLabelBM) || fallback.cta.primaryLabel
-  const ctaSecondaryLabel = pick(ctaData?.secondaryLabel, ctaData?.secondaryLabelBM) || fallback.cta.secondaryLabel
+  const ctaTitle = pickL(ctaData?.title, ctaData?.titleBM, fallback.cta.title)
+  const ctaBody = pickL(ctaData?.body, ctaData?.bodyBM, fallback.cta.body)
+  const ctaPrimaryLabel = pickL(ctaData?.primaryLabel, ctaData?.primaryLabelBM, fallback.cta.primaryLabel)
+  const ctaSecondaryLabel = pickL(ctaData?.secondaryLabel, ctaData?.secondaryLabelBM, fallback.cta.secondaryLabel)
   const ctaPrimaryHref = ctaData?.primaryHref || fallback.cta.primaryHref
   const ctaSecondaryHref = ctaData?.secondaryHref || fallback.cta.secondaryHref
 
@@ -84,15 +106,13 @@ export function WhyCoolmanClient({ initialData }: { initialData: any }) {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {advantages.map((a, i) => {
               const Icon = ICONS[a.iconKey] ?? Zap
-              const aTitle = pick(a.title, a.titleBM) || ''
-              const aBody = pick(a.body, a.bodyBM) || ''
               return (
                 <div key={a.id ?? i} className="hover-card group rounded-2xl border border-rule bg-white p-8">
                   <div className="inline-flex rounded-xl bg-accent/10 p-3 transition-colors group-hover:bg-accent">
                     <Icon className="h-6 w-6 text-accent transition-colors group-hover:text-white" />
                   </div>
-                  <h3 className="mt-6 text-lg font-semibold text-navy">{aTitle}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-muted">{aBody}</p>
+                  <h3 className="mt-6 text-lg font-semibold text-navy">{a.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-ink-muted">{a.body}</p>
                 </div>
               )
             })}
@@ -108,11 +128,10 @@ export function WhyCoolmanClient({ initialData }: { initialData: any }) {
           </div>
           <div className="mt-16 grid grid-cols-2 gap-8 lg:grid-cols-4">
             {stats.map((s, i) => {
-              const sLabel = pick(s.label, s.labelBM) || ''
               return (
                 <div key={s.id ?? i} className="text-center">
                   <div className="font-mono text-4xl font-bold text-accent lg:text-5xl">{s.value}</div>
-                  <div className="mt-2 text-sm text-white/60">{sLabel}</div>
+                  <div className="mt-2 text-sm text-white/60">{s.label}</div>
                 </div>
               )
             })}
@@ -129,8 +148,8 @@ export function WhyCoolmanClient({ initialData }: { initialData: any }) {
             </div>
             <div className="mt-16 grid gap-8 md:grid-cols-3">
               {testimonials.map((t, i) => {
-                const tQuote = pick(t.quote, t.quoteBM) || ''
-                const tRole = pick(t.role, t.roleBM) || ''
+                const tQuote = pickL(t.quote, t.quoteBM, t.quote ?? '')
+                const tRole = pickL(t.role, t.roleBM, t.role ?? '')
                 return (
                   <div key={t.id ?? i} className="rounded-2xl bg-white p-8 shadow-sm">
                     <p className="text-ink-muted">&ldquo;{tQuote}&rdquo;</p>
