@@ -31,8 +31,8 @@ export function CartPageClient() {
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [stalePrice, setStalePrice] = useState<number | null>(null)
 
-  const deliveryAddress = ((user as any)?.deliveryAddress ?? '').toString()
-  const isEmailVerified = Boolean((user as any)?.email_verified_at)
+  const deliveryAddress = ((user as any)?.contractor?.deliveryAddress ?? '').toString()
+  const isEmailVerified = Boolean((user as any)?.contractor?.email_verified_at)
   const showBreakdown = isAuthenticated && isEmailVerified
 
   async function handleSubmit(confirmedTotal?: number) {
