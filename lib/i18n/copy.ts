@@ -37,6 +37,36 @@ export interface CopyStructure {
     subheadline: string
     cta: string
   }
+  home: {
+    solutionsEyebrow: string
+    solutionsTitleLine1: string
+    solutionsTitleLine2: string
+    materialCuttingSuffix: string
+    materialDescription: string
+    bullets: {
+      segmentSpacing: string
+      bondHardness: string
+      precisionBalanced: string
+      extendedLife: string
+    }
+    viewBladesPrefix: string
+    viewBladesSuffix: string
+    whyEyebrow: string
+    whyTitle: string
+    productsEyebrow: string
+    productsTitle: string
+    viewAllProducts: string
+    scroll: string
+    placeholderProducts: {
+      graniteName: string
+      graniteDesc: string
+      concreteName: string
+      concreteDesc: string
+      tileName: string
+      tileDesc: string
+      priceFrom: string
+    }
+  }
   filters: {
     title: string
     material: string
@@ -302,6 +332,36 @@ export const COPY: Record<Language, CopyStructure> = {
       subheadline: 'Premium diamond cutting tools engineered for Malaysian contractors. Quality you can trust.',
       cta: 'Browse Products',
     },
+    home: {
+      solutionsEyebrow: 'Solutions',
+      solutionsTitleLine1: 'Cutting Solutions for',
+      solutionsTitleLine2: 'Every Material',
+      materialCuttingSuffix: 'Cutting',
+      materialDescription: 'Our {material} cutting blades feature specialised diamond segment configuration and bond formulations engineered for maximum efficiency and extended operational life.',
+      bullets: {
+        segmentSpacing: 'Optimised segment spacing for material',
+        bondHardness: 'Application-specific bond hardness',
+        precisionBalanced: 'Precision balanced for smooth cuts',
+        extendedLife: 'Extended 3× operational life',
+      },
+      viewBladesPrefix: 'View',
+      viewBladesSuffix: 'Blades',
+      whyEyebrow: 'Why Coolman',
+      whyTitle: 'The Coolman Advantage',
+      productsEyebrow: 'Our Products',
+      productsTitle: 'Diamond Blades',
+      viewAllProducts: 'View All Products',
+      scroll: 'Scroll',
+      placeholderProducts: {
+        graniteName: 'Granite Blade',
+        graniteDesc: 'For natural stone cutting',
+        concreteName: 'Concrete Blade',
+        concreteDesc: 'Heavy-duty construction',
+        tileName: 'Tile Blade',
+        tileDesc: 'Precision ceramic cutting',
+        priceFrom: 'From RM',
+      },
+    },
     filters: {
       title: 'Filter Products',
       material: 'Material',
@@ -564,6 +624,36 @@ export const COPY: Record<Language, CopyStructure> = {
       headline: 'Bilah Tepat untuk Setiap Potongan',
       subheadline: 'Alat pemotong berlian premium direka untuk kontraktor Malaysia. Kualiti yang boleh dipercayai.',
       cta: 'Lihat Produk',
+    },
+    home: {
+      solutionsEyebrow: 'Penyelesaian',
+      solutionsTitleLine1: 'Penyelesaian Pemotongan untuk',
+      solutionsTitleLine2: 'Setiap Bahan',
+      materialCuttingSuffix: 'Pemotongan',
+      materialDescription: 'Bilah pemotong {material} kami menampilkan konfigurasi segmen berlian khusus dan formulasi ikatan yang direka untuk kecekapan maksimum dan jangka hayat operasi yang panjang.',
+      bullets: {
+        segmentSpacing: 'Jarak segmen dioptimumkan untuk bahan',
+        bondHardness: 'Kekerasan ikatan khusus aplikasi',
+        precisionBalanced: 'Diseimbangkan dengan tepat untuk potongan licin',
+        extendedLife: 'Jangka hayat operasi 3× lebih panjang',
+      },
+      viewBladesPrefix: 'Lihat Bilah',
+      viewBladesSuffix: '',
+      whyEyebrow: 'Kenapa Coolman',
+      whyTitle: 'Kelebihan Coolman',
+      productsEyebrow: 'Produk Kami',
+      productsTitle: 'Bilah Berlian',
+      viewAllProducts: 'Lihat Semua Produk',
+      scroll: 'Skrol',
+      placeholderProducts: {
+        graniteName: 'Bilah Granit',
+        graniteDesc: 'Untuk pemotongan batu asli',
+        concreteName: 'Bilah Konkrit',
+        concreteDesc: 'Pembinaan tugas berat',
+        tileName: 'Bilah Jubin',
+        tileDesc: 'Pemotongan seramik tepat',
+        priceFrom: 'Dari RM',
+      },
     },
     filters: {
       title: 'Tapis Produk',
