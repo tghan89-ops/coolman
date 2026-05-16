@@ -16,6 +16,7 @@ import { Products } from './collections/Products'
 import { PromoCodes } from './collections/PromoCodes'
 import { Orders } from './collections/Orders'
 import { Carts } from './collections/Carts'
+import { Addresses } from './collections/Addresses'
 import { SearchLogs } from './collections/SearchLogs'
 import { EmailDeliveries } from './collections/EmailDeliveries'
 import { CronRuns } from './collections/CronRuns'
@@ -60,6 +61,7 @@ export default buildConfig({
     PromoCodes,
     Orders,
     Carts,
+    Addresses,
     SearchLogs,
     EmailDeliveries,
     CronRuns,

@@ -148,8 +148,29 @@ export async function POST(req: NextRequest) {
   const lines: Array<{ productId: string | number; quantity: number }> = Array.isArray(body.lines)
     ? body.lines
     : []
-  const deliveryAddress: string = String(body.deliveryAddress ?? '').trim()
+  const addressId: string | number | null = body.addressId ?? null
+  let deliveryAddress: string = String(body.deliveryAddress ?? '').trim()
   const notes: string = String(body.notes ?? '').trim()
+
+  // If the client supplied an addressId, look it up and snapshot its text.
+  // Verifies ownership via access control (overrideAccess:false + user).
+  if (addressId !== null && addressId !== undefined && addressId !== '') {
+    try {
+      const addr = await payload.findByID({
+        collection: 'addresses',
+        id: addressId as any,
+        overrideAccess: false,
+        user,
+      })
+      const snap = String((addr as any)?.addressText ?? '').trim()
+      if (!snap) {
+        return NextResponse.json({ error: 'address_not_found' }, { status: 400 })
+      }
+      deliveryAddress = snap
+    } catch {
+      return NextResponse.json({ error: 'address_not_found' }, { status: 400 })
+    }
+  }
   const promoCodeStr: string = String(body.promoCode ?? '').trim()
   const clientEffectiveTotal: number = Number(body.clientEffectiveTotal ?? NaN)
 

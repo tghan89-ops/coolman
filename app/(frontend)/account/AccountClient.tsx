@@ -7,7 +7,7 @@ import { Package, ShoppingCart, LogOut, ArrowRight, Percent, AlertCircle, Mail }
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { OrderStatusBadge } from '@/components/shared/status-badge'
-import { DeliveryAddressForm } from '@/components/account/DeliveryAddressForm'
+import { AddressList } from '@/components/account/AddressList'
 import { useLanguage } from '@/lib/i18n/context'
 import { useAuth } from '@/lib/auth/context'
 import { formatPrice, formatDate } from '@/lib/utils/formatting'
@@ -178,10 +178,7 @@ export function AccountClient({ orders }: { orders: AccountOrder[] }) {
         {isContractor && (
           <section className="py-4">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <DeliveryAddressForm
-                initialAddress={user.contractor?.deliveryAddress ?? ''}
-                onSaved={() => { refreshUser() }}
-              />
+              <AddressList onChanged={() => { refreshUser() }} />
             </div>
           </section>
         )}

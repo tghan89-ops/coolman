@@ -127,6 +127,22 @@ export interface CopyStructure {
     deliveryAddress: string
     saveAddress: string
     addressSaved: string
+    addresses: {
+      title: string
+      addNew: string
+      label: string
+      labelPlaceholder: string
+      addressPlaceholder: string
+      defaultBadge: string
+      setDefault: string
+      edit: string
+      delete: string
+      save: string
+      cancel: string
+      atCap: string
+      none: string
+      confirmDelete: string
+    }
   }
   status: {
     pending: string
@@ -342,6 +358,22 @@ export const COPY: Record<Language, CopyStructure> = {
       deliveryAddress: 'Delivery Address',
       saveAddress: 'Save address',
       addressSaved: 'Saved.',
+      addresses: {
+        title: 'Saved Addresses',
+        addNew: 'Add new address',
+        label: 'Label',
+        labelPlaceholder: 'e.g. Main warehouse',
+        addressPlaceholder: 'Full delivery address (max 500 chars)',
+        defaultBadge: 'Default',
+        setDefault: 'Set as default',
+        edit: 'Edit',
+        delete: 'Delete',
+        save: 'Save',
+        cancel: 'Cancel',
+        atCap: 'You can save up to 5 addresses. Delete one before adding another.',
+        none: 'No saved addresses yet. Add one to place an order.',
+        confirmDelete: 'Delete this address?',
+      },
     },
     status: {
       pending: 'Pending',
@@ -555,6 +587,22 @@ export const COPY: Record<Language, CopyStructure> = {
       deliveryAddress: 'Alamat Penghantaran',
       saveAddress: 'Simpan alamat',
       addressSaved: 'Disimpan.',
+      addresses: {
+        title: 'Alamat Tersimpan',
+        addNew: 'Tambah alamat baharu',
+        label: 'Label',
+        labelPlaceholder: 'cth. Gudang utama',
+        addressPlaceholder: 'Alamat penghantaran penuh (maks 500 aksara)',
+        defaultBadge: 'Lalai',
+        setDefault: 'Tetapkan sebagai lalai',
+        edit: 'Sunting',
+        delete: 'Padam',
+        save: 'Simpan',
+        cancel: 'Batal',
+        atCap: 'Anda boleh simpan sehingga 5 alamat. Padam satu sebelum menambah yang baharu.',
+        none: 'Tiada alamat disimpan. Tambah satu untuk membuat pesanan.',
+        confirmDelete: 'Padam alamat ini?',
+      },
     },
     status: {
       pending: 'Menunggu',

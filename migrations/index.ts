@@ -5,6 +5,7 @@ import * as migration_20260516_072830_add_alerted_at from './20260516_072830_add
 import * as migration_20260516_153000_add_order_notify_emails from './20260516_153000_add_order_notify_emails';
 import * as migration_20260516_180000_carts_and_order_submission_id from './20260516_180000_carts_and_order_submission_id';
 import * as migration_20260516_190000_carts_locked_docs_rels from './20260516_190000_carts_locked_docs_rels';
+import * as migration_20260516_210000_addresses from './20260516_210000_addresses';
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20260516_190000_carts_locked_docs_rels.up,
     down: migration_20260516_190000_carts_locked_docs_rels.down,
     name: '20260516_190000_carts_locked_docs_rels',
+  },
+  {
+    up: migration_20260516_210000_addresses.up,
+    down: migration_20260516_210000_addresses.down,
+    name: '20260516_210000_addresses',
   },
 ];
