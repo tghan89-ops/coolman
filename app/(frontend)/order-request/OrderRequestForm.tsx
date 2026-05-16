@@ -170,8 +170,8 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
   if (authLoading) {
     return (
       <PublicLayout>
-        <div className="flex min-h-[50vh] items-center justify-center">
-          <p className="text-muted-foreground">{t.common.loading}</p>
+        <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-navy">
+          <p className="text-ink-muted">{t.common.loading}</p>
         </div>
       </PublicLayout>
     )
@@ -180,15 +180,17 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
   if (!isAuthenticated) {
     return (
       <PublicLayout>
-        <div className="mx-auto max-w-2xl px-4 py-12">
-          <Alert className="border-border/30 bg-muted/30">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>{t.order.loginRequired}</AlertTitle>
-            <AlertDescription className="mt-2">{t.order.loginToOrder}</AlertDescription>
-          </Alert>
-          <div className="mt-6 flex gap-4">
-            <Button asChild><Link href="/auth/login">{t.nav.login}</Link></Button>
-            <Button variant="outline" asChild><Link href="/auth/register">{t.nav.register}</Link></Button>
+        <div className="min-h-[calc(100vh-80px)] bg-navy">
+          <div className="mx-auto max-w-2xl px-4 py-12">
+            <Alert className="border border-white/10 bg-white/5 text-white">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle className="text-white">{t.order.loginRequired}</AlertTitle>
+              <AlertDescription className="mt-2 text-ink-muted">{t.order.loginToOrder}</AlertDescription>
+            </Alert>
+            <div className="mt-6 flex gap-4">
+              <Button asChild className="bg-accent-dark text-white hover:bg-accent"><Link href="/auth/login">{t.nav.login}</Link></Button>
+              <Button variant="outline" asChild className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"><Link href="/auth/register">{t.nav.register}</Link></Button>
+            </div>
           </div>
         </div>
       </PublicLayout>
@@ -198,16 +200,18 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
   if (!product) {
     return (
       <PublicLayout>
-        <div className="mx-auto max-w-2xl px-4 py-12">
-          <Alert className="border-border/30 bg-muted/30">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>No Product Selected</AlertTitle>
-            <AlertDescription className="mt-2">
-              Please select a product from our catalogue to place an order.
-            </AlertDescription>
-          </Alert>
-          <div className="mt-6">
-            <Button asChild><Link href="/products">{t.hero.cta}</Link></Button>
+        <div className="min-h-[calc(100vh-80px)] bg-navy">
+          <div className="mx-auto max-w-2xl px-4 py-12">
+            <Alert className="border border-white/10 bg-white/5 text-white">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle className="text-white">No Product Selected</AlertTitle>
+              <AlertDescription className="mt-2 text-ink-muted">
+                Please select a product from our catalogue to place an order.
+              </AlertDescription>
+            </Alert>
+            <div className="mt-6">
+              <Button asChild className="bg-accent-dark text-white hover:bg-accent"><Link href="/products">{t.hero.cta}</Link></Button>
+            </div>
           </div>
         </div>
       </PublicLayout>
@@ -217,20 +221,22 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
   if (submitSuccess) {
     return (
       <PublicLayout>
-        <div className="mx-auto max-w-2xl px-4 py-12">
-          <Card className="border-border/30">
-            <CardContent className="flex flex-col items-center py-12 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
-                <Check className="h-8 w-8 text-success" />
-              </div>
-              <h2 className="mt-6 font-sans text-2xl font-bold text-ink">{t.order.success}</h2>
-              <p className="mt-2 text-muted-foreground">{t.order.successMessage}</p>
-              <div className="mt-8 flex gap-4">
-                <Button asChild><Link href="/account">{t.nav.myAccount}</Link></Button>
-                <Button variant="outline" asChild><Link href="/products">{t.nav.products}</Link></Button>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="min-h-[calc(100vh-80px)] bg-navy">
+          <div className="mx-auto max-w-2xl px-4 py-12">
+            <Card className="border border-white/10 bg-white/5">
+              <CardContent className="flex flex-col items-center py-12 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
+                  <Check className="h-8 w-8 text-success" />
+                </div>
+                <h2 className="mt-6 font-sans text-2xl font-bold text-white">{t.order.success}</h2>
+                <p className="mt-2 text-ink-muted">{t.order.successMessage}</p>
+                <div className="mt-8 flex gap-4">
+                  <Button asChild className="bg-accent-dark text-white hover:bg-accent"><Link href="/account">{t.nav.myAccount}</Link></Button>
+                  <Button variant="outline" asChild className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"><Link href="/products">{t.nav.products}</Link></Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </PublicLayout>
     )
@@ -240,253 +246,260 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
 
   return (
     <PublicLayout>
-      <div className="mx-auto max-w-4xl px-4 py-12 lg:py-16">
-        {draftRestored && (
-          <div className="mb-4 flex items-center justify-between rounded-lg border border-accent/30 bg-accent/10 px-4 py-2 text-sm text-accent-dark">
-            <span>Draft restored from your last visit.</span>
-            <button
-              type="button"
-              onClick={() => { clearDraft(); setDraftRestored(false) }}
-              className="underline"
-            >
-              Discard draft
-            </button>
-          </div>
-        )}
+      <div className="min-h-[calc(100vh-80px)] bg-navy">
+        <div className="mx-auto max-w-4xl px-4 py-12 lg:py-16">
+          {draftRestored && (
+            <div className="mb-4 flex items-center justify-between rounded-lg border border-accent/30 bg-accent/10 px-4 py-2 text-sm text-white">
+              <span>Draft restored from your last visit.</span>
+              <button
+                type="button"
+                onClick={() => { clearDraft(); setDraftRestored(false) }}
+                className="underline text-accent-light hover:text-white"
+              >
+                Discard draft
+              </button>
+            </div>
+          )}
 
-        <h1 className="font-sans text-3xl font-bold text-ink sm:text-4xl">{t.order.title}</h1>
+          <h1 className="font-sans text-3xl font-bold text-white sm:text-4xl">{t.order.title}</h1>
 
-        <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
-          {/* Left: Form */}
-          <div className="space-y-6">
-            {/* Selected Product */}
-            <Card className="border-border/30">
-              <CardHeader>
-                <CardTitle className="text-lg">{t.order.selectedProduct}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex gap-4">
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border/30 bg-muted/50">
-                    {product.imageUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={product.imageUrl}
-                        alt={product.name}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-lg font-bold text-muted-foreground/50">
-                        {product.diameter}
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-ink">{product.name}</h3>
-                    <p className="text-sm text-muted-foreground">SKU: {product.sku}</p>
-                    <p className="mt-1 font-mono text-lg font-bold text-accent">
-                      {formatPrice(listPrice)} / unit
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quantity */}
-            <Card className="border-border/30">
-              <CardHeader>
-                <CardTitle className="text-lg">{t.order.quantity}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={quantity <= 1}
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  <Input
-                    type="number"
-                    min={1}
-                    value={quantity}
-                    onChange={e => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                    onBlur={handleDraftSave}
-                    className="w-24 border-border/40 text-center"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    onClick={() => setQuantity(quantity + 1)}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Delivery address is hidden on the order page by design
-                (GH 2026-05-16). Address comes from the contractor's
-                account record and is submitted silently. If missing,
-                the contractor is asked to update it in My Account. */}
-            {!deliveryAddress && (
-              <Card className="border-warn/30 bg-warn/5">
-                <CardContent className="py-4 text-sm">
-                  <p className="font-semibold text-warn">No delivery address on file.</p>
-                  <p className="mt-1 text-muted-foreground">
-                    Please add your delivery address in{' '}
-                    <Link href="/account" className="font-semibold text-accent-dark underline">
-                      My Account
-                    </Link>{' '}
-                    before submitting an order.
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Notes */}
-            <Card className="border-border/30">
-              <CardHeader>
-                <CardTitle className="text-lg">{t.order.notes}</CardTitle>
-                <CardDescription>Optional</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  value={notes}
-                  onChange={e => setNotes(e.target.value)}
-                  onBlur={handleDraftSave}
-                  placeholder={t.order.notesPlaceholder}
-                  rows={3}
-                  className="resize-none border-border/40"
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right: Order Summary */}
-          <div className="lg:sticky lg:top-20 lg:h-fit">
-            <Card className="border-border/30">
-              <CardHeader>
-                <CardTitle>{t.order.pricing}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Stale price notice */}
-                {stalePriceInfo && (
-                  <div className="rounded-lg border border-warn/30 bg-warn/10 p-3 text-sm text-warn">
-                    <p className="font-semibold">Price has changed</p>
-                    <p className="mt-1">
-                      New effective total:{' '}
-                      <span className="font-mono font-bold">{formatPrice(stalePriceInfo.serverEffectiveTotal)}</span>
-                    </p>
-                    <div className="mt-3 flex gap-2">
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="outline"
-                        onClick={e => handleSubmit(e as unknown as React.FormEvent, stalePriceInfo.serverEffectiveTotal)}
-                      >
-                        Accept new price &amp; confirm
-                      </Button>
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => setStalePriceInfo(null)}
-                      >
-                        Cancel
-                      </Button>
+          <form onSubmit={handleSubmit} className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
+            {/* Left: Form */}
+            <div className="space-y-6">
+              {/* Selected Product */}
+              <Card className="border border-white/10 bg-white/5">
+                <CardHeader>
+                  <CardTitle className="text-lg text-white">{t.order.selectedProduct}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex gap-4">
+                    <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white/5">
+                      {product.imageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={product.imageUrl}
+                          alt={product.name}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-lg font-bold text-ink-faint">
+                          {product.diameter}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white">{product.name}</h3>
+                      <p className="text-sm text-ink-muted">SKU: {product.sku}</p>
+                      <p className="mt-1 font-mono text-lg font-bold text-accent-light">
+                        {formatPrice(listPrice)} / unit
+                      </p>
                     </div>
                   </div>
-                )}
+                </CardContent>
+              </Card>
 
-                {/* List price row */}
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{t.order.listPrice} ({quantity}x)</span>
-                  <span className="font-mono font-medium text-ink">{formatPrice(listPrice * quantity)}</span>
-                </div>
-
-                {/* Tier discount row — verified contractors only */}
-                {showPriceBreakdown && tierDiscountPct > 0 && pricing && (
-                  <div className="flex justify-between text-sm text-success">
-                    <span>{t.order.tierDiscount} ({formatPercentage(tierDiscountPct)})</span>
-                    <span className="font-mono">-{formatPrice(pricing.tierSaving * quantity)}</span>
-                  </div>
-                )}
-
-                {/* Gate message for unverified / non-contractor */}
-                {!showPriceBreakdown && (
-                  <div className="rounded bg-muted px-3 py-2 text-xs text-muted-foreground">
-                    {isContractor
-                      ? 'Verify your email to place order.'
-                      : 'Log in for your contract price.'}
-                  </div>
-                )}
-
-                {/* Promo code field */}
-                <div className="space-y-2">
-                  <Label className="text-xs font-semibold uppercase tracking-widest">{t.order.promoCode}</Label>
-                  <div className="flex gap-2">
+              {/* Quantity */}
+              <Card className="border border-white/10 bg-white/5">
+                <CardHeader>
+                  <CardTitle className="text-lg text-white">{t.order.quantity}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      disabled={quantity <= 1}
+                      className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
                     <Input
-                      value={promoCode}
-                      onChange={e => setPromoCode(e.target.value.toUpperCase())}
+                      type="number"
+                      min={1}
+                      value={quantity}
+                      onChange={e => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
                       onBlur={handleDraftSave}
-                      placeholder={t.order.promoCodePlaceholder}
-                      className="border-border/40 text-sm"
+                      className="w-24 border-white/10 bg-white/5 text-center text-white"
                     />
                     <Button
                       type="button"
                       variant="outline"
-                      size="sm"
-                      disabled={!promoCode}
-                      onClick={() => {
-                        setPromoError('')
-                        setAppliedPromoCode(promoCode)
-                      }}
+                      size="icon"
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
                     >
-                      {t.order.applyPromo}
+                      <Plus className="h-4 w-4" />
                     </Button>
                   </div>
-                  {promoError && <p className="text-xs text-destructive">{promoError}</p>}
-                  {appliedPromoCode && (
-                    <p className="text-xs text-success">
-                      Code &quot;{appliedPromoCode}&quot; will be validated on submit.
+                </CardContent>
+              </Card>
+
+              {/* Delivery address is hidden on the order page by design
+                  (GH 2026-05-16). Address comes from the contractor's
+                  account record and is submitted silently. If missing,
+                  the contractor is asked to update it in My Account. */}
+              {!deliveryAddress && (
+                <Card className="border border-warn/40 bg-warn/10">
+                  <CardContent className="py-4 text-sm">
+                    <p className="font-semibold text-warn">No delivery address on file.</p>
+                    <p className="mt-1 text-ink-muted">
+                      Please add your delivery address in{' '}
+                      <Link href="/account" className="font-semibold text-accent-light underline hover:text-white">
+                        My Account
+                      </Link>{' '}
+                      before submitting an order.
                     </p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Notes */}
+              <Card className="border border-white/10 bg-white/5">
+                <CardHeader>
+                  <CardTitle className="text-lg text-white">{t.order.notes}</CardTitle>
+                  <CardDescription className="text-ink-muted">Optional</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    value={notes}
+                    onChange={e => setNotes(e.target.value)}
+                    onBlur={handleDraftSave}
+                    placeholder={t.order.notesPlaceholder}
+                    rows={3}
+                    className="resize-none border-white/10 bg-white/5 text-white placeholder:text-gray-500"
+                  />
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right: Order Summary */}
+            <div className="lg:sticky lg:top-20 lg:h-fit">
+              <Card className="border border-white/10 bg-white/5">
+                <CardHeader>
+                  <CardTitle className="text-white">{t.order.pricing}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Stale price notice */}
+                  {stalePriceInfo && (
+                    <div className="rounded-lg border border-warn/40 bg-warn/10 p-3 text-sm text-warn">
+                      <p className="font-semibold">Price has changed</p>
+                      <p className="mt-1 text-ink-muted">
+                        New effective total:{' '}
+                        <span className="font-mono font-bold text-white">{formatPrice(stalePriceInfo.serverEffectiveTotal)}</span>
+                      </p>
+                      <div className="mt-3 flex gap-2">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          onClick={e => handleSubmit(e as unknown as React.FormEvent, stalePriceInfo.serverEffectiveTotal)}
+                          className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                        >
+                          Accept new price &amp; confirm
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setStalePriceInfo(null)}
+                          className="text-white hover:bg-white/10 hover:text-white"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
                   )}
-                </div>
 
-                <Separator className="bg-border/30" />
-
-                {/* Total */}
-                <div className="flex justify-between pt-2 text-lg font-bold">
-                  <span className="text-ink">{t.order.total}</span>
-                  <span className="font-mono text-accent-dark">
-                    {showPriceBreakdown ? formatPrice(effectiveTotal) : formatPrice(listPrice * quantity)}
-                  </span>
-                </div>
-
-                {/* Visual break so Total doesn't collide with status/submit (GH 2026-05-16) */}
-                <Separator className="mt-2 bg-border/30" />
-
-                {submitError && (
-                  <div className="rounded-lg border border-danger/30 bg-danger/10 px-3 py-2 text-sm text-danger">
-                    {submitError}
+                  {/* List price row */}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-ink-muted">{t.order.listPrice} ({quantity}x)</span>
+                    <span className="font-mono font-medium text-white">{formatPrice(listPrice * quantity)}</span>
                   </div>
-                )}
 
-                <Button
-                  type="submit"
-                  className="mt-2 w-full"
-                  size="lg"
-                  disabled={isSubmitting || !!stalePriceInfo || !deliveryAddress}
-                >
-                  {isSubmitting ? t.order.submitting : t.order.submit}
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </form>
+                  {/* Tier discount row — verified contractors only */}
+                  {showPriceBreakdown && tierDiscountPct > 0 && pricing && (
+                    <div className="flex justify-between text-sm text-success">
+                      <span>{t.order.tierDiscount} ({formatPercentage(tierDiscountPct)})</span>
+                      <span className="font-mono">-{formatPrice(pricing.tierSaving * quantity)}</span>
+                    </div>
+                  )}
+
+                  {/* Gate message for unverified / non-contractor */}
+                  {!showPriceBreakdown && (
+                    <div className="rounded bg-white/5 px-3 py-2 text-xs text-ink-muted">
+                      {isContractor
+                        ? 'Verify your email to place order.'
+                        : 'Log in for your contract price.'}
+                    </div>
+                  )}
+
+                  {/* Promo code field */}
+                  <div className="space-y-2">
+                    <Label className="text-xs font-semibold uppercase tracking-widest text-ink-muted">{t.order.promoCode}</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        value={promoCode}
+                        onChange={e => setPromoCode(e.target.value.toUpperCase())}
+                        onBlur={handleDraftSave}
+                        placeholder={t.order.promoCodePlaceholder}
+                        className="border-white/10 bg-white/5 text-sm text-white placeholder:text-gray-500"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={!promoCode}
+                        onClick={() => {
+                          setPromoError('')
+                          setAppliedPromoCode(promoCode)
+                        }}
+                        className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                      >
+                        {t.order.applyPromo}
+                      </Button>
+                    </div>
+                    {promoError && <p className="text-xs text-danger">{promoError}</p>}
+                    {appliedPromoCode && (
+                      <p className="text-xs text-success">
+                        Code &quot;{appliedPromoCode}&quot; will be validated on submit.
+                      </p>
+                    )}
+                  </div>
+
+                  <Separator className="bg-white/10" />
+
+                  {/* Total */}
+                  <div className="flex justify-between pt-2 text-lg font-bold">
+                    <span className="text-white">{t.order.total}</span>
+                    <span className="font-mono text-accent-light">
+                      {showPriceBreakdown ? formatPrice(effectiveTotal) : formatPrice(listPrice * quantity)}
+                    </span>
+                  </div>
+
+                  {/* Visual break so Total doesn't collide with status/submit (GH 2026-05-16) */}
+                  <Separator className="mt-2 bg-white/10" />
+
+                  {submitError && (
+                    <div className="rounded-lg border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
+                      {submitError}
+                    </div>
+                  )}
+
+                  <Button
+                    type="submit"
+                    className="mt-2 h-12 w-full bg-accent-dark text-white hover:bg-accent"
+                    size="lg"
+                    disabled={isSubmitting || !!stalePriceInfo || !deliveryAddress}
+                  >
+                    {isSubmitting ? t.order.submitting : t.order.submit}
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </form>
+        </div>
       </div>
     </PublicLayout>
   )
