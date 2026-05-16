@@ -41,6 +41,15 @@ export default buildConfig({
     user: AdminUsers.slug,
     components: {
       // beforeDashboard: ['@/components/admin/DashboardWidgets#default'], // temporarily disabled to isolate 500 error
+      // Sidebar link added at the top of the nav so admins can jump straight
+      // into the search-analytics view (custom route below).
+      beforeNavLinks: ['@/components/admin/SearchAnalyticsNavLink#default'],
+      views: {
+        searchAnalytics: {
+          Component: '@/components/admin/SearchAnalyticsView#default',
+          path: '/search-analytics',
+        },
+      },
     },
     livePreview: {
       breakpoints: [
