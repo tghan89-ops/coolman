@@ -13,6 +13,16 @@ export interface CopyStructure {
     adminOrders: string
     adminAnalytics: string
     cart: string
+    whyCoolman: string
+    resources: string
+    signIn: string
+    signOut: string
+    createAccount: string
+    diamondTools: string
+    shibuyaCoreDrills: string
+    account: string
+    switchToBM: string
+    switchToEN: string
   }
   cart: {
     title: string
@@ -227,6 +237,30 @@ export interface CopyStructure {
     phone: string
     address: string
     copyright: string
+    brandStory: string
+    diamondToolsHeading: string
+    shibuyaHeading: string
+    companyHeading: string
+    openAccountHeading: string
+    becomePartner: string
+    joinBlurb: string
+    privacyPolicy: string
+    termsOfService: string
+    bottomCopyright: string
+    links: {
+      allDiamondTools: string
+      diamondBlades: string
+      diamondCoreBits: string
+      polishingPads: string
+      shibuyaCoreDrills: string
+      tsHandheld: string
+      tsIndustrial: string
+      spareParts: string
+      whyCoolman: string
+      applications: string
+      resources: string
+      contact: string
+    }
   }
 }
 
@@ -244,6 +278,16 @@ export const COPY: Record<Language, CopyStructure> = {
       adminOrders: 'Orders',
       adminAnalytics: 'Analytics',
       cart: 'Cart',
+      whyCoolman: 'Why Coolman',
+      resources: 'Resources',
+      signIn: 'Sign In',
+      signOut: 'Sign Out',
+      createAccount: 'Create account',
+      diamondTools: 'Diamond Tools',
+      shibuyaCoreDrills: 'Shibuya Core Drills',
+      account: 'Account',
+      switchToBM: 'Switch to Bahasa Malaysia',
+      switchToEN: 'Switch to English',
     },
     cart: {
       title: 'Your Cart',
@@ -458,6 +502,30 @@ export const COPY: Record<Language, CopyStructure> = {
       phone: '+60 3-1234 5678',
       address: 'Kuala Lumpur, Malaysia',
       copyright: '© 2024 Coolman. All rights reserved.',
+      brandStory: 'Industrial-grade diamond cutting tools engineered for precision and durability. Trusted by professional contractors across Malaysia since 1998.',
+      diamondToolsHeading: 'Diamond Tools',
+      shibuyaHeading: 'Shibuya',
+      companyHeading: 'Company',
+      openAccountHeading: 'Open an account',
+      becomePartner: 'Become a Partner',
+      joinBlurb: 'Join 500+ contractors and access exclusive B2B pricing.',
+      privacyPolicy: 'Privacy Policy',
+      termsOfService: 'Terms of Service',
+      bottomCopyright: 'Coolman Sdn Bhd. All rights reserved.',
+      links: {
+        allDiamondTools: 'All Diamond Tools',
+        diamondBlades: 'Diamond Blades',
+        diamondCoreBits: 'Diamond Core Bits',
+        polishingPads: 'Polishing Pads',
+        shibuyaCoreDrills: 'Shibuya Core Drills',
+        tsHandheld: 'TS-132 Handheld',
+        tsIndustrial: 'TS-252 Industrial',
+        spareParts: 'Spare Parts',
+        whyCoolman: 'Why Coolman',
+        applications: 'Applications',
+        resources: 'Resources',
+        contact: 'Contact',
+      },
     },
   },
   BM: {
@@ -473,6 +541,16 @@ export const COPY: Record<Language, CopyStructure> = {
       adminOrders: 'Pesanan',
       adminAnalytics: 'Analitik',
       cart: 'Troli',
+      whyCoolman: 'Kenapa Coolman',
+      resources: 'Sumber',
+      signIn: 'Log Masuk',
+      signOut: 'Log Keluar',
+      createAccount: 'Buka akaun',
+      diamondTools: 'Alat Berlian',
+      shibuyaCoreDrills: 'Penggerudi Teras Shibuya',
+      account: 'Akaun',
+      switchToBM: 'Tukar ke Bahasa Malaysia',
+      switchToEN: 'Tukar ke Bahasa Inggeris',
     },
     cart: {
       title: 'Troli Anda',
@@ -687,6 +765,30 @@ export const COPY: Record<Language, CopyStructure> = {
       phone: '+60 3-1234 5678',
       address: 'Kuala Lumpur, Malaysia',
       copyright: '© 2024 Coolman. Hak cipta terpelihara.',
+      brandStory: 'Alat pemotong berlian gred industri direka untuk ketepatan dan ketahanan. Dipercayai oleh kontraktor profesional di seluruh Malaysia sejak 1998.',
+      diamondToolsHeading: 'Alat Berlian',
+      shibuyaHeading: 'Shibuya',
+      companyHeading: 'Syarikat',
+      openAccountHeading: 'Buka akaun',
+      becomePartner: 'Jadi Rakan Kongsi',
+      joinBlurb: 'Sertai 500+ kontraktor dan dapatkan harga B2B eksklusif.',
+      privacyPolicy: 'Dasar Privasi',
+      termsOfService: 'Terma Perkhidmatan',
+      bottomCopyright: 'Coolman Sdn Bhd. Hak cipta terpelihara.',
+      links: {
+        allDiamondTools: 'Semua Alat Berlian',
+        diamondBlades: 'Bilah Berlian',
+        diamondCoreBits: 'Mata Teras Berlian',
+        polishingPads: 'Pad Penggilap',
+        shibuyaCoreDrills: 'Penggerudi Teras Shibuya',
+        tsHandheld: 'TS-132 Pegang Tangan',
+        tsIndustrial: 'TS-252 Industri',
+        spareParts: 'Alat Ganti',
+        whyCoolman: 'Kenapa Coolman',
+        applications: 'Aplikasi',
+        resources: 'Sumber',
+        contact: 'Hubungi',
+      },
     },
   },
 }

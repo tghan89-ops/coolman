@@ -15,23 +15,23 @@ import { useLanguage } from '@/lib/i18n/context'
 import { useAuth } from '@/lib/auth/context'
 import { CartBadge } from '@/components/cart/CartBadge'
 
-const navItems = [
-  { label: 'Applications', href: '/applications' },
-  { label: 'Why Coolman', href: '/why-coolman' },
-  { label: 'Resources', href: '/resources' },
-  { label: 'Contact', href: '/contact' },
-]
-
-const productDropdownItems = [
-  { label: 'Diamond Tools', href: '/products' },
-  { label: 'Shibuya Core Drills', href: '/shibuya' },
-]
-
 export function Header({ variant = 'default' }: { variant?: 'default' | 'transparent' }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const { language, toggleLanguage } = useLanguage()
+  const { language, toggleLanguage, t } = useLanguage()
   const { user, isAuthenticated, isAdmin, logout } = useAuth()
+
+  const navItems = [
+    { label: t.nav.applications, href: '/applications' },
+    { label: t.nav.whyCoolman, href: '/why-coolman' },
+    { label: t.nav.resources, href: '/resources' },
+    { label: t.nav.contact, href: '/contact' },
+  ]
+
+  const productDropdownItems = [
+    { label: t.nav.diamondTools, href: '/products' },
+    { label: t.nav.shibuyaCoreDrills, href: '/shibuya' },
+  ]
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,7 +64,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="group relative flex items-center gap-1.5 px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white">
-                Products
+                {t.nav.products}
                 <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
                 <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-accent transition-transform group-hover:scale-x-100" />
               </button>
@@ -109,7 +109,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
                 <button className="hidden items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20 lg:flex">
                   <User className="h-4 w-4" />
                   <span className="max-w-[100px] truncate">
-                    {user?.contractor?.companyName || 'Account'}
+                    {user?.contractor?.companyName || t.nav.account}
                   </span>
                   <ChevronDown className="h-3 w-3" />
                 </button>
@@ -118,39 +118,39 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
                 {isAdmin ? (
                   <>
                     <DropdownMenuItem asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
-                      <Link href="/admin/orders">Orders Dashboard</Link>
+                      <Link href="/admin/orders">{t.admin.orders.title}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
-                      <Link href="/admin/analytics">Analytics</Link>
+                      <Link href="/admin/analytics">{t.nav.adminAnalytics}</Link>
                     </DropdownMenuItem>
                   </>
                 ) : (
                   <DropdownMenuItem asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
-                    <Link href="/account">My Account</Link>
+                    <Link href="/account">{t.nav.myAccount}</Link>
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator className="bg-white/10" />
                 <DropdownMenuItem onClick={logout} className="text-red-400 hover:bg-red-500/10 hover:text-red-300 focus:bg-red-500/10 focus:text-red-300">
                   <LogOut className="mr-2 h-4 w-4" />
-                  Sign Out
+                  {t.nav.signOut}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="hidden items-center gap-3 lg:flex">
-              <Link 
+              <Link
                 href="/auth/login"
                 className="rounded-lg px-4 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
               >
-                Sign In
+                {t.nav.signIn}
               </Link>
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 className="group h-10 rounded-lg bg-accent-dark px-5 text-sm font-medium text-white transition-[background-color,box-shadow] hover:bg-accent hover:shadow-lg hover:shadow-accent/25"
                 asChild
               >
                 <Link href="/auth/register">
-                  Create account
+                  {t.nav.createAccount}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -176,7 +176,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
             {/* Products Mobile */}
             <details className="border-b border-white/5 py-4">
               <summary className="cursor-pointer text-base font-medium text-white transition-colors hover:text-accent">
-                Products
+                {t.nav.products}
               </summary>
               <div className="mt-3 flex flex-col gap-2 pl-4">
                 {productDropdownItems.map((item) => (
@@ -212,35 +212,35 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
                 }}
                 className="py-2 text-left text-sm text-white/60"
               >
-                {language === 'EN' ? 'Switch to Bahasa Malaysia' : 'Switch to English'}
+                {language === 'EN' ? t.nav.switchToBM : t.nav.switchToEN}
               </button>
 
               {isAuthenticated ? (
                 <>
                   {isAdmin ? (
                     <>
-                      <Link 
-                        href="/admin/orders" 
+                      <Link
+                        href="/admin/orders"
                         className="py-2 text-white"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        Orders Dashboard
+                        {t.admin.orders.title}
                       </Link>
-                      <Link 
-                        href="/admin/analytics" 
+                      <Link
+                        href="/admin/analytics"
                         className="py-2 text-white"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        Analytics
+                        {t.nav.adminAnalytics}
                       </Link>
                     </>
                   ) : (
-                    <Link 
-                      href="/account" 
+                    <Link
+                      href="/account"
                       className="py-2 text-white"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      My Account
+                      {t.nav.myAccount}
                     </Link>
                   )}
                   <button
@@ -250,7 +250,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
                     }}
                     className="py-2 text-left text-red-400"
                   >
-                    Sign Out
+                    {t.nav.signOut}
                   </button>
                 </>
               ) : (
@@ -261,7 +261,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
                     asChild
                   >
                     <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                      Sign In
+                      {t.nav.signIn}
                     </Link>
                   </Button>
                   <Button
@@ -269,7 +269,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
                     asChild
                   >
                     <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
-                      Create account
+                      {t.nav.createAccount}
                     </Link>
                   </Button>
                 </div>

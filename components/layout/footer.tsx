@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
+import { useLanguage } from '@/lib/i18n/context'
 
 const socialLinks = [
   { 
@@ -42,28 +43,28 @@ const socialLinks = [
   },
 ]
 
-const footerLinks = {
-  diamondTools: [
-    { label: 'All Diamond Tools', href: '/products' },
-    { label: 'Diamond Blades', href: '/products?category=blades' },
-    { label: 'Diamond Core Bits', href: '/products?category=corebits' },
-    { label: 'Polishing Pads', href: '/products?category=polishing' },
-  ],
-  shibuya: [
-    { label: 'Shibuya Core Drills', href: '/shibuya' },
-    { label: 'TS-132 Handheld', href: '/shibuya#ts-132' },
-    { label: 'TS-252 Industrial', href: '/shibuya#ts-252' },
-    { label: 'Spare Parts', href: '/contact' },
-  ],
-  company: [
-    { label: 'Why Coolman', href: '/why-coolman' },
-    { label: 'Applications', href: '/applications' },
-    { label: 'Resources', href: '/resources' },
-    { label: 'Contact', href: '/contact' },
-  ],
-}
-
 export function Footer() {
+  const { t } = useLanguage()
+  const footerLinks = {
+    diamondTools: [
+      { label: t.footer.links.allDiamondTools, href: '/products' },
+      { label: t.footer.links.diamondBlades, href: '/products?category=blades' },
+      { label: t.footer.links.diamondCoreBits, href: '/products?category=corebits' },
+      { label: t.footer.links.polishingPads, href: '/products?category=polishing' },
+    ],
+    shibuya: [
+      { label: t.footer.links.shibuyaCoreDrills, href: '/shibuya' },
+      { label: t.footer.links.tsHandheld, href: '/shibuya#ts-132' },
+      { label: t.footer.links.tsIndustrial, href: '/shibuya#ts-252' },
+      { label: t.footer.links.spareParts, href: '/contact' },
+    ],
+    company: [
+      { label: t.footer.links.whyCoolman, href: '/why-coolman' },
+      { label: t.footer.links.applications, href: '/applications' },
+      { label: t.footer.links.resources, href: '/resources' },
+      { label: t.footer.links.contact, href: '/contact' },
+    ],
+  }
   return (
     <footer className="bg-navy text-white">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
@@ -77,8 +78,7 @@ export function Footer() {
               <span className="text-2xl font-bold tracking-wider">Cool<span className="text-accent">man</span></span>
             </Link>
             <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">
-              Industrial-grade diamond cutting tools engineered for precision and durability. 
-              Trusted by professional contractors across Malaysia since 1998.
+              {t.footer.brandStory}
             </p>
             
             {/* Social Links */}
@@ -116,7 +116,7 @@ export function Footer() {
 
           {/* Diamond Tools */}
           <div>
-            <h3 className="mb-6 text-sm font-bold text-white">Diamond Tools</h3>
+            <h3 className="mb-6 text-sm font-bold text-white">{t.footer.diamondToolsHeading}</h3>
             <ul className="space-y-3">
               {footerLinks.diamondTools.map((link) => (
                 <li key={link.href}>
@@ -133,7 +133,7 @@ export function Footer() {
 
           {/* Shibuya */}
           <div>
-            <h3 className="mb-6 text-sm font-bold text-white">Shibuya</h3>
+            <h3 className="mb-6 text-sm font-bold text-white">{t.footer.shibuyaHeading}</h3>
             <ul className="space-y-3">
               {footerLinks.shibuya.map((link) => (
                 <li key={link.href}>
@@ -150,7 +150,7 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="mb-6 text-sm font-bold text-white">Company</h3>
+            <h3 className="mb-6 text-sm font-bold text-white">{t.footer.companyHeading}</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
@@ -167,16 +167,16 @@ export function Footer() {
 
           {/* CTA */}
           <div>
-            <h3 className="mb-6 text-sm font-bold text-white">Open an account</h3>
+            <h3 className="mb-6 text-sm font-bold text-white">{t.footer.openAccountHeading}</h3>
             <Link
               href="/auth/register"
               className="group inline-flex items-center gap-2 bg-accent-dark px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent"
             >
-              Become a Partner
+              {t.footer.becomePartner}
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <p className="mt-4 text-xs text-white/40">
-              Join 500+ contractors and access exclusive B2B pricing.
+              {t.footer.joinBlurb}
             </p>
           </div>
         </div>
@@ -184,11 +184,11 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 lg:flex-row">
           <p className="text-xs text-white/40">
-            {new Date().getFullYear()} Coolman Sdn Bhd. All rights reserved.
+            {new Date().getFullYear()} {t.footer.bottomCopyright}
           </p>
           <div className="flex items-center gap-6 text-xs text-white/40">
-            <Link href="#" className="transition-colors hover:text-white/60">Privacy Policy</Link>
-            <Link href="#" className="transition-colors hover:text-white/60">Terms of Service</Link>
+            <Link href="#" className="transition-colors hover:text-white/60">{t.footer.privacyPolicy}</Link>
+            <Link href="#" className="transition-colors hover:text-white/60">{t.footer.termsOfService}</Link>
           </div>
         </div>
       </div>
