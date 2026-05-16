@@ -14,7 +14,7 @@ export const Orders: CollectionConfig = {
       return { contractor: { equals: (user as any).id } }
     },
     update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
-    delete: () => false,
+    delete: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
   },
   fields: [
     {
