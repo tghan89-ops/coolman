@@ -163,7 +163,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
           </p>
           <Button
             size="lg"
-            className="mt-8 h-14 rounded-xl bg-accent px-8 text-white hover:bg-accent-dark"
+            className="mt-8 h-14 rounded-xl bg-accent-dark px-8 text-white hover:bg-accent"
             asChild
           >
             <Link href="/contact">

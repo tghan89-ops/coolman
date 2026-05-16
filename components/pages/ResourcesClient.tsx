@@ -158,7 +158,7 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
                     <h3 className="mt-4 text-lg font-semibold text-navy">{resource.title ?? ''}</h3>
                     <p className="mt-2 flex-1 text-sm text-ink-muted">{resource.description ?? ''}</p>
 
-                    <span className="mt-6 flex items-center gap-2 text-sm font-medium text-accent transition-colors group-hover:text-accent-dark">
+                    <span className="mt-6 flex items-center gap-2 text-sm font-medium text-accent-dark transition-colors group-hover:text-accent">
                       {isVideo ? <Play className="h-4 w-4" /> : <Download className="h-4 w-4" />}
                       {isVideo ? 'Play video' : 'Open PDF'}
                     </span>
@@ -198,7 +198,7 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
           </p>
           <Button
             size="lg"
-            className="mt-8 h-14 rounded-xl bg-accent px-8 text-white hover:bg-accent-dark"
+            className="mt-8 h-14 rounded-xl bg-accent-dark px-8 text-white hover:bg-accent"
             asChild
           >
             <Link href="/contact">

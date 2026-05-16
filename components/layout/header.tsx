@@ -144,7 +144,7 @@ export function Header() {
               </Link>
               <Button 
                 size="sm" 
-                className="group h-10 rounded-lg bg-accent px-5 text-sm font-medium text-white transition-[background-color,box-shadow] hover:bg-accent-dark hover:shadow-lg hover:shadow-accent/25"
+                className="group h-10 rounded-lg bg-accent-dark px-5 text-sm font-medium text-white transition-[background-color,box-shadow] hover:bg-accent hover:shadow-lg hover:shadow-accent/25"
                 asChild
               >
                 <Link href="/auth/register">
@@ -263,7 +263,7 @@ export function Header() {
                     </Link>
                   </Button>
                   <Button
-                    className="h-12 bg-accent text-white hover:bg-accent-dark"
+                    className="h-12 bg-accent-dark text-white hover:bg-accent"
                     asChild
                   >
                     <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>

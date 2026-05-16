@@ -166,7 +166,7 @@ export function ProductDetailClient({
 
               {/* CTA */}
               <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-                <Button size="lg" className="group h-14 flex-1 bg-accent font-sans text-base font-bold text-white hover:bg-accent-dark" asChild>
+                <Button size="lg" className="group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent" asChild>
                   <Link href={`/order-request?product=${data.id}`}>
                     Request Order
                     <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -295,7 +295,7 @@ export function ProductDetailClient({
                       />
                       <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
-                          <div className="flex items-center gap-2 bg-accent px-6 py-3 font-sans text-sm font-semibold text-white">
+                          <div className="flex items-center gap-2 bg-accent-dark px-6 py-3 font-sans text-sm font-semibold text-white">
                             Open product
                             <ArrowRight className="h-4 w-4" />
                           </div>

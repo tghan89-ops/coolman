@@ -200,7 +200,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                     </div>
                     <Button
                       type="submit"
-                      className="group w-full bg-accent text-white hover:bg-accent-dark"
+                      className="group w-full bg-accent-dark text-white hover:bg-accent"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (

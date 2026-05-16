@@ -136,7 +136,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
 
             {/* CTA Buttons */}
             <div className="mt-10 flex flex-wrap gap-4">
-              <Button size="lg" className="group h-14 overflow-hidden bg-accent px-8 font-sans text-base font-bold text-white transition-colors hover:bg-accent-dark" asChild>
+              <Button size="lg" className="group h-14 overflow-hidden bg-accent-dark px-8 font-sans text-base font-bold text-white transition-colors hover:bg-accent" asChild>
                 <Link href="/products">
                   {heroPrimaryCtaLabel}
                   <ArrowRight className="ml-3 h-5 w-5" />

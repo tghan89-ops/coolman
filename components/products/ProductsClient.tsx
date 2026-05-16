@@ -262,7 +262,7 @@ export function ProductsClient({
                 {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
               </span>
               {hasFilters && (
-                <button onClick={clearFilters} className="flex items-center gap-1 text-sm font-semibold text-accent hover:text-accent-dark">
+                <button onClick={clearFilters} className="flex items-center gap-1 text-sm font-semibold text-accent-dark hover:text-accent">
                   <X className="h-4 w-4" />
                   Clear
                 </button>
@@ -338,7 +338,7 @@ export function ProductsClient({
               {priceMode === 'public' && (
                 <Link
                   href="/auth/login"
-                  className="whitespace-nowrap text-sm font-bold text-accent hover:text-accent-dark"
+                  className="whitespace-nowrap text-sm font-bold text-accent-dark hover:text-accent"
                 >
                   Log in →
                 </Link>
@@ -382,7 +382,7 @@ export function ProductsClient({
                 <div className="border border-rule bg-white p-6">
                   <h4 className="text-lg font-bold text-navy">Need Help?</h4>
                   <p className="mt-2 text-sm text-ink-muted">Our engineers can help you select the right tool for your project.</p>
-                  <Button className="mt-4 w-full bg-accent font-bold hover:bg-accent-dark" asChild>
+                  <Button className="mt-4 w-full bg-accent-dark font-bold text-white hover:bg-accent" asChild>
                     <Link href="/contact">Request a quote <ArrowRight className="ml-2 h-4 w-4" /></Link>
                   </Button>
                 </div>
@@ -417,7 +417,7 @@ export function ProductsClient({
                           />
                           <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
-                              <div className="flex items-center gap-2 bg-accent px-6 py-3 font-sans text-sm font-semibold text-white">
+                              <div className="flex items-center gap-2 bg-accent-dark px-6 py-3 font-sans text-sm font-semibold text-white">
                                 Open product
                                 <ArrowRight className="h-4 w-4" />
                               </div>
@@ -505,7 +505,7 @@ export function ProductsClient({
             We offer custom blade configurations for specialised applications. Contact our engineering team.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="h-12 bg-accent px-6 font-bold text-white hover:bg-accent-dark" asChild>
+            <Button size="lg" className="h-12 bg-accent-dark px-6 font-bold text-white hover:bg-accent" asChild>
               <Link href="/contact">Contact Engineering <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
             <Button size="lg" variant="outline" className="h-12 border-2 border-white/30 bg-transparent px-6 font-bold text-white hover:border-white hover:bg-white hover:text-navy" asChild>

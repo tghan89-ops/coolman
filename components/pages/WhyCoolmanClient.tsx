@@ -151,7 +151,7 @@ export function WhyCoolmanClient({ initialData }: { initialData: any }) {
           <h2 className="text-3xl font-bold text-navy">{cta.title}</h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-muted">{cta.body}</p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="h-14 rounded-xl bg-accent px-8 text-white hover:bg-accent-dark" asChild>
+            <Button size="lg" className="h-14 rounded-xl bg-accent-dark px-8 text-white hover:bg-accent" asChild>
               <Link href={cta.primaryHref}>
                 {cta.primaryLabel}
                 <ArrowRight className="ml-2 h-5 w-5" />

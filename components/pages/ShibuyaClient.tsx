@@ -328,7 +328,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
                       </div>
                       <Link
                         href="/contact"
-                        className="inline-flex items-center gap-2 bg-accent px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent-dark"
+                        className="inline-flex items-center gap-2 bg-accent-dark px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent"
                       >
                         Request Quote
                         <ArrowRight className="h-4 w-4" />
