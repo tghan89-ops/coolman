@@ -81,7 +81,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
   const heroLine3 = data?.hero?.headlineLine3 ?? 'Built for Performance'
   const heroSubheadline = data?.hero?.subheadline ?? 'Industrial-grade cutting solutions engineered for concrete, granite, marble, and more. Built to meet the demanding standards of professional contractors.'
   const heroPrimaryCtaLabel = data?.hero?.primaryCtaLabel ?? 'Explore Products'
-  const heroSecondaryCtaLabel = data?.hero?.secondaryCtaLabel ?? 'Watch Demo'
+  const heroSecondaryCtaLabel = data?.hero?.secondaryCtaLabel ?? 'See applications'
   const stats: Array<{ value: string; label: string }> = data?.stats ?? defaultStats
   const ctaHeadline = data?.ctaSection?.headline ?? 'Ready to Elevate\nYour Operations?'
   const ctaSubheadline = data?.ctaSection?.subheadline ?? 'Join 500+ professional contractors who trust Coolman for their diamond cutting needs.'
@@ -118,7 +118,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
           <div className="max-w-3xl">
 
             {/* Badge */}
-            <div className="mb-8 inline-flex items-center gap-3 border border-accent/30 bg-accent/10 px-5 py-2.5 backdrop-blur-sm">
+            <div className="mb-8 inline-flex items-center gap-3 border border-accent/30 bg-accent/10 px-5 py-2.5">
               <span className="inline-flex h-2 w-2 rounded-full bg-accent" />
               <span className="text-sm font-semibold tracking-wide text-accent">{heroBadge}</span>
             </div>
@@ -252,12 +252,10 @@ export function HomePageClient({ initialData }: { initialData: any }) {
             {cmsFeatures.map((feature, index) => (
               <div
                 key={index}
-                className="group relative cursor-pointer overflow-hidden border border-white/10 bg-white/5 p-8 backdrop-blur-sm transition-[border-color,background-color] hover:border-accent/50 hover:bg-white/10"
+                className="group relative cursor-pointer overflow-hidden border border-white/10 bg-white/5 p-8 transition-[border-color,background-color] hover:border-accent/50 hover:bg-white/10"
                 onMouseEnter={() => setHoveredFeature(index)}
                 onMouseLeave={() => setHoveredFeature(null)}
               >
-                <div className={`absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent transition-opacity ${hoveredFeature === index ? 'opacity-100' : 'opacity-0'}`} />
-
                 <div className="relative">
                   <div className="font-mono font-sans text-5xl font-bold text-accent">
                     {feature.stat}
@@ -268,7 +266,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
                   <p className="mt-3 text-sm leading-relaxed text-white/60">{feature.description}</p>
 
                   <div className={`mt-6 flex items-center gap-2 text-accent transition-opacity ${hoveredFeature === index ? 'opacity-100' : 'opacity-0'}`}>
-                    <span className="text-sm font-bold">Learn More</span>
+                    <span className="text-sm font-bold">Explore</span>
                     <ArrowRight className="h-4 w-4" />
                   </div>
                 </div>
@@ -308,7 +306,7 @@ export function HomePageClient({ initialData }: { initialData: any }) {
                   <h3 className="font-sans text-2xl font-bold text-white drop-shadow-lg">{product.name}</h3>
                   <p className="text-sm text-white/80 drop-shadow">{product.desc}</p>
                   <div className="mt-4 flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-                    <span className="font-sans text-sm font-bold text-white">View Details</span>
+                    <span className="font-sans text-sm font-bold text-white">Open product</span>
                     <ArrowRight className="h-4 w-4 text-white" />
                   </div>
                 </div>

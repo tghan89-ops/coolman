@@ -48,6 +48,14 @@ export interface CopyStructure {
     medium: string
     high: string
   }
+  cta: {
+    createAccount: string
+    openAccount: string
+    openProduct: string
+    requestQuote: string
+    seeApplications: string
+    explore: string
+  }
   product: {
     viewDetails: string
     addToOrder: string
@@ -241,8 +249,16 @@ export const COPY: Record<Language, CopyStructure> = {
       medium: 'Medium (2-4kW)',
       high: 'High (> 4kW)',
     },
+    cta: {
+      createAccount: 'Create account',
+      openAccount: 'Open account',
+      openProduct: 'Open product',
+      requestQuote: 'Request a quote',
+      seeApplications: 'See applications',
+      explore: 'Explore',
+    },
     product: {
-      viewDetails: 'View Details',
+      viewDetails: 'Open product',
       addToOrder: 'Add to Order Request',
       specifications: 'Specifications',
       diameter: 'Diameter',
@@ -432,8 +448,16 @@ export const COPY: Record<Language, CopyStructure> = {
       medium: 'Sederhana (2-4kW)',
       high: 'Tinggi (> 4kW)',
     },
+    cta: {
+      createAccount: 'Buka akaun',
+      openAccount: 'Buka akaun',
+      openProduct: 'Buka produk',
+      requestQuote: 'Minta sebut harga',
+      seeApplications: 'Lihat aplikasi',
+      explore: 'Terokai',
+    },
     product: {
-      viewDetails: 'Lihat Butiran',
+      viewDetails: 'Buka produk',
       addToOrder: 'Tambah ke Pesanan',
       specifications: 'Spesifikasi',
       diameter: 'Diameter',

@@ -230,7 +230,7 @@ export function ProductsClient({
       </section>
 
       {/* Sticky Filter Bar */}
-      <section className="sticky top-0 z-30 border-b border-rule bg-white/95 backdrop-blur-sm">
+      <section className="sticky top-0 z-30 border-b border-rule bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             <div className="hidden items-center gap-2 lg:flex">
@@ -383,7 +383,7 @@ export function ProductsClient({
                   <h4 className="text-lg font-bold text-navy">Need Help?</h4>
                   <p className="mt-2 text-sm text-ink-muted">Our engineers can help you select the right tool for your project.</p>
                   <Button className="mt-4 w-full bg-accent font-bold hover:bg-accent-dark" asChild>
-                    <Link href="/contact">Get Advice <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                    <Link href="/contact">Request a quote <ArrowRight className="ml-2 h-4 w-4" /></Link>
                   </Button>
                 </div>
               </div>
@@ -418,7 +418,7 @@ export function ProductsClient({
                           <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
                               <div className="flex items-center gap-2 bg-accent px-6 py-3 font-sans text-sm font-semibold text-white">
-                                View Details
+                                Open product
                                 <ArrowRight className="h-4 w-4" />
                               </div>
                             </div>

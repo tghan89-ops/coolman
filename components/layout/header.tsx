@@ -43,7 +43,7 @@ export function Header() {
   return (
     <header className={`fixed top-0 z-50 w-full transition-[background-color,box-shadow] ${
       scrolled
-        ? 'bg-navy/95 shadow-lg shadow-navy/10 backdrop-blur-md'
+        ? 'bg-navy shadow-lg shadow-navy/10'
         : 'bg-transparent'
     }`}>
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
@@ -148,7 +148,7 @@ export function Header() {
                 asChild
               >
                 <Link href="/auth/register">
-                  Get Started
+                  Create account
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -169,7 +169,7 @@ export function Header() {
       <div className={`lg:hidden overflow-hidden transition-[max-height,opacity] ${
         mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
       }`}>
-        <div className="border-t border-white/10 bg-navy/98 backdrop-blur-lg">
+        <div className="border-t border-white/10 bg-navy">
           <nav className="flex flex-col px-6 py-4">
             {/* Products Mobile */}
             <details className="border-b border-white/5 py-4">
@@ -267,7 +267,7 @@ export function Header() {
                     asChild
                   >
                     <Link href="/auth/register" onClick={() => setMobileMenuOpen(false)}>
-                      Get Started
+                      Create account
                     </Link>
                   </Button>
                 </div>

@@ -167,7 +167,7 @@ export function Footer() {
 
           {/* CTA */}
           <div>
-            <h3 className="mb-6 text-sm font-bold text-white">Get Started</h3>
+            <h3 className="mb-6 text-sm font-bold text-white">Open an account</h3>
             <Link
               href="/auth/register"
               className="group inline-flex items-center gap-2 bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-dark"

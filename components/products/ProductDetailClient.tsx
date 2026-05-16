@@ -84,7 +84,7 @@ export function ProductDetailClient({
                 <span className="font-mono text-xs font-semibold text-white/60">{data.sku}</span>
               </div>
 
-              <div className="relative aspect-square overflow-hidden border border-white/10 bg-gradient-to-br from-navy-light to-navy">
+              <div className="relative aspect-square overflow-hidden border border-white/10 bg-navy-light">
                 <Image
                   src={imageUrl}
                   alt={data.name}
@@ -96,7 +96,7 @@ export function ProductDetailClient({
                 <div className="absolute inset-0 bg-navy/20" />
 
                 {/* Material badge */}
-                <div className="absolute left-4 top-4 border border-accent/40 bg-accent/20 px-3 py-1 backdrop-blur-sm">
+                <div className="absolute left-4 top-4 border border-accent/40 bg-accent/20 px-3 py-1">
                   <span className="text-xs font-bold tracking-wider text-accent">
                     {data.recommendedMaterials?.[0] ?? 'Premium'}
                   </span>
@@ -173,7 +173,7 @@ export function ProductDetailClient({
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" className="h-14 border-2 border-white/30 bg-transparent font-sans font-bold text-white hover:border-white hover:bg-white hover:text-navy" asChild>
-                  <Link href="/contact">Get Advice</Link>
+                  <Link href="/contact">Request a quote</Link>
                 </Button>
               </div>
             </div>
@@ -296,7 +296,7 @@ export function ProductDetailClient({
                       <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
                           <div className="flex items-center gap-2 bg-accent px-6 py-3 font-sans text-sm font-semibold text-white">
-                            View Details
+                            Open product
                             <ArrowRight className="h-4 w-4" />
                           </div>
                         </div>
