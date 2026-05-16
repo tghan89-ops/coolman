@@ -93,9 +93,19 @@ describe('POST /api/search-log', () => {
 
   it('product view: appends productId to contractor’s most recent search row', async () => {
     const { getPayload } = await import('payload')
-    const mockFind = vi.fn().mockResolvedValue({
-      docs: [{ id: 42, viewed_product_ids: [{ productId: 'prev' }] }],
-    })
+    const mockFind = vi
+      .fn()
+      // 1st call: find recent searchLogs row
+      .mockResolvedValueOnce({
+        docs: [{ id: 42, viewed_product_ids: [{ productId: 'prev' }] }],
+      })
+      // 2nd call: product name lookup for summary
+      .mockResolvedValueOnce({
+        docs: [
+          { id: 'prev', name: 'Diamond Blade 14in' },
+          { id: 'prod-123', name: 'Granite Cup Wheel' },
+        ],
+      })
     const mockUpdate = vi.fn().mockResolvedValue({ id: 42 })
     const mockCreate = vi.fn()
     const mockAuth = vi
@@ -122,6 +132,7 @@ describe('POST /api/search-log', () => {
       { productId: 'prev' },
       { productId: 'prod-123' },
     ])
+    expect(arg.data.viewed_products_summary).toBe('Diamond Blade 14in, Granite Cup Wheel')
     expect(mockCreate).not.toHaveBeenCalled()
   })
 
@@ -154,7 +165,12 @@ describe('POST /api/search-log', () => {
 
   it('product view: creates a minimal row when there is no recent search to attach to', async () => {
     const { getPayload } = await import('payload')
-    const mockFind = vi.fn().mockResolvedValue({ docs: [] })
+    const mockFind = vi
+      .fn()
+      // 1st: no recent searchLogs row
+      .mockResolvedValueOnce({ docs: [] })
+      // 2nd: product name lookup
+      .mockResolvedValueOnce({ docs: [{ id: 'prod-123', name: 'Granite Cup Wheel' }] })
     const mockUpdate = vi.fn()
     const mockCreate = vi.fn().mockResolvedValue({ id: 'log-new' })
     const mockAuth = vi
@@ -178,6 +194,7 @@ describe('POST /api/search-log', () => {
     const arg = mockCreate.mock.calls[0][0]
     expect(arg.data.viewed_product_ids).toEqual([{ productId: 'prod-123' }])
     expect(arg.data.contractor).toBe(7)
+    expect(arg.data.viewed_products_summary).toBe('Granite Cup Wheel')
   })
 
   it('product view: anonymous (no contractor session) is dropped — no row created', async () => {

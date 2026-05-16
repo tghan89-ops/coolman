@@ -4,7 +4,13 @@ export const SearchLogs: CollectionConfig = {
   slug: 'searchLogs',
   admin: {
     useAsTitle: 'query',
-    defaultColumns: ['query', 'result_count', 'contractor', 'createdAt'],
+    defaultColumns: [
+      'query',
+      'result_count',
+      'contractor',
+      'viewed_products_summary',
+      'createdAt',
+    ],
   },
   access: {
     create: () => true,
@@ -56,13 +62,22 @@ export const SearchLogs: CollectionConfig = {
     {
       name: 'viewed_product_ids',
       type: 'array',
-      admin: { description: 'Product IDs clicked after this search' },
+      admin: { description: 'Product IDs clicked after this search (raw FK list)' },
       fields: [
         {
           name: 'productId',
           type: 'text',
         },
       ],
+    },
+    {
+      name: 'viewed_products_summary',
+      type: 'text',
+      admin: {
+        description:
+          'Human-readable list of product names clicked, comma-separated. Auto-filled by /api/search-log so the list view shows what was viewed without opening each row.',
+        readOnly: true,
+      },
     },
     {
       name: 'submitted_order_id',

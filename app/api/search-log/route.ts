@@ -20,6 +20,34 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 
 const ATTACH_WINDOW_MS = 10 * 60 * 1000 // 10 minutes
+const SUMMARY_MAX = 500
+
+// Look up product names for a list of product IDs and return them as a
+// comma-separated string in the same order as the input. Missing products are
+// silently dropped. We pull `name` because Products uses it as `useAsTitle` —
+// it's the human-readable label admins recognise.
+async function buildSummary(payload: any, ids: string[]): Promise<string> {
+  const cleaned = ids.filter((id) => typeof id === 'string' && id.length > 0)
+  if (cleaned.length === 0) return ''
+  try {
+    const { docs } = await payload.find({
+      collection: 'products',
+      where: { id: { in: cleaned } },
+      limit: 50,
+      depth: 0,
+      overrideAccess: true,
+    })
+    const byId = new Map<string, string>()
+    for (const d of docs as Array<{ id: string | number; name?: string; sku?: string }>) {
+      const label = d.name || d.sku || String(d.id)
+      byId.set(String(d.id), label)
+    }
+    const names = cleaned.map((id) => byId.get(String(id))).filter(Boolean) as string[]
+    return names.join(', ').slice(0, SUMMARY_MAX)
+  } catch {
+    return ''
+  }
+}
 
 function normalize(q: string): string {
   return q
@@ -107,11 +135,14 @@ export async function POST(req: NextRequest) {
             : []
           const already = existing.some((row) => row?.productId === viewedProductId)
           if (!already) {
+            const nextIds = [...existing.map((r) => r.productId).filter(Boolean) as string[], viewedProductId]
+            const summary = await buildSummary(payload, nextIds)
             await payload.update({
               collection: 'searchLogs',
               id: last.id,
               data: {
                 viewed_product_ids: [...existing, { productId: viewedProductId }],
+                viewed_products_summary: summary,
               } as any,
               overrideAccess: true,
             })
@@ -120,6 +151,7 @@ export async function POST(req: NextRequest) {
         }
         // Logged-in contractor opened a product with no recent search — write
         // a minimal row so the view still shows up tied to their account.
+        const minimalSummary = await buildSummary(payload, [viewedProductId])
         await payload.create({
           collection: 'searchLogs',
           data: {
@@ -128,6 +160,7 @@ export async function POST(req: NextRequest) {
             result_count: 0,
             contractor: contractorId,
             viewed_product_ids: [{ productId: viewedProductId }],
+            viewed_products_summary: minimalSummary,
           } as any,
           overrideAccess: true,
         })
@@ -135,6 +168,9 @@ export async function POST(req: NextRequest) {
       }
 
       // Normal search event → fresh row.
+      const eventSummary = viewedProductIds.length
+        ? await buildSummary(payload, viewedProductIds)
+        : ''
       await payload.create({
         collection: 'searchLogs',
         data: {
@@ -143,7 +179,10 @@ export async function POST(req: NextRequest) {
           result_count: resultCount,
           ...(contractorId ? { contractor: contractorId } : {}),
           ...(viewedProductIds.length
-            ? { viewed_product_ids: viewedProductIds.map((productId) => ({ productId })) }
+            ? {
+                viewed_product_ids: viewedProductIds.map((productId) => ({ productId })),
+                viewed_products_summary: eventSummary,
+              }
             : {}),
         } as any,
         overrideAccess: true,
