@@ -91,7 +91,7 @@ export function FilterBar({
       {/* Materials */}
       <Collapsible open={materialOpen} onOpenChange={setMaterialOpen}>
         <CollapsibleTrigger className="flex w-full items-center justify-between py-2">
-          <span className="text-sm font-semibold text-navy">Material</span>
+          <span className="text-sm font-semibold text-navy">{t.filters.material}</span>
           <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform ${materialOpen ? 'rotate-180' : ''}`} />
         </CollapsibleTrigger>
         <CollapsibleContent>
@@ -115,7 +115,7 @@ export function FilterBar({
       {/* Applications */}
       <Collapsible open={appOpen} onOpenChange={setAppOpen}>
         <CollapsibleTrigger className="flex w-full items-center justify-between py-2">
-          <span className="text-sm font-semibold text-navy">Application</span>
+          <span className="text-sm font-semibold text-navy">{t.filters.application}</span>
           <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform ${appOpen ? 'rotate-180' : ''}`} />
         </CollapsibleTrigger>
         <CollapsibleContent>
@@ -139,7 +139,7 @@ export function FilterBar({
       {/* Machine Power */}
       <Collapsible open={powerOpen} onOpenChange={setPowerOpen}>
         <CollapsibleTrigger className="flex w-full items-center justify-between py-2">
-          <span className="text-sm font-semibold text-navy">Machine Power</span>
+          <span className="text-sm font-semibold text-navy">{t.filters.machinePower}</span>
           <ChevronDown className={`h-4 w-4 text-ink-muted transition-transform ${powerOpen ? 'rotate-180' : ''}`} />
         </CollapsibleTrigger>
         <CollapsibleContent>
@@ -164,14 +164,14 @@ export function FilterBar({
     <div className="rounded-2xl border border-rule bg-white p-6">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <h3 className="font-semibold text-navy">Filters</h3>
+        <h3 className="font-semibold text-navy">{t.products.filtersHeader}</h3>
         {totalFilters > 0 && (
-          <button 
+          <button
             onClick={clearAll}
             className="flex items-center gap-1 text-sm text-accent-dark hover:text-accent"
           >
             <X className="h-3 w-3" />
-            Clear ({totalFilters})
+            {t.products.clear} ({totalFilters})
           </button>
         )}
       </div>
@@ -183,7 +183,7 @@ export function FilterBar({
             variant="outline" 
             className="w-full justify-between border-rule"
           >
-            <span>Show filters</span>
+            <span>{t.products.showFilters}</span>
             <ChevronDown className={`h-4 w-4 transition-transform ${mobileOpen ? 'rotate-180' : ''}`} />
           </Button>
         </CollapsibleTrigger>

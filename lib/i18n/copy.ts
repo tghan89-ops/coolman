@@ -76,6 +76,57 @@ export interface CopyStructure {
     showingResults: string
     noResults: string
   }
+  products: {
+    heroEyebrow: string
+    heroHeadlineLine1: string
+    heroHeadlineLine2: string
+    heroSubheadline: string
+    statProducts: string
+    statCategories: string
+    statMaterials: string
+    allProducts: string
+    materialColon: string
+    filtersHeader: string
+    productSingular: string
+    productPlural: string
+    clear: string
+    category: string
+    all: string
+    showFilters: string
+    sidebar: {
+      applicationHeading: string
+      moreMaterialsHeading: string
+      needHelpTitle: string
+      needHelpDesc: string
+      requestQuote: string
+    }
+    card: {
+      openProduct: string
+      noImage: string
+      universal: string
+      standardBond: string
+      bondSuffix: string
+    }
+    pagination: {
+      previous: string
+      next: string
+    }
+    empty: {
+      title: string
+      message: string
+      clearButton: string
+    }
+    bottomCta: {
+      title: string
+      message: string
+      contactEngineering: string
+      downloadCatalog: string
+    }
+    accountPending: {
+      title: string
+      message: string
+    }
+  }
   materials: {
     granite: string
     concrete: string
@@ -371,6 +422,57 @@ export const COPY: Record<Language, CopyStructure> = {
       showingResults: 'Showing {count} products',
       noResults: 'No products match your filters',
     },
+    products: {
+      heroEyebrow: 'Diamond Tools',
+      heroHeadlineLine1: 'Industrial Diamond',
+      heroHeadlineLine2: 'Cutting Tools',
+      heroSubheadline: 'Industrial-grade blades engineered for precision cutting across granite, concrete, tile, and more. Built for professionals who demand performance.',
+      statProducts: 'Products',
+      statCategories: 'Categories',
+      statMaterials: 'Materials',
+      allProducts: 'All Products',
+      materialColon: 'Material:',
+      filtersHeader: 'Filters',
+      productSingular: 'product',
+      productPlural: 'products',
+      clear: 'Clear',
+      category: 'Category',
+      all: 'All',
+      showFilters: 'Show filters',
+      sidebar: {
+        applicationHeading: 'Application',
+        moreMaterialsHeading: 'More Materials',
+        needHelpTitle: 'Need Help?',
+        needHelpDesc: 'Our engineers can help you select the right tool for your project.',
+        requestQuote: 'Request a quote',
+      },
+      card: {
+        openProduct: 'Open product',
+        noImage: 'No image',
+        universal: 'Universal',
+        standardBond: 'Standard',
+        bondSuffix: 'Bond',
+      },
+      pagination: {
+        previous: 'Previous',
+        next: 'Next',
+      },
+      empty: {
+        title: 'No Products Found',
+        message: 'Try adjusting your filters',
+        clearButton: 'Clear Filters',
+      },
+      bottomCta: {
+        title: "Can't Find What You Need?",
+        message: 'We offer custom blade configurations for specialised applications. Contact our engineering team.',
+        contactEngineering: 'Contact Engineering',
+        downloadCatalog: 'Download Catalog',
+      },
+      accountPending: {
+        title: 'Account pending verification',
+        message: 'Once Coolman verifies your account, your contract pricing will show here.',
+      },
+    },
     materials: {
       granite: 'Granite',
       concrete: 'Concrete',
@@ -663,6 +765,57 @@ export const COPY: Record<Language, CopyStructure> = {
       clearAll: 'Kosongkan Semua',
       showingResults: 'Menunjukkan {count} produk',
       noResults: 'Tiada produk sepadan dengan tapisan anda',
+    },
+    products: {
+      heroEyebrow: 'Alat Berlian',
+      heroHeadlineLine1: 'Alat Pemotong',
+      heroHeadlineLine2: 'Berlian Industri',
+      heroSubheadline: 'Bilah gred industri direka untuk pemotongan tepat pada granit, konkrit, jubin dan banyak lagi. Dibina untuk profesional yang menuntut prestasi.',
+      statProducts: 'Produk',
+      statCategories: 'Kategori',
+      statMaterials: 'Bahan',
+      allProducts: 'Semua Produk',
+      materialColon: 'Bahan:',
+      filtersHeader: 'Tapisan',
+      productSingular: 'produk',
+      productPlural: 'produk',
+      clear: 'Kosongkan',
+      category: 'Kategori',
+      all: 'Semua',
+      showFilters: 'Tunjuk tapisan',
+      sidebar: {
+        applicationHeading: 'Aplikasi',
+        moreMaterialsHeading: 'Bahan Lain',
+        needHelpTitle: 'Perlukan Bantuan?',
+        needHelpDesc: 'Jurutera kami boleh membantu anda memilih alat yang sesuai untuk projek anda.',
+        requestQuote: 'Minta sebut harga',
+      },
+      card: {
+        openProduct: 'Buka produk',
+        noImage: 'Tiada gambar',
+        universal: 'Universal',
+        standardBond: 'Standard',
+        bondSuffix: 'Ikatan',
+      },
+      pagination: {
+        previous: 'Sebelumnya',
+        next: 'Seterusnya',
+      },
+      empty: {
+        title: 'Tiada Produk Ditemui',
+        message: 'Cuba laraskan tapisan anda',
+        clearButton: 'Kosongkan Tapisan',
+      },
+      bottomCta: {
+        title: 'Tidak Jumpa Yang Anda Cari?',
+        message: 'Kami menawarkan konfigurasi bilah tersuai untuk aplikasi khusus. Hubungi pasukan kejuruteraan kami.',
+        contactEngineering: 'Hubungi Kejuruteraan',
+        downloadCatalog: 'Muat Turun Katalog',
+      },
+      accountPending: {
+        title: 'Akaun menunggu pengesahan',
+        message: 'Setelah Coolman mengesahkan akaun anda, harga kontrak anda akan muncul di sini.',
+      },
     },
     materials: {
       granite: 'Granit',

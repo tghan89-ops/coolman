@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils/formatting'
 import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
 import { bondLabel } from '@/lib/products/bond-label'
+import { useLanguage } from '@/lib/i18n/context'
 
 const PAGE_SIZE = 24
 
@@ -22,6 +23,7 @@ export function ProductsClient({
   priceMode?: PriceDisplayMode
   tierDiscountPct?: number
 }) {
+  const { t } = useLanguage()
   const { data: products } = useLivePreview({
     initialData: initialProducts,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
@@ -143,7 +145,7 @@ export function ProductsClient({
     if (parts.length === 0) return
     const query = parts.join(' ')
     const resultCount = filteredProducts.length
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       fetch('/api/search-log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -151,7 +153,7 @@ export function ProductsClient({
         keepalive: true,
       }).catch(() => {})
     }, 800)
-    return () => clearTimeout(t)
+    return () => clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory, selectedMaterials, selectedApplications, selectedMachinePower, filteredProducts.length])
 
@@ -171,25 +173,25 @@ export function ProductsClient({
 
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
-            <p className="text-sm font-bold tracking-wider text-accent">Diamond Tools</p>
+            <p className="text-sm font-bold tracking-wider text-accent">{t.products.heroEyebrow}</p>
             <h1 className="mt-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
-              Industrial Diamond<br />Cutting Tools
+              {t.products.heroHeadlineLine1}<br />{t.products.heroHeadlineLine2}
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-white/60">
-              Industrial-grade blades engineered for precision cutting across granite, concrete, tile, and more. Built for professionals who demand performance.
+              {t.products.heroSubheadline}
             </p>
             <div className="mt-10 flex flex-wrap gap-x-12 gap-y-6 border-t border-white/10 pt-8">
               <div>
                 <div className="text-3xl font-bold text-white">{products.length}+</div>
-                <div className="text-sm font-semibold text-white/40">Products</div>
+                <div className="text-sm font-semibold text-white/40">{t.products.statProducts}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-white">{categories.length}</div>
-                <div className="text-sm font-semibold text-white/40">Categories</div>
+                <div className="text-sm font-semibold text-white/40">{t.products.statCategories}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-white">{materials.length}</div>
-                <div className="text-sm font-semibold text-white/40">Materials</div>
+                <div className="text-sm font-semibold text-white/40">{t.products.statMaterials}</div>
               </div>
             </div>
           </div>
@@ -208,7 +210,7 @@ export function ProductsClient({
                   : 'bg-secondary text-ink-muted hover:bg-rule hover:text-navy'
               }`}
             >
-              All Products
+              {t.products.allProducts}
             </button>
             {categories.map((category) => (
               <button
@@ -232,7 +234,7 @@ export function ProductsClient({
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex items-center justify-between py-4">
             <div className="hidden items-center gap-2 lg:flex">
-              <span className="mr-2 text-sm font-bold text-ink-muted">Material:</span>
+              <span className="mr-2 text-sm font-bold text-ink-muted">{t.products.materialColon}</span>
               {materials.slice(0, 5).map((material) => (
                 <button
                   key={material}
@@ -252,17 +254,17 @@ export function ProductsClient({
               className="flex items-center gap-2 text-sm font-bold text-navy lg:hidden"
             >
               <Filter className="h-4 w-4" />
-              Filters
+              {t.products.filtersHeader}
               {hasFilters && <span className="flex h-5 w-5 items-center justify-center bg-accent text-xs font-bold text-white">{(selectedCategory ? 1 : 0) + selectedMaterials.length + selectedApplications.length}</span>}
             </button>
             <div className="flex items-center gap-4">
               <span className="text-sm text-ink-muted">
-                {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
+                {filteredProducts.length} {filteredProducts.length === 1 ? t.products.productSingular : t.products.productPlural}
               </span>
               {hasFilters && (
                 <button onClick={clearFilters} className="flex items-center gap-1 text-sm font-semibold text-accent-dark hover:text-accent">
                   <X className="h-4 w-4" />
-                  Clear
+                  {t.products.clear}
                 </button>
               )}
             </div>
@@ -271,11 +273,11 @@ export function ProductsClient({
           {showFilters && (
             <div className="border-t border-rule py-4 lg:hidden">
               <div className="mb-4">
-                <p className="mb-2 text-xs font-bold text-ink-muted">Category</p>
+                <p className="mb-2 text-xs font-bold text-ink-muted">{t.products.category}</p>
                 <div className="flex flex-wrap gap-2">
                   <button onClick={() => setSelectedCategory(null)}
                     className={`px-3 py-1.5 text-xs font-semibold transition-colors ${!selectedCategory ? 'bg-navy text-white' : 'bg-secondary text-ink-muted'}`}>
-                    All
+                    {t.products.all}
                   </button>
                   {categories.map((cat) => (
                     <button key={cat} onClick={() => setSelectedCategory(cat)}
@@ -286,7 +288,7 @@ export function ProductsClient({
                 </div>
               </div>
               <div className="mb-4">
-                <p className="mb-2 text-xs font-bold text-ink-muted">Material</p>
+                <p className="mb-2 text-xs font-bold text-ink-muted">{t.filters.material}</p>
                 <div className="flex flex-wrap gap-2">
                   {materials.map((material) => (
                     <button key={material} onClick={() => toggleMaterial(material)}
@@ -297,7 +299,7 @@ export function ProductsClient({
                 </div>
               </div>
               <div>
-                <p className="mb-2 text-xs font-bold text-ink-muted">Application</p>
+                <p className="mb-2 text-xs font-bold text-ink-muted">{t.filters.application}</p>
                 <div className="flex flex-wrap gap-2">
                   {applications.map((app) => (
                     <button key={app} onClick={() => toggleApplication(app)}
@@ -322,9 +324,9 @@ export function ProductsClient({
           {priceMode === 'unverified' && (
             <div className="mb-8 flex flex-col items-start justify-between gap-3 border border-rule bg-white px-5 py-4 sm:flex-row sm:items-center">
               <div>
-                <p className="text-sm font-bold text-navy">Account pending verification</p>
+                <p className="text-sm font-bold text-navy">{t.products.accountPending.title}</p>
                 <p className="mt-0.5 text-sm text-ink-muted">
-                  Once Coolman verifies your account, your contract pricing will show here.
+                  {t.products.accountPending.message}
                 </p>
               </div>
             </div>
@@ -336,7 +338,7 @@ export function ProductsClient({
             <aside className="hidden lg:block">
               <div className="sticky top-24 space-y-8">
                 <div>
-                  <h3 className="mb-4 text-sm font-bold text-navy">Application</h3>
+                  <h3 className="mb-4 text-sm font-bold text-navy">{t.products.sidebar.applicationHeading}</h3>
                   <div className="space-y-2">
                     {applications.map((app) => (
                       <button key={app} onClick={() => toggleApplication(app)}
@@ -350,7 +352,7 @@ export function ProductsClient({
                   </div>
                 </div>
                 <div>
-                  <h3 className="mb-4 text-sm font-bold text-navy">More Materials</h3>
+                  <h3 className="mb-4 text-sm font-bold text-navy">{t.products.sidebar.moreMaterialsHeading}</h3>
                   <div className="space-y-2">
                     {materials.slice(5).map((material) => (
                       <button key={material} onClick={() => toggleMaterial(material)}
@@ -364,10 +366,10 @@ export function ProductsClient({
                   </div>
                 </div>
                 <div className="border border-rule bg-white p-6">
-                  <h4 className="text-lg font-bold text-navy">Need Help?</h4>
-                  <p className="mt-2 text-sm text-ink-muted">Our engineers can help you select the right tool for your project.</p>
+                  <h4 className="text-lg font-bold text-navy">{t.products.sidebar.needHelpTitle}</h4>
+                  <p className="mt-2 text-sm text-ink-muted">{t.products.sidebar.needHelpDesc}</p>
                   <Button className="mt-4 w-full bg-accent-dark font-bold text-white hover:bg-accent" asChild>
-                    <Link href="/contact">Request a quote <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                    <Link href="/contact">{t.products.sidebar.requestQuote} <ArrowRight className="ml-2 h-4 w-4" /></Link>
                   </Button>
                 </div>
               </div>
@@ -404,13 +406,13 @@ export function ProductsClient({
                             />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center bg-navy/5 text-center text-xs font-mono uppercase tracking-widest text-ink-muted">
-                              No image
+                              {t.products.card.noImage}
                             </div>
                           )}
                           <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
                               <div className="flex items-center gap-2 bg-accent-dark px-6 py-3 font-sans text-sm font-semibold text-white">
-                                Open product
+                                {t.products.card.openProduct}
                                 <ArrowRight className="h-4 w-4" />
                               </div>
                             </div>
@@ -420,14 +422,14 @@ export function ProductsClient({
                           <p className="font-sans text-xs font-semibold tracking-wider text-accent">
                             {(() => {
                               const m = product.materials?.[0]
-                              return (typeof m === 'object' && m !== null ? m.name : m) || 'Universal'
+                              return (typeof m === 'object' && m !== null ? m.name : m) || t.products.card.universal
                             })()}
                           </p>
                           <h3 className="mt-2 font-sans text-lg font-bold text-navy transition-colors group-hover:text-accent">
                             {product.name}
                           </h3>
                           <p className="mt-1 text-sm text-ink-muted">
-                            {product.diameter} | {bondLabel(product.bondType) || 'Standard'} Bond
+                            {product.diameter} | {bondLabel(product.bondType) || t.products.card.standardBond} {t.products.card.bondSuffix}
                           </p>
                           <div className="mt-4 flex items-center justify-between border-t border-rule pt-4">
                             <PriceDisplay
@@ -450,7 +452,7 @@ export function ProductsClient({
                       disabled={safePage === 1}
                       className="px-4 py-2 text-sm font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40 bg-white text-navy hover:bg-secondary"
                     >
-                      Previous
+                      {t.products.pagination.previous}
                     </button>
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
                       <button
@@ -468,17 +470,17 @@ export function ProductsClient({
                       disabled={safePage === totalPages}
                       className="px-4 py-2 text-sm font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-40 bg-white text-navy hover:bg-secondary"
                     >
-                      Next
+                      {t.products.pagination.next}
                     </button>
                   </div>
                 )}
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center border border-rule bg-white py-20">
-                  <p className="text-lg font-bold text-navy">No Products Found</p>
-                  <p className="mt-2 text-sm text-ink-muted">Try adjusting your filters</p>
+                  <p className="text-lg font-bold text-navy">{t.products.empty.title}</p>
+                  <p className="mt-2 text-sm text-ink-muted">{t.products.empty.message}</p>
                   <Button onClick={clearFilters} className="mt-6 bg-navy font-bold hover:bg-navy-light">
-                    Clear Filters
+                    {t.products.empty.clearButton}
                   </Button>
                 </div>
               )}
@@ -491,17 +493,17 @@ export function ProductsClient({
       <section className="bg-navy py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
           <h2 className="text-3xl font-bold text-white lg:text-5xl">
-            Can&apos;t Find What You Need?
+            {t.products.bottomCta.title}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-white/60">
-            We offer custom blade configurations for specialised applications. Contact our engineering team.
+            {t.products.bottomCta.message}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Button size="lg" className="h-12 bg-accent-dark px-6 font-bold text-white hover:bg-accent" asChild>
-              <Link href="/contact">Contact Engineering <ArrowRight className="ml-2 h-4 w-4" /></Link>
+              <Link href="/contact">{t.products.bottomCta.contactEngineering} <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
             <Button size="lg" variant="outline" className="h-12 border-2 border-white/30 bg-transparent px-6 font-bold text-white hover:border-white hover:bg-white hover:text-navy" asChild>
-              <Link href="/resources">Download Catalog</Link>
+              <Link href="/resources">{t.products.bottomCta.downloadCatalog}</Link>
             </Button>
           </div>
         </div>
