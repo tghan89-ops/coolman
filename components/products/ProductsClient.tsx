@@ -435,7 +435,7 @@ export function ProductsClient({
                             {product.name}
                           </h3>
                           <p className="mt-1 text-sm text-ink-muted">
-                            {product.diameter} | {(typeof product.bondType === 'object' && product.bondType !== null ? product.bondType.name : product.bondType) || '—'} Bond
+                            {product.diameter} | {(typeof product.bondType === 'object' && product.bondType !== null ? product.bondType.name : product.bondType) || 'Standard'} Bond
                           </p>
                           <div className="mt-4 flex items-center justify-between border-t border-rule pt-4">
                             <PriceDisplay

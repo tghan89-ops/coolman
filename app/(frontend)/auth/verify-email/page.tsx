@@ -37,26 +37,28 @@ function VerifyEmailContent() {
 
   return (
     <PublicLayout>
-      <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 py-12">
-        {status === 'loading' && <p className="text-muted-foreground">Verifying your email…</p>}
-        {status === 'success' && (
-          <>
-            <h1 className="text-2xl font-bold text-white">Email verified!</h1>
-            <p className="text-muted-foreground">Your account is now active. You can place orders.</p>
-            <Button asChild>
-              <Link href="/account">Go to my account</Link>
-            </Button>
-          </>
-        )}
-        {status === 'error' && (
-          <>
-            <h1 className="text-2xl font-bold text-white">Verification failed</h1>
-            <p className="text-muted-foreground">{message}</p>
-            <Button asChild variant="outline">
-              <Link href="/account">Back to account</Link>
-            </Button>
-          </>
-        )}
+      <div className="min-h-[calc(100vh-80px)] bg-navy">
+        <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 px-4 py-12">
+          {status === 'loading' && <p className="text-ink-muted">Verifying your email…</p>}
+          {status === 'success' && (
+            <>
+              <h1 className="text-2xl font-bold text-white">Email verified</h1>
+              <p className="text-ink-muted">Your account is now active. You can place orders.</p>
+              <Button asChild className="bg-accent-dark text-white hover:bg-accent">
+                <Link href="/account">Go to my account</Link>
+              </Button>
+            </>
+          )}
+          {status === 'error' && (
+            <>
+              <h1 className="text-2xl font-bold text-white">Verification failed</h1>
+              <p className="text-ink-muted">{message}</p>
+              <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white/10">
+                <Link href="/account">Back to account</Link>
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </PublicLayout>
   )
@@ -66,8 +68,8 @@ export default function VerifyEmailPage() {
   return (
     <Suspense fallback={
       <PublicLayout>
-        <div className="flex min-h-[50vh] items-center justify-center">
-          <p className="text-muted-foreground">Loading…</p>
+        <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-navy">
+          <p className="text-ink-muted">Loading…</p>
         </div>
       </PublicLayout>
     }>

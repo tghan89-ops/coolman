@@ -60,7 +60,7 @@ export default function LoginPage() {
 
             <form onSubmit={handleSubmit} className="mt-10 space-y-6">
               {error && (
-                <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                <div className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger">
                   {error}
                 </div>
               )}
@@ -109,7 +109,7 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="group h-12 w-full bg-accent text-white hover:bg-accent-dark" 
+                className="group h-12 w-full bg-accent-dark text-white hover:bg-accent"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -128,7 +128,7 @@ export default function LoginPage() {
 
             <p className="mt-8 text-center text-sm text-ink-muted">
               {t.auth.noAccount}{' '}
-              <Link href="/auth/register" className="font-medium text-accent-light transition-colors hover:text-accent-light">
+              <Link href="/auth/register" className="font-medium text-accent-light transition-colors hover:text-white">
                 {t.auth.register}
               </Link>
             </p>
@@ -136,8 +136,7 @@ export default function LoginPage() {
         </div>
 
         {/* Right Side - Industrial panel */}
-        <div className="relative hidden w-1/2 flex-col justify-between bg-navy-surface p-12 lg:flex">
-          <div className="absolute left-0 top-0 h-full w-1 bg-accent" />
+        <div className="relative hidden w-1/2 flex-col justify-between border-l border-white/10 bg-navy-surface p-12 lg:flex">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-faint">
             01 / Sign in
           </p>
@@ -150,7 +149,7 @@ export default function LoginPage() {
             </p>
           </div>
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-faint">
-            Coolman — Established 1998
+            Coolman, established 1998
           </p>
         </div>
       </div>

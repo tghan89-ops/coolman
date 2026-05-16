@@ -81,8 +81,7 @@ export default function RegisterPage() {
     <PublicLayout>
       <div className="flex min-h-[calc(100vh-80px)] bg-navy">
         {/* Left Side - Industrial panel */}
-        <div className="relative hidden w-1/2 flex-col justify-between bg-navy-surface p-12 lg:flex">
-          <div className="absolute left-0 top-0 h-full w-1 bg-accent" />
+        <div className="relative hidden w-1/2 flex-col justify-between border-r border-white/10 bg-navy-surface p-12 lg:flex">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-faint">
             01 / Contractor registration
           </p>
@@ -106,7 +105,7 @@ export default function RegisterPage() {
             </ul>
           </div>
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-ink-faint">
-            Coolman — Established 1998
+            Coolman, established 1998
           </p>
         </div>
 
@@ -124,7 +123,7 @@ export default function RegisterPage() {
 
             <form onSubmit={handleSubmit} className="mt-10 space-y-5">
               {error && (
-                <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                <div className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger">
                   {error}
                 </div>
               )}
@@ -247,7 +246,7 @@ export default function RegisterPage() {
 
               <Button 
                 type="submit" 
-                className="group h-12 w-full bg-accent text-white hover:bg-accent-dark" 
+                className="group h-12 w-full bg-accent-dark text-white hover:bg-accent"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -266,7 +265,7 @@ export default function RegisterPage() {
               
             <p className="mt-8 text-center text-sm text-ink-muted">
               {t.auth.hasAccount}{' '}
-              <Link href="/auth/login" className="font-medium text-accent-light transition-colors hover:text-accent-light">
+              <Link href="/auth/login" className="font-medium text-accent-light transition-colors hover:text-white">
                 {t.auth.login}
               </Link>
             </p>
