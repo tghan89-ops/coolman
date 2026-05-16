@@ -17,10 +17,10 @@ import Link from 'next/link'
 import { formatPrice } from '@/lib/utils/formatting'
 import { calculateEffectivePrice } from '@/lib/pricing/calculate'
 import { COPY, type Language } from '@/lib/i18n/copy'
-import { resolvePriceDisplayMode, type PriceDisplayMode } from '@/lib/pricing/display-mode'
+import type { PriceDisplayMode } from '@/lib/pricing/display-mode'
 
 // Re-export so existing client-side imports keep working.
-export { resolvePriceDisplayMode }
+export { resolvePriceDisplayMode } from '@/lib/pricing/display-mode'
 export type { PriceDisplayMode }
 export type PriceDisplayTone = 'light' | 'dark'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Filter, X } from 'lucide-react'
@@ -130,20 +130,17 @@ export function ProductsClient({
 
   const hasFilters = selectedCategory || selectedMaterials.length > 0 || selectedApplications.length > 0 || selectedMachinePower.length > 0
 
-  // Fire-and-forget catalogue search logging. Every change to the active filter
-  // set is a "search" — we debounce so a flurry of chip taps logs once, and we
-  // skip the very first render (page load is not a search).
-  const isFirstRender = useRef(true)
+  // Fire-and-forget catalogue search logging. A "search" is the contractor
+  // actively narrowing the catalogue — landing on /products with no filters
+  // is browsing, not searching, so we only log when at least one filter chip
+  // is active. Debounced so a flurry of chip taps logs once.
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
-    }
     const parts: string[] = []
     if (selectedCategory) parts.push(`category:${selectedCategory}`)
     if (selectedMaterials.length) parts.push(`materials:${[...selectedMaterials].sort().join('+')}`)
     if (selectedApplications.length) parts.push(`applications:${[...selectedApplications].sort().join('+')}`)
     if (selectedMachinePower.length) parts.push(`machineTier:${[...selectedMachinePower].sort().join('+')}`)
+    if (parts.length === 0) return
     const query = parts.join(' ')
     const resultCount = filteredProducts.length
     const t = setTimeout(() => {
