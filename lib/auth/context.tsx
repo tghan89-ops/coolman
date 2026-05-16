@@ -26,6 +26,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>
   register: (data: RegisterData) => Promise<{ success: boolean; error?: string }>
   logout: () => void
+  refreshUser: () => Promise<void>
   isAuthenticated: boolean
   isAdmin: boolean
   isContractor: boolean
@@ -63,28 +64,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    async function checkSession() {
-      try {
-        const contractorRes = await fetch('/api/contractors/me', { credentials: 'include' })
-        if (contractorRes.ok) {
-          const { user: d } = await contractorRes.json()
+  const refreshUser = useCallback(async () => {
+    try {
+      const contractorRes = await fetch('/api/account/me', { credentials: 'include' })
+      if (contractorRes.ok) {
+        const { user: d } = await contractorRes.json()
+        if (d) {
           setUser(buildContractorUser(d))
           return
         }
-        const adminRes = await fetch('/api/users/me', { credentials: 'include' })
-        if (adminRes.ok) {
-          const { user: d } = await adminRes.json()
-          setUser({ id: d.id, email: d.email, role: 'admin' })
-        }
-      } catch {
-        // DB not provisioned or no session — expected in dev
-      } finally {
-        setIsLoading(false)
       }
+      const adminRes = await fetch('/api/users/me', { credentials: 'include' })
+      if (adminRes.ok) {
+        const { user: d } = await adminRes.json()
+        if (d) {
+          setUser({ id: d.id, email: d.email, role: 'admin' })
+          return
+        }
+      }
+      setUser(null)
+    } catch {
+      // DB not provisioned or no session — expected in dev
     }
-    checkSession()
   }, [])
+
+  useEffect(() => {
+    refreshUser().finally(() => setIsLoading(false))
+  }, [refreshUser])
 
   const login = useCallback(async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
@@ -97,6 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (res.ok) {
         const { user: d } = await res.json()
         setUser(buildContractorUser(d))
+        await refreshUser()
         return { success: true }
       }
     } catch { /* fall through */ }
@@ -116,7 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch { /* fall through */ }
 
     return { success: false, error: 'Invalid email or password' }
-  }, [])
+  }, [refreshUser])
 
   const register = useCallback(async (data: RegisterData): Promise<{ success: boolean; error?: string }> => {
     try {
@@ -157,6 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       login,
       register,
       logout,
+      refreshUser,
       isAuthenticated: user !== null,
       isAdmin: user?.role === 'admin',
       isContractor: user?.role === 'contractor',

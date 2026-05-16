@@ -25,7 +25,7 @@ export interface AccountOrder {
 
 export function AccountClient({ orders }: { orders: AccountOrder[] }) {
   const { t } = useLanguage()
-  const { user, isAuthenticated, isLoading, logout, isContractor } = useAuth()
+  const { user, isAuthenticated, isLoading, logout, isContractor, refreshUser } = useAuth()
   const router = useRouter()
   const [verificationSent, setVerificationSent] = useState(false)
 
@@ -180,6 +180,7 @@ export function AccountClient({ orders }: { orders: AccountOrder[] }) {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <DeliveryAddressForm
                 initialAddress={user.contractor?.deliveryAddress ?? ''}
+                onSaved={() => { refreshUser() }}
               />
             </div>
           </section>
