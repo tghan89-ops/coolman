@@ -129,6 +129,16 @@ export const Orders: CollectionConfig = {
       admin: { description: 'Client-generated UUID. Scoped to contractor for uniqueness.' },
     },
     {
+      name: 'submission_id',
+      type: 'text',
+      required: true,
+      index: true,
+      admin: {
+        description:
+          'Groups all order rows that were submitted together in one cart checkout. Equal to idempotency_key for legacy single-line orders.',
+      },
+    },
+    {
       name: 'promo_code',
       type: 'relationship',
       relationTo: 'promoCodes',
