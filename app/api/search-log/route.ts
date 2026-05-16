@@ -7,7 +7,6 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { after } from 'next/server'
-import { cookies } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
@@ -46,18 +45,18 @@ export async function POST(req: NextRequest) {
   }
 
   // Try to attribute to a logged-in contractor, but never block on it.
-  let contractorId: string | null = null
+  // Use payload.auth() directly — an internal fetch to /api/contractors/me
+  // is unreliable on Vercel because NEXT_PUBLIC_SERVER_URL falls back to
+  // localhost in production and the call silently fails (same trap burned on
+  // /api/orders/submit, see LEARNINGS.md 2026-05-16).
+  let contractorId: string | number | null = null
   try {
-    const token = (await cookies()).get('coolman-token')?.value
-    if (token) {
-      const meRes = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'}/api/contractors/me`,
-        { headers: { Cookie: `coolman-token=${token}` } },
-      )
-      if (meRes.ok) {
-        const me = await meRes.json()
-        if (me?.user?.collection === 'contractors' && me.user.id) contractorId = me.user.id
-      }
+    const payloadEarly = await getPayload({ config })
+    const { user } = await payloadEarly.auth({ headers: req.headers })
+    if (user && (user as any).collection === 'contractors' && user.id) {
+      const rawId = user.id as string | number
+      contractorId =
+        typeof rawId === 'string' && /^\d+$/.test(rawId) ? Number(rawId) : rawId
     }
   } catch {
     /* anonymous search — fine */
