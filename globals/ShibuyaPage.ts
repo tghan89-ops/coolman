@@ -117,7 +117,7 @@ export const ShibuyaPage: GlobalConfig = {
       fields: [
         { name: 'headline', type: 'text', defaultValue: 'Experience the Difference' },
         { name: 'subheadline', type: 'textarea', defaultValue: 'Schedule a demonstration at your site or visit our showroom.' },
-        { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Schedule Demo' },
+        { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Request a demo' },
         { name: 'secondaryCtaLabel', type: 'text', defaultValue: 'Download Brochure' },
       ],
     },

@@ -42,23 +42,23 @@ describe('POST /api/admin/orders/[id]/acknowledge', () => {
     expect(arg.overrideAccess).toBe(true)
   })
 
-  it('rejects a non-admin session with 403 and never touches the order', async () => {
+  it('rejects a non-admin session with 401 and never touches the order', async () => {
     const { getPayload } = await import('payload')
     const p = buildPayload({ auth: vi.fn().mockResolvedValue({ user: { id: 'c-1', collection: 'contractors' } }) })
     vi.mocked(getPayload).mockResolvedValue(p as any)
 
     const res = await callPost('ord-1')
-    expect(res.status).toBe(403)
+    expect(res.status).toBe(401)
     expect(p.update).not.toHaveBeenCalled()
   })
 
-  it('rejects when there is no session at all with 403', async () => {
+  it('rejects when there is no session at all with 401', async () => {
     const { getPayload } = await import('payload')
     const p = buildPayload({ auth: vi.fn().mockResolvedValue({ user: null }) })
     vi.mocked(getPayload).mockResolvedValue(p as any)
 
     const res = await callPost('ord-1')
-    expect(res.status).toBe(403)
+    expect(res.status).toBe(401)
     expect(p.update).not.toHaveBeenCalled()
   })
 

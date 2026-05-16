@@ -112,7 +112,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
   const ctaSubheadline =
     data.cta?.subheadline ??
     'Schedule a demonstration at your site or visit our showroom to see Shibuya performance firsthand.'
-  const ctaPrimaryLabel = data.cta?.primaryCtaLabel ?? 'Schedule Demo'
+  const ctaPrimaryLabel = data.cta?.primaryCtaLabel ?? 'Request a demo'
   const ctaPrimaryHref = '/contact'
   const ctaSecondaryLabel = data.cta?.secondaryCtaLabel ?? 'Download Brochure'
   const ctaSecondaryHref = '/contact'
@@ -268,7 +268,7 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
               {selectedMachine && (
                 <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
                   {/* Image */}
-                  <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-white/5 to-transparent">
+                  <div className="relative aspect-square overflow-hidden bg-white/5">
                     <Image
                       src={selectedMachine.image?.url ?? '/images/shibuya-hero.jpg'}
                       alt={selectedMachine.name ?? ''}

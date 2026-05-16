@@ -19,7 +19,7 @@ export const HomePage: GlobalConfig = {
         { name: 'headlineLine3', type: 'text', defaultValue: 'Built for Performance' },
         { name: 'subheadline', type: 'textarea', defaultValue: 'Industrial-grade cutting solutions engineered for concrete, granite, marble, and more.' },
         { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Explore Products' },
-        { name: 'secondaryCtaLabel', type: 'text', defaultValue: 'Watch Demo' },
+        { name: 'secondaryCtaLabel', type: 'text', defaultValue: 'See applications' },
         { name: 'heroImage', type: 'upload', relationTo: 'media' },
       ],
     },
