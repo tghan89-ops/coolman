@@ -44,13 +44,15 @@ export async function sendVerificationEmail(
 
   await sendEmail({
     to: contractorEmail,
-    subject: 'Verify your Coolman account email',
+    subject: 'Welcome to Coolman — confirm your email to see your contract prices',
     html: `
-      <p>Welcome to Coolman, ${companyName}.</p>
-      <p>Click the link below to verify your email address and unlock your contract pricing:</p>
-      <p><a href="${verifyUrl}">${verifyUrl}</a></p>
+      <p>Hi ${companyName},</p>
+      <p>Thanks for opening a Coolman contractor account. Confirm your email below and your contract pricing will appear the moment you log back in.</p>
+      <p><a href="${verifyUrl}">Confirm my email</a></p>
+      <p style="font-size:12px;color:#666;">Or paste this link into your browser: ${verifyUrl}</p>
       <p>This link expires in 24 hours.</p>
-      <p>If you did not register, ignore this email.</p>
+      <p>If you did not register for a Coolman account, you can safely ignore this email.</p>
+      <p>— The Coolman team</p>
     `,
   })
 }

@@ -104,10 +104,10 @@ export function AccountClient({ orders }: { orders: AccountOrder[] }) {
                   <p className="font-semibold text-white">Email not yet verified</p>
                   <p className="mt-1 text-sm text-ink-muted">
                     Verify your email to see your contract prices and submit orders.
-                    Check your inbox for a link from Coolman.
+                    Check your inbox <span className="font-semibold text-white">— and your junk / spam folder</span> — for a link from Coolman. We are a new sender, so first emails sometimes land there.
                   </p>
                   {verificationSent ? (
-                    <p className="mt-3 text-sm font-medium text-success">Verification email sent, check your inbox.</p>
+                    <p className="mt-3 text-sm font-medium text-success">Verification email sent. Check your inbox and junk / spam folder.</p>
                   ) : (
                     <Button
                       type="button"
