@@ -20,6 +20,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
   const { t } = useLanguage()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const [focusedField, setFocusedField] = useState<string | null>(null)
 
   const heroTitle = data?.heroTitle ?? t.nav.contact
@@ -33,27 +34,50 @@ export function ContactClient({ initialData }: { initialData: any }) {
     ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}`
     : 'https://wa.me/60312345678'
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setSubmitError(null)
     setIsSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setSubmitted(true)
-    setIsSubmitting(false)
+    const fd = new FormData(e.currentTarget)
+    const payload = {
+      name: String(fd.get('name') ?? ''),
+      email: String(fd.get('email') ?? ''),
+      company: String(fd.get('company') ?? ''),
+      phone: String(fd.get('phone') ?? ''),
+      message: String(fd.get('message') ?? ''),
+      website: String(fd.get('website') ?? ''),
+    }
+    try {
+      const res = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setSubmitError(data?.error || 'Something went wrong. Please try again.')
+      } else {
+        setSubmitted(true)
+      }
+    } catch {
+      setSubmitError('Network error. Please check your connection and try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <PublicLayout>
       {/* Hero Section */}
-      <section className="relative bg-navy py-20 lg:py-28">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-        <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <span className="inline-block rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-accent-light">
-            Get in Touch
-          </span>
-          <h1 className="mt-6 font-sans text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+      <section className="bg-navy py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+            Get in touch
+          </p>
+          <h1 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-[40px]">
             {heroTitle}
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-ink-muted">
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-ink-faint">
             {heroSubtitle}
           </p>
         </div>
@@ -64,7 +88,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_400px] lg:gap-16">
             {/* Contact Form */}
-            <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-8 backdrop-blur-sm lg:p-10">
+            <div className="rounded-2xl border border-white/10 bg-navy-surface p-8 lg:p-10">
               {submitted ? (
                 <div className="flex flex-col items-center py-12 text-center">
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-success/10 ring-4 ring-success/20">
@@ -91,6 +115,16 @@ export function ContactClient({ initialData }: { initialData: any }) {
                     </p>
                   </div>
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Honeypot — hidden from humans, visible to bots. */}
+                    <div aria-hidden="true" className="absolute -left-[9999px]">
+                      <Label htmlFor="website">Website</Label>
+                      <Input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                    </div>
+                    {submitError && (
+                      <div role="alert" className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger">
+                        {submitError}
+                      </div>
+                    )}
                     <div className="grid gap-6 sm:grid-cols-2">
                       <div className="group space-y-2">
                         <Label htmlFor="name" className={`text-sm transition-colors ${focusedField === 'name' ? 'text-accent-light' : 'text-ink-muted'}`}>
@@ -98,6 +132,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                         </Label>
                         <Input
                           id="name"
+                          name="name"
                           placeholder="Your name"
                           required
                           onFocus={() => setFocusedField('name')}
@@ -111,6 +146,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                         </Label>
                         <Input
                           id="company"
+                          name="company"
                           placeholder="Company name"
                           onFocus={() => setFocusedField('company')}
                           onBlur={() => setFocusedField(null)}
@@ -124,6 +160,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                       </Label>
                       <Input
                         id="email"
+                        name="email"
                         type="email"
                         placeholder="name@company.com"
                         required
@@ -138,6 +175,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                       </Label>
                       <Input
                         id="phone"
+                        name="phone"
                         type="tel"
                         placeholder="+60 12-345 6789"
                         onFocus={() => setFocusedField('phone')}
@@ -151,6 +189,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                       </Label>
                       <Textarea
                         id="message"
+                        name="message"
                         placeholder="Tell us about your requirements..."
                         rows={5}
                         required

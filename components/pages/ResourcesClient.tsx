@@ -80,10 +80,21 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
   const downloads: any[] = data?.downloads?.length ? data.downloads : defaultDownloads
   const videos: any[] = data?.videos?.length ? data.videos : defaultVideos
 
-  // Merge downloads and videos into a unified resources list for the grid
+  function fileUrl(file: any): string | null {
+    if (!file) return null
+    if (typeof file === 'string') return file
+    if (typeof file === 'object' && typeof file.url === 'string' && file.url) return file.url
+    return null
+  }
+
+  // Only surface items that actually navigate somewhere.
   const allResources = [
-    ...downloads.map((d: any) => ({ ...d, type: 'download' })),
-    ...videos.map((v: any) => ({ ...v, type: 'video' })),
+    ...downloads
+      .map((d: any) => ({ ...d, type: 'download', href: fileUrl(d.file) }))
+      .filter((d) => d.href),
+    ...videos
+      .map((v: any) => ({ ...v, type: 'video', href: (v.youtubeUrl || '').trim() || null }))
+      .filter((v) => v.href),
   ]
 
   return (
@@ -106,36 +117,56 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
       {/* Resources Grid */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {allResources.map((resource: any, index: number) => {
-              const isVideo = resource.type === 'video'
-              const Icon = isVideo ? Play : getDownloadIcon(resource.title ?? '')
-              return (
-                <div
-                  key={index}
-                  className="group flex flex-col rounded-2xl border border-rule bg-white p-6 transition-[border-color,box-shadow] hover:border-accent/50 hover:shadow-lg"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="inline-flex rounded-xl bg-secondary p-3">
-                      <Icon className="h-6 w-6 text-accent" />
+          {allResources.length === 0 ? (
+            <div className="mx-auto max-w-xl rounded-2xl border border-rule bg-white p-10 text-center">
+              <div className="mx-auto inline-flex rounded-xl bg-secondary p-3">
+                <FileText className="h-6 w-6 text-ink-muted" />
+              </div>
+              <h3 className="mt-6 text-lg font-semibold text-navy">Catalogue arriving soon</h3>
+              <p className="mt-3 text-sm text-ink-muted">
+                We&apos;re finalising the latest PDFs and video guides. In the meantime, ask our team for the file you need.
+              </p>
+              <Button
+                size="sm"
+                variant="outline"
+                className="mt-6 border-rule"
+                asChild
+              >
+                <Link href="/contact">Request a copy</Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {allResources.map((resource: any, index: number) => {
+                const isVideo = resource.type === 'video'
+                const Icon = isVideo ? Play : getDownloadIcon(resource.title ?? '')
+                return (
+                  <a
+                    key={index}
+                    href={resource.href}
+                    target={isVideo ? '_blank' : undefined}
+                    rel={isVideo ? 'noopener noreferrer' : undefined}
+                    download={!isVideo ? '' : undefined}
+                    className="group flex flex-col rounded-2xl border border-rule bg-white p-6 transition-[border-color,box-shadow] hover:border-accent/50 hover:shadow-lg"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="inline-flex rounded-xl bg-secondary p-3">
+                        <Icon className="h-6 w-6 text-accent" />
+                      </div>
                     </div>
-                  </div>
 
-                  <h3 className="mt-4 text-lg font-semibold text-navy">{resource.title ?? ''}</h3>
-                  <p className="mt-2 flex-1 text-sm text-ink-muted">{resource.description ?? ''}</p>
+                    <h3 className="mt-4 text-lg font-semibold text-navy">{resource.title ?? ''}</h3>
+                    <p className="mt-2 flex-1 text-sm text-ink-muted">{resource.description ?? ''}</p>
 
-                  <button className="mt-6 flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent-dark">
-                    {isVideo ? (
-                      <Play className="h-4 w-4" />
-                    ) : (
-                      <Download className="h-4 w-4" />
-                    )}
-                    {isVideo ? 'Watch Video' : 'Download PDF'}
-                  </button>
-                </div>
-              )
-            })}
-          </div>
+                    <span className="mt-6 flex items-center gap-2 text-sm font-medium text-accent transition-colors group-hover:text-accent-dark">
+                      {isVideo ? <Play className="h-4 w-4" /> : <Download className="h-4 w-4" />}
+                      {isVideo ? 'Play video' : 'Open PDF'}
+                    </span>
+                  </a>
+                )
+              })}
+            </div>
+          )}
         </div>
       </section>
 

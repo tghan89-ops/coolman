@@ -7,9 +7,17 @@ import { ChevronRight, ArrowRight, ArrowLeft, Check, Zap, Shield, RotateCcw, Rul
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
-import { formatPrice } from '@/lib/utils/formatting'
+import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
 
-export function ProductDetailClient({ initialData }: { initialData: any }) {
+export function ProductDetailClient({
+  initialData,
+  priceMode = 'public',
+  tierDiscountPct = 0,
+}: {
+  initialData: any
+  priceMode?: PriceDisplayMode
+  tierDiscountPct?: number
+}) {
   const { data } = useLivePreview({
     initialData,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
@@ -117,13 +125,16 @@ export function ProductDetailClient({ initialData }: { initialData: any }) {
                 {data.description}
               </p>
 
-              {/* Price block */}
+              {/* Price block — contractor-aware (server-resolved priceMode) */}
               <div className="mt-8 border border-white/10 bg-white/5 p-6">
-                <div className="flex items-end justify-between">
-                  <div>
-                    <p className="text-sm text-white/40">List price per unit</p>
-                    <p className="font-mono mt-1 font-sans text-4xl font-bold text-white">{formatPrice(data.listPrice)}</p>
-                  </div>
+                <div className="flex items-end justify-between gap-6">
+                  <PriceDisplay
+                    listPrice={data.listPrice}
+                    tierDiscountPct={tierDiscountPct}
+                    mode={priceMode}
+                    size="detail"
+                    tone="dark"
+                  />
                   <div className="text-right">
                     <p className="text-xs text-white/40">Machine power</p>
                     <p className="mt-1 font-sans text-lg font-bold capitalize text-accent">{data.recommendedMachinePower}</p>
@@ -302,9 +313,13 @@ export function ProductDetailClient({ initialData }: { initialData: any }) {
                         {p.diameter} | {p.bondType} Bond
                       </p>
                       <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
-                        <p className="font-mono font-sans text-lg font-bold text-white">
-                          {formatPrice(p.listPrice)}
-                        </p>
+                        <PriceDisplay
+                          listPrice={p.listPrice}
+                          tierDiscountPct={tierDiscountPct}
+                          mode={priceMode}
+                          size="card"
+                          tone="dark"
+                        />
                         <ArrowRight className="h-5 w-5 text-white/40 transition-colors group-hover:text-accent" />
                       </div>
                     </div>
