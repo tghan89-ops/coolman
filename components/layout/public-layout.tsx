@@ -12,7 +12,7 @@ export function PublicLayout({ children, headerVariant = 'default' }: PublicLayo
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1">
+      <main className={`flex-1${headerVariant === 'default' ? ' pt-20' : ''}`}>
         {children}
       </main>
       <Footer />
