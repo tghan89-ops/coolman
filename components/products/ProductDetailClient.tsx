@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ChevronRight, ArrowRight, ArrowLeft, Check, Zap, Shield, RotateCcw, Ruler, Minus, Plus } from 'lucide-react'
-import { useLivePreview } from '@payloadcms/live-preview-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
@@ -20,11 +19,10 @@ export function ProductDetailClient({
   priceMode?: PriceDisplayMode
   tierDiscountPct?: number
 }) {
-  const { data } = useLivePreview({
-    initialData,
-    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
-    depth: 2,
-  })
+  // Use the server-rendered product directly. useLivePreview is a Payload
+  // admin feature — keeping it on the public detail page costs an extra fetch
+  // and postMessage listener for every visitor on every navigation.
+  const data = initialData
 
   const [activeTab, setActiveTab] = useState<'specs' | 'applications' | 'usage'>('specs')
   const [quantity, setQuantity] = useState(1)

@@ -4,7 +4,6 @@ import { useState, useMemo, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Filter, X } from 'lucide-react'
-import { useLivePreview } from '@payloadcms/live-preview-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { formatPrice } from '@/lib/utils/formatting'
@@ -24,11 +23,11 @@ export function ProductsClient({
   tierDiscountPct?: number
 }) {
   const { t } = useLanguage()
-  const { data: products } = useLivePreview({
-    initialData: initialProducts,
-    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
-    depth: 1,
-  })
+  // Public catalogue uses the server-rendered product list directly. Live
+  // preview is a Payload admin feature — running it here adds a duplicate
+  // fetch + postMessage listener on every page load for ordinary visitors,
+  // which made navigating the catalogue feel sluggish.
+  const products = initialProducts
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([])
   const [selectedApplications, setSelectedApplications] = useState<string[]>([])
