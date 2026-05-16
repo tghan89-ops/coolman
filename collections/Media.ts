@@ -47,8 +47,9 @@ export const Media: CollectionConfig = {
       ({ req }) => {
         const file = (req as any).file
         if (file && typeof file.size === 'number' && file.size > MAX_UPLOAD_BYTES) {
+          const sizeMb = (file.size / 1024 / 1024).toFixed(1)
           throw new Error(
-            `Image is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum allowed is 5 MB.`,
+            `Picture is too large — maximum is 5 MB, this one is ${sizeMb} MB. Please resize and try again.`,
           )
         }
       },

@@ -76,7 +76,11 @@ export default buildConfig({
   }),
   upload: {
     limits: {
-      fileSize: 5 * 1024 * 1024, // 5 MB hard cap on any uploaded file
+      // Generous outer cap so the friendly 5 MB rule in collections/Media.ts
+      // gets to throw a readable error ("Image is too large (X.X MB)…") instead
+      // of busboy aborting the stream with a generic failure. Anything beyond
+      // this is exceedingly rare and still gets refused, just less prettily.
+      fileSize: 25 * 1024 * 1024,
     },
   },
   editor: lexicalEditor({}),
