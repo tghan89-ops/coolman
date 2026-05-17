@@ -5,17 +5,18 @@ import { useLanguage } from '@/lib/i18n/context'
 import { DropCap } from '@/components/editorial/DropCap'
 import { ChinesePullquote } from '@/components/editorial/Pullquote'
 import { HeritageTimelineEntry } from '@/components/industrial/HeritageTimelineEntry'
+import { cn } from '@/lib/utils'
+
+// The 2007 founding event is the central year on the timeline; everything
+// before it is the run-up, everything after is the build-out. Highlight by
+// stable year string rather than array index so reorders are safe.
+const HIGHLIGHT_YEAR = '2007'
 
 // Heritage is a story-driven page powered entirely by copy.ts — no server data
 // fetching. A single client component is the cleanest expression of that.
 export default function HeritagePage() {
   const { t } = useLanguage()
   const h = t.heritage
-
-  // The 2007 founding event is the central year on the timeline; everything
-  // before it is the run-up, everything after is the build-out. Highlight by
-  // stable year string rather than array index so reorders are safe.
-  const HIGHLIGHT_YEAR = '2007'
 
   return (
     <PublicLayout headerVariant="transparent">
@@ -45,6 +46,7 @@ export default function HeritagePage() {
             {h.pj2007.headline}
           </h2>
           <div className="mt-10 max-w-[680px]">
+            {/* Drop cap appears only on the first narrative section — one per page is the editorial norm. */}
             {h.pj2007.body.map((para, i) =>
               i === 0 ? (
                 <DropCap key={i} className="text-[16px] leading-[1.75] text-navy">
@@ -76,7 +78,7 @@ export default function HeritagePage() {
             {h.founding.body.map((para, i) => (
               <p
                 key={i}
-                className={`text-[16px] leading-[1.75] text-navy${i === 0 ? '' : ' mt-6'}`}
+                className={cn('text-[16px] leading-[1.75] text-navy', i !== 0 && 'mt-6')}
               >
                 {para}
               </p>
@@ -103,7 +105,7 @@ export default function HeritagePage() {
             {h.workshopDay.body.map((para, i) => (
               <p
                 key={i}
-                className={`text-[16px] leading-[1.75] text-navy${i === 0 ? '' : ' mt-6'}`}
+                className={cn('text-[16px] leading-[1.75] text-navy', i !== 0 && 'mt-6')}
               >
                 {para}
               </p>
@@ -125,7 +127,7 @@ export default function HeritagePage() {
             {h.shibuyaYears.body.map((para, i) => (
               <p
                 key={i}
-                className={`text-[16px] leading-[1.75] text-navy${i === 0 ? '' : ' mt-6'}`}
+                className={cn('text-[16px] leading-[1.75] text-navy', i !== 0 && 'mt-6')}
               >
                 {para}
               </p>
@@ -154,7 +156,7 @@ export default function HeritagePage() {
             {h.hardestYear.body.map((para, i) => (
               <p
                 key={i}
-                className={`text-[16px] leading-[1.75] text-navy${i === 0 ? '' : ' mt-6'}`}
+                className={cn('text-[16px] leading-[1.75] text-navy', i !== 0 && 'mt-6')}
               >
                 {para}
               </p>
@@ -176,7 +178,7 @@ export default function HeritagePage() {
             {h.twentyYears.body.map((para, i) => (
               <p
                 key={i}
-                className={`text-[16px] leading-[1.75] text-navy${i === 0 ? '' : ' mt-6'}`}
+                className={cn('text-[16px] leading-[1.75] text-navy', i !== 0 && 'mt-6')}
               >
                 {para}
               </p>

@@ -5,9 +5,6 @@ export interface HeritageTimelineEntryProps {
   year: string
   /** Title of the event (was the only line in the legacy single-string layout). */
   event: string
-  /** Optional Bahasa Malaysia mirror of `event`. Kept for backward compatibility;
-   * new pages should drive language via the i18n context instead of passing this. */
-  eventBM?: string
   /** Optional narrative body shown below the title. */
   body?: string
   /** Optional italic helper text (e.g. "Alan to supply year"). */
@@ -19,7 +16,6 @@ export interface HeritageTimelineEntryProps {
 export function HeritageTimelineEntry({
   year,
   event,
-  eventBM,
   body,
   note,
   isHighlight = false,
@@ -51,14 +47,11 @@ export function HeritageTimelineEntry({
         >
           {event}
         </p>
-        {eventBM ? (
-          <p className="text-sm text-ink-faint leading-relaxed">{eventBM}</p>
-        ) : null}
         {body ? (
-          <p className="text-[15px] leading-[1.65] text-ink-muted">{body}</p>
+          <p className="text-[0.9375rem] leading-[1.65] text-ink-muted">{body}</p>
         ) : null}
         {note ? (
-          <p className="font-fraunces italic text-[13px] leading-snug text-ink-faint">
+          <p className="font-fraunces italic text-[0.8125rem] leading-snug text-ink-faint">
             {note}
           </p>
         ) : null}
