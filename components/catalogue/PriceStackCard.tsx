@@ -6,9 +6,11 @@
 import Link from 'next/link'
 import { calculateEffectivePrice } from '@/lib/pricing/calculate'
 import { formatPrice } from '@/lib/utils/formatting'
+import { COPY, type Language } from '@/lib/i18n/copy'
 import { cn } from '@/lib/utils'
 
 export type PriceStackBranch = 'logged-out' | 'unverified' | 'list-only' | 'stack-up'
+export type PriceStackTone = 'light' | 'dark'
 
 export interface PriceStackCardProps {
   listPrice: number
@@ -20,10 +22,16 @@ export interface PriceStackCardProps {
   showStackUp?: boolean
   signInHref?: string
   verifyEmailHref?: string
+  language?: Language
+  tone?: PriceStackTone
   className?: string
 }
 
-function resolveBranch(props: {
+// Exported for unit testing. Pure logic, no React. Mirrors the four-branch
+// access matrix specified in CLAUDE.md: logged-out shows no price, unverified
+// shows a verification banner, list-only shows the raw list price, stack-up
+// renders the full list → tier → promo → effective breakdown.
+export function resolveBranch(props: {
   isLoggedIn: boolean
   emailVerified: boolean
   tierDiscountPct: number
@@ -56,9 +64,13 @@ export function PriceStackCard({
   showStackUp = true,
   signInHref = '/auth/login',
   verifyEmailHref = '/auth/verify-email',
+  language = 'EN',
+  tone = 'light',
   className,
 }: PriceStackCardProps) {
   const branch = resolveBranch({ isLoggedIn, emailVerified, tierDiscountPct })
+  const t = COPY[language].priceGate
+  const isDark = tone === 'dark'
 
   if (branch === 'logged-out') {
     // No price visible anywhere in this branch. Sign-in CTA replaces the number.
@@ -68,13 +80,15 @@ export function PriceStackCard({
           href={signInHref}
           className={cn(
             'inline-flex items-center justify-center min-h-11 px-4 rounded-md',
-            'border border-rule bg-white text-sm font-semibold',
-            'text-accent-dark hover:text-accent hover:border-accent',
+            'border text-sm font-semibold',
             'transition-colors duration-150 ease-out',
+            isDark
+              ? 'border-white/20 bg-white/5 text-accent hover:text-white hover:border-white/40'
+              : 'border-rule bg-white text-accent-dark hover:text-accent hover:border-accent',
           )}
           style={{ transitionProperty: 'color, border-color, box-shadow' }}
         >
-          Sign in to see pricing
+          {t.signInToSeePricing}
         </Link>
       </div>
     )
@@ -86,19 +100,24 @@ export function PriceStackCard({
       <div
         role="status"
         className={cn(
-          'flex flex-col gap-1 rounded-md border px-4 py-3',
-          'border-warn/30 bg-warn/5 text-sm text-ink',
+          'flex flex-col gap-1 rounded-md border px-4 py-3 text-sm',
+          isDark
+            ? 'border-warn/40 bg-warn/10 text-white'
+            : 'border-warn/30 bg-warn/5 text-ink',
           className,
         )}
       >
-        <span className="font-semibold text-warn">Verification pending</span>
-        <span className="text-ink-muted">
-          Contract pricing will appear once your email is verified.{' '}
+        <span className="font-semibold text-warn">{t.verificationPending}</span>
+        <span className={isDark ? 'text-white/70' : 'text-ink-muted'}>
+          {t.contractPricingHint}{' '}
           <Link
             href={verifyEmailHref}
-            className="text-accent-dark hover:text-accent underline underline-offset-2"
+            className={cn(
+              'underline underline-offset-2',
+              isDark ? 'text-accent hover:text-white' : 'text-accent-dark hover:text-accent',
+            )}
           >
-            Resend verification email
+            {t.resendVerification}
           </Link>
         </span>
       </div>
@@ -111,8 +130,9 @@ export function PriceStackCard({
       <div className={cn('flex flex-col', className)}>
         <span
           className={cn(
-            'font-mono font-semibold text-ink leading-none',
+            'font-mono font-semibold leading-none',
             LIST_ONLY_SIZE[size],
+            isDark ? 'text-white' : 'text-ink',
           )}
         >
           {formatPrice(listPrice)}
@@ -131,43 +151,56 @@ export function PriceStackCard({
   if (!showStackUp) {
     return (
       <div className={cn('flex flex-col', className)}>
-        <span className={cn('font-mono font-bold text-navy leading-none', EFFECTIVE_SIZE[size])}>
+        <span
+          className={cn(
+            'font-mono font-bold leading-none',
+            EFFECTIVE_SIZE[size],
+            isDark ? 'text-accent' : 'text-navy',
+          )}
+        >
           {formatPrice(breakdown.effectivePrice)}
         </span>
       </div>
     )
   }
 
+  const labelClass = isDark ? 'text-white/60' : 'text-ink-muted'
+  const headingClass = isDark ? 'text-white' : 'text-navy'
+  const effectiveClass = isDark ? 'text-accent' : 'text-navy'
+  const ruleClass = isDark ? 'border-white/20' : 'border-rule'
+
   return (
     <div
       className={cn(
         'flex flex-col gap-1.5 rounded-md',
-        size === 'lg' && 'p-4 bg-[rgba(10,22,40,0.04)]',
+        size === 'lg' && !isDark && 'p-4 bg-[rgba(10,22,40,0.04)]',
+        size === 'lg' && isDark && 'p-4 bg-white/5',
         className,
       )}
     >
-      <div className="flex items-baseline justify-between gap-3 text-sm text-ink-muted">
-        <span>List price</span>
+      <div className={cn('flex items-baseline justify-between gap-3 text-sm', labelClass)}>
+        <span>{t.listPrice}</span>
         <span className="font-mono line-through">{formatPrice(listPrice)}</span>
       </div>
-      <div className="flex items-baseline justify-between gap-3 text-sm text-ink-muted">
-        <span>Your tier discount</span>
-        <span className="font-mono">−{tierPct}%</span>
+      <div className={cn('flex items-baseline justify-between gap-3 text-sm', labelClass)}>
+        <span>{t.yourTierDiscount}</span>
+        <span className="font-mono">{`−${tierPct}%`}</span>
       </div>
       {hasPromo && (
-        <div className="flex items-baseline justify-between gap-3 text-sm text-ink-muted">
-          <span>Promo</span>
-          <span className="font-mono">−{promoPct}%</span>
+        <div className={cn('flex items-baseline justify-between gap-3 text-sm', labelClass)}>
+          <span>{t.promo}</span>
+          <span className="font-mono">{`−${promoPct}%`}</span>
         </div>
       )}
       <div
         className={cn(
           'mt-1 flex items-baseline justify-between gap-3 pt-2',
-          'border-t border-dashed border-rule',
+          'border-t border-dashed',
+          ruleClass,
         )}
       >
-        <span className="text-sm font-semibold text-navy">Your price</span>
-        <span className={cn('font-mono font-bold text-navy leading-none', EFFECTIVE_SIZE[size])}>
+        <span className={cn('text-sm font-semibold', headingClass)}>{t.yourPrice}</span>
+        <span className={cn('font-mono font-bold leading-none', EFFECTIVE_SIZE[size], effectiveClass)}>
           {formatPrice(breakdown.effectivePrice)}
         </span>
       </div>

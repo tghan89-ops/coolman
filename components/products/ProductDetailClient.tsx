@@ -6,20 +6,24 @@ import Image from 'next/image'
 import { ChevronRight, ArrowRight, ArrowLeft, Check, Zap, Shield, RotateCcw, Ruler, Minus, Plus, Play } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
-import { PriceDisplay, type PriceDisplayMode } from '@/components/products/PriceDisplay'
+import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
 import { bondLabel } from '@/lib/products/bond-label'
 import { extractYouTubeId, youTubeEmbedUrl } from '@/lib/products/youtube'
+import { useLanguage } from '@/lib/i18n/context'
 
 export function ProductDetailClient({
   initialData,
-  priceMode = 'public',
+  isLoggedIn = false,
+  emailVerified = false,
   tierDiscountPct = 0,
 }: {
   initialData: any
-  priceMode?: PriceDisplayMode
+  isLoggedIn?: boolean
+  emailVerified?: boolean
   tierDiscountPct?: number
 }) {
+  const { language } = useLanguage()
   // Use the server-rendered product directly. useLivePreview is a Payload
   // admin feature — keeping it on the public detail page costs an extra fetch
   // and postMessage listener for every visitor on every navigation.
@@ -245,15 +249,18 @@ export function ProductDetailClient({
                 {data.description}
               </p>
 
-              {/* Price block — contractor-aware (server-resolved priceMode) */}
+              {/* Price block — PriceStackCard reads the contractor session flags
+                  (isLoggedIn, emailVerified, tierDiscountPct) resolved server-side. */}
               <div className="mt-8 border border-white/10 bg-white/5 p-6">
                 <div className="flex items-end justify-between gap-6">
-                  <PriceDisplay
+                  <PriceStackCard
                     listPrice={data.listPrice}
+                    isLoggedIn={isLoggedIn}
+                    emailVerified={emailVerified}
                     tierDiscountPct={tierDiscountPct}
-                    mode={priceMode}
-                    size="detail"
+                    size="lg"
                     tone="dark"
+                    language={language}
                   />
                   <div className="text-right">
                     <p className="text-xs text-white/40">Machine power</p>
@@ -462,12 +469,15 @@ export function ProductDetailClient({
                         {p.diameter} | {bondLabel(p.bondType)} Bond
                       </p>
                       <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
-                        <PriceDisplay
+                        <PriceStackCard
                           listPrice={p.listPrice}
+                          isLoggedIn={isLoggedIn}
+                          emailVerified={emailVerified}
                           tierDiscountPct={tierDiscountPct}
-                          mode={priceMode}
-                          size="card"
+                          size="sm"
+                          showStackUp={false}
                           tone="dark"
+                          language={language}
                         />
                         <ArrowRight className="h-5 w-5 text-white/40 transition-colors group-hover:text-accent" />
                       </div>

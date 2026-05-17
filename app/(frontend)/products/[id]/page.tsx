@@ -3,7 +3,6 @@ import { headers } from 'next/headers'
 import { getProductById } from '@/lib/payload'
 import { ProductDetailClient } from '@/components/products/ProductDetailClient'
 import { getContractorSession } from '@/lib/auth/contractor-session'
-import { resolvePriceDisplayMode } from '@/lib/pricing/display-mode'
 
 // Per-request render so we can show each contractor their own contract price.
 export const dynamic = 'force-dynamic'
@@ -21,18 +20,17 @@ export default async function ProductDetailPage({
   ])
   if (!product) notFound()
 
-  const priceMode = resolvePriceDisplayMode({
-    isAuthenticated: contractor !== null,
-    isContractor: contractor !== null,
-    isVerified: contractor !== null && contractor.status === 'Active' && !!contractor.email_verified_at,
-    tierDiscountPct: contractor?.tier_discount_pct ?? 0,
-  })
+  const isLoggedIn = contractor !== null
+  const emailVerified =
+    contractor !== null && contractor.status === 'Active' && !!contractor.email_verified_at
+  const tierDiscountPct = contractor?.tier_discount_pct ?? 0
 
   return (
     <ProductDetailClient
       initialData={product}
-      priceMode={priceMode}
-      tierDiscountPct={contractor?.tier_discount_pct ?? 0}
+      isLoggedIn={isLoggedIn}
+      emailVerified={emailVerified}
+      tierDiscountPct={tierDiscountPct}
     />
   )
 }

@@ -1,8 +1,11 @@
 // lib/pricing/display-mode.ts
 //
-// Server-safe pricing-mode helper. Lives outside the 'use client' PriceDisplay
-// component so server components (product list, product detail) can compute
-// the mode from the session and pass it down as a prop.
+// Legacy server-safe pricing-mode helper retained for non-catalogue surfaces
+// (e.g. the cart/checkout server flows) that still resolve a coarse mode from
+// the session. The catalogue and product detail pages now read raw flags
+// (`isLoggedIn`, `emailVerified`, `tierDiscountPct`) and pass them straight to
+// `PriceStackCard`, which is the only component allowed to render product
+// price text. Do not introduce new callers — prefer `PriceStackCard` directly.
 
 export type PriceDisplayMode = 'public' | 'unverified' | 'verifiedNoTier' | 'verifiedWithTier'
 

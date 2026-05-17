@@ -751,11 +751,23 @@ export interface CopyStructure {
     eyebrow: string
     headline: string
     lede: string
+    tradeNote: string
     filters: {
       materialLabel: string
       applicationLabel: string
       diameterLabel: string
+      diameterUnit: string
     }
+  }
+  priceGate: {
+    signInToSeePricing: string
+    verificationPending: string
+    contractPricingHint: string
+    resendVerification: string
+    listPrice: string
+    yourTierDiscount: string
+    promo: string
+    yourPrice: string
   }
   productPageTemplate: {
     categoryEyebrow: string
@@ -1800,12 +1812,24 @@ export const COPY: Record<Language, CopyStructure> = {
     catalogueIntro: {
       eyebrow: 'Catalogue',
       headline: 'The full range, in stock and ready to ship from Petaling Jaya.',
-      lede: 'Two hundred and forty-seven SKUs across diamond blades, core drills, and segment systems. Filter by material, application, or diameter. If the blade you need is not listed, call engineering.',
+      lede: "Two hundred and forty-seven SKUs across diamond blades, core drills, and segment systems. Use the filters to narrow by material, application, or diameter. If the cut you're planning isn't obvious from the range, the engineering desk is faster than the form.",
+      tradeNote: 'Trade accounts get tier pricing and reorder history. Apply through the Trade page.',
       filters: {
         materialLabel: 'Material',
         applicationLabel: 'Application',
         diameterLabel: 'Diameter',
+        diameterUnit: ' mm',
       },
+    },
+    priceGate: {
+      signInToSeePricing: 'Sign in to see pricing',
+      verificationPending: 'Verification pending',
+      contractPricingHint: 'Contract pricing will appear once your email is verified.',
+      resendVerification: 'Resend verification email',
+      listPrice: 'List price',
+      yourTierDiscount: 'Your tier discount',
+      promo: 'Promo',
+      yourPrice: 'Your price',
     },
     productPageTemplate: {
       categoryEyebrow: 'Diamond blade',
@@ -1989,8 +2013,8 @@ export const COPY: Record<Language, CopyStructure> = {
         precisionBalanced: 'Diseimbangkan dengan tepat untuk potongan licin',
         extendedLife: 'Jangka hayat operasi 3× lebih panjang',
       },
-      viewBladesPrefix: 'Lihat Bilah',
-      viewBladesSuffix: '',
+      viewBladesPrefix: 'Lihat',
+      viewBladesSuffix: 'Bilah',
       whyEyebrow: 'Kenapa Coolman',
       whyTitle: 'Kelebihan Coolman',
       productsEyebrow: 'Produk Kami',
@@ -2057,8 +2081,8 @@ export const COPY: Record<Language, CopyStructure> = {
         heroEyebrow: 'Aplikasi',
         fallbackHeroTitle: 'Penyelesaian untuk Setiap Bahan',
         fallbackHeroSubtitle: 'Rangkaian alat pemotong berlian kami direka untuk memberikan prestasi optimum merentas semua bahan binaan biasa.',
-        viewBladesPrefix: 'Lihat Bilah',
-        viewBladesSuffix: '',
+        viewBladesPrefix: 'Lihat',
+        viewBladesSuffix: 'Bilah',
         ctaTitle: 'Perlukan Bantuan Memilih Bilah Yang Tepat?',
         ctaMessage: 'Pasukan teknikal kami boleh membantu anda memilih bilah optimum untuk aplikasi dan keadaan pemotongan anda.',
         contactSupport: 'Hubungi Sokongan Teknikal',
@@ -2872,12 +2896,24 @@ export const COPY: Record<Language, CopyStructure> = {
     catalogueIntro: {
       eyebrow: 'Katalog',
       headline: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',
-      lede: 'Dua ratus empat puluh tujuh SKU di seluruh bilah berlian, penggerudi teras, dan sistem segmen. Tapis mengikut bahan, aplikasi, atau diameter. Jika bilah yang anda perlukan tidak disenaraikan, hubungi kejuruteraan.',
+      lede: 'Dua ratus empat puluh tujuh SKU merangkumi bilah berlian, penggerudi teras, dan sistem segmen. Guna penapis untuk tapis mengikut bahan, aplikasi, atau diameter. Jika pemotongan yang anda rancang tidak jelas dari rangkaian ini, meja kejuruteraan lebih pantas daripada borang.',
+      tradeNote: 'Akaun perdagangan mendapat harga peringkat dan sejarah pesanan semula. Mohon melalui halaman Perdagangan.',
       filters: {
         materialLabel: 'Bahan',
         applicationLabel: 'Aplikasi',
         diameterLabel: 'Diameter',
+        diameterUnit: ' mm',
       },
+    },
+    priceGate: {
+      signInToSeePricing: 'Log masuk untuk lihat harga',
+      verificationPending: 'Pengesahan tertangguh',
+      contractPricingHint: 'Harga kontrak akan dipaparkan apabila e-mel anda disahkan.',
+      resendVerification: 'Hantar semula e-mel pengesahan',
+      listPrice: 'Harga senarai',
+      yourTierDiscount: 'Diskaun peringkat anda',
+      promo: 'Promosi',
+      yourPrice: 'Harga anda',
     },
     productPageTemplate: {
       categoryEyebrow: 'Bilah berlian',
