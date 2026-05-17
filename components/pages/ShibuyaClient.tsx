@@ -1,18 +1,50 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ArrowDown, Play, Check } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { useLanguage } from '@/lib/i18n/context'
+import { cn } from '@/lib/utils'
+
+// Machine roster row shape exposed to this client. Snake_case from the
+// `shibuya-machines` collection is mapped to camelCase at the server
+// boundary in `app/(frontend)/shibuya/page.tsx`.
+export interface ShibuyaMachineFeature {
+  feature: string
+  featureBM: string | null
+}
+
+export interface ShibuyaMachine {
+  id: string | number
+  modelId: string
+  modelName: string
+  tagline: string | null
+  taglineBM: string | null
+  bondMatch: string | null
+  bondMatchBM: string | null
+  description: string | null
+  descriptionBM: string | null
+  motorPower: string | null
+  maxDiameter: string | null
+  weight: string | null
+  anchor: string | null
+  anchorBM: string | null
+  rpmRange: string | null
+  price: string | null
+  heroImageUrl: string | null
+  heroImageAlt: string | null
+  features: ShibuyaMachineFeature[]
+}
 
 interface ShibuyaClientProps {
   initialData: any
+  machines: ShibuyaMachine[]
 }
 
-export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
+export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
   const { language, t } = useLanguage()
   const pick = (en?: string | null, bm?: string | null): string => {
     if (language === 'BM' && bm && bm.trim()) return bm
@@ -28,12 +60,29 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
   // default already, but only if `data` itself is an object.
   const data: any = liveData ?? initialData ?? {}
 
-  const [selectedMachine, setSelectedMachine] = useState<any>(null)
+  // Default-selected machine = the middle of the roster (mirrors the legacy
+  // index-2 default), falling back to the first if there are fewer than three.
+  const defaultMachineId = useMemo(() => {
+    if (machines.length === 0) return null
+    const middleIdx = Math.min(2, machines.length - 1)
+    return machines[middleIdx].modelId
+  }, [machines])
 
+  const [selectedModelId, setSelectedModelId] = useState<string | null>(defaultMachineId)
+
+  // Keep selection in sync if the roster reshapes (e.g. live admin publish).
   useEffect(() => {
-    const machines = data.machines ?? []
-    setSelectedMachine(machines[2] ?? machines[0] ?? null)
-  }, [data.machines])
+    if (!selectedModelId && defaultMachineId) {
+      setSelectedModelId(defaultMachineId)
+    } else if (selectedModelId && !machines.some((m) => m.modelId === selectedModelId)) {
+      setSelectedModelId(defaultMachineId)
+    }
+  }, [machines, selectedModelId, defaultMachineId])
+
+  const selectedMachine = useMemo(
+    () => machines.find((m) => m.modelId === selectedModelId) ?? null,
+    [machines, selectedModelId],
+  )
 
   // ── Hero ────────────────────────────────────────────────────────────────────
   const heroBadge = pick(data.hero?.badge, data.hero?.badgeBM) || 'ENGINEERED IN JAPAN'
@@ -59,9 +108,6 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
   const craftPoints = data.craftsmanship?.points ?? []
   const craftImageUrl = data.craftsmanship?.image?.url ?? '/images/shibuya-detail.jpg'
 
-  // ── Machines ────────────────────────────────────────────────────────────────
-  const machines: any[] = data.machines ?? []
-
   // ── InAction ────────────────────────────────────────────────────────────────
   const inActionHeadline = pick(data.inAction?.title, data.inAction?.titleBM) || 'Built for Real Work'
   const inActionBody =
@@ -83,6 +129,50 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
   const ctaPrimaryHref = '/contact'
   const ctaSecondaryLabel = pick(data.cta?.secondaryCtaLabel, data.cta?.secondaryCtaLabelBM) || 'Download Brochure'
   const ctaSecondaryHref = '/contact'
+
+  // ── Machine spec tile data ──────────────────────────────────────────────────
+  // The visible-by-default row is Diameter / Anchor / Weight — that's what
+  // shibuya.html surfaces today. Motor / RPM / Starting From only show when
+  // the row actually has a value (no empty tiles).
+  const visibleSpecs: Array<{ key: string; value: string; label: string }> = []
+  if (selectedMachine) {
+    if (selectedMachine.maxDiameter) {
+      visibleSpecs.push({
+        key: 'diameter',
+        value: selectedMachine.maxDiameter,
+        label: t.pages.shibuya.maxDiameterLabel,
+      })
+    }
+    const anchorValue = pick(selectedMachine.anchor, selectedMachine.anchorBM)
+    if (anchorValue) {
+      visibleSpecs.push({
+        key: 'anchor',
+        value: anchorValue,
+        label: t.pages.shibuya.anchorLabel,
+      })
+    }
+    if (selectedMachine.weight) {
+      visibleSpecs.push({
+        key: 'weight',
+        value: selectedMachine.weight,
+        label: t.pages.shibuya.weightLabel,
+      })
+    }
+    if (selectedMachine.motorPower) {
+      visibleSpecs.push({
+        key: 'motor',
+        value: selectedMachine.motorPower,
+        label: t.pages.shibuya.motorPowerLabel,
+      })
+    }
+    if (selectedMachine.rpmRange) {
+      visibleSpecs.push({
+        key: 'rpm',
+        value: selectedMachine.rpmRange,
+        label: t.pages.shibuya.rpmRangeLabel,
+      })
+    }
+  }
 
   return (
     <PublicLayout>
@@ -127,12 +217,21 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
             <div className="mt-12 flex flex-wrap gap-6">
               <Link
                 href="#models"
-                className="inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink transition-colors hover:bg-white/90"
+                className={cn(
+                  'inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink',
+                  'min-h-[48px] transition-colors hover:bg-white/90',
+                )}
               >
                 {t.pages.shibuya.heroPrimaryLabel}
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <button className="inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-semibold text-white transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5">
+              <button
+                type="button"
+                className={cn(
+                  'inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-semibold text-white',
+                  'min-h-[48px] transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5',
+                )}
+              >
                 <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30">
                   <Play className="h-3 w-3 fill-white" />
                 </div>
@@ -212,95 +311,150 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
             </h2>
           </div>
 
-          {machines.length > 0 && (
+          {machines.length === 0 ? (
+            // Empty state — admins haven't seeded the collection yet, or every
+            // row is inactive. Keep the section visible (the eyebrow above
+            // already framed it) and offer the CTA out to /contact.
+            <div className="mx-auto flex max-w-[60ch] flex-col items-center text-center">
+              <h3 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+                {t.pages.shibuya.emptyStateHeadline}
+              </h3>
+              <p className="mt-6 text-lg leading-relaxed text-white/50">
+                {t.pages.shibuya.emptyStateBody}
+              </p>
+              <Link
+                href="/contact"
+                className={cn(
+                  'mt-10 inline-flex items-center gap-2 bg-accent-dark px-8 py-4 text-sm font-semibold text-white',
+                  'min-h-[48px] transition-colors hover:bg-accent',
+                )}
+              >
+                {t.pages.shibuya.requestQuote}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          ) : (
             <>
               {/* Model tabs */}
-              <div className="mb-16 flex flex-wrap justify-center gap-2 border-b border-white/10 pb-8">
-                {machines.map((machine: any, idx: number) => (
-                  <button
-                    key={machine.modelId ?? idx}
-                    onClick={() => setSelectedMachine(machine)}
-                    className={`px-6 py-3 text-sm font-medium transition-colors ${
-                      selectedMachine?.modelId === machine.modelId
-                        ? 'bg-white text-shibuya-ink'
-                        : 'text-white/50 hover:text-white'
-                    }`}
-                  >
-                    {machine.name}
-                  </button>
-                ))}
+              <div
+                className="mb-16 flex flex-wrap justify-center gap-2 border-b border-white/10 pb-8"
+                role="tablist"
+                aria-label={t.pages.shibuya.modelsHeadline}
+              >
+                {machines.map((machine) => {
+                  const isActive = selectedModelId === machine.modelId
+                  return (
+                    <button
+                      key={machine.modelId}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      onClick={() => setSelectedModelId(machine.modelId)}
+                      className={cn(
+                        'px-6 py-3 text-sm font-medium min-h-[44px] transition-colors',
+                        isActive ? 'bg-white text-shibuya-ink' : 'text-white/50 hover:text-white',
+                      )}
+                    >
+                      {machine.modelName}
+                    </button>
+                  )
+                })}
               </div>
 
               {/* Selected model */}
               {selectedMachine && (
-                <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-                  {/* Image */}
+                <div key={selectedMachine.modelId} className="grid gap-16 lg:grid-cols-2 lg:gap-24">
+                  {/* Image — render only when admin has uploaded one. Placeholder
+                      block keeps the column layout stable when there's no image. */}
                   <div className="relative aspect-square overflow-hidden bg-white/5">
-                    <Image
-                      src={selectedMachine.image?.url ?? '/images/shibuya-hero.jpg'}
-                      alt={selectedMachine.name ?? ''}
-                      fill
-                      className="object-contain p-8"
-                    />
+                    {selectedMachine.heroImageUrl ? (
+                      <Image
+                        src={selectedMachine.heroImageUrl}
+                        alt={selectedMachine.heroImageAlt ?? selectedMachine.modelName}
+                        fill
+                        className="object-contain p-8"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <span className="font-mono text-sm tracking-[0.2em] text-white/20">
+                          {selectedMachine.modelName}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Details */}
                   <div className="flex flex-col justify-center">
-                    <p className="text-sm font-medium tracking-[0.2em] text-accent">{pick(selectedMachine.tagline, selectedMachine.taglineBM)}</p>
+                    {pick(selectedMachine.tagline, selectedMachine.taglineBM) && (
+                      <p className="text-sm font-medium tracking-[0.2em] text-accent">
+                        {pick(selectedMachine.tagline, selectedMachine.taglineBM)}
+                      </p>
+                    )}
                     <h3 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
-                      {t.pages.shibuya.modelNamePrefix} {selectedMachine.name}
+                      {t.pages.shibuya.modelNamePrefix} {selectedMachine.modelName}
                     </h3>
-                    <p className="mt-6 text-lg leading-relaxed text-white/50">
-                      {pick(selectedMachine.description, selectedMachine.descriptionBM)}
-                    </p>
+                    {pick(selectedMachine.description, selectedMachine.descriptionBM) && (
+                      <p className="mt-6 text-lg leading-relaxed text-white/50">
+                        {pick(selectedMachine.description, selectedMachine.descriptionBM)}
+                      </p>
+                    )}
 
-                    {/* Specs grid */}
-                    <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
-                      <div>
-                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.motorPower}</p>
-                        <p className="mt-1 text-sm text-white/40">{t.pages.shibuya.motorPowerLabel}</p>
+                    {/* Specs grid — visible tiles only. Two-column on the
+                        inner grid keeps the JetBrains Mono numbers anchored. */}
+                    {visibleSpecs.length > 0 && (
+                      <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
+                        {visibleSpecs.map((spec) => (
+                          <div key={spec.key}>
+                            <p className="font-mono text-3xl font-bold text-white">{spec.value}</p>
+                            <p className="mt-1 text-sm text-white/40">{spec.label}</p>
+                          </div>
+                        ))}
                       </div>
-                      <div>
-                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.maxDiameter}</p>
-                        <p className="mt-1 text-sm text-white/40">{t.pages.shibuya.maxDiameterLabel}</p>
-                      </div>
-                      <div>
-                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.weight}</p>
-                        <p className="mt-1 text-sm text-white/40">{t.pages.shibuya.weightLabel}</p>
-                      </div>
-                      <div>
-                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.rpmRange}</p>
-                        <p className="mt-1 text-sm text-white/40">{t.pages.shibuya.rpmRangeLabel}</p>
-                      </div>
-                    </div>
+                    )}
 
                     {/* Features */}
-                    <div className="mt-12">
-                      <p className="mb-4 text-sm font-medium text-white/40">{t.pages.shibuya.keyFeaturesLabel}</p>
-                      <ul className="grid gap-3 sm:grid-cols-2">
-                        {(selectedMachine.features ?? []).map((featureObj: any, idx: number) => (
-                          <li key={idx} className="flex items-center gap-3 text-sm text-white/70">
-                            <Check className="h-4 w-4 flex-shrink-0 text-accent" />
-                            {pick(featureObj.feature, featureObj.featureBM)}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Price and CTA */}
-                    <div className="mt-12 flex flex-wrap items-center gap-8">
-                      <div>
-                        <p className="text-sm text-white/40">{t.pages.shibuya.startingFromLabel}</p>
-                        <p className="font-mono text-3xl font-bold text-white">{selectedMachine.price}</p>
+                    {selectedMachine.features.length > 0 && (
+                      <div className="mt-12">
+                        <p className="mb-4 text-sm font-medium text-white/40">{t.pages.shibuya.keyFeaturesLabel}</p>
+                        <ul className="grid gap-3 sm:grid-cols-2">
+                          {selectedMachine.features.map((featureObj) => (
+                            <li
+                              key={featureObj.feature}
+                              className="flex items-center gap-3 text-sm text-white/70"
+                            >
+                              <Check className="h-4 w-4 flex-shrink-0 text-accent" />
+                              {pick(featureObj.feature, featureObj.featureBM)}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
+                    )}
+
+                    {/* Price (conditional) and CTA. Bond-match note surfaces
+                        below the price when the admin filled it in. */}
+                    <div className="mt-12 flex flex-wrap items-center gap-8">
+                      {selectedMachine.price && (
+                        <div>
+                          <p className="text-sm text-white/40">{t.pages.shibuya.startingFromLabel}</p>
+                          <p className="font-mono text-3xl font-bold text-white">{selectedMachine.price}</p>
+                        </div>
+                      )}
                       <Link
                         href="/contact"
-                        className="inline-flex items-center gap-2 bg-accent-dark px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-accent"
+                        className={cn(
+                          'inline-flex items-center gap-2 bg-accent-dark px-8 py-4 text-sm font-semibold text-white',
+                          'min-h-[48px] transition-colors hover:bg-accent',
+                        )}
                       >
                         {t.pages.shibuya.requestQuote}
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     </div>
+                    {pick(selectedMachine.bondMatch, selectedMachine.bondMatchBM) && (
+                      <p className="mt-6 text-sm leading-relaxed text-white/40">
+                        {pick(selectedMachine.bondMatch, selectedMachine.bondMatchBM)}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
@@ -376,14 +530,20 @@ export function ShibuyaClient({ initialData }: ShibuyaClientProps) {
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Link
               href={ctaPrimaryHref}
-              className="inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink transition-colors hover:bg-white/90"
+              className={cn(
+                'inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink',
+                'min-h-[48px] transition-colors hover:bg-white/90',
+              )}
             >
               {ctaPrimaryLabel}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href={ctaSecondaryHref}
-              className="inline-flex items-center gap-2 border border-white/20 px-8 py-4 text-sm font-semibold text-white transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5"
+              className={cn(
+                'inline-flex items-center gap-2 border border-white/20 px-8 py-4 text-sm font-semibold text-white',
+                'min-h-[48px] transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5',
+              )}
             >
               {ctaSecondaryLabel}
             </Link>

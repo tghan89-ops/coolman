@@ -67,39 +67,6 @@ export const ShibuyaPage: GlobalConfig = {
       ],
     },
     {
-      name: 'machines',
-      type: 'array',
-      admin: { description: 'Machine models shown in the product range section. Order determines tab order on page.' },
-      defaultValue: [
-        { modelId: 'ts-132', name: 'TS-132', tagline: 'Precision Handheld', taglineBM: 'Pegang Tangan Tepat', description: 'Engineered for precision...', descriptionBM: 'Direka untuk ketepatan...', motorPower: '1,500W', maxDiameter: '132mm', weight: '8.5kg', rpmRange: '580-2,100', price: 'RM 4,500', features: [{ feature: 'Ergonomic handheld design', featureBM: 'Reka bentuk ergonomik pegang tangan' }, { feature: 'Wet and dry drilling modes', featureBM: 'Mod gerudi basah dan kering' }, { feature: 'Variable speed control', featureBM: 'Kawalan kelajuan boleh laras' }, { feature: 'Quick-release chuck', featureBM: 'Cuk pelepasan pantas' }] },
-        { modelId: 'ts-162', name: 'TS-162', tagline: 'Professional Standard', taglineBM: 'Standard Profesional', description: 'The benchmark for professional core drilling...', descriptionBM: 'Penanda aras untuk penggerudian teras profesional...', motorPower: '2,200W', maxDiameter: '162mm', weight: '12kg', rpmRange: '480-1,800', price: 'RM 7,800', features: [{ feature: 'Rig-mounted stability', featureBM: 'Kestabilan dipasang rig' }, { feature: 'Auto-feed capability', featureBM: 'Keupayaan suap automatik' }, { feature: 'High-torque brushless motor', featureBM: 'Motor tanpa berus kilas tinggi' }, { feature: 'Integrated water supply', featureBM: 'Bekalan air bersepadu' }] },
-        { modelId: 'ts-252', name: 'TS-252', tagline: 'Industrial Powerhouse', taglineBM: 'Kuasa Industri', description: 'Uncompromising power meets Japanese precision...', descriptionBM: 'Kuasa tanpa kompromi bertemu ketepatan Jepun...', motorPower: '3,200W', maxDiameter: '252mm', weight: '18kg', rpmRange: '320-1,200', price: 'RM 12,500', features: [{ feature: 'Industrial-grade construction', featureBM: 'Pembinaan gred industri' }, { feature: '3-speed gearbox', featureBM: 'Kotak gear 3-kelajuan' }, { feature: 'Intelligent overload protection', featureBM: 'Perlindungan beban pintar' }, { feature: 'Reinforced anchor system', featureBM: 'Sistem sauh diperkukuh' }] },
-        { modelId: 'ts-402', name: 'TS-402', tagline: 'Maximum Performance', taglineBM: 'Prestasi Maksimum', description: 'The pinnacle of core drilling technology...', descriptionBM: 'Puncak teknologi penggerudian teras...', motorPower: '4,800W', maxDiameter: '402mm', weight: '28kg', rpmRange: '180-720', price: 'RM 22,000', features: [{ feature: 'Maximum drilling capacity', featureBM: 'Kapasiti penggerudian maksimum' }, { feature: 'Hydraulic feed system', featureBM: 'Sistem suap hidraulik' }, { feature: 'Remote operation capable', featureBM: 'Berupaya operasi jauh' }, { feature: 'Continuous duty rated', featureBM: 'Dinilai tugas berterusan' }] },
-      ],
-      fields: [
-        { name: 'modelId', type: 'text', required: true, admin: { description: 'Internal ID e.g. ts-132 — not translated.' } },
-        { name: 'name', type: 'text', required: true, admin: { description: 'Model name e.g. TS-132 — not translated.' } },
-        { name: 'tagline', type: 'text', required: true },
-        { name: 'taglineBM', type: 'text', admin: bmDesc },
-        { name: 'description', type: 'textarea', required: true },
-        { name: 'descriptionBM', type: 'textarea', admin: bmDesc },
-        { name: 'motorPower', type: 'text', required: true, admin: { description: 'e.g. 1,500W — not translated.' } },
-        { name: 'maxDiameter', type: 'text', required: true, admin: { description: 'e.g. 132mm — not translated.' } },
-        { name: 'weight', type: 'text', required: true, admin: { description: 'e.g. 8.5kg — not translated.' } },
-        { name: 'rpmRange', type: 'text', required: true, admin: { description: 'e.g. 580-2,100 — not translated.' } },
-        { name: 'price', type: 'text', required: true, admin: { description: 'Display price string e.g. RM 4,500 — not translated.' } },
-        { name: 'image', type: 'upload', relationTo: 'media' },
-        {
-          name: 'features',
-          type: 'array',
-          fields: [
-            { name: 'feature', type: 'text', required: true },
-            { name: 'featureBM', type: 'text', admin: bmDesc },
-          ],
-        },
-      ],
-    },
-    {
       name: 'inAction',
       type: 'group',
       fields: [
