@@ -742,6 +742,23 @@ export interface CopyStructure {
     returns: { title: string; description: string }
     cookies: { title: string; description: string }
     folioThreeMyths: { title: string; description: string }
+    brotherhood: { title: string; description: string }
+  }
+  brotherhoodDirectory: {
+    hero: {
+      eyebrow: string
+      headline: string
+      lede: string
+    }
+    filter: {
+      allLabel: string
+      label: string
+    }
+    emptyState: {
+      headline: string
+      body: string
+      ctaLabel: string
+    }
   }
 }
 
@@ -1699,6 +1716,23 @@ export const COPY: Record<Language, CopyStructure> = {
       returns: { title: 'Returns and warranty · Coolman', description: 'Returning a Coolman blade and the warranty cover.' },
       cookies: { title: 'Cookie notice · Coolman', description: 'The cookies our site uses and how to switch them off.' },
       folioThreeMyths: { title: 'Three things the cutting trade keeps getting wrong', description: 'A Coolman Engineering folio on price, dealers, and the Made in Japan myth.' },
+      brotherhood: { title: 'Brotherhood directory · Coolman authorised dealers in Malaysia', description: 'Find your nearest authorised Coolman dealer. Filter by area, message on WhatsApp, or open the address in Maps.' },
+    },
+    brotherhoodDirectory: {
+      hero: {
+        eyebrow: 'The Brotherhood directory',
+        headline: 'Authorised Coolman dealers across Malaysia.',
+        lede: 'The people who carry our blade to the worksite. Filter by area, message on WhatsApp, or open the address in Maps.',
+      },
+      filter: {
+        allLabel: 'All areas',
+        label: 'Filter by area',
+      },
+      emptyState: {
+        headline: 'Brotherhood directory launching soon.',
+        body: 'Call sales for your nearest authorised dealer while we onboard the first cohort.',
+        ctaLabel: 'Message sales on WhatsApp',
+      },
     },
   },
   BM: {
@@ -2654,6 +2688,23 @@ export const COPY: Record<Language, CopyStructure> = {
       returns: { title: 'Pemulangan dan jaminan · Coolman', description: 'Memulangkan bilah Coolman dan liputan jaminan.' },
       cookies: { title: 'Notis kuki · Coolman', description: 'Kuki yang digunakan tapak kami dan bagaimana untuk mematikannya.' },
       folioThreeMyths: { title: 'Tiga perkara yang industri pemotongan terus salah faham', description: 'Sebuah folio Coolman Engineering tentang harga, pengedar, dan mitos Buatan Jepun.' },
+      brotherhood: { title: 'Direktori Brotherhood · Pengedar sah Coolman di Malaysia', description: 'Cari pengedar Coolman sah yang terdekat. Tapis mengikut kawasan, hubungi melalui WhatsApp, atau buka alamat dalam Maps.' },
+    },
+    brotherhoodDirectory: {
+      hero: {
+        eyebrow: 'Direktori Brotherhood',
+        headline: 'Pengedar Coolman sah di seluruh Malaysia.',
+        lede: 'Mereka yang membawa bilah kami ke tapak kerja. Tapis mengikut kawasan, hubungi melalui WhatsApp, atau buka alamat dalam Maps.',
+      },
+      filter: {
+        allLabel: 'Semua kawasan',
+        label: 'Tapis mengikut kawasan',
+      },
+      emptyState: {
+        headline: 'Direktori Brotherhood akan dilancarkan tidak lama lagi.',
+        body: 'Hubungi jualan untuk pengedar sah yang terdekat sementara kami menerima kohort pertama.',
+        ctaLabel: 'Hubungi jualan melalui WhatsApp',
+      },
     },
   },
 }

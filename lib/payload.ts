@@ -110,6 +110,23 @@ export async function getPostBySlug(slug: string): Promise<any | null> {
   }
 }
 
+// Public-facing dealer directory: only return active rows. Inactive dealers
+// stay in /admin for archival but never render on /brotherhood.
+export async function getActiveDealers(): Promise<any[]> {
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection: 'dealers',
+      where: { is_active: { equals: true } },
+      sort: 'area,display_order,name',
+      limit: 200,
+    })
+    return result.docs
+  } catch {
+    return []
+  }
+}
+
 export async function getAllPublishedPostSlugs(): Promise<string[]> {
   try {
     const payload = await getPayloadClient()
