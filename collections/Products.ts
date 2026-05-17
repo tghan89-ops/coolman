@@ -4,7 +4,8 @@ export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'sku', 'category', 'listPrice'],
+    defaultColumns: ['name', 'sku', 'category', 'machineTier', 'listPrice'],
+    defaultSort: 'name',
     livePreview: {
       url: ({ data }) =>
         `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${data.id}`,
