@@ -4,8 +4,8 @@ export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'sku', 'category', 'machineTier', 'listPrice'],
-    defaultSort: 'name',
+    defaultColumns: ['name', 'sku', 'category', 'diameter', 'machineTier', 'listPrice'],
+    defaultSort: 'category,diameterMm,name',
     livePreview: {
       url: ({ data }) =>
         `${process.env.NEXT_PUBLIC_SERVER_URL}/products/${data.id}`,
@@ -85,6 +85,15 @@ export const Products: CollectionConfig = {
       name: 'diameter',
       type: 'text',
       admin: { description: 'e.g. 230mm' },
+    },
+    {
+      name: 'diameterMm',
+      type: 'number',
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Diameter in millimetres — used only for sorting the catalogue from small to large. Auto-filled from the diameter field; leave blank if not a sized tool.',
+      },
     },
     {
       name: 'arborSize',
