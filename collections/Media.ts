@@ -38,6 +38,11 @@ export const Media: CollectionConfig = {
     imageSizes: [
       { name: 'thumbnail', width: 400, height: 400, fit: 'inside', withoutEnlargement: true },
       { name: 'card', width: 800, height: 800, fit: 'inside', withoutEnlargement: true },
+      // Hero portrait crop. `fit: 'cover'` + explicit width AND height tells sharp to
+      // crop to the exact aspect ratio, honouring the focal point + crop region set
+      // in Payload's admin image editor. The homepage hero loads this size, so
+      // editor crops actually take effect on the public page.
+      { name: 'hero', width: 1200, height: 1600, fit: 'cover' },
     ],
   },
   fields: [

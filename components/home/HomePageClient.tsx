@@ -8,6 +8,7 @@ import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { useLanguage } from '@/lib/i18n/context'
+import { resolveHeroImageUrl, resolveHeroImageAlt, resolveHeroFocal } from '@/lib/media/hero-image'
 
 export function HomePageClient({ initialData }: { initialData: any }) {
   const { data } = useLivePreview({
@@ -81,8 +82,9 @@ export function HomePageClient({ initialData }: { initialData: any }) {
   const heroPrimaryCtaLabel = pickL(heroData.primaryCtaLabel, heroData.primaryCtaLabelBM, fb.hero.primaryCtaLabel)
   const heroSecondaryCtaLabel = pickL(heroData.secondaryCtaLabel, heroData.secondaryCtaLabelBM, fb.hero.secondaryCtaLabel)
 
-  const heroImageUrl: string = (typeof heroData.heroImage === 'object' && heroData.heroImage?.url) || '/images/hero-blade.jpg'
-  const heroImageAlt: string = (typeof heroData.heroImage === 'object' && heroData.heroImage?.alt) || fb.hero.imageAlt
+  const heroImageUrl = resolveHeroImageUrl(heroData.heroImage, '/images/hero-blade.jpg')
+  const heroImageAlt = resolveHeroImageAlt(heroData.heroImage, fb.hero.imageAlt)
+  const heroFocal = resolveHeroFocal(heroData.heroImage)
 
   const ctaData = data?.ctaSection ?? {}
   const ctaHeadline = pickL(ctaData.headline, ctaData.headlineBM, fb.ctaSection.headline)
@@ -113,7 +115,15 @@ export function HomePageClient({ initialData }: { initialData: any }) {
         }} />
 
         <div className="absolute right-0 top-0 h-full w-1/2 opacity-40 lg:opacity-60">
-          <Image src={heroImageUrl} alt={heroImageAlt} fill className="object-cover" priority unoptimized={heroImageUrl.startsWith('http')} />
+          <Image
+            src={heroImageUrl}
+            alt={heroImageAlt}
+            fill
+            className="object-cover"
+            style={{ objectPosition: `${heroFocal.x}% ${heroFocal.y}%` }}
+            priority
+            unoptimized={heroImageUrl.startsWith('http')}
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/80 to-transparent" />
         </div>
 
