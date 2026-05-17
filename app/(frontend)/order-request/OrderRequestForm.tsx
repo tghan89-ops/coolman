@@ -368,7 +368,7 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
                     onBlur={handleDraftSave}
                     placeholder={t.order.notesPlaceholder}
                     rows={3}
-                    className="resize-none border-white/10 bg-white/5 text-white placeholder:text-gray-500"
+                    className="resize-none border-white/10 bg-white/5 text-white placeholder:text-ink-faint"
                   />
                 </CardContent>
               </Card>
@@ -444,7 +444,7 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
                         onChange={e => setPromoCode(e.target.value.toUpperCase())}
                         onBlur={handleDraftSave}
                         placeholder={t.order.promoCodePlaceholder}
-                        className="border-white/10 bg-white/5 text-sm text-white placeholder:text-gray-500"
+                        className="border-white/10 bg-white/5 text-sm text-white placeholder:text-ink-faint"
                       />
                       <Button
                         type="button"

@@ -84,7 +84,7 @@ function ResetPasswordInner() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={!token}
-                className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
+                className="h-12 border-white/10 bg-white/5 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
               />
             </div>
             <div className="space-y-2">
@@ -96,7 +96,7 @@ function ResetPasswordInner() {
                 onChange={(e) => setConfirm(e.target.value)}
                 required
                 disabled={!token}
-                className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
+                className="h-12 border-white/10 bg-white/5 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
               />
             </div>
             <Button

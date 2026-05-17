@@ -259,7 +259,7 @@ function AddressForm({
             onChange={(e) => setLabel(e.target.value)}
             maxLength={40}
             placeholder={a.labelPlaceholder}
-            className="mt-1 border-white/20 bg-white/[0.04] text-white placeholder:text-ink-muted"
+            className="mt-1 border-white/20 bg-white/[0.04] text-white placeholder:text-ink-faint"
           />
         </div>
         <div>
@@ -273,7 +273,7 @@ function AddressForm({
             rows={3}
             maxLength={500}
             placeholder={a.addressPlaceholder}
-            className="mt-1 resize-none border-white/20 bg-white/[0.04] text-white placeholder:text-ink-muted"
+            className="mt-1 resize-none border-white/20 bg-white/[0.04] text-white placeholder:text-ink-faint"
           />
         </div>
         {allowDefaultToggle && (

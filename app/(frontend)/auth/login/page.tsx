@@ -78,7 +78,7 @@ export default function LoginPage() {
                   onFocus={() => setFocusedField('email')}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
+                  className="h-12 border-white/10 bg-white/5 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
                 />
               </div>
               
@@ -95,7 +95,7 @@ export default function LoginPage() {
                     onFocus={() => setFocusedField('password')}
                     onBlur={() => setFocusedField(null)}
                     required
-                    className="h-12 border-white/10 bg-white/5 pr-10 text-white placeholder:text-gray-500 focus:border-accent focus:ring-accent/20"
+                    className="h-12 border-white/10 bg-white/5 pr-10 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
                   />
                   <button
                     type="button"

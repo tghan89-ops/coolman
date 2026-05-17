@@ -57,7 +57,7 @@ export function DeliveryAddressForm({
           onChange={(e) => setValue(e.target.value)}
           rows={3}
           maxLength={500}
-          className="resize-none border-white/20 bg-white/[0.04] text-white placeholder:text-ink-muted"
+          className="resize-none border-white/20 bg-white/[0.04] text-white placeholder:text-ink-faint"
           placeholder="Site or office address (max 500 chars)"
         />
         <div className="flex items-center gap-3">

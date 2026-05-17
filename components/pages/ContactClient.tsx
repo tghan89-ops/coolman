@@ -142,7 +142,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                           required
                           onFocus={() => setFocusedField('name')}
                           onBlur={() => setFocusedField(null)}
-                          className="border-white/10 bg-white/5 text-white placeholder:text-ink-muted focus:border-accent focus:ring-accent/20"
+                          className="border-white/10 bg-white/5 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
                         />
                       </div>
                       <div className="group space-y-2">
@@ -155,7 +155,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                           placeholder={t.pages.contact.formCompanyPlaceholder}
                           onFocus={() => setFocusedField('company')}
                           onBlur={() => setFocusedField(null)}
-                          className="border-white/10 bg-white/5 text-white placeholder:text-ink-muted focus:border-accent focus:ring-accent/20"
+                          className="border-white/10 bg-white/5 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
                         />
                       </div>
                     </div>
@@ -171,7 +171,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                         required
                         onFocus={() => setFocusedField('email')}
                         onBlur={() => setFocusedField(null)}
-                        className="border-white/10 bg-white/5 text-white placeholder:text-ink-muted focus:border-accent focus:ring-accent/20"
+                        className="border-white/10 bg-white/5 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
                       />
                     </div>
                     <div className="space-y-2">
@@ -185,7 +185,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                         placeholder={t.pages.contact.formPhonePlaceholder}
                         onFocus={() => setFocusedField('phone')}
                         onBlur={() => setFocusedField(null)}
-                        className="border-white/10 bg-white/5 text-white placeholder:text-ink-muted focus:border-accent focus:ring-accent/20"
+                        className="border-white/10 bg-white/5 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
                       />
                     </div>
                     <div className="space-y-2">
@@ -200,7 +200,7 @@ export function ContactClient({ initialData }: { initialData: any }) {
                         required
                         onFocus={() => setFocusedField('message')}
                         onBlur={() => setFocusedField(null)}
-                        className="resize-none border-white/10 bg-white/5 text-white placeholder:text-ink-muted focus:border-accent focus:ring-accent/20"
+                        className="resize-none border-white/10 bg-white/5 text-white placeholder:text-ink-faint focus:border-accent focus:ring-accent/20"
                       />
                     </div>
                     <Button
