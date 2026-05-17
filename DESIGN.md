@@ -4,6 +4,8 @@
 
 This file is the single source of truth for visual language, typography, spacing, motion, copy voice, and component posture. Any UI work that contradicts this file is a bug. Update this file *before* the code, never after.
 
+> Copy authority lives in [`BRAND-VOICE.md`](BRAND-VOICE.md). DESIGN.md governs tokens; BRAND-VOICE.md governs words.
+
 Canonical preview: [`design-preview-b.html`](../design-preview-b.html) (Industrial Premium — Hilti × Husqvarna).
 
 ---
@@ -65,9 +67,16 @@ All colors are defined as CSS custom properties in [`app/globals.css`](app/globa
 
 ### Families
 
-- **Sans (UI body + headings):** IBM Plex Sans. Loaded via `next/font/google` in `app/layout.tsx`.
-- **Mono (prices, SKUs, quantities, dates, codes):** JetBrains Mono. Same loader.
+Three type families maximum: **IBM Plex Sans** (UI), **Fraunces** (editorial h1/h2 hero blocks and Field Notes article headers only — never UI labels, buttons, navigation, or body copy), **JetBrains Mono** (numbers, prices, SKUs, dates, IDs). Inter is banned.
+
+- **Sans (UI body + headings):** IBM Plex Sans. Loaded via `next/font/google` in `app/(frontend)/layout.tsx`. Tailwind class: `font-sans`.
+- **Editorial serif (hero h1/h2 + Field Notes article headers):** Fraunces, 400 regular + 400 italic + 600 semibold. Same loader. Tailwind class: `font-fraunces`. Editorial-only — never on UI labels, buttons, navigation, body copy, or admin UI.
+- **Mono (prices, SKUs, quantities, dates, codes):** JetBrains Mono. Same loader. Tailwind class: `font-mono`.
 - **Banned:** Inter (overused, reads as generic SaaS). System fallback for sans is `ui-sans-serif, system-ui, sans-serif` — never Helvetica or Arial alone.
+
+### `--accent-light` usage
+
+`--accent-light` (`#60A5FA`) has exactly one allowed use: italic `<em>` inside Fraunces hero headlines, e.g. the editorial split treatment on the homepage and Field Notes article headers. Never use it for body copy, UI accents, links, focus rings, or buttons — those all use `--accent` or `--accent-dark`. If you find yourself reaching for `--accent-light` outside a Fraunces italic, you are using the wrong token.
 
 ### Scale (rem at 16px base)
 
@@ -88,7 +97,8 @@ All colors are defined as CSS custom properties in [`app/globals.css`](app/globa
 
 - **Headings:** always `tracking-tight` from H1 down to H3 — never default tracking on a heading.
 - **Mono goes on numbers, never on prose.** A price is mono; a sentence about pricing is sans.
-- **Two type families maximum, ever.** No script, no slab, no display face beyond what IBM Plex offers.
+- **Three type families maximum, ever.** IBM Plex Sans, Fraunces (editorial only), JetBrains Mono. No script, no slab, no fourth display face.
+- **Fraunces is editorial, not UI.** Allowed: hero h1/h2 on home, heritage, why-coolman; Field Notes article headers; mid-page pull-quote blocks. Banned: buttons, navigation, form labels, body copy, admin UI, card titles, status pills.
 
 ---
 

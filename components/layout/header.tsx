@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { Menu, X, ChevronDown, User, LogOut, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -49,13 +50,19 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
     <header className={`fixed top-0 z-50 w-full transition-[background-color,box-shadow] ${bgClass}`}>
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center bg-accent">
-            <span className="font-sans text-2xl font-bold text-white">C</span>
-          </div>
-          <span className="font-sans text-2xl font-bold tracking-wider text-white">
-            Cool<span className="text-accent">man</span>
-          </span>
+        <Link
+          href="/"
+          aria-label="Coolman home"
+          className="-mx-2 flex h-11 items-center px-2"
+        >
+          <Image
+            src="/brand/coolman-logo-white.svg"
+            alt="Coolman"
+            width={120}
+            height={36}
+            priority
+            className="h-8 w-auto"
+          />
         </Link>
 
         {/* Desktop Navigation */}

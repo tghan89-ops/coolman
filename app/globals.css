@@ -114,10 +114,13 @@
 }
 
 @theme inline {
-  /* Type — IBM Plex Sans replaces blacklisted Inter. Mono for numbers only. */
+  /* Type — IBM Plex Sans replaces blacklisted Inter. Mono for numbers only.
+     Fraunces is editorial-only: hero h1/h2 and Field Notes article headers.
+     Never on UI labels, buttons, navigation, or body copy. See DESIGN.md §3. */
   --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-fraunces: 'Fraunces', ui-serif, Georgia, serif;
 
   /* Brand colors */
   --color-navy: var(--navy);

@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowUpRight } from 'lucide-react'
 import { useLanguage } from '@/lib/i18n/context'
 
@@ -71,11 +72,18 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-6">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center bg-accent">
-                <span className="text-2xl font-bold">C</span>
-              </div>
-              <span className="text-2xl font-bold tracking-wider">Cool<span className="text-accent">man</span></span>
+            <Link
+              href="/"
+              aria-label="Coolman home"
+              className="-mx-2 inline-flex h-11 items-center px-2"
+            >
+              <Image
+                src="/brand/coolman-logo-white.svg"
+                alt="Coolman"
+                width={96}
+                height={29}
+                className="h-7 w-auto"
+              />
             </Link>
             <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">
               {t.footer.brandStory}

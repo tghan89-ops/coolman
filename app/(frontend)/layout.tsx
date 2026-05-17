@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { IBM_Plex_Sans, JetBrains_Mono } from 'next/font/google'
+import { IBM_Plex_Sans, JetBrains_Mono, Fraunces } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/lib/i18n/context'
 import { AuthProvider } from '@/lib/auth/context'
@@ -16,6 +16,14 @@ const plexMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500'],
   variable: '--font-mono',
+})
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-fraunces',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -37,7 +45,7 @@ export default function FrontendLayout({
 }>) {
   return (
     <html lang="en" className="bg-background" data-scroll-behavior="smooth">
-      <body className={`${plexSans.variable} ${plexMono.variable} font-sans antialiased`}>
+      <body className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} font-sans antialiased`}>
         <LanguageProvider>
           <AuthProvider>
             <CartProvider>

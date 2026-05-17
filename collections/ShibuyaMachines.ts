@@ -1,7 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
 const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
-const notTranslated = { description: 'Numeric/spec value shown in both languages — not translated.' }
 
 // Shibuya machine roster as its own top-level collection. Lifted from the
 // `machines` array previously embedded inside the ShibuyaPage global so each
@@ -83,22 +82,22 @@ export const ShibuyaMachines: CollectionConfig = {
     {
       name: 'motor_power',
       type: 'text',
-      admin: { description: 'e.g. 2,200W', ...notTranslated },
+      admin: { description: 'e.g. 2,200W. Numeric/spec value shown in both languages — not translated.' },
     },
     {
       name: 'max_diameter',
       type: 'text',
-      admin: { description: 'e.g. 162mm', ...notTranslated },
+      admin: { description: 'e.g. 162mm. Numeric/spec value shown in both languages — not translated.' },
     },
     {
       name: 'weight',
       type: 'text',
-      admin: { description: 'e.g. 12kg', ...notTranslated },
+      admin: { description: 'e.g. 12kg. Numeric/spec value shown in both languages — not translated.' },
     },
     {
       name: 'rpm_range',
       type: 'text',
-      admin: { description: 'e.g. 480-1,800', ...notTranslated },
+      admin: { description: 'e.g. 480-1,800. Numeric/spec value shown in both languages — not translated.' },
     },
     {
       name: 'price',

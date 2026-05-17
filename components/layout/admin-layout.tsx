@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { ShoppingCart, BarChart3, LogOut, Menu, X, Home } from 'lucide-react'
 import { useState } from 'react'
@@ -42,14 +43,19 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         <div className="flex h-full flex-col">
           {/* Logo */}
           <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
-            <Link href="/admin/orders" className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent">
-                <span className="text-sm font-bold text-white">C</span>
-              </div>
-              <div>
-                <span className="text-lg font-bold text-white">Cool<span className="text-accent">man</span></span>
-                <span className="ml-1 text-xs text-accent-light">Admin</span>
-              </div>
+            <Link
+              href="/admin/orders"
+              aria-label="Coolman admin home"
+              className="-mx-1 inline-flex h-11 items-center gap-2 px-1"
+            >
+              <Image
+                src="/brand/coolman-logo-white.svg"
+                alt="Coolman"
+                width={96}
+                height={29}
+                className="h-7 w-auto"
+              />
+              <span className="text-xs font-medium text-accent-light">Admin</span>
             </Link>
             <Button 
               variant="ghost" 
@@ -132,10 +138,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             <Menu className="h-5 w-5" />
           </Button>
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
-              <span className="text-sm font-bold text-white">C</span>
-            </div>
-            <span className="font-semibold text-white">Admin</span>
+            <Image
+              src="/brand/coolman-logo-white.svg"
+              alt="Coolman"
+              width={80}
+              height={24}
+              className="h-6 w-auto"
+            />
+            <span className="text-xs font-medium text-accent-light">Admin</span>
           </div>
         </header>
 
