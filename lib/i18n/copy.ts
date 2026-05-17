@@ -283,6 +283,48 @@ export interface CopyStructure {
       emptyStateHeadline: string
       emptyStateBody: string
     }
+    productDetail: {
+      breadcrumbProducts: string
+      productTypeFallback: string
+      machinePowerLabel: string
+      quantityLabel: string
+      recommendedMaterialsHeading: string
+      materialBadgeFallback: string
+      noImageUploaded: string
+      noImage: string
+      sectionLabels: {
+        related: string
+        relatedHeading: string
+        viewAll: string
+        openProduct: string
+        universal: string
+      }
+      specs: {
+        diameter: string
+        arborSize: string
+        segmentHeight: string
+        bondType: string
+        maxRPM: string
+        maxRPMFallback: string
+        machineTier: string
+      }
+      tabs: {
+        specifications: string
+        applications: string
+        usageGuide: string
+      }
+      usageGuide: {
+        steps: Array<{ title: string; body: string; bodyWithMaxRPM?: string }>
+      }
+      ctaStrip: {
+        heading: string
+        body: string
+        primaryLabel: string
+        secondaryLabel: string
+      }
+      requestQuote: string
+      skuLabel: string
+    }
   }
   products: {
     heroEyebrow: string
@@ -876,6 +918,10 @@ export interface CopyStructure {
       ctaLabel: string
     }
   }
+  killSwitch: {
+    message: string
+    ctaLabel: string
+  }
 }
 
 export const COPY: Record<Language, CopyStructure> = {
@@ -1194,6 +1240,66 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaButton: 'Request a Demo',
         emptyStateHeadline: 'Roster coming soon',
         emptyStateBody: 'The Shibuya range is being prepared. Speak to our team for a live walkthrough.',
+      },
+      productDetail: {
+        breadcrumbProducts: 'Products',
+        productTypeFallback: 'Diamond Blade',
+        machinePowerLabel: 'Machine power',
+        quantityLabel: 'Quantity',
+        recommendedMaterialsHeading: 'Recommended Materials',
+        materialBadgeFallback: 'Premium',
+        noImageUploaded: 'No image uploaded',
+        noImage: 'No image',
+        sectionLabels: {
+          related: 'Related',
+          relatedHeading: 'You Might Also Need',
+          viewAll: 'View All',
+          openProduct: 'Open product',
+          universal: 'Universal',
+        },
+        specs: {
+          diameter: 'Diameter',
+          arborSize: 'Arbor Size',
+          segmentHeight: 'Segment Height',
+          bondType: 'Bond Type',
+          maxRPM: 'Max RPM',
+          maxRPMFallback: 'See manual',
+          machineTier: 'Machine Tier',
+        },
+        tabs: {
+          specifications: 'Specifications',
+          applications: 'Applications',
+          usageGuide: 'Usage Guide',
+        },
+        usageGuide: {
+          steps: [
+            {
+              title: 'Inspect Before Use',
+              body: 'Check for cracks, warping, or damage before mounting. Never use a damaged blade.',
+            },
+            {
+              title: 'Correct Mounting',
+              body: 'Ensure the arbor size matches your machine. Tighten securely with the correct flange.',
+            },
+            {
+              title: 'Set Correct RPM',
+              body: 'Do not exceed the rated RPM. Over-speeding causes premature failure.',
+              bodyWithMaxRPM: 'Do not exceed {maxRPM} RPM. Over-speeding causes premature failure.',
+            },
+            {
+              title: 'Use Water Cooling',
+              body: 'Wet cutting extends blade life significantly. Dry cutting is only recommended for short bursts.',
+            },
+          ],
+        },
+        ctaStrip: {
+          heading: 'Ready to order or need technical advice?',
+          body: 'Our engineers are available to help you choose the right blade.',
+          primaryLabel: 'Talk to an Engineer',
+          secondaryLabel: 'Request a quote',
+        },
+        requestQuote: 'Request a quote',
+        skuLabel: 'SKU',
       },
     },
     products: {
@@ -1962,6 +2068,10 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaLabel: 'Message sales on WhatsApp',
       },
     },
+    killSwitch: {
+      message: 'Orders are paused right now. Reach us on WhatsApp to place a request.',
+      ctaLabel: 'Message us on WhatsApp',
+    },
   },
   BM: {
     nav: {
@@ -2278,6 +2388,66 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaButton: 'Minta Demo',
         emptyStateHeadline: 'Senarai akan datang',
         emptyStateBody: 'Rangkaian Shibuya sedang disediakan. Bercakap dengan pasukan kami untuk tunjuk cara langsung.',
+      },
+      productDetail: {
+        breadcrumbProducts: 'Produk',
+        productTypeFallback: 'Bilah Berlian',
+        machinePowerLabel: 'Kuasa mesin',
+        quantityLabel: 'Kuantiti',
+        recommendedMaterialsHeading: 'Bahan Disyorkan',
+        materialBadgeFallback: 'Premium',
+        noImageUploaded: 'Tiada gambar dimuat naik',
+        noImage: 'Tiada gambar',
+        sectionLabels: {
+          related: 'Berkaitan',
+          relatedHeading: 'Anda Mungkin Perlukan Juga',
+          viewAll: 'Lihat Semua',
+          openProduct: 'Buka produk',
+          universal: 'Universal',
+        },
+        specs: {
+          diameter: 'Diameter',
+          arborSize: 'Saiz Arbor',
+          segmentHeight: 'Ketinggian Segmen',
+          bondType: 'Jenis Ikatan',
+          maxRPM: 'RPM Maksimum',
+          maxRPMFallback: 'Lihat manual',
+          machineTier: 'Tahap Mesin',
+        },
+        tabs: {
+          specifications: 'Spesifikasi',
+          applications: 'Aplikasi',
+          usageGuide: 'Panduan Penggunaan',
+        },
+        usageGuide: {
+          steps: [
+            {
+              title: 'Periksa Sebelum Guna',
+              body: 'Periksa sebarang retakan, lekukan, atau kerosakan sebelum memasang. Jangan sekali kali guna bilah yang rosak.',
+            },
+            {
+              title: 'Pemasangan Yang Betul',
+              body: 'Pastikan saiz arbor sepadan dengan mesin anda. Ketatkan dengan kuat menggunakan flange yang betul.',
+            },
+            {
+              title: 'Tetapkan RPM Yang Betul',
+              body: 'Jangan melebihi RPM yang ditetapkan. Lajak melebihi had menyebabkan kerosakan awal.',
+              bodyWithMaxRPM: 'Jangan melebihi {maxRPM} RPM. Lajak melebihi had menyebabkan kerosakan awal.',
+            },
+            {
+              title: 'Guna Penyejukan Air',
+              body: 'Pemotongan basah memanjangkan jangka hayat bilah dengan ketara. Pemotongan kering hanya disyorkan untuk tempoh pendek.',
+            },
+          ],
+        },
+        ctaStrip: {
+          heading: 'Sedia membuat pesanan atau perlukan nasihat teknikal?',
+          body: 'Jurutera kami sedia membantu anda memilih bilah yang sesuai.',
+          primaryLabel: 'Bercakap dengan Jurutera',
+          secondaryLabel: 'Minta sebut harga',
+        },
+        requestQuote: 'Minta sebut harga',
+        skuLabel: 'SKU',
       },
     },
     products: {
@@ -3045,6 +3215,10 @@ export const COPY: Record<Language, CopyStructure> = {
         body: 'Hubungi jualan untuk pengedar sah yang terdekat sementara kami menerima kohort pertama.',
         ctaLabel: 'Hubungi jualan melalui WhatsApp',
       },
+    },
+    killSwitch: {
+      message: 'Pesanan sedang dijeda buat masa ini. Hubungi kami di WhatsApp untuk membuat permintaan.',
+      ctaLabel: 'Hubungi kami di WhatsApp',
     },
   },
 }

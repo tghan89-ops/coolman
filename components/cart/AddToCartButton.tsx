@@ -12,10 +12,18 @@ export function AddToCartButton({
   productId,
   quantity,
   nextHref,
+  disabled = false,
 }: {
   productId: string | number
   quantity: number
   nextHref: string
+  /**
+   * When true the button is rendered non-interactive (and the click handler is
+   * short-circuited). Used by the product detail page to gate the cart CTA
+   * when `settings.orders_paused === true` — every order write path must
+   * respect the kill switch (CLAUDE.md hard rule).
+   */
+  disabled?: boolean
 }) {
   const { isAuthenticated } = useAuth()
   const { add } = useCart()
@@ -26,7 +34,10 @@ export function AddToCartButton({
     return (
       <Button
         size="lg"
-        className="group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent"
+        className={`group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent ${
+          disabled ? 'pointer-events-none opacity-60' : ''
+        }`}
+        aria-disabled={disabled || undefined}
         asChild
       >
         <Link href={`/auth/login?next=${encodeURIComponent(nextHref)}`}>
@@ -40,9 +51,15 @@ export function AddToCartButton({
   return (
     <Button
       size="lg"
-      className="group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent"
-      disabled={state === 'adding'}
+      className={`group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent ${
+        disabled ? 'cursor-not-allowed opacity-60' : ''
+      }`}
+      disabled={disabled || state === 'adding'}
       onClick={async () => {
+        // Defensive: even if the disabled prop didn't reach the underlying
+        // button (e.g. asChild wrapper, custom styling), we never want to call
+        // `add()` while the kill switch is on.
+        if (disabled) return
         setState('adding')
         try {
           await add(String(productId), quantity)

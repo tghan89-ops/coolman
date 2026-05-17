@@ -8,6 +8,7 @@ import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
+import { KillSwitchBanner } from '@/components/catalogue/KillSwitchBanner'
 import { bondLabel } from '@/lib/products/bond-label'
 import { extractYouTubeId, youTubeEmbedUrl } from '@/lib/products/youtube'
 import { useLanguage } from '@/lib/i18n/context'
@@ -17,13 +18,24 @@ export function ProductDetailClient({
   isLoggedIn = false,
   emailVerified = false,
   tierDiscountPct = 0,
+  ordersPaused = false,
+  whatsappNumber = '',
 }: {
   initialData: any
   isLoggedIn?: boolean
   emailVerified?: boolean
   tierDiscountPct?: number
+  /**
+   * Mirrors `settings.orders_paused`. When true the cart CTA + quantity
+   * stepper are disabled and the kill-switch banner renders at the top of the
+   * page (CLAUDE.md hard rule: every order write path checks this flag).
+   */
+  ordersPaused?: boolean
+  /** Mirrors `settings.whatsapp_number`. Drives the banner's WhatsApp link. */
+  whatsappNumber?: string
 }) {
-  const { language } = useLanguage()
+  const { language, t } = useLanguage()
+  const pd = t.pages.productDetail
   // Use the server-rendered product directly. useLivePreview is a Payload
   // admin feature — keeping it on the public detail page costs an extra fetch
   // and postMessage listener for every visitor on every navigation.
@@ -108,12 +120,12 @@ export function ProductDetailClient({
   const activeMedia: MediaItem | undefined = mediaItems[activeImageIdx]
 
   const specs = [
-    { label: 'Diameter', value: labelOf(data.diameter), icon: Ruler },
-    { label: 'Arbor Size', value: labelOf(data.arborSize), icon: Ruler },
-    { label: 'Segment Height', value: labelOf(data.segmentHeight), icon: Ruler },
-    { label: 'Bond Type', value: bondLabel(data.bondType), icon: Shield },
-    { label: 'Max RPM', value: data.maxRPM ?? 'See manual', icon: Zap },
-    { label: 'Machine Tier', value: machineTierLabel, icon: RotateCcw },
+    { label: pd.specs.diameter, value: labelOf(data.diameter), icon: Ruler },
+    { label: pd.specs.arborSize, value: labelOf(data.arborSize), icon: Ruler },
+    { label: pd.specs.segmentHeight, value: labelOf(data.segmentHeight), icon: Ruler },
+    { label: pd.specs.bondType, value: bondLabel(data.bondType), icon: Shield },
+    { label: pd.specs.maxRPM, value: data.maxRPM ?? pd.specs.maxRPMFallback, icon: Zap },
+    { label: pd.specs.machineTier, value: machineTierLabel, icon: RotateCcw },
   ]
 
   // Related products from Payload (depth:2 resolves these to full objects)
@@ -121,8 +133,34 @@ export function ProductDetailClient({
     ? data.relatedProducts.filter((p: any) => typeof p === 'object' && p !== null)
     : []
 
+  // Usage-guide steps come from the i18n copy (4 fixed-order steps). Step 03's
+  // body interpolates the product's max RPM when set; otherwise we fall back
+  // to the generic "rated RPM" copy. Both EN and BM provide a parallel
+  // `bodyWithMaxRPM` template with a `{maxRPM}` placeholder.
+  const usageSteps = pd.usageGuide.steps.map((step, idx) => {
+    let body = step.body
+    if (idx === 2 && data.maxRPM != null && step.bodyWithMaxRPM) {
+      body = step.bodyWithMaxRPM.replace('{maxRPM}', String(data.maxRPM))
+    }
+    return {
+      step: String(idx + 1).padStart(2, '0'),
+      title: step.title,
+      body,
+    }
+  })
+
   return (
     <PublicLayout>
+
+      {/* ── KILL-SWITCH BANNER ───────────────────────────────────────
+          Self-hides when isPaused === false. Visually announces that
+          orders are paused and routes the user to WhatsApp. The cart
+          CTA + quantity stepper below are also disabled in this state. */}
+      <KillSwitchBanner
+        isPaused={ordersPaused}
+        whatsappNumber={whatsappNumber}
+        language={language}
+      />
 
       {/* ── BREADCRUMB ───────────────────────────────────────────── */}
       <div className="border-b border-white/10 bg-navy">
@@ -130,7 +168,7 @@ export function ProductDetailClient({
           <nav className="flex items-center gap-2 text-sm">
             <Link href="/products" className="flex items-center gap-1 text-white/50 transition-colors hover:text-white">
               <ArrowLeft className="h-3.5 w-3.5" />
-              Products
+              {pd.breadcrumbProducts}
             </Link>
             <ChevronRight className="h-4 w-4 text-white/30" />
             <span className="font-medium text-white">{data.name}</span>
@@ -153,7 +191,7 @@ export function ProductDetailClient({
             <div className="relative">
               {/* SKU tag */}
               <div className="mb-4 inline-flex items-center gap-2 border border-white/10 bg-white/5 px-3 py-1.5">
-                <span className="text-xs font-bold tracking-widest text-white/40">SKU</span>
+                <span className="text-xs font-bold tracking-widest text-white/40">{pd.skuLabel}</span>
                 <span className="font-mono text-xs font-semibold text-white/60">{data.sku}</span>
               </div>
 
@@ -181,7 +219,7 @@ export function ProductDetailClient({
                   </>
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-center text-xs font-mono uppercase tracking-widest text-ink-muted">
-                    No image uploaded
+                    {pd.noImageUploaded}
                   </div>
                 )}
 
@@ -190,7 +228,7 @@ export function ProductDetailClient({
                 {activeMedia?.kind !== 'video' && (
                   <div className="absolute left-4 top-4 border border-accent/40 bg-accent/20 px-3 py-1">
                     <span className="text-xs font-bold tracking-wider text-accent">
-                      {primaryMaterial || 'Premium'}
+                      {primaryMaterial || pd.materialBadgeFallback}
                     </span>
                   </div>
                 )}
@@ -240,7 +278,7 @@ export function ProductDetailClient({
             {/* Right: Info */}
             <div className="flex flex-col justify-center">
               <p className="font-sans text-sm font-bold tracking-[0.3em] text-accent">
-                {primaryMaterial || 'Diamond Blade'}
+                {primaryMaterial || pd.productTypeFallback}
               </p>
               <h1 className="mt-3 font-sans text-4xl font-bold text-white lg:text-5xl">
                 {data.name}
@@ -263,8 +301,8 @@ export function ProductDetailClient({
                     language={language}
                   />
                   <div className="text-right">
-                    <p className="text-xs text-white/40">Machine power</p>
-                    <p className="mt-1 font-sans text-lg font-bold capitalize text-accent">{machineTierLabel || '—'}</p>
+                    <p className="text-xs text-white/40">{pd.machinePowerLabel}</p>
+                    <p className="mt-1 font-sans text-lg font-bold capitalize text-accent">{machineTierLabel || '-'}</p>
                   </div>
                 </div>
               </div>
@@ -281,7 +319,7 @@ export function ProductDetailClient({
 
               {/* Materials */}
               <div className="mt-8">
-                <p className="mb-3 text-xs font-bold tracking-wider text-white/40">Recommended Materials</p>
+                <p className="mb-3 text-xs font-bold tracking-wider text-white/40">{pd.recommendedMaterialsHeading}</p>
                 <div className="flex flex-wrap gap-2">
                   {materials.map((material: any, i: number) => (
                     <span key={keyOf(material, i)} className="border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-semibold text-accent">
@@ -291,14 +329,15 @@ export function ProductDetailClient({
                 </div>
               </div>
 
-              {/* Quantity selector */}
+              {/* Quantity selector — disabled while orders are paused so a
+                  contractor can't change the count for a CTA that won't fire. */}
               <div className="mt-8">
-                <p className="mb-3 text-xs font-bold tracking-wider text-white/40">Quantity</p>
+                <p className="mb-3 text-xs font-bold tracking-wider text-white/40">{pd.quantityLabel}</p>
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    disabled={quantity <= 1}
+                    disabled={ordersPaused || quantity <= 1}
                     aria-label="Decrease quantity"
                     className="flex h-12 w-12 items-center justify-center border border-white/20 bg-white/5 text-white transition-colors hover:border-accent hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-40"
                   >
@@ -308,15 +347,17 @@ export function ProductDetailClient({
                     type="number"
                     min={1}
                     value={quantity}
+                    disabled={ordersPaused}
                     onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
                     aria-label="Quantity"
-                    className="font-mono h-12 w-20 border border-white/20 bg-white/5 text-center text-lg font-bold text-white focus:border-accent focus:outline-none"
+                    className="font-mono h-12 w-20 border border-white/20 bg-white/5 text-center text-lg font-bold text-white focus:border-accent focus:outline-none disabled:cursor-not-allowed disabled:opacity-40"
                   />
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => q + 1)}
+                    disabled={ordersPaused}
                     aria-label="Increase quantity"
-                    className="flex h-12 w-12 items-center justify-center border border-white/20 bg-white/5 text-white transition-colors hover:border-accent hover:bg-accent/10"
+                    className="flex h-12 w-12 items-center justify-center border border-white/20 bg-white/5 text-white transition-colors hover:border-accent hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <Plus className="h-4 w-4" />
                   </button>
@@ -325,9 +366,14 @@ export function ProductDetailClient({
 
               {/* CTA */}
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <AddToCartButton productId={data.id} quantity={quantity} nextHref={nextHref} />
+                <AddToCartButton
+                  productId={data.id}
+                  quantity={quantity}
+                  nextHref={nextHref}
+                  disabled={ordersPaused}
+                />
                 <Button size="lg" variant="outline" className="h-14 border-2 border-white/30 bg-transparent font-sans font-bold text-white hover:border-white hover:bg-white hover:text-navy" asChild>
-                  <Link href="/contact">Request a quote</Link>
+                  <Link href="/contact">{pd.requestQuote}</Link>
                 </Button>
               </div>
             </div>
@@ -349,7 +395,7 @@ export function ProductDetailClient({
                     activeTab === tab ? 'text-navy' : 'text-ink-faint hover:text-ink-muted'
                   }`}
                 >
-                  {tab === 'specs' ? 'Specifications' : tab === 'applications' ? 'Applications' : 'Usage Guide'}
+                  {tab === 'specs' ? pd.tabs.specifications : tab === 'applications' ? pd.tabs.applications : pd.tabs.usageGuide}
                   <span className={`absolute bottom-0 left-0 h-0.5 bg-accent transition-[width] ${activeTab === tab ? 'w-full' : 'w-0'}`} />
                 </button>
               ))}
@@ -389,15 +435,11 @@ export function ProductDetailClient({
             </div>
           )}
 
-          {/* Usage Guide tab */}
+          {/* Usage Guide tab — copy comes from i18n; step 03 interpolates the
+              product's max RPM (or falls back to "rated RPM" if absent). */}
           {activeTab === 'usage' && (
             <div className="grid gap-6 lg:grid-cols-2">
-              {[
-                { step: '01', title: 'Inspect Before Use', body: 'Check for cracks, warping, or damage before mounting. Never use a damaged blade.' },
-                { step: '02', title: 'Correct Mounting', body: 'Ensure the arbor size matches your machine. Tighten securely with the correct flange.' },
-                { step: '03', title: 'Set Correct RPM', body: `Do not exceed ${data.maxRPM ?? 'rated'} RPM. Over-speeding causes premature failure.` },
-                { step: '04', title: 'Use Water Cooling', body: 'Wet cutting extends blade life significantly. Dry cutting is only recommended for short bursts.' },
-              ].map((item) => (
+              {usageSteps.map((item) => (
                 <div key={item.step} className="flex gap-6 border border-rule bg-white p-6">
                   <div className="font-sans text-4xl font-bold text-rule">{item.step}</div>
                   <div>
@@ -417,11 +459,11 @@ export function ProductDetailClient({
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="flex items-end justify-between">
               <div>
-                <p className="font-sans text-sm font-bold tracking-[0.3em] text-accent">Related</p>
-                <h2 className="mt-2 font-sans text-3xl font-bold text-white lg:text-4xl">You Might Also Need</h2>
+                <p className="font-sans text-sm font-bold tracking-[0.3em] text-accent">{pd.sectionLabels.related}</p>
+                <h2 className="mt-2 font-sans text-3xl font-bold text-white lg:text-4xl">{pd.sectionLabels.relatedHeading}</h2>
               </div>
               <Link href="/products" className="group hidden items-center gap-2 font-sans text-sm font-bold text-white/60 transition-colors hover:text-white sm:flex">
-                View All
+                {pd.sectionLabels.viewAll}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
@@ -446,13 +488,13 @@ export function ProductDetailClient({
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-center text-xs font-mono uppercase tracking-widest text-ink-muted">
-                          No image
+                          {pd.noImage}
                         </div>
                       )}
                       <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
                           <div className="flex items-center gap-2 bg-accent-dark px-6 py-3 font-sans text-sm font-semibold text-white">
-                            Open product
+                            {pd.sectionLabels.openProduct}
                             <ArrowRight className="h-4 w-4" />
                           </div>
                         </div>
@@ -460,7 +502,7 @@ export function ProductDetailClient({
                     </div>
                     <div className="flex flex-1 flex-col p-5">
                       <p className="font-sans text-xs font-semibold tracking-wider text-accent">
-                        {labelOf(p.materials?.[0]) || 'Universal'}
+                        {labelOf(p.materials?.[0]) || pd.sectionLabels.universal}
                       </p>
                       <h3 className="mt-2 font-sans text-lg font-bold text-white transition-colors group-hover:text-accent">
                         {p.name}
@@ -495,13 +537,18 @@ export function ProductDetailClient({
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
             <div>
-              <h3 className="font-sans text-2xl font-bold text-white lg:text-3xl">Ready to order or need technical advice?</h3>
-              <p className="mt-1 text-white/80">Our engineers are available to help you choose the right blade.</p>
+              <h3 className="font-sans text-2xl font-bold text-white lg:text-3xl">{pd.ctaStrip.heading}</h3>
+              <p className="mt-1 text-white/80">{pd.ctaStrip.body}</p>
             </div>
             <div className="flex gap-3">
-              <AddToCartButton productId={data.id} quantity={quantity} nextHref={nextHref} />
+              <AddToCartButton
+                productId={data.id}
+                quantity={quantity}
+                nextHref={nextHref}
+                disabled={ordersPaused}
+              />
               <Button variant="outline" className="h-12 border-2 border-white bg-transparent px-6 font-sans font-bold text-white hover:bg-white hover:text-accent" asChild>
-                <Link href="/contact">Talk to an Engineer</Link>
+                <Link href="/contact">{pd.ctaStrip.primaryLabel}</Link>
               </Button>
             </div>
           </div>

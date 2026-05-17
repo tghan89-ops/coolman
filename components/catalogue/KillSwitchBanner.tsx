@@ -1,13 +1,19 @@
 import { cn } from '@/lib/utils'
+import { COPY, type Language } from '@/lib/i18n/copy'
 
 export interface KillSwitchBannerProps {
   isPaused: boolean
   whatsappNumber?: string
+  /** Optional override. When omitted, falls back to the i18n value for `language`. */
   message?: string
+  /** Drives the i18n fallback for both message and CTA. Defaults to EN. */
+  language?: Language
   className?: string
 }
 
-function toWaLink(raw: string): string | null {
+// Exported so tests (and other server callers) can convert a raw whatsapp
+// number into a wa.me link without re-implementing the digit-strip rule.
+export function toWaLink(raw: string): string | null {
   const digits = raw.replace(/[^\d]/g, '')
   if (!digits) return null
   return `https://wa.me/${digits}`
@@ -17,12 +23,13 @@ export function KillSwitchBanner({
   isPaused,
   whatsappNumber,
   message,
+  language = 'EN',
   className,
 }: KillSwitchBannerProps) {
   if (!isPaused) return null
 
-  const copy =
-    message ?? 'Orders are paused right now. Please reach us on WhatsApp to place a request.'
+  const killSwitchCopy = COPY[language].killSwitch
+  const copy = message ?? killSwitchCopy.message
   const waLink = whatsappNumber ? toWaLink(whatsappNumber) : null
 
   return (
@@ -47,7 +54,7 @@ export function KillSwitchBanner({
               'sm:self-auto',
             )}
           >
-            Message us on WhatsApp
+            {killSwitchCopy.ctaLabel}
           </a>
         )}
       </div>

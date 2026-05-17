@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
-import { getProductById } from '@/lib/payload'
+import { getGlobal, getProductById } from '@/lib/payload'
 import { ProductDetailClient } from '@/components/products/ProductDetailClient'
 import { getContractorSession } from '@/lib/auth/contractor-session'
 
@@ -14,9 +14,14 @@ export default async function ProductDetailPage({
 }) {
   const { id } = await params
   const h = await headers()
-  const [product, contractor] = await Promise.all([
+  // `settings` is admin-restricted (see globals/Settings.ts). The public product
+  // detail page needs to read `orders_paused` (kill switch — CLAUDE.md hard rule)
+  // and `whatsapp_number` (the fallback contact when ordering is paused), so we
+  // pass `overrideAccess: true` exactly as the contact page does.
+  const [product, contractor, settings] = await Promise.all([
     getProductById(id),
     getContractorSession(h),
+    getGlobal('settings', { overrideAccess: true }),
   ])
   if (!product) notFound()
 
@@ -24,6 +29,12 @@ export default async function ProductDetailPage({
   const emailVerified =
     contractor !== null && contractor.status === 'Active' && !!contractor.email_verified_at
   const tierDiscountPct = contractor?.tier_discount_pct ?? 0
+  // Defensive coercions: settings may be null on a brand-new install, and the
+  // boolean field can come back as null/undefined for the same reason. The
+  // banner self-hides when isPaused is false, so a safe default is `false`.
+  const ordersPaused: boolean = settings?.orders_paused === true
+  const whatsappNumber: string =
+    typeof settings?.whatsapp_number === 'string' ? settings.whatsapp_number : ''
 
   return (
     <ProductDetailClient
@@ -31,6 +42,8 @@ export default async function ProductDetailPage({
       isLoggedIn={isLoggedIn}
       emailVerified={emailVerified}
       tierDiscountPct={tierDiscountPct}
+      ordersPaused={ordersPaused}
+      whatsappNumber={whatsappNumber}
     />
   )
 }
