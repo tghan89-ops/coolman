@@ -38,7 +38,11 @@ export function resolveBranch(props: {
 }): PriceStackBranch {
   if (!props.isLoggedIn) return 'logged-out'
   if (!props.emailVerified) return 'unverified'
-  if (props.tierDiscountPct <= 0) return 'list-only'
+  // Use Number.isFinite so NaN, Infinity, and non-numeric reads all fall back
+  // to the safer "list-only" branch instead of slipping into "stack-up" and
+  // rendering "RM NaN". NaN <= 0 is false in JS, so a plain comparison would
+  // not catch this — see code-quality review 2026-05-17.
+  if (!Number.isFinite(props.tierDiscountPct) || props.tierDiscountPct <= 0) return 'list-only'
   return 'stack-up'
 }
 
@@ -83,7 +87,10 @@ export function PriceStackCard({
             'border text-sm font-semibold',
             'transition-colors duration-150 ease-out',
             isDark
-              ? 'border-white/20 bg-white/5 text-accent hover:text-white hover:border-white/40'
+              ? // text-sky-300 over white/5 on navy clears WCAG AA comfortably
+                // (~7:1) where text-accent (#3B82F6) sat at ~4.4:1 borderline.
+                // Light tone unchanged. Burned 2026-05-17 — code-quality review.
+                'border-white/20 bg-white/5 text-sky-300 hover:text-white hover:border-white/40'
               : 'border-rule bg-white text-accent-dark hover:text-accent hover:border-accent',
           )}
           style={{ transitionProperty: 'color, border-color, box-shadow' }}
@@ -113,8 +120,9 @@ export function PriceStackCard({
           <Link
             href={verifyEmailHref}
             className={cn(
-              'underline underline-offset-2',
-              isDark ? 'text-accent hover:text-white' : 'text-accent-dark hover:text-accent',
+              'underline underline-offset-2 font-semibold',
+              // Dark tone uses sky-300 for AA contrast over warn/10 on navy.
+              isDark ? 'text-sky-300 hover:text-white' : 'text-accent-dark hover:text-accent',
             )}
           >
             {t.resendVerification}
@@ -142,10 +150,15 @@ export function PriceStackCard({
   }
 
   // branch === 'stack-up'
-  const breakdown = calculateEffectivePrice(listPrice, tierDiscountPct, promoDiscountPct)
-  const hasPromo = promoDiscountPct > 0
+  // Defensive: coerce any non-finite (NaN/Infinity) promo to 0 so the stack-up
+  // never renders "−NaN%" or inflates the effective price. tierDiscountPct is
+  // already gated upstream by resolveBranch — if it's not finite we never get
+  // here. See code-quality review 2026-05-17.
+  const safePromoPct = Number.isFinite(promoDiscountPct) ? promoDiscountPct : 0
+  const breakdown = calculateEffectivePrice(listPrice, tierDiscountPct, safePromoPct)
+  const hasPromo = safePromoPct > 0
   const tierPct = Math.round(tierDiscountPct * 100)
-  const promoPct = Math.round(promoDiscountPct * 100)
+  const promoPct = Math.round(safePromoPct * 100)
 
   // If the caller explicitly hides the breakdown, collapse to just the effective price line.
   if (!showStackUp) {

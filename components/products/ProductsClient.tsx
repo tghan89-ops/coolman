@@ -26,8 +26,28 @@ const FILTER_KEYS = {
   diameter: 'diameter',
 } as const
 
+// Minimal shape of a Payload product as far as the catalogue grid card reads
+// it. Server passes raw Payload docs (page.tsx → ProductsClient) and we cast
+// at the boundary. Keep this in sync with the fields actually rendered below
+// — adding a new product field to the grid means adding it here too. Anything
+// not in this list should not be read from `product` in this component.
+// Burned 2026-05-17 — see code-quality review (replaced repeated `any` reads).
+export type ProductRelation = string | { id?: string | number; name?: string | null } | null | undefined
+
+export interface ProductCardData {
+  id: string | number
+  name: string
+  listPrice: number
+  diameter?: string | null
+  diameterMm?: number | null
+  bondType?: string | null
+  materials?: ProductRelation[]
+  applications?: ProductRelation[]
+  image?: { url?: string | null } | string | null
+}
+
 export interface ProductsClientProps {
-  initialProducts: any[]
+  initialProducts: ProductCardData[]
   filterGroups: FilterGroup[]
   isLoggedIn?: boolean
   emailVerified?: boolean
@@ -57,26 +77,26 @@ export function ProductsClient({
     const selApplications = selected[FILTER_KEYS.application] ?? []
     const selDiameters = selected[FILTER_KEYS.diameter] ?? []
 
+    const relationName = (r: ProductRelation): string => {
+      if (r == null) return ''
+      if (typeof r === 'object') return r.name ?? ''
+      return String(r)
+    }
+
     if (selMaterials.length > 0) {
-      result = result.filter((p: any) => {
+      result = result.filter((p) => {
         const mats = Array.isArray(p.materials) ? p.materials : []
-        return mats.some((m: any) => {
-          const name = typeof m === 'object' && m !== null ? m.name : m
-          return selMaterials.includes(String(name))
-        })
+        return mats.some((m) => selMaterials.includes(relationName(m)))
       })
     }
     if (selApplications.length > 0) {
-      result = result.filter((p: any) => {
+      result = result.filter((p) => {
         const apps = Array.isArray(p.applications) ? p.applications : []
-        return apps.some((a: any) => {
-          const name = typeof a === 'object' && a !== null ? a.name : a
-          return selApplications.includes(String(name))
-        })
+        return apps.some((a) => selApplications.includes(relationName(a)))
       })
     }
     if (selDiameters.length > 0) {
-      result = result.filter((p: any) => {
+      result = result.filter((p) => {
         const bucket = diameterBucket(p.diameterMm)
         return selDiameters.includes(bucket)
       })
@@ -150,14 +170,15 @@ export function ProductsClient({
               {filteredProducts.length > 0 ? (
                 <>
                   <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                    {pagedProducts.map((product: any) => {
+                    {pagedProducts.map((product) => {
                       const cardImageUrl: string | null =
                         typeof product.image === 'object' && product.image?.url
                           ? product.image.url
                           : null
                       const primaryMaterialLabel = (() => {
                         const m = product.materials?.[0]
-                        return (typeof m === 'object' && m !== null ? m.name : m) || t.products.card.universal
+                        const name = typeof m === 'object' && m !== null ? m.name : m
+                        return (name || t.products.card.universal) as string
                       })()
                       return (
                         <Link

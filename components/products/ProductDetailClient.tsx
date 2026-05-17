@@ -274,7 +274,7 @@ export function ProductDetailClient({
                 {specs.slice(0, 3).map((spec) => (
                   <div key={spec.label} className="border border-white/10 bg-white/5 p-4 text-center">
                     <p className="text-xs font-semibold text-white/40">{spec.label}</p>
-                    <p className="font-mono mt-1 font-sans text-lg font-bold text-white">{spec.value}</p>
+                    <p className="font-mono mt-1 text-lg font-bold text-white">{spec.value}</p>
                   </div>
                 ))}
               </div>
@@ -368,7 +368,7 @@ export function ProductDetailClient({
                   </div>
                   <div>
                     <p className="text-xs font-bold tracking-wider text-ink-faint">{spec.label}</p>
-                    <p className="font-mono mt-0.5 font-sans text-lg font-bold text-navy">{spec.value}</p>
+                    <p className="font-mono mt-0.5 text-lg font-bold text-navy">{spec.value}</p>
                   </div>
                 </div>
               ))}

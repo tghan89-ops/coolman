@@ -1,11 +1,10 @@
-// lib/pricing/display-mode.ts
-//
-// Legacy server-safe pricing-mode helper retained for non-catalogue surfaces
-// (e.g. the cart/checkout server flows) that still resolve a coarse mode from
-// the session. The catalogue and product detail pages now read raw flags
-// (`isLoggedIn`, `emailVerified`, `tierDiscountPct`) and pass them straight to
-// `PriceStackCard`, which is the only component allowed to render product
-// price text. Do not introduce new callers — prefer `PriceStackCard` directly.
+/**
+ * Legacy price-display branch resolver. Kept only to satisfy
+ * `lib/__tests__/pricing-display.test.ts`. All live render paths now
+ * use `resolveBranch` from `components/catalogue/PriceStackCard.tsx`.
+ * Delete this file and its test in a follow-up once we confirm no
+ * indirect imports remain.
+ */
 
 export type PriceDisplayMode = 'public' | 'unverified' | 'verifiedNoTier' | 'verifiedWithTier'
 

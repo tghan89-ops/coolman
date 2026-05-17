@@ -47,6 +47,19 @@ describe('PriceStackCard.resolveBranch', () => {
     ).toBe<PriceStackBranch>('list-only')
   })
 
+  it('verified with NaN/Infinity/non-finite tier coerces to "list-only" (defensive)', () => {
+    // NaN <= 0 is false in JS, so a plain comparison would let a bad tier
+    // slip through and render "RM NaN" in the stack-up branch. Number.isFinite
+    // catches NaN, Infinity, and -Infinity. Burned 2026-05-17 — see code-
+    // quality review.
+    expect(
+      resolveBranch({ isLoggedIn: true, emailVerified: true, tierDiscountPct: Number.NaN }),
+    ).toBe<PriceStackBranch>('list-only')
+    expect(
+      resolveBranch({ isLoggedIn: true, emailVerified: true, tierDiscountPct: Number.POSITIVE_INFINITY }),
+    ).toBe<PriceStackBranch>('list-only')
+  })
+
   it('verified with a positive tier → "stack-up"', () => {
     expect(
       resolveBranch({ isLoggedIn: true, emailVerified: true, tierDiscountPct: 0.05 }),
