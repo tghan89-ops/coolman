@@ -202,6 +202,7 @@ export interface CopyStructure {
       motorPowerLabel: string
       maxDiameterLabel: string
       weightLabel: string
+      anchorLabel: string
       rpmRangeLabel: string
       keyFeaturesLabel: string
       startingFromLabel: string
@@ -212,6 +213,8 @@ export interface CopyStructure {
       ctaTitle: string
       ctaMessage: string
       ctaButton: string
+      emptyStateHeadline: string
+      emptyStateBody: string
     }
   }
   products: {
@@ -998,6 +1001,7 @@ export const COPY: Record<Language, CopyStructure> = {
         motorPowerLabel: 'Motor Power',
         maxDiameterLabel: 'Max Diameter',
         weightLabel: 'Weight',
+        anchorLabel: 'Anchor',
         rpmRangeLabel: 'RPM Range',
         keyFeaturesLabel: 'KEY FEATURES',
         startingFromLabel: 'Starting from',
@@ -1008,6 +1012,8 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaTitle: 'Want a Shibuya Demo?',
         ctaMessage: 'Speak to our team for a live walkthrough and pricing.',
         ctaButton: 'Request a Demo',
+        emptyStateHeadline: 'Roster coming soon',
+        emptyStateBody: 'The Shibuya range is being prepared. Speak to our team for a live walkthrough.',
       },
     },
     products: {
@@ -1970,6 +1976,7 @@ export const COPY: Record<Language, CopyStructure> = {
         motorPowerLabel: 'Kuasa Motor',
         maxDiameterLabel: 'Diameter Maksimum',
         weightLabel: 'Berat',
+        anchorLabel: 'Pengangkur',
         rpmRangeLabel: 'Julat RPM',
         keyFeaturesLabel: 'CIRI UTAMA',
         startingFromLabel: 'Bermula dari',
@@ -1980,6 +1987,8 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaTitle: 'Mahukan Demo Shibuya?',
         ctaMessage: 'Bercakap dengan pasukan kami untuk tunjuk cara langsung dan harga.',
         ctaButton: 'Minta Demo',
+        emptyStateHeadline: 'Senarai akan datang',
+        emptyStateBody: 'Rangkaian Shibuya sedang disediakan. Bercakap dengan pasukan kami untuk tunjuk cara langsung.',
       },
     },
     products: {

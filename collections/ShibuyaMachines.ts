@@ -5,10 +5,6 @@ const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to Engl
 // Shibuya machine roster as its own top-level collection. Lifted from the
 // `machines` array previously embedded inside the ShibuyaPage global so each
 // machine becomes addressable and can later relate to compatible blades.
-//
-// The legacy ShibuyaPage.machines array stays in place until /shibuya is
-// rewired to read from this collection (next commit). Once the page swap
-// lands, the global's array becomes dead config and is removed.
 export const ShibuyaMachines: CollectionConfig = {
   slug: 'shibuya-machines',
   admin: {
@@ -93,6 +89,19 @@ export const ShibuyaMachines: CollectionConfig = {
       name: 'weight',
       type: 'text',
       admin: { description: 'e.g. 12kg. Numeric/spec value shown in both languages — not translated.' },
+    },
+    {
+      name: 'anchor',
+      type: 'text',
+      admin: {
+        description:
+          'English label for how the rig anchors to the slab e.g. "Vacuum or stud". Surfaces in the spec tile row.',
+      },
+    },
+    {
+      name: 'anchorBM',
+      type: 'text',
+      admin: bmDesc,
     },
     {
       name: 'rpm_range',

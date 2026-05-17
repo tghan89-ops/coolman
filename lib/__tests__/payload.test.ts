@@ -73,3 +73,44 @@ describe('getGlobal', () => {
     expect(result).toEqual(mockData)
   })
 })
+
+describe('getActiveShibuyaMachines', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns active machines sorted by display_order', async () => {
+    const mockMachines = [
+      { id: 1, model_id: 'ts-403', model_name: 'TS-403', display_order: 10 },
+      { id: 2, model_id: 'ts-602', model_name: 'TS-602', display_order: 20 },
+    ]
+    const findMock = vi.fn().mockResolvedValue({ docs: mockMachines })
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue({ find: findMock } as any)
+
+    const { getActiveShibuyaMachines } = await import('../payload')
+    const result = await getActiveShibuyaMachines()
+
+    expect(result).toHaveLength(2)
+    expect(result[0].model_id).toBe('ts-403')
+    // Sanity: filters by is_active and sorts by display_order.
+    expect(findMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        collection: 'shibuya-machines',
+        where: { is_active: { equals: true } },
+        sort: 'display_order',
+      }),
+    )
+  })
+
+  it('returns [] when Payload throws (e.g. fresh DB without the collection)', async () => {
+    const { getPayload } = await import('payload')
+    vi.mocked(getPayload).mockResolvedValue({
+      find: vi.fn().mockRejectedValue(new Error('relation does not exist')),
+    } as any)
+
+    const { getActiveShibuyaMachines } = await import('../payload')
+    const result = await getActiveShibuyaMachines()
+    expect(result).toEqual([])
+  })
+})

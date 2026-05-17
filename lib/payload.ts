@@ -148,6 +148,53 @@ export async function getActiveDealers(): Promise<RawDealerRow[]> {
   }
 }
 
+// Raw row shape from the Payload `shibuya-machines` collection. Mirrors the
+// snake_case fields on the collection. Optional+nullable everywhere except
+// `id` for the same reason as RawDealerRow — Payload tolerates partial admin
+// rows, and the runtime filter at the server boundary (in `app/(frontend)/
+// shibuya/page.tsx`) is what guarantees the trimmed `ShibuyaMachine` shape
+// passed to the client component.
+export type RawShibuyaMachineRow = {
+  id: string | number
+  model_id?: string | null
+  model_name?: string | null
+  tagline?: string | null
+  taglineBM?: string | null
+  bond_match?: string | null
+  bond_matchBM?: string | null
+  description?: string | null
+  descriptionBM?: string | null
+  motor_power?: string | null
+  max_diameter?: string | null
+  weight?: string | null
+  rpm_range?: string | null
+  anchor?: string | null
+  anchorBM?: string | null
+  price?: string | null
+  hero_image?: { url?: string | null; alt?: string | null } | string | number | null
+  features?: Array<{ feature?: string | null; featureBM?: string | null }> | null
+  display_order?: number | null
+}
+
+// Public-facing Shibuya machine roster: only return active rows, ordered by
+// display_order. Inactive machines stay in /admin for archival but never
+// render on /shibuya.
+export async function getActiveShibuyaMachines(): Promise<RawShibuyaMachineRow[]> {
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection: 'shibuya-machines',
+      where: { is_active: { equals: true } },
+      sort: 'display_order',
+      limit: 50,
+      depth: 1,
+    })
+    return result.docs as unknown as RawShibuyaMachineRow[]
+  } catch {
+    return []
+  }
+}
+
 export async function getAllPublishedPostSlugs(): Promise<string[]> {
   try {
     const payload = await getPayloadClient()
