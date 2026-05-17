@@ -103,13 +103,15 @@ async function seed() {
         await payload.update({
           collection: 'shibuya-machines',
           id,
-          data: m as any,
+          // Payload's generated type is internal; cast at the boundary, runtime shape is guaranteed by SeedMachine.
+          data: m as unknown as never,
         })
         console.log(`~ Updated: ${m.model_id} — ${m.model_name}`)
       } else {
         await payload.create({
           collection: 'shibuya-machines',
-          data: m as any,
+          // Payload's generated type is internal; cast at the boundary, runtime shape is guaranteed by SeedMachine.
+          data: m as unknown as never,
         })
         console.log(`+ Created: ${m.model_id} — ${m.model_name}`)
       }

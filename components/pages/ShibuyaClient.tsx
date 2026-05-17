@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ArrowDown, Play, Check } from 'lucide-react'
@@ -68,20 +68,20 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
     return machines[middleIdx].modelId
   }, [machines])
 
-  const [selectedModelId, setSelectedModelId] = useState<string | null>(defaultMachineId)
-
-  // Keep selection in sync if the roster reshapes (e.g. live admin publish).
-  useEffect(() => {
-    if (!selectedModelId && defaultMachineId) {
-      setSelectedModelId(defaultMachineId)
-    } else if (selectedModelId && !machines.some((m) => m.modelId === selectedModelId)) {
-      setSelectedModelId(defaultMachineId)
-    }
-  }, [machines, selectedModelId, defaultMachineId])
+  // Pure-derived selection: `userSelectedModelId` stores the user's last tab
+  // click (or null on first render). `effectiveModelId` falls back to the
+  // default whenever the user hasn't picked yet, or when their previous pick
+  // is no longer in the roster (e.g. live admin publish removed a machine).
+  // This avoids the one-render flicker that `useState` + `useEffect` caused.
+  const [userSelectedModelId, setUserSelectedModelId] = useState<string | null>(null)
+  const effectiveModelId =
+    userSelectedModelId && machines.some((m) => m.modelId === userSelectedModelId)
+      ? userSelectedModelId
+      : defaultMachineId
 
   const selectedMachine = useMemo(
-    () => machines.find((m) => m.modelId === selectedModelId) ?? null,
-    [machines, selectedModelId],
+    () => machines.find((m) => m.modelId === effectiveModelId) ?? null,
+    [machines, effectiveModelId],
   )
 
   // ── Hero ────────────────────────────────────────────────────────────────────
@@ -342,14 +342,14 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
                 aria-label={t.pages.shibuya.modelsHeadline}
               >
                 {machines.map((machine) => {
-                  const isActive = selectedModelId === machine.modelId
+                  const isActive = effectiveModelId === machine.modelId
                   return (
                     <button
                       key={machine.modelId}
                       type="button"
                       role="tab"
                       aria-selected={isActive}
-                      onClick={() => setSelectedModelId(machine.modelId)}
+                      onClick={() => setUserSelectedModelId(machine.modelId)}
                       className={cn(
                         'px-6 py-3 text-sm font-medium min-h-[44px] transition-colors',
                         isActive ? 'bg-white text-shibuya-ink' : 'text-white/50 hover:text-white',
@@ -417,9 +417,9 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
                       <div className="mt-12">
                         <p className="mb-4 text-sm font-medium text-white/40">{t.pages.shibuya.keyFeaturesLabel}</p>
                         <ul className="grid gap-3 sm:grid-cols-2">
-                          {selectedMachine.features.map((featureObj) => (
+                          {selectedMachine.features.map((featureObj, idx) => (
                             <li
-                              key={featureObj.feature}
+                              key={`${selectedMachine.modelId}-feature-${idx}`}
                               className="flex items-center gap-3 text-sm text-white/70"
                             >
                               <Check className="h-4 w-4 flex-shrink-0 text-accent" />
