@@ -149,6 +149,25 @@ See `BRIEF.md` → Open Questions section. Do not build any feature that depends
 
 ---
 
+## Content sources — where Alan's drafts live
+
+Alan's content drafts (Sessions 1–4) live at the project root in [`content-drafts/`](../content-drafts/). See [`content-drafts/README.md`](../content-drafts/README.md) for filename conventions and which session covers which surface.
+
+Authority chain when porting copy to a page:
+
+1. **Content draft** (in `content-drafts/`) wins on copy + section flow.
+2. **Open-Design HTML** (project-root `*.html` files) wins on visual posture only.
+3. **`BRAND-VOICE.md`** governs words across everything — when it contradicts a content draft, the content draft wins for that surface AND `BRAND-VOICE.md` is updated in the same commit to absorb the new authority. Never leave drift in place.
+
+Before touching a page, check `content-drafts/` for the relevant session file. If it isn't there yet, stop and flag — do not fabricate Alan's voice.
+
+Phase gating:
+- Phase B (home, /heritage, Field Notes, etc.) needs Sessions 1 + 2.
+- `/why-coolman` Engineering Folio needs Session 3.
+- Catalogue intro, product page template, contact / trade pages, SEO meta need Session 4.
+
+---
+
 ## Design System — read before any UI work
 
 Single source of truth: [`b_hEdh3FcwxmZ/DESIGN.md`](b_hEdh3FcwxmZ/DESIGN.md). Posture is **Industrial Premium** (Hilti × Husqvarna anchors). Tokens live in [`b_hEdh3FcwxmZ/app/globals.css`](b_hEdh3FcwxmZ/app/globals.css). Canonical preview: [`design-preview-b.html`](design-preview-b.html).

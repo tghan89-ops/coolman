@@ -2311,10 +2311,10 @@ export const COPY: Record<Language, CopyStructure> = {
       workshopDay: {
         eyebrow: 'Hari ia berhenti menjadi bengkel',
         headline: 'Sebuah kerja pancang yang berakhir dengan reka bentuk semula.',
-        note: 'Tahun TBA. Alan untuk sahkan tahun.',
+        note: 'Tahun TBC. Alan untuk sahkan tahun.',
         body: [
           'Seorang kontraktor di Shah Alam menelefon pada jam 11 malam. Bilah yang kami jual kepadanya pada pagi itu tidak dapat menembusi pancang kedua. Alan memandu ke tapak. Beliau melihat potongan itu. Agregat lebih tajam daripada yang spesifikasi ramalkan. Ikatan bilah itu salah.',
-          'Bilah itu direka semula dalam empat minggu seterusnya. Formulasi baru, sandwic kobalt, menjadi asas barisan CM-X hari ini. Bengkel itu menjadi pengeluar pada hari Alan menerima kontraktor itu betul dan helaian spesifikasi itu salah. (Tahun TBA. Alan untuk sahkan tahun.)',
+          'Bilah itu direka semula dalam empat minggu seterusnya. Formulasi baru, sandwic kobalt, menjadi asas barisan CM-X hari ini. Bengkel itu menjadi pengeluar pada hari Alan menerima kontraktor itu betul dan helaian spesifikasi itu salah. (Tahun TBC. Alan untuk sahkan tahun.)',
         ],
       },
       shibuyaYears: {
@@ -2347,9 +2347,9 @@ export const COPY: Record<Language, CopyStructure> = {
         events: [
           { year: '1998', title: 'Alan memasuki bidang pemotongan', body: 'Sembilan tahun menjual bilah syarikat lain bermula.' },
           { year: '2007', title: 'Coolman diasaskan di Petaling Jaya', body: 'Dua mesin penekan segmen, sebuah meja, sebuah telefon.' },
-          { year: 'TBA', title: 'Formulasi sandwic kobalt dibangunkan', body: 'Selepas sebuah kerja pancang di Shah Alam mengajar kami spesifikasi adalah salah.', note: 'Alan untuk sahkan tahun' },
+          { year: 'TBC', title: 'Formulasi sandwic kobalt dibangunkan', body: 'Selepas sebuah kerja pancang di Shah Alam mengajar kami spesifikasi adalah salah.', note: 'Alan untuk sahkan tahun' },
           { year: '2014', title: 'Pengedaran eksklusif Shibuya ditandatangani', body: 'Diperbaharui setiap tahun sejak itu.' },
-          { year: 'TBA', title: 'Pensijilan SIRIM dianugerahkan', body: 'Pengesahan bebas spesifikasi ikatan kami.', note: 'Alan untuk sahkan tahun' },
+          { year: 'TBC', title: 'Pensijilan SIRIM dianugerahkan', body: 'Pengesahan bebas spesifikasi ikatan kami.', note: 'Alan untuk sahkan tahun' },
           { year: '2026', title: '247 SKU dalam stok, ~500 akaun aktif', body: '96% hantar tepat waktu. Hadang hari sama jam 2 petang.' },
         ],
       },
@@ -2625,7 +2625,7 @@ export const COPY: Record<Language, CopyStructure> = {
       accounts: { value: '~500', label: 'Akaun aktif' },
     },
     legal: {
-      privacy: { title: 'Privasi', lede: 'Bagaimana Coolman mengendalikan maklumat peribadi kontraktor, pengedar dan pelawat tapak. Bahasa Inggeris yang jelas. Tiada kejutan.' },
+      privacy: { title: 'Privasi', lede: 'Bagaimana Coolman mengendalikan maklumat peribadi kontraktor, pengedar dan pelawat tapak. Bahasa yang jelas. Tiada kejutan.' },
       terms: { title: 'Terma jualan', lede: 'Terma di bawah mana Coolman Malaysia Sdn Bhd menjual alat pemotong berlian kepada pelanggan perdagangan dan Brotherhood di Malaysia.' },
       returns: { title: 'Pemulangan dan jaminan', lede: 'Bagaimana untuk memulangkan bilah Coolman, apa yang dilindungi oleh jaminan, dan apa yang perlu dibuat jika bilah gagal sebelum hayatnya yang dinilai.' },
       cookies: { title: 'Notis kuki', lede: 'Kuki yang digunakan tapak kami, apa yang mereka buat, dan bagaimana untuk mematikannya jika anda lebih suka.' },

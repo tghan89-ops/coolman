@@ -90,6 +90,8 @@ The site uses three fixed Chinese pull-quotes as inline design elements. They ar
 
 When BRAND-VOICE.md and any copy file disagree, BRAND-VOICE.md wins — fix the copy in the same commit.
 
-When BRAND-VOICE.md and a future Coolman content drop disagree (Session 1, 2, 3, 4 brand voice deliveries from Alan), the content drop wins for that surface — and BRAND-VOICE.md is updated in the same commit to absorb the new authority. Never leave a drift in place.
+When BRAND-VOICE.md and a Coolman content drop disagree (Sessions 1–4 from Alan, stored at [`../content-drafts/`](../content-drafts/)), the content drop wins for that surface — and BRAND-VOICE.md is updated in the same commit to absorb the new authority. Never leave a drift in place.
+
+Before porting any page copy, check `content-drafts/` for the relevant session file. Filename conventions and which session covers which surface are documented in that folder's README.
 
 DESIGN.md governs tokens. BRAND-VOICE.md governs words. CLAUDE.md governs everything that crosses both.
