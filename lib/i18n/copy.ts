@@ -601,37 +601,33 @@ export interface CopyStructure {
     currency: string
   }
   footer: {
-    tagline: string
-    quickLinks: string
-    contact: string
-    email: string
-    phone: string
-    address: string
-    copyright: string
-    brandStory: string
-    diamondToolsHeading: string
-    shibuyaHeading: string
-    companyHeading: string
-    openAccountHeading: string
-    becomePartner: string
-    joinBlurb: string
-    privacyPolicy: string
-    termsOfService: string
-    bottomCopyright: string
-    links: {
-      allDiamondTools: string
-      diamondBlades: string
-      diamondCoreBits: string
-      polishingPads: string
-      shibuyaCoreDrills: string
-      tsHandheld: string
-      tsIndustrial: string
-      spareParts: string
-      whyCoolman: string
-      applications: string
-      resources: string
-      contact: string
+    // Session 4 Part 3 — three-column footer + base bar. Minimalist; the
+    // footer is functional, not decorative.
+    columns: {
+      reachCoolman: {
+        heading: string
+        items: Array<{ primary: string; secondary: string; href: string }>
+      }
+      readAndLearn: {
+        heading: string
+        items: Array<{ primary: string; secondary: string; href: string }>
+      }
+      catalogueAndTrade: {
+        heading: string
+        items: Array<{ primary: string; secondary: string; href: string }>
+      }
     }
+    baseBar: {
+      manufacturedIn: string
+      distributorLineTemplate: string
+      legalLinks: {
+        privacy: string
+        terms: string
+        returns: string
+        cookies: string
+      }
+    }
+    rightsReservedSuffix: string
   }
   manifesto: {
     line1: string
@@ -1817,37 +1813,46 @@ export const COPY: Record<Language, CopyStructure> = {
       currency: 'RM',
     },
     footer: {
-      tagline: 'Premium diamond tools for professionals',
-      quickLinks: 'Quick Links',
-      contact: 'Contact Us',
-      email: 'sales@coolman.com.my',
-      phone: '+6012-6363156',
-      address: 'Petaling Jaya, Malaysia',
-      copyright: '© 2026 Coolman. All rights reserved.',
-      brandStory: 'Diamond cutting tools, designed in Malaysia for Malaysia. Built in Petaling Jaya since 2007 by contractors, for contractors.',
-      diamondToolsHeading: 'Diamond Tools',
-      shibuyaHeading: 'Shibuya',
-      companyHeading: 'Company',
-      openAccountHeading: 'Open an account',
-      becomePartner: 'Become a Partner',
-      joinBlurb: 'Join 500+ contractors and access exclusive B2B pricing.',
-      privacyPolicy: 'Privacy Policy',
-      termsOfService: 'Terms of Service',
-      bottomCopyright: 'Coolman Malaysia Sdn Bhd. All rights reserved.',
-      links: {
-        allDiamondTools: 'All Diamond Tools',
-        diamondBlades: 'Diamond Blades',
-        diamondCoreBits: 'Diamond Core Bits',
-        polishingPads: 'Polishing Pads',
-        shibuyaCoreDrills: 'Shibuya Core Drills',
-        tsHandheld: 'TS-132 Handheld',
-        tsIndustrial: 'TS-252 Industrial',
-        spareParts: 'Spare Parts',
-        whyCoolman: 'Why Coolman',
-        applications: 'Applications',
-        resources: 'Resources',
-        contact: 'Contact',
+      columns: {
+        reachCoolman: {
+          heading: 'Reach Coolman',
+          items: [
+            { primary: 'Engineering desk', secondary: 'WhatsApp', href: '/contact' },
+            { primary: 'Office', secondary: 'Monday to Saturday', href: '/contact' },
+            { primary: 'Site visit', secondary: 'Request a visit', href: '/contact' },
+            { primary: 'Petaling Jaya', secondary: 'Selangor', href: '/contact' },
+          ],
+        },
+        readAndLearn: {
+          heading: 'Read and learn',
+          items: [
+            { primary: 'Heritage', secondary: 'The story since 2007', href: '/heritage' },
+            { primary: 'Engineering Folio', secondary: 'Our point of view', href: '/why-coolman' },
+            { primary: 'Field Notes', secondary: "Cuts we've made", href: '/field-notes' },
+            { primary: 'The Brotherhood', secondary: 'Dealer philosophy', href: '/brotherhood' },
+          ],
+        },
+        catalogueAndTrade: {
+          heading: 'Catalogue and trade',
+          items: [
+            { primary: 'Browse the catalogue', secondary: '247 SKUs', href: '/products' },
+            { primary: 'Blade finder', secondary: 'By material', href: '/products' },
+            { primary: 'Trade account', secondary: 'Sign in', href: '/auth/login' },
+            { primary: 'Apply to carry Coolman', secondary: 'Dealer enquiry', href: '/trade' },
+          ],
+        },
       },
+      baseBar: {
+        manufacturedIn: 'Manufactured in Petaling Jaya, Malaysia',
+        distributorLineTemplate: '{legalEntity} is the sole Malaysian distributor for Shibuya KK, Tokyo.',
+        legalLinks: {
+          privacy: 'Privacy',
+          terms: 'Terms of sale',
+          returns: 'Returns and warranty',
+          cookies: 'Cookies',
+        },
+      },
+      rightsReservedSuffix: 'All rights reserved.',
     },
     manifesto: {
       line1: "A blade is the answer to a question the contractor hasn't fully asked yet.",
@@ -3205,37 +3210,46 @@ export const COPY: Record<Language, CopyStructure> = {
       currency: 'RM',
     },
     footer: {
-      tagline: 'Alat berlian premium untuk profesional',
-      quickLinks: 'Pautan Pantas',
-      contact: 'Hubungi Kami',
-      email: 'sales@coolman.com.my',
-      phone: '+6012-6363156',
-      address: 'Petaling Jaya, Malaysia',
-      copyright: '© 2026 Coolman. Hak cipta terpelihara.',
-      brandStory: 'Alat pemotong berlian, direka di Malaysia untuk Malaysia. Dibina di Petaling Jaya sejak 2007 oleh kontraktor, untuk kontraktor.',
-      diamondToolsHeading: 'Alat Berlian',
-      shibuyaHeading: 'Shibuya',
-      companyHeading: 'Syarikat',
-      openAccountHeading: 'Buka akaun',
-      becomePartner: 'Jadi Rakan Kongsi',
-      joinBlurb: 'Sertai 500+ kontraktor dan dapatkan harga B2B eksklusif.',
-      privacyPolicy: 'Dasar Privasi',
-      termsOfService: 'Terma Perkhidmatan',
-      bottomCopyright: 'Coolman Malaysia Sdn Bhd. Hak cipta terpelihara.',
-      links: {
-        allDiamondTools: 'Semua Alat Berlian',
-        diamondBlades: 'Bilah Berlian',
-        diamondCoreBits: 'Mata Teras Berlian',
-        polishingPads: 'Pad Penggilap',
-        shibuyaCoreDrills: 'Penggerudi Teras Shibuya',
-        tsHandheld: 'TS-132 Pegang Tangan',
-        tsIndustrial: 'TS-252 Industri',
-        spareParts: 'Alat Ganti',
-        whyCoolman: 'Kenapa Coolman',
-        applications: 'Aplikasi',
-        resources: 'Sumber',
-        contact: 'Hubungi',
+      columns: {
+        reachCoolman: {
+          heading: 'Hubungi Coolman',
+          items: [
+            { primary: 'Meja kejuruteraan', secondary: 'WhatsApp', href: '/contact' },
+            { primary: 'Pejabat', secondary: 'Isnin hingga Sabtu', href: '/contact' },
+            { primary: 'Lawatan tapak', secondary: 'Minta lawatan', href: '/contact' },
+            { primary: 'Petaling Jaya', secondary: 'Selangor', href: '/contact' },
+          ],
+        },
+        readAndLearn: {
+          heading: 'Baca dan pelajari',
+          items: [
+            { primary: 'Warisan', secondary: 'Kisah sejak 2007', href: '/heritage' },
+            { primary: 'Folio Kejuruteraan', secondary: 'Pandangan kami', href: '/why-coolman' },
+            { primary: 'Field Notes', secondary: 'Potongan yang kami lakukan', href: '/field-notes' },
+            { primary: 'The Brotherhood', secondary: 'Falsafah pengedar', href: '/brotherhood' },
+          ],
+        },
+        catalogueAndTrade: {
+          heading: 'Katalog dan perdagangan',
+          items: [
+            { primary: 'Lihat katalog', secondary: '247 SKU', href: '/products' },
+            { primary: 'Pencari bilah', secondary: 'Mengikut bahan', href: '/products' },
+            { primary: 'Akaun perdagangan', secondary: 'Daftar masuk', href: '/auth/login' },
+            { primary: 'Mohon membawa Coolman', secondary: 'Pertanyaan pengedar', href: '/trade' },
+          ],
+        },
       },
+      baseBar: {
+        manufacturedIn: 'Dibuat di Petaling Jaya, Malaysia',
+        distributorLineTemplate: '{legalEntity} ialah pengedar tunggal Malaysia bagi Shibuya KK, Tokyo.',
+        legalLinks: {
+          privacy: 'Privasi',
+          terms: 'Terma jualan',
+          returns: 'Pemulangan dan jaminan',
+          cookies: 'Kuki',
+        },
+      },
+      rightsReservedSuffix: 'Hak cipta terpelihara.',
     },
     manifesto: {
       line1: 'Bilah adalah jawapan kepada soalan yang belum sepenuhnya ditanya oleh kontraktor.',

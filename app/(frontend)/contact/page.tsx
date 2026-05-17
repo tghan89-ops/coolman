@@ -1,4 +1,5 @@
 import { getGlobal } from '@/lib/payload'
+import { COPY } from '@/lib/i18n/copy'
 import {
   ContactClient,
   type RawContactPage,
@@ -6,6 +7,14 @@ import {
 } from '@/components/pages/ContactClient'
 
 export const revalidate = 60
+
+export async function generateMetadata() {
+  const meta = COPY.EN.seo.contact
+  return {
+    title: meta.title,
+    description: meta.description,
+  }
+}
 
 export default async function ContactPage() {
   // `settings` is admin-restricted (see globals/Settings.ts). The public contact

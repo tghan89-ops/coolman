@@ -4,6 +4,8 @@ import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/lib/i18n/context'
 import { AuthProvider } from '@/lib/auth/context'
 import { CartProvider } from '@/lib/cart/context'
+import { SettingsProvider, type PublicSettings } from '@/lib/settings/context'
+import { getGlobal } from '@/lib/payload'
 import '../globals.css'
 
 const plexSans = IBM_Plex_Sans({
@@ -38,21 +40,43 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export default function FrontendLayout({
+export default async function FrontendLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Fetch settings once at the layout boundary so every client surface
+  // (footer, WhatsApp buttons, kill-switch banners) reads the same source of
+  // truth without each page re-fetching. `overrideAccess: true` because
+  // Settings is admin-restricted by access control (see globals/Settings.ts).
+  const settingsRaw = await getGlobal('settings', { overrideAccess: true }).catch(
+    () => null,
+  )
+  const initialSettings: Partial<PublicSettings> | null = settingsRaw
+    ? {
+        legal_entity_name: (settingsRaw as { legal_entity_name?: string | null })
+          .legal_entity_name ?? undefined,
+        whatsapp_number: (settingsRaw as { whatsapp_number?: string | null })
+          .whatsapp_number ?? undefined,
+        inventory_on_time_pct: (settingsRaw as { inventory_on_time_pct?: number | null })
+          .inventory_on_time_pct ?? undefined,
+        inventory_dispatch_cutoff: (settingsRaw as { inventory_dispatch_cutoff?: string | null })
+          .inventory_dispatch_cutoff ?? undefined,
+      }
+    : null
+
   return (
     <html lang="en" className="bg-background" data-scroll-behavior="smooth">
       <body className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} font-sans antialiased`}>
-        <LanguageProvider>
-          <AuthProvider>
-            <CartProvider>
-              {children}
-            </CartProvider>
-          </AuthProvider>
-        </LanguageProvider>
+        <SettingsProvider initialSettings={initialSettings}>
+          <LanguageProvider>
+            <AuthProvider>
+              <CartProvider>
+                {children}
+              </CartProvider>
+            </AuthProvider>
+          </LanguageProvider>
+        </SettingsProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

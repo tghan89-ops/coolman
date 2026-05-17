@@ -9,6 +9,14 @@ import type { FilterGroup } from '@/components/catalogue/FilterSidebar'
 // We trade the ISR cache for per-contractor pricing accuracy.
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata() {
+  const meta = COPY.EN.seo.catalogue
+  return {
+    title: meta.title,
+    description: meta.description,
+  }
+}
+
 // Diameter buckets are 100mm increments from 100mm to 900mm. Anything outside
 // that range (or with no diameterMm value) falls into the 'other' bucket. The
 // raw diameter spread is 100–600mm in current seed data, so the upper end
