@@ -1,9 +1,17 @@
-import { getGlobal } from '@/lib/payload'
+import { getGlobal, getPublishedPosts } from '@/lib/payload'
 import { HomePageClient } from '@/components/home/HomePageClient'
 
 export const revalidate = 60
 
 export default async function HomePage() {
-  const homeData = await getGlobal('home-page')
-  return <HomePageClient initialData={homeData} />
+  const [settings, publishedPosts] = await Promise.all([
+    getGlobal('settings'),
+    getPublishedPosts(3),
+  ])
+  return (
+    <HomePageClient
+      settings={settings ?? {}}
+      publishedPostsCount={publishedPosts.length}
+    />
+  )
 }
