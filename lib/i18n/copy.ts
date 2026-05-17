@@ -117,7 +117,61 @@ export interface CopyStructure {
     }
     whyCoolman: {
       hero: { eyebrow: string; title: string; titleEmphasis: string; lede: string }
-      placeholder: { eyebrow: string; headline: string; body: string; fieldNotesCtaLabel: string }
+      folio01: {
+        folioLabel: string
+        category: string
+        title: string
+        titleEmphasis: string
+        summary: string
+        metaAuthor: string
+        metaSubject: string
+        metaRead: string
+        intro: { heading: string; paragraphs: string[] }
+        myths: Array<{
+          label: string
+          title: string
+          claim: string
+          paragraphs: string[]
+          pullquote?: string
+          coda?: { heading: string; paragraphs: string[] }
+        }>
+        bridgeQuote: string
+        coda: { heading: string; paragraphs: string[] }
+      }
+      folio02: {
+        folioLabel: string
+        category: string
+        title: string
+        titleEmphasis: string
+        summary: string
+        metaAuthor: string
+        metaSubject: string
+        metaRead: string
+        sections: Array<{ heading: string; paragraphs: string[]; pullquote?: string }>
+        bridgeQuote: string
+        coda: { heading: string; paragraphs: string[] }
+      }
+      folio03: {
+        folioLabel: string
+        category: string
+        title: string
+        titleEmphasis: string
+        summary: string
+        metaAuthor: string
+        metaSubject: string
+        metaRead: string
+        sections: Array<{ heading: string; paragraphs: string[]; pullquote?: string }>
+        bridgeQuote: string
+        coda: { heading: string; paragraphs: string[] }
+      }
+      closingCta: {
+        eyebrow: string
+        title: string
+        titleEmphasis: string
+        body: string
+        whatsappCtaLabel: string
+        fieldNotesCtaLabel: string
+      }
     }
     resources: {
       heroEyebrow: string
@@ -1045,16 +1099,276 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       whyCoolman: {
         hero: {
-          eyebrow: 'Why Coolman',
-          title: 'The engineering folio',
-          titleEmphasis: 'arrives next.',
-          lede: 'Three myths the cutting industry still teaches. The Malaysian aggregate question. The Brotherhood System. Written long-form, with the cross-sections.',
+          eyebrow: 'Engineering Folio',
+          title: 'Three arguments.',
+          titleEmphasis: 'One trade.',
+          lede: 'Three long-form pieces that establish where Coolman stands on the cutting trade. The three myths the industry still teaches. The case for matching bonds to Malaysian aggregate. The Brotherhood System philosophy. Written long-form, with the cross-sections.',
         },
-        placeholder: {
-          eyebrow: 'Coming soon',
-          headline: 'Engineering Folio in preparation.',
-          body: 'The long-form pieces that make up the Engineering Folio are still being drafted. While we finish them, the same technical thinking shows up in Field Notes. Three jobs that taught us how to make a better blade, written as they happened.',
-          fieldNotesCtaLabel: 'Read Field Notes',
+        folio01: {
+          folioLabel: 'Engineering Folio №01',
+          category: 'Industry position · Long read',
+          title: 'Three things the cutting trade keeps',
+          titleEmphasis: 'getting wrong.',
+          summary: 'After nearly thirty years in the Malaysian diamond tools industry, three beliefs are repeated so often they sound like wisdom. They are not. Each one has cost contractors money, dealers their margins, and the industry its reputation. This is a long argument about three short myths.',
+          metaAuthor: 'Coolman Engineering',
+          metaSubject: 'Industry positioning',
+          metaRead: '14 min read',
+          intro: {
+            heading: 'A word on the people who repeat them',
+            paragraphs: [
+              'The three myths below are not the views of bad people. They are the views of competent, experienced, often well-intentioned people in the Malaysian cutting trade. We have worked with them, sold to them, bought from them. We were taught some of these views ourselves, in our first years in the industry, before we had seen enough sites to know better.',
+              'The reason to write this piece is not to score points. It is to make explicit what most contractors already half-know, and to give them the language to push back the next time a supplier repeats one of these myths in their direction.',
+              'The myths are repeated for a reason. They are simple. They are repeatable. They survive in supplier sales scripts because they let the supplier avoid harder conversations. Each one looks like a fact and is actually a habit. Habits, in this trade, become culture. The culture in the Malaysian diamond tools market has, for at least two decades, been settling into shapes that no longer serve the contractors paying the bills.',
+              'What follows is a long argument with three short conclusions. Read it slowly. Then the next time a supplier tells you one of these things on a sales call, you will have a reply.',
+            ],
+          },
+          myths: [
+            {
+              label: 'Myth №01',
+              title: 'Customers only look at price.',
+              claim: '"Malaysian contractors are price-driven. They will always choose the cheapest blade. There is no point trying to compete on quality."',
+              paragraphs: [
+                'This is the foundational myth of the Malaysian cutting industry. It is repeated by suppliers who have not visited a site in years, by dealers who do not understand their own customers, and by importers explaining why they sell on price.',
+                'It is not true.',
+                'What is true is that contractors will say they only care about price. Suppliers hear this on every sales call. The contractor pushes for a discount, complains the quote is too high, threatens to go elsewhere. The supplier concludes, reasonably, that price is the variable that matters.',
+                'Watch what happens next, though. Watch what contractors actually fear.',
+                'They fear the project delaying. They fear segments exploding mid-cut. They fear cutting that does not progress. They fear machine damage. They fear workers idling. They fear being scolded by the main contractor. They fear losing the next job. They fear, in some cases, being blacklisted from an entire developer’s project pipeline.',
+                'None of these fears is a fear about the price of the blade.',
+                'The blade price is, in the grand structure of a project’s cost, almost nothing. A blade is three hundred ringgit, maybe eight hundred for the larger sizes, occasionally more for the specialist work. A day of delay on a Klang Valley piling project can be ten thousand ringgit in penalties before you have counted the standing-around cost of workers and machines. A blacklisted subcontractor can lose a six-figure annual revenue stream.',
+                'What contractors are actually asking when they push for a lower price is a different question than the one they appear to be asking. They are asking: can I trust this supplier? Will this blade hold up? Will I be supported if it does not? Price is a proxy for the entire trust relationship. Pushing for a lower price is one of the few signals a contractor can give a supplier without losing face.',
+              ],
+              pullquote: 'A more expensive blade is often the cheaper blade.',
+              coda: {
+                heading: 'What this means for buyers',
+                paragraphs: [
+                  'If you are a contractor reading this, the practical implication is straightforward: do the math. The next time a supplier offers you a 10% discount on a blade, calculate what 10% on three hundred ringgit actually is. Then compare it to the cost of an hour of project delay if the blade is wrong for the cut. The numbers do not justify the conversation.',
+                  'If you are a supplier reading this, the practical implication is harder. To stop competing on price requires you to compete on something else: application knowledge, site testing, machine matching, reliability of supply. None of these are quick wins. All of them are necessary if you intend to be in this trade for another decade.',
+                ],
+              },
+            },
+            {
+              label: 'Myth №02',
+              title: 'More dealers, more sales.',
+              claim: '"The way to grow a brand in Malaysia is to recruit more dealers. Give everyone maximum discount. Compete in every district. The largest dealer network wins."',
+              paragraphs: [
+                'This is the strategy nearly every diamond tools brand pursues in their first decade in Malaysia. It is also the strategy most of them later wish they could undo.',
+                'The logic of the dealer-maximisation approach is straightforward. Each new dealer is a sales channel. Each new sales channel reaches customers the brand was not reaching before. Therefore, more dealers means more sales. Simple.',
+                'The reality is more complicated. What happens, in year three or four of aggressive dealer recruitment, is that the dealers find themselves competing against each other for the same contractors. The contractors, in turn, learn to play the dealers against each other for price. The dealers’ margins compress. Some go bankrupt. The ones that survive cut their service levels to maintain margin. The brand’s reputation suffers because dealers are now under-supporting the products to stay alive.',
+                'By year five, the brand discovers it has done the opposite of what it intended. It has more dealers but lower total sales. It has wider distribution but weaker brand strength. It has more market presence but less brand loyalty. Its dealers, who should be its strongest advocates, are exhausted from price wars and unwilling to push the brand.',
+                'The brand has, in technical terms, destroyed its own distribution system by over-saturating it.',
+                'The reason this pattern persists, despite being well-known to anyone who has been in the industry for more than a decade, is that the alternative, dealer restraint, looks bad in early-stage growth reports. A brand that says "we have ten dealers, all profitable, all loyal" sounds smaller than a brand that says "we have fifty dealers across every state." Investors and head offices reward dealer count. They do not reward dealer health, until it is too late to recover the dealer health they have destroyed.',
+              ],
+              pullquote: 'A dealer system is a brand asset. Not a distribution problem.',
+              coda: {
+                heading: 'The Brotherhood alternative',
+                paragraphs: [
+                  'Coolman has, since its early years, run a different system. We call it the Brotherhood: a deliberate, long-term commitment between Coolman and a smaller number of dealers we trust and protect. Fewer dealers than the industry standard. Each dealer protected against direct competition from other Coolman dealers in their territory. Margins maintained at a level that allows real investment in technical staff and after-sales service. No direct-sales operation that competes with our dealer base. In return, the dealer commits to carry Coolman as a primary brand and protect the pricing structure in their market.',
+                  'The Japanese partners we work with, most prominently Shibuya, recognise this system. It is one of the reasons they trust us with their brand in Malaysia. They understand, from their own market experience, that aggressive distribution destroys premium brands. They want a partner who will protect rather than dilute.',
+                  'Twelve years into our Shibuya partnership, the Brotherhood approach is still the operating principle. Long-term, the most stable dealer network wins. Not the largest.',
+                ],
+              },
+            },
+            {
+              label: 'Myth №03',
+              title: 'Made in Japan beats Made in China.',
+              claim: '"Japanese tools are always better. Chinese tools are always cheap and unreliable. European is somewhere in between. Country of origin tells you everything you need to know about quality."',
+              paragraphs: [
+                'This was, twenty years ago, a useful heuristic.',
+                'In the 1990s and early 2000s, Japanese manufacturing was genuinely a different category from Chinese manufacturing. Japanese diamond tools brands had developed bond technology and quality control systems over decades. Chinese diamond tools, where they existed at all, were cheap, inconsistent, and frequently unsafe. A contractor who chose Japanese paid more and got materially better cutting. A contractor who chose Chinese paid less and accepted significant performance risk. The heuristic, Japan good, China cheap, actually predicted outcomes.',
+                'That world has been gone for nearly a decade. The heuristic is still repeated in sales conversations across Malaysia, but it no longer predicts anything.',
+                'What has changed is the underlying manufacturing capability of the Chinese diamond tools industry. The leading Chinese factories now operate equipment, quality control systems, and metallurgical expertise that match, and in some specific categories exceed, the best of what Japanese factories produce. The investment in Chinese manufacturing infrastructure over the past fifteen years has been at a scale and pace that the Japanese industry, with its older facilities and slower investment cycles, cannot easily match.',
+                'This is not a controversial claim within the industry. Anyone who actually sources from both Japanese and Chinese factories knows it. What persists is the marketing, the belief, still useful for justifying premium pricing on Japanese brands, that Made in Japan is itself a quality guarantee.',
+                'The honest situation, in 2026, is this. There are excellent Chinese diamond tools. There are mediocre Japanese ones. There are excellent Japanese ones. There are mediocre Chinese ones. The variance within each country’s production is now much larger than the average difference between countries. Country of origin is no longer a useful heuristic for quality.',
+              ],
+              pullquote: 'Country of origin used to be the dividing line. It is not anymore.',
+              coda: {
+                heading: 'What actually divides the market now',
+                paragraphs: [
+                  'The factors that actually predict diamond tools quality in 2026 are these: quality control systems and tolerances, bond consistency across production runs, diamond grade and consistency, segment welding standards (laser vs brazed), pre-shipment testing protocols, bond design matched to specific materials, site testing across real conditions, adaptation to local aggregate variation, machine compatibility expertise, and after-sales technical support.',
+                  'Notice what is not on this list: the country named on the box.',
+                  'The brands that predict good cutting outcomes for Malaysian contractors, today, are the brands that have invested in factory control and application understanding, wherever those brands happen to be physically manufactured. Some are Japanese. Some are Chinese. Some are European. Some, including ourselves, are Malaysian. The country is incidental. The discipline of the manufacturing operation is what matters.',
+                  'If you are buying based on the country of origin sticker, you are buying based on a heuristic that stopped predicting quality a decade ago. You are paying for a marketing position rather than for the cutting outcomes you actually want.',
+                  'The better question is the question we hear from contractors who have been around the industry long enough to know: not where was this blade made, but by whom, and under what discipline, and matched to what material.',
+                ],
+              },
+            },
+          ],
+          bridgeQuote: 'What actually matters is not where the brand is from. It is whether the brand understands the worksite.',
+          coda: {
+            heading: 'Why this matters, and what to do with it',
+            paragraphs: [
+              'The three myths above persist because they are simple to state and serve the interests of suppliers who have nothing better to offer. They will not disappear from the industry. They will continue to be repeated in sales conversations, in dealer training, in casual industry talk. They will be quoted to you, in some form, on every other sales call you take this year.',
+              'The case for naming them, in writing, on a public website, is not that we expect to win an argument with the industry. We do not. The case is that contractors who have read this article have a vocabulary they did not have before for what they were already starting to suspect.',
+              'The next time a supplier tells you Malaysian contractors only care about price, you can ask them what fraction of your total project cost a blade actually represents. The next time they tell you the way to grow is more dealers, you can ask them how many of those dealers will still be in business in five years. The next time they tell you Made in Japan is automatically better, you can ask them which Japanese factory, under what quality control regime, with what bond design, matched to which aggregate profile.',
+              'These are not aggressive questions. They are honest ones. The supplier who can answer them is a supplier worth working with. The supplier who deflects is a supplier whose myths are doing the selling.',
+              'The choice, in the end, is between buying the myth and buying the cut.',
+            ],
+          },
+        },
+        folio02: {
+          folioLabel: 'Engineering Folio №02',
+          category: 'Technical · Long read',
+          title: 'Malaysian aggregate breaks',
+          titleEmphasis: 'European blades.',
+          summary: 'A technical argument about why blades bonded for European concrete mix designs underperform on Malaysian sites, and what to do about it. This piece exists because European spec sheets are still being used to specify cuts on Malaysian projects, with predictable results.',
+          metaAuthor: 'Coolman Engineering',
+          metaSubject: 'Bond design · Aggregate composition',
+          metaRead: '13 min read',
+          sections: [
+            {
+              heading: 'What a diamond blade actually does',
+              paragraphs: [
+                'A diamond blade does not cut. It abrades.',
+                'This is the single most important thing to understand about diamond tools, and it is the source of nearly every misconception about why blades fail. A diamond blade does not have a sharp edge in the way a kitchen knife has a sharp edge. What a diamond blade has is a series of segments, small blocks bonded onto a steel core, and each segment contains thousands of small diamond crystals embedded in a metal matrix called the bond.',
+                'The way the blade cuts is by abrasion. The diamond crystals at the surface of each segment scrape away tiny amounts of the material being cut. As they scrape, the diamonds wear down. They lose their sharpness over hundreds of thousands of micro-impacts. As the diamonds wear, the bond around them is also worn away by the same abrasive process. As the bond wears away, new diamond crystals are exposed from underneath the worn ones, and the process continues.',
+                'The whole system is balanced on the rate at which the bond wears.',
+                'If the bond is too hard for the material being cut, the bond does not wear fast enough. The diamonds at the surface dull and become buried in their own glazed bond matrix, unable to expose fresh diamonds underneath. The blade stops cutting. In the trade we call this glazing.',
+                'If the bond is too soft for the material being cut, the bond wears too fast. Diamonds are flung out of the bond before they have done their work. The segment wears down quickly, the blade loses height, the cutting becomes inconsistent, and the blade life is short.',
+                'The correct bond for any given material is the bond that wears at exactly the rate needed to keep exposing fresh diamonds. Match the bond to the material and the blade self-sharpens. Get it wrong and the blade either glazes or wears out before it has earned its cost.',
+                'Everything that follows in this article is downstream of this single technical reality.',
+              ],
+            },
+            {
+              heading: 'What Malaysian aggregate actually is',
+              paragraphs: [
+                'The concrete you cut in Malaysia is not the same concrete that is cut in Europe.',
+                'This is not a vague claim. It is a specific, measurable claim about the composition of the aggregate, the rock material that makes up the majority of any concrete mix. Different geographies produce different aggregate. Different aggregate cuts differently. The blade that was bonded for one aggregate will struggle on another.',
+                'Malaysian aggregate is, in the broad average, granite-dominant. The quarries that supply the major Malaysian construction markets, the Klang Valley, Penang, Johor, are working largely from granite formations. The aggregate that emerges has, characteristically, high silica content, high hardness on the Mohs scale, and abrasive properties that are noticeably more aggressive than the limestone-dominant aggregate that supplies most European concrete production.',
+                'The specific number that matters here is silica content. Silica is the mineral that does most of the actual abrasive work against a diamond blade’s bond. Higher silica content means faster bond wear. The silica content of a typical Klang Valley quarry run can sit at around [60–65%, to verify with technical data] of total aggregate composition. The silica content of European limestone-aggregate concrete is, by comparison, considerably lower.',
+                'The bond hardness rating that is correct for a European medium-strength concrete is, on a granite-heavy Malaysian aggregate, materially too soft. The bond wears faster than the design intended. Either the blade life shortens dramatically, or the cutting consistency deteriorates as the segment shape changes too quickly.',
+                'This is not a defect in European blades. European blades are extremely well-engineered for the aggregates they were designed for. The error is not in the blade. The error is in the assumption that an aggregate profile in one geography predicts an aggregate profile in another.',
+              ],
+              pullquote: 'The blade does not care what the spec sheet says. It cares what the rock does.',
+            },
+            {
+              heading: 'What happens when you ignore this',
+              paragraphs: [
+                'The practical result, on a Malaysian site, of using a blade bonded for European concrete is a set of failure modes contractors will recognise.',
+                'The first cuts are fine. The blade performs roughly within spec, possibly slightly faster than expected because the bond is softer than the material needs. The contractor is reassured.',
+                'Within a few cuts, the segments begin to wear visibly faster than the blade’s stated lifespan would predict. The contractor notices that the blade is "going down" earlier than it should. Sometimes this is attributed to the operator, sometimes to the machine, sometimes to "harder concrete than usual."',
+                'Within a larger number of cuts, the segment geometry begins to deteriorate. The wear pattern becomes uneven across the segments. The cutting becomes inconsistent: fast for some cuts, slow for others, depending on which segments are currently engaging the concrete. The contractor begins to suspect the blade was a bad batch.',
+                'If the blade is also working through reinforcement, rebar in the concrete, the failure mode becomes more aggressive. The segments, already weakened by accelerated bond wear, are more vulnerable to the thermal and mechanical shock of impacting steel. Segments begin to fracture. The blade has to be retired earlier than its design intended.',
+                'The contractor concludes the blade is the problem. Buys a different blade. Tries again. The same pattern repeats with a different brand. The contractor concludes the local supplier is the problem. Imports the next blade from Europe directly. The same pattern repeats. None of these conclusions identifies the actual problem, which is upstream of any single blade purchase.',
+              ],
+            },
+            {
+              heading: 'What matching looks like in practice',
+              paragraphs: [
+                'The technical solution to this problem is not exotic. It is a bond formulation designed specifically for the aggregate profile of the cuts being performed.',
+                'The challenge is that "the aggregate profile" is not a single thing in Malaysia. The granite-dominant aggregate of the Klang Valley is broadly similar across the region, but not identical. The aggregate from Penang quarries differs in specific ways from Klang aggregate. East Malaysian aggregate, Sabah and Sarawak, varies again, and is often more abrasive than peninsular aggregate due to local geological conditions.',
+                'What a serious diamond tools manufacturer does, for a market like Malaysia, is develop a range of bond formulations matched to the regional and project-specific variations in aggregate. This is not work that can be done from a Tokyo or Frankfurt office. It requires being on the worksite, taking aggregate samples, watching cuts being made, measuring slurry chemistry, and iterating on bond design across many real projects.',
+                'Coolman has spent [number of years, to confirm] developing the bond range we now offer. The range covers granite-heavy Klang Valley work, the harder aggregate profiles of East Malaysia, the reinforced concrete cutting that requires a different segment design than plain concrete, and the niche applications, wall sawing, wire sawing, floor sawing, that each have their own optimal bond characteristics.',
+                'The sandwich cobalt construction we use across the CM-X product line, three diamond layers per segment, each at a different concentration, is a technical approach that helps with the specific challenge of Malaysian aggregate. As the outer layer wears faster than European-bond designs anticipated, the middle and inner diamond layers ensure the segment continues to expose fresh diamonds rather than entering the failure modes described above. The segment, in effect, has multiple "lives" built into its geometry, a buffer against the faster wear rate that Malaysian aggregate imposes.',
+              ],
+            },
+            {
+              heading: 'The honest position',
+              paragraphs: [
+                'None of what is written above is novel science. The relationship between bond hardness and aggregate abrasion has been understood within the diamond tools industry for decades. What is unusual is the willingness to actually engineer for it, market by market, rather than relying on a global product range optimised for European conditions and sold everywhere.',
+                'The Japanese diamond tools industry has, for its own domestic market, developed bonds matched to Japanese aggregate. The European industry has done the same for European aggregate. The Chinese industry, increasingly, is doing the same for Chinese aggregate. The Malaysian market has been, for most of its history, served by imports designed for someone else’s geology.',
+                'Local manufacturing exists not because Malaysian contractors are particularly nationalistic. It exists because, for the cutting being done in this country, on this aggregate, with these site conditions, a blade designed for here outperforms a blade designed for elsewhere.',
+                'This is not a marketing position. It is a metallurgical one.',
+              ],
+            },
+          ],
+          bridgeQuote: 'Matching is not just specification. It is matching the worksite as it actually exists.',
+          coda: {
+            heading: 'For contractors making the decision',
+            paragraphs: [
+              'If you are choosing a diamond blade for a Malaysian project, the practical takeaway from this article is small and concrete.',
+              'First: do not assume that a blade with a strong European brand reputation is the right blade for your cut. The brand may be excellent. The bond may not be matched to your aggregate.',
+              'Second: ask the supplier specifically about the aggregate in your project. If they cannot tell you what bond hardness they are recommending and why, given the aggregate you are working with, they are guessing.',
+              'Third: if a supplier is willing to come to your site and test their blade against your actual concrete before recommending a specification, that is the supplier you want to work with. The supplier who recommends from a catalogue is the supplier who does not have a real answer to the question you are asking.',
+              'The cost of getting bond matching wrong is not the cost of one blade. It is the cost of the project that the wrong blade contributed to delaying.',
+              'The cost of getting it right is, at most, a slightly more expensive blade. Often it is no more expensive at all, just better matched. The supplier who gets paid for matching the right bond to the right aggregate is the supplier who is genuinely earning their margin. The supplier who gets paid for selling the same blade to every job is the supplier whose margin is coming from the customer’s losses.',
+              'The market tends to figure this out, given enough time. The contractors who have figured it out are the ones still operating ten years later. The contractors who have not are the ones who keep buying new blades and wondering why none of them quite works.',
+            ],
+          },
+        },
+        folio03: {
+          folioLabel: 'Engineering Folio №03',
+          category: 'Brand philosophy · Long read',
+          title: 'The Brotherhood',
+          titleEmphasis: 'System.',
+          summary: 'Every diamond tools brand in Malaysia has a dealer network. Most of those networks are functionally broken by year five. This is a piece about the operating philosophy that has kept Coolman’s dealer network profitable and loyal for nearly two decades, and the harder commercial reasons we run it this way.',
+          metaAuthor: 'Coolman Engineering',
+          metaSubject: 'Distribution philosophy',
+          metaRead: '11 min read',
+          sections: [
+            {
+              heading: 'What we mean by the Brotherhood',
+              paragraphs: [
+                'The Brotherhood is the name we use, internally and increasingly externally, for the way Coolman operates its dealer network in Malaysia. The name is not metaphorical. It refers to a specific operating philosophy with specific commercial commitments on both sides of the dealer relationship.',
+                'The principles are these. Coolman maintains a smaller number of dealers in each region than the industry standard. We recruit selectively and slowly. Most applications to become a Coolman dealer are declined.',
+                'Each Coolman dealer is protected, within their territory, from direct competition by other Coolman dealers. We do not stack multiple dealers into the same district to force a price war.',
+                'Dealer margins are maintained at a level that allows the dealer to invest in their own staff, training, technical capability, and customer service. We do not push margins downward to chase short-term volume.',
+                'Coolman does not run a direct-sales operation that competes with our own dealer base. We do not undercut the people who carry our brand.',
+                'In return, each dealer commits to carry Coolman as a primary brand in their portfolio, to support the product with real after-sales service, and to protect the Coolman pricing structure in their market against the temptation of discount-driven volume.',
+                'None of these principles is exotic. They are the principles that long-lived industrial brands in other markets, and other industries, have used for decades. What is unusual, in the Malaysian diamond tools context, is the willingness to actually hold the line on these principles when easier short-term decisions are constantly available.',
+              ],
+            },
+            {
+              heading: 'Why most dealer networks die',
+              paragraphs: [
+                'To understand why the Brotherhood approach matters, it helps to understand the alternative, the dealer network strategy that nearly every diamond tools brand in Malaysia has tried at some point in its history.',
+                'The standard approach, sometimes called the "maximum coverage" model, runs as follows. A brand enters or grows in the Malaysian market and decides that the way to gain share is to recruit dealers aggressively. Every applicant who can demonstrate a customer base gets dealer status. Discounts are offered at the maximum the brand can sustain to incentivise new dealer sign-ups. Territories are not protected. Multiple dealers can operate in the same district, on the same projects, sometimes calling on the same contractor on the same day.',
+                'For the first two or three years, this approach looks like it is working. Dealer count grows. Distribution widens. The brand appears in places it did not appear before. Sales managers report rising numbers to head office. Investors are happy.',
+                'Then the dealers, increasingly, find themselves competing against each other for the same contractors. The contractors learn the game and play the dealers against each other for price. Margins compress. Dealers begin to suspect they would have been better off with a different brand that protected them. Some go bankrupt. The survivors cut their service levels. They no longer invest in technical staff, they no longer maintain stock depth, they no longer support contractors at the level the brand needs them to. The brand’s reputation, in the eyes of contractors, begins to deteriorate not because the product is worse but because the experience around the product has hollowed out.',
+                'By year five or six, the brand discovers it has more dealers but lower total profitable sales than it had when it had fewer dealers. Its dealers, who should be its strongest advocates, are exhausted, demoralised, and looking for the next brand to take on. Some of them have already started selling competing products on the side.',
+                'The brand, at this point, has a choice. It can continue down the same path and watch its dealer network slowly collapse. Or it can attempt to rebuild the dealer network on different terms, which is expensive, slow, and requires admitting to the existing dealer base that the previous approach was a mistake. Most brands cannot bring themselves to make this admission.',
+              ],
+              pullquote: 'The most stable dealer network wins. Not the largest.',
+            },
+            {
+              heading: 'What protecting dealers actually costs',
+              paragraphs: [
+                'Running a Brotherhood-style dealer network is more expensive, in the short term, than running a maximum-coverage one.',
+                'The most obvious cost is foregone volume. By recruiting selectively, Coolman accepts that we sell less than we could in any given year. The dealer who applied to carry us and was declined goes on to carry a competitor’s brand. That competitor records the volume that, in a more aggressive system, would have been ours.',
+                'The second cost is foregone margin. By maintaining dealer margins at a level that supports the dealer’s business, we accept a lower margin on each unit sold than we could earn if we pushed harder. This is real money, in any given year, a meaningful percentage of our gross margin that we have chosen not to extract.',
+                'The third cost is the discipline of refusing the easy short-term decision. When a new dealer in a key territory offers to take a large volume in exchange for maximum discount, we have to say no. When an existing dealer asks for a special deal that would undercut another Coolman dealer in an adjacent territory, we have to say no. When head office or family or shareholders ask why we are not growing dealer count faster, we have to explain that the long-term return on dealer health is not visible in this year’s revenue line.',
+                'These costs add up. Across the years, they are not trivial. The reason we accept them is straightforward, and it is the only reason that ultimately justifies any short-term cost: the long-run outcome is better.',
+              ],
+            },
+            {
+              heading: 'What we get in return',
+              paragraphs: [
+                'The long-run outcome of the Brotherhood approach is a dealer network that, to anyone in the diamond tools industry who has watched the alternatives, looks unusually healthy.',
+                'The dealers who carry Coolman today have, in most cases, carried us for years. Some have carried us for more than a decade. They have built their businesses around the principle that we will not undercut them. They have trained their staff to provide the technical support that contractors expect from a Coolman dealer. They have invested in stock depth, in service vehicles, in technical capability, because the margin we leave with them makes those investments rational.',
+                'When a contractor in a Coolman dealer’s territory calls with a problem, the dealer’s response is not minimal. It is real. The dealer’s livelihood depends on the long-term relationship with that contractor, and the long-term relationship is sustained by the kind of support that price-war dealers cannot afford to provide.',
+                'This compounds, over years, into a competitive advantage that is genuinely difficult for a maximum-coverage competitor to replicate. The competitor can match our product. The competitor can match our price. The competitor cannot easily match the experience the contractor has when working with a Coolman dealer who has been in the relationship long enough to know the contractor’s projects, the contractor’s preferences, and the contractor’s specific worksite conditions.',
+                'This is also the reason our Japanese partners, most prominently Shibuya, have remained partners for as long as they have. Japanese industrial brands evaluate distributors not on year-one volume but on whether the brand can be protected and grown over decades. Twelve years into the Shibuya partnership, we are not asked to justify our dealer count. We are asked, occasionally and politely, to be more aggressive on volume. We decline, politely. The partnership continues.',
+              ],
+            },
+            {
+              heading: 'For dealers considering carrying Coolman',
+              paragraphs: [
+                'The Brotherhood is not the right system for every dealer. We want to be honest about this.',
+                'If a dealer’s business model is built on maximum-volume, minimum-margin distribution, selling many units of many brands at slim margins, with limited technical support and minimal after-sales service, the Brotherhood will not be a good fit. We will not provide the maximum discount such a dealer wants. We will not allow the dealer to compete against other Coolman dealers in their territory. We will require the dealer to invest in service levels that this kind of business model cannot sustain.',
+                'If a dealer’s business model is built on long-term contractor relationships, deep technical capability, and the kind of trust that grows across many years of consistent service, the Brotherhood is, in our experience, the right system. The dealers who have stayed with us longest are dealers who built their businesses around this model and chose Coolman because we protect it.',
+                'The conversation, when a new dealer applies to carry Coolman, is not a sales conversation. It is a fit conversation. We are evaluating whether we and the dealer share the operating assumptions that make this system work. If we do not, we both lose time. If we do, the relationship can last decades.',
+              ],
+            },
+          ],
+          bridgeQuote: 'Doing business is a race for speed. Building a brand is a contest of endurance.',
+          coda: {
+            heading: 'The harder truth underneath',
+            paragraphs: [
+              'There is one final thing worth saying about the Brotherhood, and it is uncomfortable enough that most articles about distribution philosophy avoid it.',
+              'The Brotherhood works because of discipline, not because of strategy. The principles above are easy to articulate and difficult to maintain. Every year, every quarter, every month, there is a specific decision in front of us: a specific volume offered, a specific dealer applying, a specific contractor demanding a price that would require breaking the system, that would be easier to accept than to decline.',
+              'Most brands, in our experience, do not fail because they did not understand the Brotherhood approach. They fail because, in a specific quarter under specific pressure, they made the easier decision once. And then, having made it once, made it again the next quarter. And gradually, over a few years, became a different kind of company.',
+              'The Brotherhood is, in this sense, less a strategy than a long act of refusal. It is the willingness to keep saying no to short-term decisions that would, individually, seem small enough not to matter.',
+              'The brands that have built durable dealer networks have done it, in our observation, the same way. Not by being smarter. By being more patient.',
+              'That is the harder truth underneath the system. Not that we figured out something the rest of the industry has not. Just that we have been willing, day by day, to keep choosing it.',
+            ],
+          },
+        },
+        closingCta: {
+          eyebrow: 'A conversation',
+          title: 'Got a cut that the spec',
+          titleEmphasis: 'sheet cannot answer?',
+          body: 'Send a photo of the job, the aggregate, and the existing blade. The engineering desk replies the same working day. If you want to read more in the same voice, three Field Notes cover specific jobs that taught us what the folio above argues.',
+          whatsappCtaLabel: 'Open the engineering desk on WhatsApp',
+          fieldNotesCtaLabel: 'Read the Field Notes',
         },
       },
       resources: {
@@ -2173,15 +2487,275 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       whyCoolman: {
         hero: {
-          eyebrow: 'Kenapa Coolman',
-          title: 'Folio kejuruteraan',
-          titleEmphasis: 'akan tiba.',
-          lede: 'Tiga mitos yang industri pemotongan masih ajar. Soalan agregat Malaysia. Sistem Brotherhood. Ditulis panjang, dengan keratan rentas.',
+          eyebrow: 'Folio Kejuruteraan',
+          title: 'Tiga hujah.',
+          titleEmphasis: 'Satu industri.',
+          lede: 'Tiga karya panjang yang menetapkan pendirian Coolman dalam industri pemotongan. Tiga mitos yang masih diajar industri. Hujah untuk memadankan ikatan dengan agregat Malaysia. Falsafah Sistem Brotherhood. Ditulis panjang, dengan keratan rentas.',
         },
-        placeholder: {
-          eyebrow: 'Akan datang',
-          headline: 'Folio Kejuruteraan dalam persediaan.',
-          body: 'Karya panjang yang membentuk Folio Kejuruteraan masih dalam draf. Sementara kami menyiapkannya, pemikiran teknikal yang sama muncul dalam Field Notes. Tiga kerja yang mengajar kami bagaimana membuat bilah yang lebih baik, ditulis ketika berlaku.',
+        folio01: {
+          folioLabel: 'Folio Kejuruteraan №01',
+          category: 'Pendirian industri · Bacaan panjang',
+          title: 'Tiga perkara yang industri pemotongan',
+          titleEmphasis: 'masih salah faham.',
+          summary: 'Selepas hampir tiga puluh tahun dalam industri alat berlian Malaysia, tiga kepercayaan diulang sehingga ia kedengaran seperti kebijaksanaan. Ia bukan. Setiap satu telah merugikan kontraktor wang, pengedar margin mereka, dan industri reputasinya. Ini hujah panjang tentang tiga mitos pendek.',
+          metaAuthor: 'Coolman Engineering',
+          metaSubject: 'Pendirian industri',
+          metaRead: 'Bacaan 14 minit',
+          intro: {
+            heading: 'Tentang orang yang mengulanginya',
+            paragraphs: [
+              'Tiga mitos di bawah bukanlah pandangan orang yang jahat. Ia pandangan orang yang cekap, berpengalaman, sering bermaksud baik dalam industri pemotongan Malaysia. Kami pernah bekerja dengan mereka, menjual kepada mereka, membeli daripada mereka. Kami sendiri pernah diajar sebahagian daripada pandangan ini, pada tahun-tahun pertama kami dalam industri, sebelum kami melihat cukup tapak untuk lebih tahu.',
+              'Sebab menulis karya ini bukan untuk mengumpul mata. Ia untuk menjelaskan apa yang kebanyakan kontraktor sudah separuh tahu, dan memberi mereka bahasa untuk menolak balik pada kali berikutnya pembekal mengulang salah satu mitos ini ke arah mereka.',
+              'Mitos diulang atas sebab. Ia ringkas. Ia boleh diulang. Ia bertahan dalam skrip jualan pembekal kerana membenarkan pembekal mengelak perbualan yang lebih sukar. Setiap satu kelihatan seperti fakta dan sebenarnya tabiat. Tabiat, dalam industri ini, menjadi budaya. Budaya dalam pasaran alat berlian Malaysia, sekurang-kurangnya dua dekad, telah mengambil bentuk yang tidak lagi melayani kontraktor yang membayar bil.',
+              'Apa yang berikut ialah hujah panjang dengan tiga kesimpulan pendek. Baca dengan perlahan. Kemudian pada kali berikutnya pembekal memberitahu anda salah satu daripadanya dalam panggilan jualan, anda ada jawapan.',
+            ],
+          },
+          myths: [
+            {
+              label: 'Mitos №01',
+              title: 'Pelanggan hanya lihat harga.',
+              claim: '"Kontraktor Malaysia dipacu harga. Mereka akan sentiasa pilih bilah termurah. Tiada gunanya cuba bersaing pada kualiti."',
+              paragraphs: [
+                'Ini mitos asas industri pemotongan Malaysia. Ia diulang oleh pembekal yang sudah lama tidak melawat tapak, oleh pengedar yang tidak memahami pelanggan mereka sendiri, dan oleh pengimport yang menerangkan kenapa mereka menjual pada harga.',
+                'Ia tidak benar.',
+                'Apa yang benar ialah kontraktor akan kata mereka hanya peduli tentang harga. Pembekal mendengarnya dalam setiap panggilan jualan. Kontraktor menolak untuk diskaun, mengadu sebut harga terlalu tinggi, mengancam untuk pergi tempat lain. Pembekal menyimpulkan, dengan munasabah, bahawa harga ialah pemboleh ubah yang penting.',
+                'Lihat apa yang berlaku seterusnya. Lihat apa yang kontraktor sebenarnya takut.',
+                'Mereka takut projek tertunda. Mereka takut segmen meletup di tengah-tengah pemotongan. Mereka takut pemotongan tidak maju. Mereka takut kerosakan mesin. Mereka takut pekerja melepak. Mereka takut dimarahi oleh kontraktor utama. Mereka takut kehilangan kerja seterusnya. Mereka takut, dalam beberapa kes, disenarai hitam daripada keseluruhan saluran projek pemaju.',
+                'Tiada satu pun daripada ketakutan ini ialah ketakutan tentang harga bilah.',
+                'Harga bilah, dalam struktur besar kos projek, hampir tiada. Bilah ialah tiga ratus ringgit, mungkin lapan ratus untuk saiz lebih besar, kadang-kadang lebih untuk kerja pakar. Sehari kelewatan dalam projek penalti Lembah Klang boleh menjadi sepuluh ribu ringgit dalam penalti sebelum anda mengira kos pekerja dan mesin yang menanti. Subkontraktor yang disenarai hitam boleh kehilangan aliran hasil tahunan enam angka.',
+                'Apa yang kontraktor sebenarnya tanya apabila mereka menolak harga lebih rendah ialah soalan berbeza daripada yang kelihatan mereka tanya. Mereka tanya: bolehkah saya percaya pembekal ini? Adakah bilah ini akan bertahan? Adakah saya akan disokong jika tidak? Harga ialah proksi untuk seluruh hubungan kepercayaan. Menolak untuk harga lebih rendah ialah salah satu daripada beberapa isyarat yang kontraktor boleh beri kepada pembekal tanpa kehilangan air muka.',
+              ],
+              pullquote: 'Bilah yang lebih mahal selalunya bilah yang lebih murah.',
+              coda: {
+                heading: 'Apa makna ini untuk pembeli',
+                paragraphs: [
+                  'Jika anda kontraktor membaca ini, implikasi praktikal adalah mudah: kira matematik. Pada kali berikutnya pembekal menawarkan anda diskaun 10% untuk bilah, kira 10% daripada tiga ratus ringgit sebenarnya berapa. Kemudian bandingkan dengan kos satu jam kelewatan projek jika bilah itu salah untuk pemotongan. Nombor tidak mewajarkan perbualan.',
+                  'Jika anda pembekal membaca ini, implikasi praktikal lebih sukar. Untuk berhenti bersaing pada harga memerlukan anda bersaing pada perkara lain: pengetahuan aplikasi, ujian tapak, padanan mesin, kebolehpercayaan bekalan. Tiada satu pun ini kemenangan pantas. Semuanya perlu jika anda bercadang berada dalam industri ini untuk dekad lagi.',
+                ],
+              },
+            },
+            {
+              label: 'Mitos №02',
+              title: 'Lebih banyak pengedar, lebih banyak jualan.',
+              claim: '"Cara untuk kembangkan jenama di Malaysia ialah rekrut lebih banyak pengedar. Beri semua orang diskaun maksimum. Bersaing di setiap daerah. Rangkaian pengedar terbesar menang."',
+              paragraphs: [
+                'Ini strategi yang hampir setiap jenama alat berlian kejar dalam dekad pertama mereka di Malaysia. Ia juga strategi yang kebanyakan mereka kemudian harap mereka boleh batalkan.',
+                'Logik pendekatan maksimasi pengedar adalah mudah. Setiap pengedar baru ialah saluran jualan. Setiap saluran jualan baru sampai kepada pelanggan yang jenama tidak sampai sebelum ini. Oleh itu, lebih banyak pengedar bermakna lebih banyak jualan. Mudah.',
+                'Realitinya lebih rumit. Apa yang berlaku, dalam tahun tiga atau empat pengambilan pengedar yang agresif, ialah pengedar mendapati diri mereka bersaing antara satu sama lain untuk kontraktor yang sama. Kontraktor, seterusnya, belajar permainkan pengedar antara satu sama lain untuk harga. Margin pengedar mampat. Sebahagian muflis. Yang terselamat memotong tahap perkhidmatan mereka untuk mengekalkan margin. Reputasi jenama menderita kerana pengedar kini kurang menyokong produk untuk terus hidup.',
+                'Pada tahun lima, jenama mendapati ia telah lakukan sebaliknya daripada yang dimaksudkan. Ia ada lebih banyak pengedar tetapi jumlah jualan lebih rendah. Ia ada pengedaran lebih luas tetapi kekuatan jenama lebih lemah. Ia ada lebih kehadiran pasaran tetapi kurang kesetiaan jenama. Pengedarnya, yang sepatutnya menjadi penyokong terkuat, letih daripada perang harga dan tidak sanggup mempromosi jenama.',
+                'Jenama telah, dalam istilah teknikal, memusnahkan sistem pengedarannya sendiri dengan terlalu menyaturasi.',
+                'Sebab corak ini berterusan, walaupun terkenal kepada sesiapa yang telah berada dalam industri lebih satu dekad, ialah alternatif, pengekangan pengedar, kelihatan buruk dalam laporan pertumbuhan peringkat awal. Jenama yang berkata "kami ada sepuluh pengedar, semua menguntungkan, semua setia" kedengaran lebih kecil daripada jenama yang berkata "kami ada lima puluh pengedar di setiap negeri." Pelabur dan ibu pejabat memberi ganjaran kepada kiraan pengedar. Mereka tidak memberi ganjaran kepada kesihatan pengedar, sehingga sudah terlewat untuk memulihkan kesihatan pengedar yang telah mereka musnahkan.',
+              ],
+              pullquote: 'Sistem pengedar ialah aset jenama. Bukan masalah pengedaran.',
+              coda: {
+                heading: 'Alternatif Brotherhood',
+                paragraphs: [
+                  'Coolman telah, sejak tahun-tahun awalnya, menjalankan sistem berbeza. Kami panggil ia Brotherhood: komitmen sengaja, jangka panjang antara Coolman dan bilangan pengedar yang lebih kecil yang kami percayai dan lindungi. Pengedar lebih sedikit daripada standard industri. Setiap pengedar dilindungi terhadap persaingan langsung daripada pengedar Coolman lain di wilayah mereka. Margin dikekalkan pada tahap yang membenarkan pelaburan sebenar dalam kakitangan teknikal dan perkhidmatan selepas jualan. Tiada operasi jualan langsung yang bersaing dengan asas pengedar kami. Sebagai balasan, pengedar berjanji untuk membawa Coolman sebagai jenama utama dan melindungi struktur harga dalam pasaran mereka.',
+                  'Rakan kongsi Jepun yang kami bekerja, paling terkenal Shibuya, mengiktiraf sistem ini. Ia salah satu sebab mereka percaya kami dengan jenama mereka di Malaysia. Mereka faham, daripada pengalaman pasaran mereka sendiri, bahawa pengedaran agresif memusnahkan jenama premium. Mereka mahukan rakan kongsi yang akan melindungi bukan mencairkan.',
+                  'Dua belas tahun ke dalam perkongsian Shibuya kami, pendekatan Brotherhood masih prinsip operasi. Jangka panjang, rangkaian pengedar paling stabil menang. Bukan yang terbesar.',
+                ],
+              },
+            },
+            {
+              label: 'Mitos №03',
+              title: 'Buatan Jepun mengalahkan Buatan China.',
+              claim: '"Alat Jepun sentiasa lebih baik. Alat China sentiasa murah dan tidak boleh dipercayai. Eropah di antara. Negara asal beritahu anda semua yang anda perlu tahu tentang kualiti."',
+              paragraphs: [
+                'Dua puluh tahun lalu, ini heuristik yang berguna.',
+                'Pada tahun 1990-an dan awal 2000-an, pembuatan Jepun sebenarnya kategori berbeza daripada pembuatan China. Jenama alat berlian Jepun telah mengembangkan teknologi ikatan dan sistem kawalan kualiti selama dekad. Alat berlian China, jika wujud, adalah murah, tidak konsisten dan sering tidak selamat. Kontraktor yang memilih Jepun membayar lebih dan mendapat pemotongan secara material lebih baik. Kontraktor yang memilih China membayar kurang dan menerima risiko prestasi yang ketara. Heuristik, Jepun baik, China murah, sebenarnya meramalkan hasil.',
+                'Dunia itu sudah lama hilang hampir sedekad. Heuristik masih diulang dalam perbualan jualan di seluruh Malaysia, tetapi ia tidak lagi meramalkan apa-apa.',
+                'Apa yang telah berubah ialah keupayaan pembuatan asas industri alat berlian China. Kilang China terkemuka kini mengendalikan peralatan, sistem kawalan kualiti dan kepakaran metalurgi yang sepadan, dan dalam beberapa kategori tertentu melebihi, yang terbaik daripada yang dihasilkan kilang Jepun. Pelaburan dalam infrastruktur pembuatan China sepanjang lima belas tahun lalu adalah pada skala dan kadar yang industri Jepun, dengan kemudahan lebih lama dan kitaran pelaburan lebih perlahan, tidak mudah padankan.',
+                'Ini bukan dakwaan kontroversi dalam industri. Sesiapa yang sebenarnya bersumber daripada kedua-dua kilang Jepun dan China tahu. Apa yang berterusan ialah pemasaran, kepercayaan, masih berguna untuk mewajarkan penetapan harga premium pada jenama Jepun, bahawa Buatan Jepun itu sendiri jaminan kualiti.',
+                'Keadaan jujur, pada tahun 2026, ialah ini. Ada alat berlian China yang cemerlang. Ada Jepun yang biasa-biasa sahaja. Ada Jepun yang cemerlang. Ada China yang biasa-biasa sahaja. Variasi dalam pengeluaran setiap negara kini jauh lebih besar daripada perbezaan purata antara negara. Negara asal tidak lagi heuristik berguna untuk kualiti.',
+              ],
+              pullquote: 'Negara asal pernah jadi garis pembahagi. Ia tidak lagi.',
+              coda: {
+                heading: 'Apa sebenarnya yang membahagikan pasaran sekarang',
+                paragraphs: [
+                  'Faktor yang sebenarnya meramalkan kualiti alat berlian pada tahun 2026 ialah ini: sistem kawalan kualiti dan toleransi, konsistensi ikatan merentas larian pengeluaran, gred berlian dan konsistensi, standard kimpalan segmen (laser berbanding patri), protokol ujian sebelum penghantaran, reka bentuk ikatan dipadankan kepada bahan khusus, ujian tapak merentas keadaan sebenar, penyesuaian kepada variasi agregat tempatan, kepakaran keserasian mesin, dan sokongan teknikal selepas jualan.',
+                  'Perhatikan apa yang tiada dalam senarai ini: negara yang dinamakan pada kotak.',
+                  'Jenama yang meramalkan hasil pemotongan yang baik untuk kontraktor Malaysia, hari ini, ialah jenama yang telah melabur dalam kawalan kilang dan pemahaman aplikasi, di mana sahaja jenama itu secara fizikal dihasilkan. Sebahagian Jepun. Sebahagian China. Sebahagian Eropah. Sebahagian, termasuk kami sendiri, Malaysia. Negara adalah sampingan. Disiplin operasi pembuatan ialah yang penting.',
+                  'Jika anda membeli berdasarkan pelekat negara asal, anda membeli berdasarkan heuristik yang berhenti meramalkan kualiti sedekad lalu. Anda membayar untuk kedudukan pemasaran bukan untuk hasil pemotongan yang anda sebenarnya mahukan.',
+                  'Soalan yang lebih baik ialah soalan yang kami dengar daripada kontraktor yang telah berada cukup lama dalam industri untuk tahu: bukan di mana bilah ini dibuat, tetapi oleh siapa, di bawah disiplin apa, dan dipadankan dengan bahan apa.',
+                ],
+              },
+            },
+          ],
+          bridgeQuote: 'Apa yang sebenarnya penting bukan dari mana jenama itu. Ia sama ada jenama itu memahami tapak kerja.',
+          coda: {
+            heading: 'Kenapa ini penting, dan apa yang perlu dilakukan dengannya',
+            paragraphs: [
+              'Tiga mitos di atas berterusan kerana ia mudah dinyatakan dan melayani kepentingan pembekal yang tidak ada apa-apa yang lebih baik untuk ditawarkan. Ia tidak akan hilang daripada industri. Ia akan terus diulang dalam perbualan jualan, dalam latihan pengedar, dalam perbincangan industri biasa. Ia akan disebut kepada anda, dalam beberapa bentuk, pada setiap panggilan jualan kedua yang anda ambil tahun ini.',
+              'Hujah untuk menamakannya, secara bertulis, di laman web awam, bukan kerana kami berharap memenangi hujah dengan industri. Kami tidak. Hujahnya ialah kontraktor yang telah membaca artikel ini ada perbendaharaan kata yang mereka tidak ada sebelum ini untuk apa yang sudah mula mereka syaki.',
+              'Pada kali berikutnya pembekal memberitahu anda kontraktor Malaysia hanya peduli tentang harga, anda boleh tanya berapa pecahan jumlah kos projek anda yang bilah sebenarnya wakili. Pada kali berikutnya mereka memberitahu anda cara untuk berkembang ialah lebih banyak pengedar, anda boleh tanya berapa banyak daripada pengedar tersebut akan masih beroperasi dalam lima tahun. Pada kali berikutnya mereka memberitahu anda Buatan Jepun automatik lebih baik, anda boleh tanya kilang Jepun mana, di bawah rejim kawalan kualiti apa, dengan reka bentuk ikatan apa, dipadankan kepada profil agregat yang mana.',
+              'Ini bukan soalan agresif. Ia jujur. Pembekal yang boleh menjawabnya ialah pembekal yang berbaloi untuk bekerja. Pembekal yang mengelakkan ialah pembekal yang mitosnya melakukan jualan.',
+              'Pilihan, akhirnya, adalah antara membeli mitos dan membeli pemotongan.',
+            ],
+          },
+        },
+        folio02: {
+          folioLabel: 'Folio Kejuruteraan №02',
+          category: 'Teknikal · Bacaan panjang',
+          title: 'Agregat Malaysia memecahkan',
+          titleEmphasis: 'bilah Eropah.',
+          summary: 'Hujah teknikal tentang kenapa bilah yang diikat untuk reka bentuk campuran konkrit Eropah berprestasi rendah di tapak Malaysia, dan apa yang perlu dilakukan. Karya ini wujud kerana lembaran spesifikasi Eropah masih digunakan untuk menentukan pemotongan pada projek Malaysia, dengan hasil yang boleh diramal.',
+          metaAuthor: 'Coolman Engineering',
+          metaSubject: 'Reka bentuk ikatan · Komposisi agregat',
+          metaRead: 'Bacaan 13 minit',
+          sections: [
+            {
+              heading: 'Apa yang bilah berlian sebenarnya buat',
+              paragraphs: [
+                'Bilah berlian tidak memotong. Ia menggosok.',
+                'Ini perkara paling penting untuk difahami tentang alat berlian, dan ia sumber hampir setiap salah faham tentang kenapa bilah gagal. Bilah berlian tidak ada tepi tajam seperti pisau dapur ada tepi tajam. Apa yang bilah berlian ada ialah satu siri segmen, blok kecil yang diikat pada teras keluli, dan setiap segmen mengandungi beribu-ribu kristal berlian kecil yang tertanam dalam matriks logam yang dipanggil ikatan.',
+                'Cara bilah memotong ialah dengan penggosokan. Kristal berlian di permukaan setiap segmen mengikis sejumlah kecil bahan yang dipotong. Apabila mereka mengikis, berlian itu haus. Mereka kehilangan ketajaman selepas ratusan ribu kesan mikro. Apabila berlian haus, ikatan di sekelilingnya juga dihauskan oleh proses penggosokan yang sama. Apabila ikatan dihauskan, kristal berlian baru terdedah dari bawah yang haus, dan proses berterusan.',
+                'Keseluruhan sistem diseimbangkan pada kadar ikatan haus.',
+                'Jika ikatan terlalu keras untuk bahan yang dipotong, ikatan tidak haus cukup cepat. Berlian di permukaan tumpul dan tertimbus dalam matriks ikatan berkaca mereka sendiri, tidak dapat mendedahkan berlian segar di bawahnya. Bilah berhenti memotong. Dalam industri kami panggil ini berkaca.',
+                'Jika ikatan terlalu lembut untuk bahan yang dipotong, ikatan haus terlalu cepat. Berlian dilemparkan keluar daripada ikatan sebelum mereka selesai kerja. Segmen haus dengan cepat, bilah kehilangan ketinggian, pemotongan menjadi tidak konsisten, dan hayat bilah pendek.',
+                'Ikatan yang betul untuk mana-mana bahan ialah ikatan yang haus pada kadar yang tepat diperlukan untuk terus mendedahkan berlian segar. Padankan ikatan dengan bahan dan bilah mengasah sendiri. Salah dan bilah sama ada berkaca atau haus sebelum mendapat kosnya.',
+                'Semua yang berikut dalam artikel ini adalah hiliran realiti teknikal tunggal ini.',
+              ],
+            },
+            {
+              heading: 'Apa sebenarnya agregat Malaysia',
+              paragraphs: [
+                'Konkrit yang anda potong di Malaysia bukan konkrit yang sama yang dipotong di Eropah.',
+                'Ini bukan dakwaan kabur. Ia dakwaan khusus dan boleh diukur tentang komposisi agregat, bahan batu yang membentuk majoriti mana-mana campuran konkrit. Geografi berbeza menghasilkan agregat berbeza. Agregat berbeza memotong dengan cara berbeza. Bilah yang diikat untuk satu agregat akan bergelut pada yang lain.',
+                'Agregat Malaysia, secara purata luas, didominasi granit. Kuari yang membekalkan pasaran pembinaan utama Malaysia, Lembah Klang, Pulau Pinang, Johor, bekerja sebahagian besar daripada formasi granit. Agregat yang muncul mempunyai, secara khasnya, kandungan silika tinggi, kekerasan tinggi pada skala Mohs, dan sifat penggosokan yang ketara lebih agresif daripada agregat didominasi batu kapur yang membekalkan kebanyakan pengeluaran konkrit Eropah.',
+                'Nombor khusus yang penting di sini ialah kandungan silika. Silika ialah mineral yang melakukan sebahagian besar kerja penggosokan sebenar terhadap ikatan bilah berlian. Kandungan silika lebih tinggi bermakna keausan ikatan lebih cepat. Kandungan silika dalam larian kuari Lembah Klang tipikal boleh duduk sekitar [60–65%, untuk disahkan dengan data teknikal] daripada jumlah komposisi agregat. Kandungan silika konkrit agregat batu kapur Eropah adalah, sebagai perbandingan, jauh lebih rendah.',
+                'Penarafan kekerasan ikatan yang betul untuk konkrit kekuatan sederhana Eropah adalah, pada agregat Malaysia yang banyak granit, secara material terlalu lembut. Ikatan haus lebih cepat daripada reka bentuk diniatkan. Sama ada hayat bilah memendek secara dramatik, atau konsistensi pemotongan merosot apabila bentuk segmen berubah terlalu cepat.',
+                'Ini bukan kecacatan dalam bilah Eropah. Bilah Eropah amat baik direka untuk agregat yang ia direka. Kesilapan bukan dalam bilah. Kesilapan ialah dalam andaian bahawa profil agregat dalam satu geografi meramalkan profil agregat di lain geografi.',
+              ],
+              pullquote: 'Bilah tidak peduli apa yang lembaran spesifikasi kata. Ia peduli apa yang batu lakukan.',
+            },
+            {
+              heading: 'Apa yang berlaku apabila anda abaikan ini',
+              paragraphs: [
+                'Hasil praktikal, di tapak Malaysia, menggunakan bilah yang diikat untuk konkrit Eropah ialah satu set mod kegagalan yang kontraktor akan kenal.',
+                'Pemotongan pertama baik. Bilah berprestasi sekitar spesifikasi, mungkin sedikit lebih cepat daripada jangkaan kerana ikatan lebih lembut daripada keperluan bahan. Kontraktor diberi keyakinan.',
+                'Dalam beberapa pemotongan, segmen mula haus secara nyata lebih cepat daripada apa yang hayat bilah dinyatakan akan ramalkan. Kontraktor perhatikan bilah "menurun" lebih awal daripada sepatutnya. Kadang-kadang ini disebabkan kepada operator, kadang-kadang kepada mesin, kadang-kadang kepada "konkrit yang lebih keras daripada biasa."',
+                'Dalam bilangan pemotongan yang lebih besar, geometri segmen mula merosot. Corak haus menjadi tidak rata merentas segmen. Pemotongan menjadi tidak konsisten: cepat untuk beberapa pemotongan, perlahan untuk yang lain, bergantung pada segmen mana yang sedang melibatkan konkrit. Kontraktor mula syak bilah itu kelompok buruk.',
+                'Jika bilah juga bekerja melalui tetulang, rebar dalam konkrit, mod kegagalan menjadi lebih agresif. Segmen, yang sudah lemah oleh keausan ikatan dipercepatkan, lebih terdedah kepada kejutan terma dan mekanikal daripada melanggar keluli. Segmen mula retak. Bilah perlu dipersarakan lebih awal daripada reka bentuknya niatkan.',
+                'Kontraktor menyimpulkan bilah ialah masalah. Beli bilah lain. Cuba lagi. Corak yang sama berulang dengan jenama berbeza. Kontraktor menyimpulkan pembekal tempatan ialah masalah. Import bilah seterusnya daripada Eropah secara langsung. Corak yang sama berulang. Tiada satu pun daripada kesimpulan ini mengenalpasti masalah sebenar, yang berada di hulu mana-mana pembelian bilah tunggal.',
+              ],
+            },
+            {
+              heading: 'Apa rupa padanan dalam praktik',
+              paragraphs: [
+                'Penyelesaian teknikal kepada masalah ini bukan eksotik. Ia formulasi ikatan yang direka khusus untuk profil agregat pemotongan yang sedang dilakukan.',
+                'Cabarannya ialah "profil agregat" bukan satu perkara tunggal di Malaysia. Agregat didominasi granit Lembah Klang secara luas serupa di seluruh rantau, tetapi tidak sama. Agregat daripada kuari Pulau Pinang berbeza dalam cara khusus daripada agregat Klang. Agregat Malaysia Timur, Sabah dan Sarawak, berbeza lagi, dan sering lebih menggosok daripada agregat semenanjung kerana keadaan geologi tempatan.',
+                'Apa yang pengeluar alat berlian serius lakukan, untuk pasaran seperti Malaysia, ialah mengembangkan julat formulasi ikatan yang dipadankan kepada variasi serantau dan khusus projek dalam agregat. Ini bukan kerja yang boleh dilakukan dari pejabat Tokyo atau Frankfurt. Ia memerlukan berada di tapak kerja, mengambil sampel agregat, menyaksikan pemotongan dibuat, mengukur kimia buburan, dan mengulang reka bentuk ikatan merentas banyak projek sebenar.',
+                'Coolman telah menghabiskan [bilangan tahun, untuk disahkan] mengembangkan julat ikatan yang kami kini tawarkan. Julat meliputi kerja Lembah Klang yang banyak granit, profil agregat lebih keras Malaysia Timur, pemotongan konkrit bertetulang yang memerlukan reka bentuk segmen berbeza daripada konkrit biasa, dan aplikasi niche, gergaji dinding, gergaji dawai, gergaji lantai, yang setiap satu mempunyai ciri ikatan optimum mereka sendiri.',
+                'Pembinaan kobalt sandwic yang kami gunakan merentas barisan produk CM-X, tiga lapisan berlian setiap segmen, setiap satu pada kepekatan berbeza, ialah pendekatan teknikal yang membantu dengan cabaran khusus agregat Malaysia. Apabila lapisan luar haus lebih cepat daripada reka bentuk ikatan Eropah jangka, lapisan berlian tengah dan dalaman memastikan segmen terus mendedahkan berlian segar dan bukan masuk ke mod kegagalan yang diterangkan di atas. Segmen, dengan berkesan, mempunyai pelbagai "nyawa" yang dibina ke dalam geometrinya, penampan terhadap kadar haus yang lebih cepat yang agregat Malaysia kenakan.',
+              ],
+            },
+            {
+              heading: 'Pendirian yang jujur',
+              paragraphs: [
+                'Tiada apa yang tertulis di atas adalah sains baru. Hubungan antara kekerasan ikatan dan penggosokan agregat telah difahami dalam industri alat berlian selama dekad. Apa yang luar biasa ialah kesediaan untuk benar-benar berusaha untuknya, pasaran demi pasaran, daripada bergantung pada julat produk global yang dioptimumkan untuk keadaan Eropah dan dijual di mana-mana.',
+                'Industri alat berlian Jepun telah, untuk pasaran domestiknya sendiri, mengembangkan ikatan yang dipadankan kepada agregat Jepun. Industri Eropah telah lakukan perkara yang sama untuk agregat Eropah. Industri China, semakin meningkat, lakukan perkara yang sama untuk agregat China. Pasaran Malaysia telah, untuk sebahagian besar sejarahnya, dilayan oleh import yang direka untuk geologi orang lain.',
+                'Pembuatan tempatan wujud bukan kerana kontraktor Malaysia khususnya nasionalistik. Ia wujud kerana, untuk pemotongan yang dilakukan di negara ini, pada agregat ini, dengan keadaan tapak ini, bilah yang direka untuk di sini berprestasi lebih baik daripada bilah yang direka untuk di tempat lain.',
+                'Ini bukan kedudukan pemasaran. Ia metalurgikal.',
+              ],
+            },
+          ],
+          bridgeQuote: 'Padanan bukan sekadar spesifikasi. Ia memadankan tapak kerja sebagaimana ia wujud sebenarnya.',
+          coda: {
+            heading: 'Untuk kontraktor yang membuat keputusan',
+            paragraphs: [
+              'Jika anda memilih bilah berlian untuk projek Malaysia, kesimpulan praktikal daripada artikel ini adalah kecil dan konkrit.',
+              'Pertama: jangan andaikan bahawa bilah dengan reputasi jenama Eropah yang kuat ialah bilah yang betul untuk pemotongan anda. Jenama mungkin cemerlang. Ikatan mungkin tidak dipadankan kepada agregat anda.',
+              'Kedua: tanya pembekal secara khusus tentang agregat dalam projek anda. Jika mereka tidak boleh beritahu anda kekerasan ikatan apa yang mereka cadangkan dan kenapa, diberi agregat yang anda bekerja, mereka meneka.',
+              'Ketiga: jika pembekal sanggup datang ke tapak anda dan menguji bilah mereka terhadap konkrit anda yang sebenar sebelum mengesyorkan spesifikasi, itu pembekal yang anda mahu bekerja. Pembekal yang mengesyorkan daripada katalog ialah pembekal yang tidak ada jawapan sebenar kepada soalan yang anda tanya.',
+              'Kos salah padanan ikatan bukan kos satu bilah. Ia kos projek yang bilah salah sumbangkan kepada kelewatan.',
+              'Kos betul adalah, paling banyak, bilah sedikit lebih mahal. Selalunya tiada lebih mahal sama sekali, hanya dipadankan lebih baik. Pembekal yang dibayar untuk memadankan ikatan yang betul kepada agregat yang betul ialah pembekal yang ikhlas memperoleh margin mereka. Pembekal yang dibayar untuk menjual bilah yang sama kepada setiap kerja ialah pembekal yang marginnya datang daripada kerugian pelanggan.',
+              'Pasaran cenderung memikirkan ini, diberi masa yang mencukupi. Kontraktor yang telah memikirkannya ialah yang masih beroperasi sepuluh tahun kemudian. Kontraktor yang tidak ialah yang terus membeli bilah baru dan tertanya-tanya kenapa tiada satu pun benar-benar berfungsi.',
+            ],
+          },
+        },
+        folio03: {
+          folioLabel: 'Folio Kejuruteraan №03',
+          category: 'Falsafah jenama · Bacaan panjang',
+          title: 'Sistem',
+          titleEmphasis: 'Brotherhood.',
+          summary: 'Setiap jenama alat berlian di Malaysia ada rangkaian pengedar. Kebanyakan rangkaian itu pecah secara fungsi pada tahun lima. Ini ialah karya tentang falsafah operasi yang telah mengekalkan rangkaian pengedar Coolman menguntungkan dan setia selama hampir dua dekad, dan sebab komersial yang lebih sukar yang kami menjalankan ia begini.',
+          metaAuthor: 'Coolman Engineering',
+          metaSubject: 'Falsafah pengedaran',
+          metaRead: 'Bacaan 11 minit',
+          sections: [
+            {
+              heading: 'Apa yang kami maksudkan dengan Brotherhood',
+              paragraphs: [
+                'Brotherhood ialah nama yang kami gunakan, secara dalaman dan semakin meningkat secara luaran, untuk cara Coolman menjalankan rangkaian pengedarnya di Malaysia. Nama itu bukan metaforik. Ia merujuk kepada falsafah operasi khusus dengan komitmen komersial khusus di kedua-dua belah hubungan pengedar.',
+                'Prinsipnya adalah ini. Coolman mengekalkan bilangan pengedar yang lebih kecil di setiap rantau daripada standard industri. Kami mengambil secara selektif dan perlahan. Kebanyakan permohonan untuk menjadi pengedar Coolman ditolak.',
+                'Setiap pengedar Coolman dilindungi, dalam wilayah mereka, daripada persaingan langsung oleh pengedar Coolman lain. Kami tidak menumpukan banyak pengedar ke daerah yang sama untuk memaksa perang harga.',
+                'Margin pengedar dikekalkan pada tahap yang membenarkan pengedar melabur dalam kakitangan, latihan, keupayaan teknikal dan perkhidmatan pelanggan mereka sendiri. Kami tidak menolak margin ke bawah untuk mengejar volum jangka pendek.',
+                'Coolman tidak menjalankan operasi jualan langsung yang bersaing dengan asas pengedar kami sendiri. Kami tidak mengambil di bawah orang yang membawa jenama kami.',
+                'Sebagai balasan, setiap pengedar berjanji untuk membawa Coolman sebagai jenama utama dalam portfolio mereka, untuk menyokong produk dengan perkhidmatan selepas jualan yang nyata, dan untuk melindungi struktur harga Coolman dalam pasaran mereka terhadap godaan volum dipacu diskaun.',
+                'Tiada satu pun daripada prinsip ini eksotik. Ia prinsip yang jenama industri tahan lama dalam pasaran lain, dan industri lain, telah gunakan selama dekad. Apa yang luar biasa, dalam konteks alat berlian Malaysia, ialah kesediaan untuk benar-benar memegang garisan pada prinsip ini apabila keputusan jangka pendek yang lebih mudah sentiasa ada.',
+              ],
+            },
+            {
+              heading: 'Kenapa kebanyakan rangkaian pengedar mati',
+              paragraphs: [
+                'Untuk memahami kenapa pendekatan Brotherhood penting, ia membantu untuk memahami alternatif, strategi rangkaian pengedar yang hampir setiap jenama alat berlian di Malaysia telah cuba pada satu masa dalam sejarahnya.',
+                'Pendekatan standard, kadang-kadang dipanggil model "liputan maksimum", berjalan begini. Jenama memasuki atau berkembang dalam pasaran Malaysia dan memutuskan bahawa cara untuk mendapat bahagian ialah dengan merekrut pengedar secara agresif. Setiap pemohon yang boleh menunjukkan asas pelanggan mendapat status pengedar. Diskaun ditawarkan pada maksimum yang jenama boleh tampung untuk memberi insentif kepada pendaftaran pengedar baru. Wilayah tidak dilindungi. Pelbagai pengedar boleh beroperasi di daerah yang sama, pada projek yang sama, kadang-kadang memanggil pada kontraktor yang sama pada hari yang sama.',
+                'Untuk dua atau tiga tahun pertama, pendekatan ini kelihatan berfungsi. Kiraan pengedar berkembang. Pengedaran meluas. Jenama muncul di tempat yang tidak muncul sebelum ini. Pengurus jualan melaporkan nombor yang meningkat kepada ibu pejabat. Pelabur gembira.',
+                'Kemudian pengedar, semakin meningkat, mendapati diri mereka bersaing antara satu sama lain untuk kontraktor yang sama. Kontraktor belajar permainan dan bermain pengedar antara satu sama lain untuk harga. Margin mampat. Pengedar mula syak mereka akan lebih baik dengan jenama berbeza yang melindungi mereka. Sebahagian muflis. Yang terselamat memotong tahap perkhidmatan mereka. Mereka tidak lagi melabur dalam kakitangan teknikal, mereka tidak lagi mengekalkan kedalaman stok, mereka tidak lagi menyokong kontraktor pada tahap jenama perlukan. Reputasi jenama, di mata kontraktor, mula merosot bukan kerana produk lebih teruk tetapi kerana pengalaman di sekeliling produk telah berkurang.',
+                'Pada tahun lima atau enam, jenama mendapati ia ada lebih banyak pengedar tetapi jumlah jualan menguntungkan lebih rendah daripada apabila ia ada pengedar lebih sedikit. Pengedarnya, yang sepatutnya menjadi penyokong terkuat, letih, hilang semangat, dan mencari jenama seterusnya untuk diambil. Sebahagian mereka sudah mula menjual produk bersaing di tepi.',
+                'Jenama, pada titik ini, ada pilihan. Ia boleh meneruskan jalan yang sama dan menyaksikan rangkaian pengedarnya perlahan-lahan runtuh. Atau ia boleh cuba membina semula rangkaian pengedar dengan syarat berbeza, yang mahal, perlahan, dan memerlukan mengaku kepada asas pengedar sedia ada bahawa pendekatan sebelumnya adalah kesilapan. Kebanyakan jenama tidak boleh membawa diri mereka untuk membuat pengakuan ini.',
+              ],
+              pullquote: 'Rangkaian pengedar paling stabil menang. Bukan yang terbesar.',
+            },
+            {
+              heading: 'Apa yang melindungi pengedar sebenarnya kos',
+              paragraphs: [
+                'Menjalankan rangkaian pengedar gaya Brotherhood lebih mahal, dalam jangka pendek, daripada menjalankan yang liputan maksimum.',
+                'Kos paling jelas ialah volum yang hilang. Dengan mengambil secara selektif, Coolman terima bahawa kami menjual kurang daripada yang kami boleh dalam mana-mana tahun. Pengedar yang memohon untuk membawa kami dan ditolak pergi membawa jenama pesaing. Pesaing itu merekod volum yang, dalam sistem lebih agresif, akan menjadi kami.',
+                'Kos kedua ialah margin yang hilang. Dengan mengekalkan margin pengedar pada tahap yang menyokong perniagaan pengedar, kami menerima margin yang lebih rendah pada setiap unit dijual daripada yang kami boleh peroleh jika kami menolak lebih keras. Ini wang sebenar, dalam mana-mana tahun, peratusan bermakna daripada margin kasar kami yang kami pilih untuk tidak mengeluarkan.',
+                'Kos ketiga ialah disiplin menolak keputusan jangka pendek yang mudah. Apabila pengedar baru di wilayah utama menawarkan untuk mengambil volum besar bertukar dengan diskaun maksimum, kami terpaksa kata tidak. Apabila pengedar sedia ada meminta tawaran khas yang akan mengambil di bawah pengedar Coolman lain di wilayah bersebelahan, kami terpaksa kata tidak. Apabila ibu pejabat atau keluarga atau pemegang saham bertanya kenapa kami tidak mengembangkan kiraan pengedar lebih cepat, kami terpaksa terangkan bahawa pulangan jangka panjang atas kesihatan pengedar tidak kelihatan dalam baris hasil tahun ini.',
+                'Kos ini menambah. Sepanjang tahun, ia tidak remeh. Sebab kami terima ialah lurus, dan ia satu-satunya sebab yang akhirnya mewajarkan mana-mana kos jangka pendek: hasil jangka panjang adalah lebih baik.',
+              ],
+            },
+            {
+              heading: 'Apa yang kami dapat sebagai balasan',
+              paragraphs: [
+                'Hasil jangka panjang pendekatan Brotherhood ialah rangkaian pengedar yang, kepada sesiapa dalam industri alat berlian yang telah memerhatikan alternatif, kelihatan luar biasa sihat.',
+                'Pengedar yang membawa Coolman hari ini telah, dalam kebanyakan kes, membawa kami untuk tahun. Sebahagian telah membawa kami untuk lebih sedekad. Mereka telah membina perniagaan mereka di sekeliling prinsip bahawa kami tidak akan mengambil di bawah mereka. Mereka telah melatih kakitangan mereka untuk memberi sokongan teknikal yang kontraktor jangka daripada pengedar Coolman. Mereka telah melabur dalam kedalaman stok, dalam kenderaan perkhidmatan, dalam keupayaan teknikal, kerana margin yang kami tinggalkan dengan mereka menjadikan pelaburan itu rasional.',
+                'Apabila kontraktor di wilayah pengedar Coolman menelefon dengan masalah, sambutan pengedar bukan minimum. Ia nyata. Mata pencarian pengedar bergantung pada hubungan jangka panjang dengan kontraktor itu, dan hubungan jangka panjang dikekalkan oleh jenis sokongan yang pengedar perang harga tidak mampu menyediakan.',
+                'Ini bertambah, sepanjang tahun, kepada kelebihan bersaing yang sebenarnya sukar untuk pesaing liputan maksimum tiru. Pesaing boleh padankan produk kami. Pesaing boleh padankan harga kami. Pesaing tidak boleh mudah padankan pengalaman yang kontraktor ada apabila bekerja dengan pengedar Coolman yang telah dalam hubungan cukup lama untuk tahu projek kontraktor, keutamaan kontraktor, dan keadaan tapak kerja khusus kontraktor.',
+                'Ini juga sebab rakan kongsi Jepun kami, paling terkenal Shibuya, telah kekal sebagai rakan kongsi selama yang mereka ada. Jenama industri Jepun menilai pengedar bukan pada volum tahun pertama tetapi pada sama ada jenama boleh dilindungi dan ditumbuhkan sepanjang dekad. Dua belas tahun ke dalam perkongsian Shibuya, kami tidak diminta untuk mewajarkan kiraan pengedar kami. Kami diminta, sekali-sekala dan dengan sopan, untuk lebih agresif pada volum. Kami menolak, dengan sopan. Perkongsian berterusan.',
+              ],
+            },
+            {
+              heading: 'Untuk pengedar yang mempertimbangkan untuk membawa Coolman',
+              paragraphs: [
+                'Brotherhood bukan sistem yang betul untuk setiap pengedar. Kami mahu jujur tentang ini.',
+                'Jika model perniagaan pengedar dibina pada pengedaran volum maksimum, margin minimum, menjual banyak unit banyak jenama pada margin tipis, dengan sokongan teknikal terhad dan perkhidmatan selepas jualan minimum, Brotherhood tidak akan sesuai. Kami tidak akan menyediakan diskaun maksimum yang pengedar seperti itu mahu. Kami tidak akan membenarkan pengedar bersaing terhadap pengedar Coolman lain di wilayah mereka. Kami akan memerlukan pengedar untuk melabur dalam tahap perkhidmatan yang model perniagaan jenis ini tidak boleh tampung.',
+                'Jika model perniagaan pengedar dibina pada hubungan kontraktor jangka panjang, keupayaan teknikal dalam, dan jenis kepercayaan yang berkembang sepanjang tahun perkhidmatan konsisten, Brotherhood adalah, dalam pengalaman kami, sistem yang betul. Pengedar yang telah kekal dengan kami paling lama ialah pengedar yang membina perniagaan mereka di sekeliling model ini dan memilih Coolman kerana kami melindunginya.',
+                'Perbualan, apabila pengedar baru memohon untuk membawa Coolman, bukan perbualan jualan. Ia perbualan kesesuaian. Kami menilai sama ada kami dan pengedar berkongsi andaian operasi yang menjadikan sistem ini berfungsi. Jika tidak, kami berdua kehilangan masa. Jika ya, hubungan boleh bertahan dekad.',
+              ],
+            },
+          ],
+          bridgeQuote: 'Berniaga ialah perlumbaan kelajuan. Membina jenama ialah pertandingan ketahanan.',
+          coda: {
+            heading: 'Kebenaran lebih sukar di bawah',
+            paragraphs: [
+              'Ada satu perkara terakhir yang berbaloi disebut tentang Brotherhood, dan ia cukup tidak selesa sehingga kebanyakan artikel tentang falsafah pengedaran elakkannya.',
+              'Brotherhood berfungsi kerana disiplin, bukan kerana strategi. Prinsip di atas mudah untuk dinyatakan dan sukar untuk dikekalkan. Setiap tahun, setiap suku, setiap bulan, ada keputusan khusus di hadapan kami: volum khusus ditawarkan, pengedar khusus memohon, kontraktor khusus menuntut harga yang akan memerlukan memecahkan sistem, yang akan lebih mudah diterima daripada ditolak.',
+              'Kebanyakan jenama, dalam pengalaman kami, tidak gagal kerana mereka tidak memahami pendekatan Brotherhood. Mereka gagal kerana, dalam suku tertentu di bawah tekanan tertentu, mereka membuat keputusan lebih mudah sekali. Dan kemudian, setelah membuatnya sekali, membuatnya lagi pada suku seterusnya. Dan secara beransur-ansur, sepanjang beberapa tahun, menjadi jenis syarikat berbeza.',
+              'Brotherhood adalah, dalam erti kata ini, kurang strategi daripada tindakan penolakan panjang. Ia kesediaan untuk terus berkata tidak kepada keputusan jangka pendek yang akan, secara individu, kelihatan cukup kecil untuk tidak penting.',
+              'Jenama yang telah membina rangkaian pengedar tahan lama telah melakukannya, dalam pemerhatian kami, dengan cara yang sama. Bukan dengan menjadi lebih bijak. Dengan menjadi lebih sabar.',
+              'Itu kebenaran yang lebih sukar di bawah sistem. Bukan bahawa kami memikirkan sesuatu yang industri lain tidak. Hanya bahawa kami sanggup, hari demi hari, untuk terus memilihnya.',
+            ],
+          },
+        },
+        closingCta: {
+          eyebrow: 'Perbualan',
+          title: 'Ada pemotongan yang lembaran spesifikasi',
+          titleEmphasis: 'tidak boleh jawab?',
+          body: 'Hantar gambar kerja, agregat, dan bilah sedia ada. Meja kejuruteraan membalas pada hari kerja yang sama. Jika anda mahu baca lebih lanjut dalam suara yang sama, tiga Field Notes meliputi kerja khusus yang mengajar kami apa yang folio di atas hujahkan.',
+          whatsappCtaLabel: 'Buka meja kejuruteraan di WhatsApp',
           fieldNotesCtaLabel: 'Baca Field Notes',
         },
       },
