@@ -22,6 +22,8 @@ import { EmailDeliveries } from './collections/EmailDeliveries'
 import { CronRuns } from './collections/CronRuns'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
+import { ShibuyaMachines } from './collections/ShibuyaMachines'
+import { Dealers } from './collections/Dealers'
 
 import { HomePage } from './globals/HomePage'
 import { ApplicationsPage } from './globals/ApplicationsPage'
@@ -77,6 +79,8 @@ export default buildConfig({
     CronRuns,
     Media,
     Posts,
+    ShibuyaMachines,
+    Dealers,
   ],
   globals: [HomePage, ApplicationsPage, ResourcesPage, ContactPage, ShibuyaPage, WhyCoolmanPage, Settings],
   db: vercelPostgresAdapter({

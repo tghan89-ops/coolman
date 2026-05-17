@@ -117,6 +117,16 @@ export const Posts: CollectionConfig = {
       ],
     },
     {
+      name: 'relatedProducts',
+      type: 'relationship',
+      relationTo: 'products',
+      hasMany: true,
+      admin: {
+        description:
+          'Products mentioned in this article. Surfaces on the article page as a "Mentioned in this Field Note" strip. Pick 1–6 SKUs.',
+      },
+    },
+    {
       name: 'sourceWpId',
       type: 'number',
       unique: true,

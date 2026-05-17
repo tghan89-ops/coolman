@@ -98,5 +98,86 @@ export const Settings: GlobalConfig = {
           'Comma-separated email addresses that receive the "new order received" notification when a contractor places an order. Example: alan@coolman.com.my, sales@coolman.com.my. Leave blank to fall back to the ALAN_EMAIL environment variable.',
       },
     },
+    {
+      name: 'whatsapp_number',
+      type: 'text',
+      defaultValue: '+60126363156',
+      admin: {
+        description:
+          'Single source of truth for the WhatsApp button across the whole site (home, product detail, contact, kill-switch banner, dealer cards). International format, digits only with leading + e.g. +60126363156. wa.me deep-links are built from this.',
+      },
+    },
+    {
+      name: 'legal_entity_name',
+      type: 'text',
+      defaultValue: 'Coolman Malaysia Sdn Bhd',
+      admin: {
+        description:
+          'Full legal company name shown on footer copyright, contact page, order confirmation emails, invoice templates, and any "Registered company" surface. The conversational trade name stays "Coolman" everywhere else.',
+      },
+    },
+    {
+      name: 'legal_entity_reg_no',
+      type: 'text',
+      admin: {
+        description:
+          'SSM company registration number. Leave blank until Alan supplies it. Surfaces on footer and contact page once filled.',
+      },
+    },
+    {
+      name: 'legal_entity_address',
+      type: 'textarea',
+      admin: {
+        description:
+          'Registered office address. Leave blank until Alan supplies it. Surfaces on contact page and order confirmation emails.',
+      },
+    },
+    {
+      name: 'opening_hours',
+      type: 'group',
+      admin: {
+        description: 'Showroom / office opening hours displayed on the contact page.',
+      },
+      fields: [
+        {
+          name: 'mon_fri',
+          type: 'text',
+          defaultValue: '09:00–18:00',
+          admin: { description: 'Monday–Friday e.g. 09:00–18:00 or "Closed".' },
+        },
+        {
+          name: 'sat',
+          type: 'text',
+          defaultValue: '09:00–13:00',
+          admin: { description: 'Saturday e.g. 09:00–13:00 or "Closed".' },
+        },
+        {
+          name: 'sun',
+          type: 'text',
+          defaultValue: 'Closed',
+          admin: { description: 'Sunday e.g. "Closed" or 09:00–13:00.' },
+        },
+      ],
+    },
+    {
+      name: 'inventory_on_time_pct',
+      type: 'number',
+      defaultValue: 96,
+      min: 0,
+      max: 100,
+      admin: {
+        description:
+          'On-time fulfilment % shown on the home "quiet door" section. Whole-number percent e.g. 96 = 96%. Alan-typed; not computed live (fulfilment data lives outside the app at V1).',
+      },
+    },
+    {
+      name: 'inventory_dispatch_cutoff',
+      type: 'text',
+      defaultValue: '14:00',
+      admin: {
+        description:
+          'Same-day dispatch cut-off time shown on the home "quiet door" section. 24-hour format e.g. "14:00". Alan-confirmed.',
+      },
+    },
   ],
 }
