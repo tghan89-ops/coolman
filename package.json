@@ -13,6 +13,7 @@
     "e2e:install": "playwright install",
     "seed": "tsx scripts/seed.ts",
     "seed:bm": "tsx --env-file=.env.local scripts/seed-bm-defaults.ts",
+    "seed:shibuya-machines": "tsx --env-file=.env.local scripts/seed-shibuya-machines.ts",
     "cleanup-empty-search-logs": "tsx scripts/cleanup-empty-search-logs.ts",
     "payload": "payload",
     "migrate": "payload migrate"
