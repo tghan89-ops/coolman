@@ -116,7 +116,7 @@ export async function getPostBySlug(slug: string): Promise<any | null> {
       collection: 'posts',
       where: { slug: { equals: slug } },
       limit: 1,
-      depth: 1,
+      depth: 2,
     })
     const post = result.docs[0]
     if (!post) return null

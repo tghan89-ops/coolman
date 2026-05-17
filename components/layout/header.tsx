@@ -35,7 +35,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
   // the link simply doesn't appear, which is the safe default.
   useEffect(() => {
     let cancelled = false
-    fetch('/api/field-notes-count', { cache: 'no-store' })
+    fetch('/api/field-notes-count', { next: { revalidate: 60 } })
       .then((r) => (r.ok ? r.json() : { count: 0 }))
       .then((data) => {
         if (!cancelled && typeof data?.count === 'number') {
