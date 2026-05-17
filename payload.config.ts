@@ -87,7 +87,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || process.env.POSTGRES_URL || '',
     },
-    push: true,
+    push: false,
   }),
   upload: {
     limits: {

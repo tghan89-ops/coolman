@@ -34,8 +34,9 @@ All colors are defined as CSS custom properties in [`app/globals.css`](app/globa
 | `--navy` | `#0A1628` | Primary brand. Top nav, headlines, CTAs, footer. |
 | `--navy-light` | `#122036` | Hover states on navy surfaces. |
 | `--navy-surface` | `#1A2D47` | Card surfaces inside navy regions. |
-| `--accent` | `#3B82F6` | Single accent. Links, focus rings, active filters, brand mark accent. |
-| `--accent-light` | `#60A5FA` | Accent hover. |
+| `--accent` | `#3B82F6` | Single accent. Links, active filters, brand mark accent, all CTA fills. Hover on accent fills is `hover:opacity-90` — never swap to a darker accent token. |
+| `--accent-dark` | `#2563eb` | **Focus-ring only.** Used exclusively by the `:focus-visible` outline (see [`app/globals.css`](app/globals.css) line 211) and the `.post-body` link styles. Banned as a fill, banned as a hover, banned as a text color. If a CTA needs a hover, use `opacity-90`. |
+| `--accent-light` | `#60A5FA` | One allowed use: italic `<em>` inside a Fraunces hero headline. Never on UI accents, links, focus rings, or buttons. |
 | `--paper` | `#FAFAF7` | Page background. Warmer than pure white — reads less screen-glare under workshop lighting. |
 | `--rule` | `#E5E2DA` | Hairline borders, table rules, divider lines. |
 | `--ink` | `#0A1628` | Body text (= `--navy`). |
@@ -76,7 +77,9 @@ Three type families maximum: **IBM Plex Sans** (UI), **Fraunces** (editorial h1/
 
 ### `--accent-light` usage
 
-`--accent-light` (`#60A5FA`) has exactly one allowed use: italic `<em>` inside Fraunces hero headlines, e.g. the editorial split treatment on the homepage and Field Notes article headers. Never use it for body copy, UI accents, links, focus rings, or buttons — those all use `--accent` or `--accent-dark`. If you find yourself reaching for `--accent-light` outside a Fraunces italic, you are using the wrong token.
+`--accent-light` (`#60A5FA`) has exactly one allowed use: italic `<em>` inside Fraunces hero headlines, e.g. the editorial split treatment on the homepage and Field Notes article headers. Never use it for body copy, UI accents, links, focus rings, or buttons — those all use `--accent`. If you find yourself reaching for `--accent-light` outside a Fraunces italic, you are using the wrong token.
+
+`--accent-dark` (`#2563eb`) is **focus-ring only**. It exists for one purpose: the `:focus-visible` outline defined in [`app/globals.css`](app/globals.css) line 211, plus the `.post-body` link styles. It is never authorized as a fill, a hover, or a text color. CTA hovers do `hover:opacity-90` against the `--accent` fill — never swap accent tokens for hover. Burned 2026-05-17: the V1 build had `bg-accent-dark` smeared across 18+ component-classes as a "darker primary CTA"; this was a token-drift violation of the single-accent rule and was swept back to `bg-accent + hover:opacity-90` in a single fix bundle.
 
 ### Scale (rem at 16px base)
 

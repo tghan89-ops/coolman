@@ -84,7 +84,7 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-wider text-accent">{t.pages.resources.heroEyebrow}</p>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight text-white lg:text-5xl">
+            <h1 className="mt-3 font-fraunces text-[clamp(40px,6vw,84px)] font-normal leading-[1.02] tracking-[-0.025em] text-white">
               {heroTitle}
             </h1>
             <p className="mt-6 text-lg text-white/60">
@@ -98,8 +98,8 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
       <section className="border-t border-rule bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           {allResources.length === 0 ? (
-            <div className="mx-auto max-w-xl rounded-2xl border border-rule bg-white p-10 text-center">
-              <div className="mx-auto inline-flex rounded-xl bg-secondary p-3">
+            <div className="mx-auto max-w-xl rounded-sm border border-rule bg-white p-10 text-center">
+              <div className="mx-auto inline-flex rounded-sm bg-secondary p-3">
                 <FileText className="h-6 w-6 text-ink-muted" />
               </div>
               <h3 className="mt-6 text-lg font-semibold text-navy">{t.pages.resources.emptyTitle}</h3>
@@ -122,10 +122,10 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
                     target={isVideo ? '_blank' : undefined}
                     rel={isVideo ? 'noopener noreferrer' : undefined}
                     download={!isVideo ? '' : undefined}
-                    className="group flex flex-col rounded-2xl border border-rule bg-white p-6 transition-[border-color,box-shadow] hover:border-accent/50 hover:shadow-lg"
+                    className="group flex flex-col rounded-sm border border-rule bg-white p-6 transition-[border-color,box-shadow] hover:border-accent/50 hover:shadow-md"
                   >
                     <div className="flex items-start justify-between">
-                      <div className="inline-flex rounded-xl bg-secondary p-3">
+                      <div className="inline-flex rounded-sm bg-secondary p-3">
                         <Icon className="h-6 w-6 text-accent" />
                       </div>
                     </div>
@@ -133,7 +133,7 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
                     <h3 className="mt-4 text-lg font-semibold text-navy">{resource.title ?? ''}</h3>
                     <p className="mt-2 flex-1 text-sm text-ink-muted">{resource.description ?? ''}</p>
 
-                    <span className="mt-6 flex items-center gap-2 text-sm font-medium text-accent-dark transition-colors group-hover:text-accent">
+                    <span className="mt-6 flex items-center gap-2 text-sm font-medium text-accent transition-opacity group-hover:opacity-80">
                       {isVideo ? <Play className="h-4 w-4" /> : <Download className="h-4 w-4" />}
                       {isVideo ? t.pages.resources.playVideo : t.pages.resources.openPdf}
                     </span>
@@ -150,7 +150,7 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-semibold uppercase tracking-wider text-accent">{t.pages.resources.faqEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-bold text-navy">{t.pages.resources.faqHeading}</h2>
+            <h2 className="mt-3 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">{t.pages.resources.faqHeading}</h2>
           </div>
 
           <div className="mx-auto mt-16 max-w-3xl divide-y divide-rule">
@@ -171,11 +171,11 @@ export function ResourcesClient({ initialData }: { initialData: any }) {
       {/* CTA */}
       <section className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold text-navy">{t.pages.resources.ctaTitle}</h2>
+          <h2 className="font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">{t.pages.resources.ctaTitle}</h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-muted">
             {t.pages.resources.ctaMessage}
           </p>
-          <Button size="lg" className="mt-8 h-14 rounded-xl bg-accent-dark px-8 text-white hover:bg-accent" asChild>
+          <Button size="lg" className="mt-8 h-14 rounded-sm bg-accent px-8 text-white hover:opacity-90" asChild>
             <Link href="/contact">
               {t.pages.resources.ctaButton}
               <ArrowRight className="ml-2 h-5 w-5" />

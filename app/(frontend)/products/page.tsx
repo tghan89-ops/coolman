@@ -5,6 +5,16 @@ import { getContractorSession } from '@/lib/auth/contractor-session'
 import { COPY } from '@/lib/i18n/copy'
 import type { FilterGroup } from '@/components/catalogue/FilterSidebar'
 
+// Shape we actually touch when computing filter counts. Payload returns each
+// relationship as an id (string|number) or, when depth>0, as the resolved doc
+// (which is shaped roughly like { name: string }). Both shapes survive the
+// `typeof m === 'object'` guard below.
+type ProductFilterRow = {
+  materials?: Array<{ name?: string | null } | string | number | null> | null
+  applications?: Array<{ name?: string | null } | string | number | null> | null
+  diameterMm?: number | null
+}
+
 // Per-request render: every contractor sees their own tier-adjusted prices.
 // We trade the ISR cache for per-contractor pricing accuracy.
 export const dynamic = 'force-dynamic'
@@ -63,10 +73,12 @@ export default async function ProductsPage() {
   // off documented in BRIEF.md filter-count behaviour note. The opposite
   // (live recompute on every toggle) is a Phase C-plus refinement.
 
+  const filterRows = products as unknown as ProductFilterRow[]
+
   // Material counts. Each product can have multiple materials; count each
   // distinct material name once per product.
   const materialCounts = new Map<string, number>()
-  for (const p of products as any[]) {
+  for (const p of filterRows) {
     const mats = Array.isArray(p.materials) ? p.materials : []
     const seen = new Set<string>()
     for (const m of mats) {
@@ -80,7 +92,7 @@ export default async function ProductsPage() {
 
   // Application counts — same shape as materials.
   const applicationCounts = new Map<string, number>()
-  for (const p of products as any[]) {
+  for (const p of filterRows) {
     const apps = Array.isArray(p.applications) ? p.applications : []
     const seen = new Set<string>()
     for (const a of apps) {
@@ -94,7 +106,7 @@ export default async function ProductsPage() {
 
   // Diameter counts — each product has exactly one diameterMm, so this is a
   // straight count-by-bucket.
-  const diameterCounts = countBy(products as any[], (p) => diameterBucket(p.diameterMm))
+  const diameterCounts = countBy(filterRows, (p) => diameterBucket(p.diameterMm ?? null))
 
   // We render the catalogue in the user's locale, but the URL doesn't carry
   // language — i18n is cookie-driven. For SSR we render the EN labels by

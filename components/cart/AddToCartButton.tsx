@@ -41,7 +41,7 @@ export function AddToCartButton({
     return (
       <Button
         size="lg"
-        className={`group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent ${
+        className={`group h-14 flex-1 bg-accent font-sans text-base font-bold text-white hover:opacity-90 ${
           disabled ? 'pointer-events-none opacity-60' : ''
         }`}
         aria-disabled={disabled || undefined}
@@ -54,7 +54,7 @@ export function AddToCartButton({
       >
         <Link href={`/auth/login?next=${encodeURIComponent(nextHref)}`}>
           {t.product.loginToOrder}
-          <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="ml-3 h-5 w-5" />
         </Link>
       </Button>
     )
@@ -63,7 +63,7 @@ export function AddToCartButton({
   return (
     <Button
       size="lg"
-      className={`group h-14 flex-1 bg-accent-dark font-sans text-base font-bold text-white hover:bg-accent ${
+      className={`group h-14 flex-1 bg-accent font-sans text-base font-bold text-white hover:opacity-90 ${
         disabled ? 'cursor-not-allowed opacity-60' : ''
       }`}
       disabled={disabled || state === 'adding'}
@@ -91,7 +91,7 @@ export function AddToCartButton({
       ) : (
         <>
           {t.product.addToCart}
-          <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="ml-3 h-5 w-5" />
         </>
       )}
     </Button>

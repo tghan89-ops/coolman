@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useLanguage } from '@/lib/i18n/context'
+import { useSettings } from '@/lib/settings/context'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 
 // Raw row shape from the Payload `contact-page` global. Mirrors the fields
@@ -24,27 +25,9 @@ export type RawContactPage = {
   phone?: string | null
 }
 
-// Raw row shape from the Payload `settings` global. Admin-restricted at the
-// global level but the public contact page needs these specific values
-// (WhatsApp number, legal entity, address, opening hours, dispatch cut-off).
-// Fields are best-effort optional; every render path tolerates a missing or
-// partial value.
-export type RawSettings = {
-  whatsapp_number?: string | null
-  legal_entity_name?: string | null
-  legal_entity_reg_no?: string | null
-  legal_entity_address?: string | null
-  opening_hours?: {
-    mon_fri?: string | null
-    sat?: string | null
-    sun?: string | null
-  } | null
-  inventory_dispatch_cutoff?: string | null
-}
+type Props = { initialData: RawContactPage | null }
 
-type Props = { initialData: RawContactPage | null; settings: RawSettings | null }
-
-export function ContactClient({ initialData, settings }: Props) {
+export function ContactClient({ initialData }: Props) {
   // useLivePreview's generic requires `Record<string, any>`; widen `null` to an
   // empty object so the hook constraint is satisfied without losing the
   // narrowed field shape downstream.
@@ -70,17 +53,18 @@ export function ContactClient({ initialData, settings }: Props) {
   // admin edits the ContactPage global.
   const officePhone = data?.phone?.trim() ?? ''
 
-  // Settings is read-only here. Defaults below mirror the schema defaults in
-  // globals/Settings.ts so the page renders sensibly even if the global has
-  // never been visited in /admin.
-  const legalEntityName: string = settings?.legal_entity_name?.trim() || 'Coolman Malaysia Sdn Bhd'
-  const legalEntityRegNo: string = settings?.legal_entity_reg_no?.trim() || ''
-  const legalEntityAddress: string = settings?.legal_entity_address?.trim() || ''
-  const whatsappNumber: string = settings?.whatsapp_number?.trim() || '+60126363156'
-  const openingMonFri: string = settings?.opening_hours?.mon_fri?.trim() || '09:00–18:00'
-  const openingSat: string = settings?.opening_hours?.sat?.trim() || '09:00–13:00'
-  const openingSun: string = settings?.opening_hours?.sun?.trim() || 'Closed'
-  const dispatchCutoff: string = settings?.inventory_dispatch_cutoff?.trim() || '14:00'
+  // Settings come from the SettingsProvider at the (frontend) layout. Fallbacks
+  // for missing fields live in lib/settings/context.tsx (SETTINGS_FALLBACK).
+  const {
+    legal_entity_name: legalEntityName,
+    legal_entity_reg_no: legalEntityRegNo,
+    legal_entity_address: legalEntityAddress,
+    whatsapp_number: whatsappNumber,
+    opening_hours_mon_fri: openingMonFri,
+    opening_hours_sat: openingSat,
+    opening_hours_sun: openingSun,
+    inventory_dispatch_cutoff: dispatchCutoff,
+  } = useSettings()
 
   // wa.me deep-link wants digits only. Strip "+" and any spaces just in case.
   const whatsappDigits = whatsappNumber.replace(/\D/g, '')
@@ -157,7 +141,7 @@ export function ContactClient({ initialData, settings }: Props) {
       {/* Hero — paper background, Fraunces h1 with italic emphasis. */}
       <header className="bg-paper pb-12 pt-28 lg:pb-20 lg:pt-36">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-dark">
+          <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {c.heroEyebrow}
           </div>
           <h1 className="mt-6 max-w-[22ch] font-fraunces text-[44px] font-normal leading-[1.08] tracking-tight text-navy md:text-[56px] lg:text-[64px]">
@@ -174,7 +158,7 @@ export function ContactClient({ initialData, settings }: Props) {
       <section className="bg-paper py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-dark">
+            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
               {c.channelsEyebrow}
             </div>
             <h2 className="mt-4 max-w-[24ch] font-fraunces text-[28px] font-normal leading-[1.18] tracking-tight text-navy lg:text-[34px]">
@@ -190,7 +174,7 @@ export function ContactClient({ initialData, settings }: Props) {
           <div className="grid grid-cols-1 gap-px border-y border-rule bg-rule lg:grid-cols-3">
             {/* Channel 01 — WhatsApp */}
             <article className="flex flex-col bg-paper p-8 transition-colors duration-150 hover:bg-white lg:p-12">
-              <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-dark">
+              <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
                 {c.channel1Badge}
               </div>
               <h3 className="mt-6 max-w-[20ch] font-fraunces text-[24px] font-normal leading-[1.18] tracking-tight text-navy lg:text-[26px]">
@@ -226,7 +210,7 @@ export function ContactClient({ initialData, settings }: Props) {
               <div className="mt-auto pt-6">
                 <Button
                   asChild
-                  className="h-12 bg-accent-dark text-white hover:bg-accent"
+                  className="h-12 bg-accent text-white hover:opacity-90"
                 >
                   <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
                     {c.channel1Cta}
@@ -238,7 +222,7 @@ export function ContactClient({ initialData, settings }: Props) {
 
             {/* Channel 02 — Office line */}
             <article className="flex flex-col bg-paper p-8 transition-colors duration-150 hover:bg-white lg:p-12">
-              <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-dark">
+              <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
                 {c.channel2Badge}
               </div>
               <h3 className="mt-6 max-w-[20ch] font-fraunces text-[24px] font-normal leading-[1.18] tracking-tight text-navy lg:text-[26px]">
@@ -281,7 +265,7 @@ export function ContactClient({ initialData, settings }: Props) {
 
             {/* Channel 03 — Site visit form (anchor scrolls to the form below). */}
             <article className="flex flex-col bg-paper p-8 transition-colors duration-150 hover:bg-white lg:p-12">
-              <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-dark">
+              <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
                 {c.channel3Badge}
               </div>
               <h3 className="mt-6 max-w-[20ch] font-fraunces text-[24px] font-normal leading-[1.18] tracking-tight text-navy lg:text-[26px]">
@@ -329,7 +313,7 @@ export function ContactClient({ initialData, settings }: Props) {
       <section className="bg-navy py-16 text-paper lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
+            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
               {c.locationEyebrow}
             </div>
             <h2 className="mt-4 max-w-[24ch] font-fraunces text-[28px] font-normal leading-[1.18] tracking-tight text-paper lg:text-[34px]">
@@ -393,7 +377,8 @@ export function ContactClient({ initialData, settings }: Props) {
               {mapsHref ? (
                 <Button
                   asChild
-                  className="h-12 bg-accent-dark text-white hover:bg-accent"
+                  variant="outline"
+                  className="h-12 border-paper/40 text-paper hover:bg-paper hover:text-navy"
                 >
                   <a href={mapsHref} target="_blank" rel="noopener noreferrer">
                     {c.locationOpenInMaps}
@@ -462,7 +447,7 @@ export function ContactClient({ initialData, settings }: Props) {
                 <text x="580" y="430" fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#475569" letterSpacing="0.1em" textAnchor="end">{c.locationMapCity}</text>
               </svg>
               <div className="absolute bottom-6 left-6 max-w-[220px] border border-accent/24 bg-navy/90 px-[18px] py-[14px] font-mono text-[11px] uppercase tracking-[0.12em] text-paper">
-                <span className="mb-1 block text-accent-light">{c.locationOverlayBrand}</span>
+                <span className="mb-1 block text-accent">{c.locationOverlayBrand}</span>
                 {legalEntityAddress
                   ? legalEntityAddress.split('\n')[0]
                   : c.locationAddressFallback}
@@ -476,7 +461,7 @@ export function ContactClient({ initialData, settings }: Props) {
       <section className="bg-paper py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-10 lg:mb-14">
-            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-dark">
+            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
               {c.directLinesEyebrow}
             </div>
             <h2 className="mt-4 max-w-[24ch] font-fraunces text-[28px] font-normal leading-[1.18] tracking-tight text-navy lg:text-[34px]">
@@ -498,7 +483,7 @@ export function ContactClient({ initialData, settings }: Props) {
                 <div className="mb-2.5 font-mono text-[15px] leading-[1.4] text-navy">
                   <a
                     href={`mailto:${line.email}`}
-                    className="text-accent-dark transition-colors duration-150 hover:text-accent-light"
+                    className="text-accent transition-opacity duration-150 hover:opacity-80"
                   >
                     {line.email}
                   </a>
@@ -514,7 +499,7 @@ export function ContactClient({ initialData, settings }: Props) {
       <section id="site-visit-form" className="bg-paper py-16 lg:py-24">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
           <div className="mb-8 lg:mb-12">
-            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-dark">
+            <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
               {c.formEyebrow}
             </div>
             <h2 className="mt-4 max-w-[24ch] font-fraunces text-[28px] font-normal leading-[1.18] tracking-tight text-navy lg:text-[34px]">
@@ -566,7 +551,7 @@ export function ContactClient({ initialData, settings }: Props) {
                   <div className="group space-y-2">
                     <Label
                       htmlFor="name"
-                      className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
+                      className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent"
                     >
                       {c.formNameLabel}
                     </Label>
@@ -580,7 +565,7 @@ export function ContactClient({ initialData, settings }: Props) {
                   <div className="group space-y-2">
                     <Label
                       htmlFor="company"
-                      className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
+                      className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent"
                     >
                       {c.formCompanyLabel}
                     </Label>
@@ -594,7 +579,7 @@ export function ContactClient({ initialData, settings }: Props) {
                 <div className="group space-y-2">
                   <Label
                     htmlFor="email"
-                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
+                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent"
                   >
                     {c.formEmailLabel}
                   </Label>
@@ -609,7 +594,7 @@ export function ContactClient({ initialData, settings }: Props) {
                 <div className="group space-y-2">
                   <Label
                     htmlFor="phone"
-                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
+                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent"
                   >
                     {c.formPhoneLabel}
                   </Label>
@@ -623,7 +608,7 @@ export function ContactClient({ initialData, settings }: Props) {
                 <div className="group space-y-2">
                   <Label
                     htmlFor="message"
-                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
+                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent"
                   >
                     {c.formMessageLabel}
                   </Label>
@@ -638,7 +623,7 @@ export function ContactClient({ initialData, settings }: Props) {
                 </div>
                 <Button
                   type="submit"
-                  className="group h-12 w-full bg-accent-dark text-white hover:bg-accent"
+                  className="group h-12 w-full bg-accent text-white hover:opacity-90"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (

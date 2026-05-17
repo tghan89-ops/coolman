@@ -915,6 +915,7 @@ export interface CopyStructure {
     accounts: { value: string; label: string }
   }
   legal: {
+    draftBadge: string
     privacy: { title: string; lede: string }
     terms: { title: string; lede: string }
     returns: { title: string; lede: string }
@@ -2314,6 +2315,7 @@ export const COPY: Record<Language, CopyStructure> = {
       accounts: { value: '~500', label: 'Active accounts' },
     },
     legal: {
+      draftBadge: 'Draft',
       privacy: { title: 'Privacy', lede: 'How Coolman handles the personal information of contractors, dealers and site visitors. Plain English. No surprises.' },
       terms: { title: 'Terms of sale', lede: 'The terms under which Coolman Malaysia Sdn Bhd sells diamond cutting tools to trade and Brotherhood customers in Malaysia.' },
       returns: { title: 'Returns and warranty', lede: 'How to return a Coolman blade, what the warranty covers, and what to do if a blade fails before its rated life.' },
@@ -3711,6 +3713,7 @@ export const COPY: Record<Language, CopyStructure> = {
       accounts: { value: '~500', label: 'Akaun aktif' },
     },
     legal: {
+      draftBadge: 'Deraf',
       privacy: { title: 'Privasi', lede: 'Bagaimana Coolman mengendalikan maklumat peribadi kontraktor, pengedar dan pelawat tapak. Bahasa yang jelas. Tiada kejutan.' },
       terms: { title: 'Terma jualan', lede: 'Terma di bawah mana Coolman Malaysia Sdn Bhd menjual alat pemotong berlian kepada pelanggan perdagangan dan Brotherhood di Malaysia.' },
       returns: { title: 'Pemulangan dan jaminan', lede: 'Bagaimana untuk memulangkan bilah Coolman, apa yang dilindungi oleh jaminan, dan apa yang perlu dibuat jika bilah gagal sebelum hayatnya yang dinilai.' },

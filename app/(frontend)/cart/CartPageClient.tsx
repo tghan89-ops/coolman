@@ -158,7 +158,7 @@ export function CartPageClient() {
                       <div>
                         <Link
                           href={`/products/${it.productId}`}
-                          className="font-semibold text-ink hover:text-accent-dark"
+                          className="font-semibold text-ink hover:text-accent"
                         >
                           {it.name}
                         </Link>
@@ -204,7 +204,7 @@ export function CartPageClient() {
                       </div>
                       <div className="text-right">
                         <p className="text-xs text-muted-foreground">{t.cart.lineTotal}</p>
-                        <p className="font-mono text-lg font-bold text-accent-dark">
+                        <p className="font-mono text-lg font-bold text-accent">
                           {formatPrice(it.listPrice * it.quantity)}
                         </p>
                       </div>
@@ -284,7 +284,7 @@ export function CartPageClient() {
 
                 <div className="flex justify-between pt-2 text-lg font-bold">
                   <span>{t.order.total}</span>
-                  <span className="font-mono text-accent-dark">
+                  <span className="font-mono text-accent">
                     {showBreakdown ? formatPrice(state.subtotalEffective) : formatPrice(state.subtotalList)}
                   </span>
                 </div>

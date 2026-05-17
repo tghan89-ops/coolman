@@ -5,6 +5,7 @@ import { ArrowRight, MessageCircle } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { ChinesePullquote, Pullquote } from '@/components/editorial/Pullquote'
 import { useLanguage } from '@/lib/i18n/context'
+import { useSettings } from '@/lib/settings/context'
 
 interface Folio {
   folioLabel: string
@@ -74,6 +75,8 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 
 export function WhyCoolmanClient() {
   const { t } = useLanguage()
+  const { whatsapp_number } = useSettings()
+  const whatsappDigits = whatsapp_number.replace(/\D/g, '')
   const { hero, folio01, folio02, folio03, closingCta } = t.pages.whyCoolman
 
   return (
@@ -197,10 +200,10 @@ export function WhyCoolmanClient() {
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Link
-              href="https://wa.me/60126363156"
+              href={`https://wa.me/${whatsappDigits}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm bg-accent px-6 text-sm font-medium text-paper transition-colors duration-150 ease-out hover:bg-accent-light"
+              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-sm bg-accent px-6 text-sm font-medium text-paper transition-opacity duration-150 ease-out hover:opacity-90"
             >
               <MessageCircle className="h-4 w-4" aria-hidden="true" />
               {closingCta.whatsappCtaLabel}

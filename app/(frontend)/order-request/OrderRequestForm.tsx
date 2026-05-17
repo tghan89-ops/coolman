@@ -188,7 +188,7 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
               <AlertDescription className="mt-2 text-ink-muted">{t.order.loginToOrder}</AlertDescription>
             </Alert>
             <div className="mt-6 flex gap-4">
-              <Button asChild className="bg-accent-dark text-white hover:bg-accent"><Link href="/auth/login">{t.nav.login}</Link></Button>
+              <Button asChild className="bg-accent text-white hover:opacity-90"><Link href="/auth/login">{t.nav.login}</Link></Button>
               <Button variant="outline" asChild className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"><Link href="/auth/register">{t.nav.register}</Link></Button>
             </div>
           </div>
@@ -210,7 +210,7 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
               </AlertDescription>
             </Alert>
             <div className="mt-6">
-              <Button asChild className="bg-accent-dark text-white hover:bg-accent"><Link href="/products">{t.hero.cta}</Link></Button>
+              <Button asChild className="bg-accent text-white hover:opacity-90"><Link href="/products">{t.hero.cta}</Link></Button>
             </div>
           </div>
         </div>
@@ -231,7 +231,7 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
                 <h2 className="mt-6 font-sans text-2xl font-bold text-white">{t.order.success}</h2>
                 <p className="mt-2 text-ink-muted">{t.order.successMessage}</p>
                 <div className="mt-8 flex gap-4">
-                  <Button asChild className="bg-accent-dark text-white hover:bg-accent"><Link href="/account">{t.nav.myAccount}</Link></Button>
+                  <Button asChild className="bg-accent text-white hover:opacity-90"><Link href="/account">{t.nav.myAccount}</Link></Button>
                   <Button variant="outline" asChild className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"><Link href="/products">{t.nav.products}</Link></Button>
                 </div>
               </CardContent>
@@ -489,7 +489,7 @@ export function OrderRequestForm({ product, productId, initialQuantity = 1 }: Or
 
                   <Button
                     type="submit"
-                    className="mt-2 h-12 w-full bg-accent-dark text-white hover:bg-accent"
+                    className="mt-2 h-12 w-full bg-accent text-white hover:opacity-90"
                     size="lg"
                     disabled={isSubmitting || !!stalePriceInfo || !deliveryAddress}
                   >

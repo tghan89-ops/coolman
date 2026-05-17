@@ -91,7 +91,7 @@ export function PriceStackCard({
                 // (~7:1) where text-accent (#3B82F6) sat at ~4.4:1 borderline.
                 // Light tone unchanged. Burned 2026-05-17 — code-quality review.
                 'border-white/20 bg-white/5 text-sky-300 hover:text-white hover:border-white/40'
-              : 'border-rule bg-white text-accent-dark hover:text-accent hover:border-accent',
+              : 'border-rule bg-white text-accent hover:opacity-80 hover:border-accent',
           )}
           style={{ transitionProperty: 'color, border-color, box-shadow' }}
         >
@@ -122,7 +122,7 @@ export function PriceStackCard({
             className={cn(
               'underline underline-offset-2 font-semibold',
               // Dark tone uses sky-300 for AA contrast over warn/10 on navy.
-              isDark ? 'text-sky-300 hover:text-white' : 'text-accent-dark hover:text-accent',
+              isDark ? 'text-sky-300 hover:text-white' : 'text-accent hover:opacity-80',
             )}
           >
             {t.resendVerification}

@@ -53,16 +53,32 @@ export default async function FrontendLayout({
     () => null,
   )
   const initialSettings: Partial<PublicSettings> | null = settingsRaw
-    ? {
-        legal_entity_name: (settingsRaw as { legal_entity_name?: string | null })
-          .legal_entity_name ?? undefined,
-        whatsapp_number: (settingsRaw as { whatsapp_number?: string | null })
-          .whatsapp_number ?? undefined,
-        inventory_on_time_pct: (settingsRaw as { inventory_on_time_pct?: number | null })
-          .inventory_on_time_pct ?? undefined,
-        inventory_dispatch_cutoff: (settingsRaw as { inventory_dispatch_cutoff?: string | null })
-          .inventory_dispatch_cutoff ?? undefined,
-      }
+    ? (() => {
+        const s = settingsRaw as {
+          legal_entity_name?: string | null
+          legal_entity_reg_no?: string | null
+          legal_entity_address?: string | null
+          whatsapp_number?: string | null
+          inventory_on_time_pct?: number | null
+          inventory_dispatch_cutoff?: string | null
+          opening_hours?: {
+            mon_fri?: string | null
+            sat?: string | null
+            sun?: string | null
+          } | null
+        }
+        return {
+          legal_entity_name: s.legal_entity_name ?? undefined,
+          legal_entity_reg_no: s.legal_entity_reg_no ?? undefined,
+          legal_entity_address: s.legal_entity_address ?? undefined,
+          whatsapp_number: s.whatsapp_number ?? undefined,
+          inventory_on_time_pct: s.inventory_on_time_pct ?? undefined,
+          inventory_dispatch_cutoff: s.inventory_dispatch_cutoff ?? undefined,
+          opening_hours_mon_fri: s.opening_hours?.mon_fri ?? undefined,
+          opening_hours_sat: s.opening_hours?.sat ?? undefined,
+          opening_hours_sun: s.opening_hours?.sun ?? undefined,
+        }
+      })()
     : null
 
   return (

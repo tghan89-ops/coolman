@@ -258,7 +258,7 @@ export function FieldNotesClient({ posts }: FieldNotesClientProps) {
                       <div className="mt-8">
                         <Link
                           href={href}
-                          className="inline-flex h-12 items-center rounded-md border border-navy bg-navy px-6 font-sans text-sm font-semibold text-paper transition-[background-color,box-shadow] hover:bg-navy-light hover:shadow-lg hover:shadow-navy/20"
+                          className="inline-flex h-12 items-center rounded-md border border-navy bg-navy px-6 font-sans text-sm font-semibold text-paper transition-[background-color,box-shadow] hover:bg-navy-light hover:shadow-md hover:shadow-navy/20"
                         >
                           {idx.readMore}
                         </Link>

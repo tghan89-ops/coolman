@@ -43,7 +43,7 @@ function ResetPasswordInner() {
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        setError(data.error || 'Reset failed. Your link may have expired — please request a new one.')
+        setError(data.error || 'Reset failed. Your link may have expired. Please request a new one.')
         return
       }
       setSuccess(true)
@@ -101,7 +101,7 @@ function ResetPasswordInner() {
             </div>
             <Button
               type="submit"
-              className="h-12 w-full bg-accent-dark text-white hover:bg-accent"
+              className="h-12 w-full bg-accent text-white hover:opacity-90"
               disabled={isLoading || !token}
             >
               {isLoading ? 'Saving...' : 'Save new password'}

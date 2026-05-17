@@ -85,7 +85,7 @@ export function QuantityStepper({
     'disabled:opacity-50 disabled:cursor-not-allowed',
     isDark
       ? 'border-white/30 text-white hover:bg-white/10'
-      : 'border-rule text-navy bg-white hover:border-accent hover:text-accent-dark',
+      : 'border-rule text-navy bg-white hover:border-accent hover:text-accent',
   )
 
   return (

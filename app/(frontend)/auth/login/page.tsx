@@ -118,7 +118,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="group h-12 w-full bg-accent-dark text-white hover:bg-accent"
+                className="group h-12 w-full bg-accent text-white hover:opacity-90"
                 disabled={isLoading}
               >
                 {isLoading ? (

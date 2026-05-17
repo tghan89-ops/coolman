@@ -13,6 +13,48 @@ import { bondLabel } from '@/lib/products/bond-label'
 import { extractYouTubeId, youTubeEmbedUrl } from '@/lib/products/youtube'
 import { useLanguage } from '@/lib/i18n/context'
 
+// Payload relations come back as objects ({id, name, nameBM, ...}) once
+// depth>=1 has resolved them; raw seeds and unresolved relations stay as
+// strings or numbers. This loose shape covers both.
+type RelationOrScalar =
+  | { id?: string | number; name?: string; nameBM?: string }
+  | string
+  | number
+  | null
+  | undefined
+
+type ProductMedia = { url?: string | null } | string | null | undefined
+
+interface RelatedProductData {
+  id: string | number
+  name: string
+  diameter?: RelationOrScalar
+  bondType?: string | null
+  image?: ProductMedia
+  listPrice?: number | null
+  materials?: RelationOrScalar[] | null
+}
+
+export interface ProductDetailData {
+  id: string | number
+  name: string
+  sku: string
+  description?: string | null
+  image?: ProductMedia
+  photos?: Array<{ id?: string | number; photo?: ProductMedia }> | null
+  youtubeUrl?: string | null
+  materials?: RelationOrScalar[] | null
+  applications?: RelationOrScalar[] | null
+  diameter?: RelationOrScalar
+  arborSize?: RelationOrScalar
+  segmentHeight?: RelationOrScalar
+  bondType?: string | null
+  maxRPM?: number | null
+  machineTier?: RelationOrScalar
+  listPrice?: number | null
+  relatedProducts?: RelatedProductData[] | null
+}
+
 export function ProductDetailClient({
   initialData,
   isLoggedIn = false,
@@ -21,7 +63,7 @@ export function ProductDetailClient({
   ordersPaused = false,
   whatsappNumber = '',
 }: {
-  initialData: any
+  initialData: ProductDetailData
   isLoggedIn?: boolean
   emailVerified?: boolean
   tierDiscountPct?: number
@@ -72,8 +114,10 @@ export function ProductDetailClient({
   // Field names match collections/Products.ts. Earlier prototype names
   // (recommendedMaterials / recommendedMachinePower / recommendedCuttingVolume)
   // were leftovers from the seed data and returned empty on real Payload docs.
-  const materials: any[] = Array.isArray(data.materials) ? data.materials : []
-  const applications: any[] = Array.isArray(data.applications) ? data.applications : []
+  const materials: RelationOrScalar[] = Array.isArray(data.materials) ? data.materials : []
+  const applications: RelationOrScalar[] = Array.isArray(data.applications)
+    ? data.applications
+    : []
   const primaryMaterial = labelOf(materials[0])
   const machineTierLabel = labelOf(data.machineTier)
 
@@ -89,10 +133,10 @@ export function ProductDetailClient({
   // that didn't resolve to a usable URL so we never render a broken thumbnail.
   const galleryUrls: string[] = Array.isArray(data.photos)
     ? data.photos
-        .map((row: any) =>
-          typeof row?.photo === 'object' && row.photo?.url ? (row.photo.url as string) : null,
+        .map((row) =>
+          typeof row?.photo === 'object' && row.photo?.url ? row.photo.url : null,
         )
-        .filter((u: string | null): u is string => !!u)
+        .filter((u): u is string => !!u)
     : []
 
   // Gallery items — photos first, then (if set) a video tile that opens the
@@ -129,8 +173,10 @@ export function ProductDetailClient({
   ]
 
   // Related products from Payload (depth:2 resolves these to full objects)
-  const relatedProducts: any[] = Array.isArray(data.relatedProducts)
-    ? data.relatedProducts.filter((p: any) => typeof p === 'object' && p !== null)
+  const relatedProducts: RelatedProductData[] = Array.isArray(data.relatedProducts)
+    ? data.relatedProducts.filter(
+        (p): p is RelatedProductData => typeof p === 'object' && p !== null,
+      )
     : []
 
   // Usage-guide steps come from the i18n copy (4 fixed-order steps). Step 03's
@@ -321,7 +367,7 @@ export function ProductDetailClient({
               <div className="mt-8">
                 <p className="mb-3 text-xs font-bold tracking-wider text-white/40">{pd.recommendedMaterialsHeading}</p>
                 <div className="flex flex-wrap gap-2">
-                  {materials.map((material: any, i: number) => (
+                  {materials.map((material, i) => (
                     <span key={keyOf(material, i)} className="border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-semibold text-accent">
                       {labelOf(material)}
                     </span>
@@ -428,7 +474,7 @@ export function ProductDetailClient({
           {/* Applications tab */}
           {activeTab === 'applications' && (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {applications.map((app: any, i: number) => (
+              {applications.map((app, i) => (
                 <div key={keyOf(app, i)} className="flex items-center gap-4 border border-rule bg-white p-5">
                   <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center bg-accent">
                     <Check className="h-4 w-4 text-white" />
@@ -468,18 +514,18 @@ export function ProductDetailClient({
               </div>
               <Link href="/products" className="group hidden items-center gap-2 font-sans text-sm font-bold text-white/60 transition-colors hover:text-white sm:flex">
                 {pd.sectionLabels.viewAll}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedProducts.map((p: any) => {
+              {relatedProducts.map((p) => {
                 const relatedImageUrl: string | null =
                   typeof p.image === 'object' && p.image?.url ? p.image.url : null
                 return (
                   <Link
                     key={p.id}
                     href={`/products/${p.id}`}
-                    className="group relative flex flex-col overflow-hidden border border-white/10 bg-white/5 transition-[border-color,box-shadow] hover:border-accent/30 hover:shadow-lg"
+                    className="group relative flex flex-col overflow-hidden border border-white/10 bg-white/5 transition-[border-color,box-shadow] hover:border-accent/30 hover:shadow-md"
                   >
                     <div className="relative aspect-square overflow-hidden bg-navy-light">
                       {relatedImageUrl ? (
@@ -497,7 +543,7 @@ export function ProductDetailClient({
                       )}
                       <div className="absolute inset-0 bg-navy/0 transition-[background-color] group-hover:bg-navy/60">
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100">
-                          <div className="flex items-center gap-2 bg-accent-dark px-6 py-3 font-sans text-sm font-semibold text-white">
+                          <div className="flex items-center gap-2 bg-accent px-6 py-3 font-sans text-sm font-semibold text-white">
                             {pd.sectionLabels.openProduct}
                             <ArrowRight className="h-4 w-4" />
                           </div>
@@ -537,12 +583,12 @@ export function ProductDetailClient({
       )}
 
       {/* ── CTA STRIP ────────────────────────────────────────────── */}
-      <section className="bg-accent py-12">
+      <section className="bg-navy py-12 text-paper">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-6 lg:flex-row">
             <div>
-              <h3 className="font-sans text-2xl font-bold text-white lg:text-3xl">{pd.ctaStrip.heading}</h3>
-              <p className="mt-1 text-white/80">{pd.ctaStrip.body}</p>
+              <h3 className="font-sans text-2xl font-bold text-paper lg:text-3xl">{pd.ctaStrip.heading}</h3>
+              <p className="mt-1 text-paper/80">{pd.ctaStrip.body}</p>
             </div>
             <div className="flex gap-3">
               <AddToCartButton
@@ -552,7 +598,7 @@ export function ProductDetailClient({
                 disabled={ordersPaused}
                 ariaDescribedBy={ordersPaused ? 'kill-switch-banner' : undefined}
               />
-              <Button variant="outline" className="h-12 border-2 border-white bg-transparent px-6 font-sans font-bold text-white hover:bg-white hover:text-accent" asChild>
+              <Button variant="outline" className="h-12 border-2 border-paper bg-transparent px-6 font-sans font-bold text-paper hover:bg-paper hover:text-navy" asChild>
                 <Link href="/contact">{pd.ctaStrip.primaryLabel}</Link>
               </Button>
             </div>

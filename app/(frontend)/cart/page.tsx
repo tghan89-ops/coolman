@@ -5,5 +5,5 @@ export default function CartPage() {
 }
 
 export const metadata = {
-  title: 'Your Cart — Coolman',
+  title: 'Your Cart | Coolman',
 }

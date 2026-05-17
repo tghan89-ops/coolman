@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
               <a href="${link}" style="background:#3B82F6;color:#fff;padding:12px 20px;text-decoration:none;font-weight:600;border-radius:6px;">Reset password</a>
             </p>
             <p style="font-size: 13px; color: #475569; word-break: break-all;">Or copy this link: ${link}</p>
-            <p style="font-size: 13px; color: #64748B;">If you didn't ask for this, you can safely ignore this email — your password won't change.</p>
+            <p style="font-size: 13px; color: #64748B;">If you didn't ask for this, you can safely ignore this email. Your password won't change.</p>
           </div>
         `,
       })

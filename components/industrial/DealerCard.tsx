@@ -145,7 +145,7 @@ export function DealerCard({
           className={cn(
             'inline-flex items-center justify-center gap-2',
             'min-h-[48px] px-4 rounded-md',
-            'bg-accent-dark text-white text-sm font-medium',
+            'bg-accent text-white text-sm font-medium',
             'transition-opacity duration-150 ease-out',
             'hover:opacity-90 focus-visible:opacity-90',
           )}

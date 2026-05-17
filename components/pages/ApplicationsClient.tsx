@@ -47,7 +47,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-wider text-accent">{t.pages.applications.heroEyebrow}</p>
-            <h1 className="mt-3 text-4xl font-bold tracking-tight text-white lg:text-5xl">
+            <h1 className="mt-3 font-fraunces text-[clamp(40px,6vw,84px)] font-normal leading-[1.02] tracking-[-0.025em] text-white">
               {heroTitle}
             </h1>
             <p className="mt-6 text-lg text-white/60">
@@ -81,7 +81,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
                   }`}
                 >
                   <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-secondary">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-secondary">
                       <Image
                         src={sectionImage}
                         alt={sectionTitle}
@@ -92,7 +92,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
                   </div>
 
                   <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-                    <h2 className="text-2xl font-bold text-navy lg:text-3xl">{sectionTitle}</h2>
+                    <h2 className="font-fraunces text-[clamp(28px,3vw,40px)] font-normal leading-[1.1] tracking-[-0.02em] text-navy">{sectionTitle}</h2>
                     <p className="mt-4 text-ink-muted">{sectionDescription}</p>
 
                     {sectionFeatures.length > 0 && (
@@ -109,7 +109,7 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
                     )}
 
                     <Button
-                      className="mt-8 rounded-xl bg-navy text-white hover:bg-navy-light"
+                      className="mt-8 rounded-sm bg-navy text-white hover:bg-navy-light"
                       asChild
                     >
                       <Link href={`/products?material=${sectionId}`}>
@@ -128,13 +128,13 @@ export function ApplicationsClient({ initialData }: { initialData: any }) {
       {/* CTA */}
       <section className="bg-secondary py-24">
         <div className="mx-auto max-w-7xl px-6 text-center lg:px-8">
-          <h2 className="text-3xl font-bold text-navy">{t.pages.applications.ctaTitle}</h2>
+          <h2 className="font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">{t.pages.applications.ctaTitle}</h2>
           <p className="mx-auto mt-4 max-w-xl text-ink-muted">
             {t.pages.applications.ctaMessage}
           </p>
           <Button
             size="lg"
-            className="mt-8 h-14 rounded-xl bg-accent-dark px-8 text-white hover:bg-accent"
+            className="mt-8 h-14 rounded-sm bg-accent px-8 text-white hover:opacity-90"
             asChild
           >
             <Link href="/contact">

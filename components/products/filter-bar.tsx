@@ -168,7 +168,7 @@ export function FilterBar({
         {totalFilters > 0 && (
           <button
             onClick={clearAll}
-            className="flex items-center gap-1 text-sm text-accent-dark hover:text-accent"
+            className="flex items-center gap-1 text-sm text-accent hover:opacity-80"
           >
             <X className="h-3 w-3" />
             {t.products.clear} ({totalFilters})

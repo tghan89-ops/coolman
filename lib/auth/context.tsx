@@ -145,7 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       return login(data.email, data.password)
     } catch {
-      return { success: false, error: 'Network error — please try again' }
+      return { success: false, error: 'Network error. Please try again.' }
     }
   }, [login])
 

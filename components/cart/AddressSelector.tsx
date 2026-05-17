@@ -57,7 +57,7 @@ export function AddressSelector({ selectedId, onSelect }: AddressSelectorProps) 
         <Label className="text-xs font-semibold uppercase tracking-widest">
           {t.account.deliveryAddress}
         </Label>
-        <Link href="/account" className="text-xs font-semibold text-accent-dark underline">
+        <Link href="/account" className="text-xs font-semibold text-accent underline">
           {a.edit}
         </Link>
       </div>

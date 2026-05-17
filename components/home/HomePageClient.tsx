@@ -295,14 +295,14 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
           <div className="mt-12 flex flex-wrap gap-4 items-center">
             <Link
               href="/products"
-              className="inline-flex h-12 items-center justify-center bg-navy px-6 text-sm font-medium text-paper rounded-[2px] transition-[background-color,box-shadow] duration-150 ease-out hover:bg-navy-light hover:shadow-[0_4px_12px_rgba(10,22,40,0.12)]"
+              className="inline-flex h-12 items-center justify-center bg-navy px-6 text-sm font-medium text-paper rounded-sm transition-[background-color,box-shadow] duration-150 ease-out hover:bg-navy-light hover:shadow-[0_4px_12px_rgba(10,22,40,0.12)]"
             >
               {n.quietDoor.ctaPrimary}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex h-12 items-center justify-center border border-navy bg-transparent px-6 text-sm font-medium text-navy rounded-[2px] transition-[background-color,color] duration-150 ease-out hover:bg-navy hover:text-paper"
+              className="inline-flex h-12 items-center justify-center border border-navy bg-transparent px-6 text-sm font-medium text-navy rounded-sm transition-[background-color,color] duration-150 ease-out hover:bg-navy hover:text-paper"
             >
               {n.quietDoor.ctaSecondary}
             </Link>

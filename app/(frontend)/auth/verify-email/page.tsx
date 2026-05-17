@@ -44,7 +44,7 @@ function VerifyEmailContent() {
             <>
               <h1 className="text-2xl font-bold text-white">Email verified</h1>
               <p className="text-ink-muted">Your account is now active. You can place orders.</p>
-              <Button asChild className="bg-accent-dark text-white hover:bg-accent">
+              <Button asChild className="bg-accent text-white hover:opacity-90">
                 <Link href="/account">Go to my account</Link>
               </Button>
             </>

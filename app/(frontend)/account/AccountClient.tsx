@@ -103,7 +103,7 @@ export function AccountClient({ orders }: { orders: AccountOrder[] }) {
                   <p className="font-semibold text-white">Email not yet verified</p>
                   <p className="mt-1 text-sm text-ink-muted">
                     Verify your email to see your contract prices and submit orders.
-                    Check your inbox <span className="font-semibold text-white">— and your junk / spam folder</span> — for a link from Coolman. We are a new sender, so first emails sometimes land there.
+                    Check your inbox <span className="font-semibold text-white">and your junk / spam folder</span> for a link from Coolman. We are a new sender, so first emails sometimes land there.
                   </p>
                   {verificationSent ? (
                     <p className="mt-3 text-sm font-medium text-success">Verification email sent. Check your inbox and junk / spam folder.</p>
@@ -199,7 +199,7 @@ export function AccountClient({ orders }: { orders: AccountOrder[] }) {
                     </div>
                     <h3 className="mt-4 text-lg font-medium text-white">{t.account.noOrders}</h3>
                     <p className="mt-2 text-ink-muted">{t.account.noOrdersMessage}</p>
-                    <Button asChild className="mt-6 bg-accent hover:bg-accent-dark">
+                    <Button asChild className="mt-6 bg-accent hover:opacity-90">
                       <Link href="/products">
                         {t.account.browseProducts}
                         <ArrowRight className="ml-2 h-4 w-4" />

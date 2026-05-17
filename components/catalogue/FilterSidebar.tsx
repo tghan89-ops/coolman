@@ -118,7 +118,7 @@ export function FilterSidebar({
             onClick={handleClear}
             className={cn(
               'inline-flex items-center gap-1 text-xs font-semibold',
-              'text-accent-dark hover:text-accent transition-colors duration-150 ease-out',
+              'text-accent hover:opacity-80 transition-opacity duration-150 ease-out',
             )}
           >
             <X className="h-3 w-3" />

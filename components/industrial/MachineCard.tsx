@@ -98,7 +98,7 @@ export function MachineCard({
 
         {bondMatch ? (
           <div className="border-l-[3px] border-accent bg-paper px-4 py-3">
-            <p className="text-sm text-accent-dark leading-snug">{bondMatch}</p>
+            <p className="text-sm text-accent leading-snug">{bondMatch}</p>
           </div>
         ) : null}
 

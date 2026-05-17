@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { DealerCard } from '@/components/industrial/DealerCard'
 import { useLanguage } from '@/lib/i18n/context'
+import { useSettings } from '@/lib/settings/context'
 import { cn } from '@/lib/utils'
 
 // Row shape mirrors the Payload `dealers` collection — snake_case at the
@@ -24,13 +25,10 @@ interface BrotherhoodDirectoryClientProps {
   dealers: DealerRow[]
 }
 
-// Empty-state fallback CTA target. DealerCard already deep-links to per-dealer
-// numbers from the collection; this hardcoded sales number is only used when
-// zero active dealers exist. Long-term, source from Settings.
-const SALES_WHATSAPP_DIGITS = '60126363156'
-
 export function BrotherhoodDirectoryClient({ dealers }: BrotherhoodDirectoryClientProps) {
   const { t } = useLanguage()
+  const { whatsapp_number } = useSettings()
+  const whatsappDigits = whatsapp_number.replace(/\D/g, '')
   const b = t.brotherhoodDirectory
 
   // Filter values come from the data — never a hardcoded enum.
@@ -49,7 +47,7 @@ export function BrotherhoodDirectoryClient({ dealers }: BrotherhoodDirectoryClie
 
   const hasFilter = dealers.length > 0 && areas.length >= 2
 
-  const salesWhatsAppUrl = `https://wa.me/${SALES_WHATSAPP_DIGITS}?text=${encodeURIComponent(
+  const salesWhatsAppUrl = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
     b.emptyState.body,
   )}`
 

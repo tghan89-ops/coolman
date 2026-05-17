@@ -105,7 +105,7 @@ export function AddressList({ onChanged }: AddressListProps) {
           size="sm"
           disabled={adding || atCap}
           onClick={() => setAdding(true)}
-          className="bg-accent text-white hover:bg-accent-dark"
+          className="bg-accent text-white hover:opacity-90"
         >
           <Plus className="mr-1 h-4 w-4" />
           {a.addNew}
@@ -300,7 +300,7 @@ function AddressForm({
                 setSaving(false)
               }
             }}
-            className="bg-accent text-white hover:bg-accent-dark"
+            className="bg-accent text-white hover:opacity-90"
           >
             {saving ? '…' : a.save}
           </Button>

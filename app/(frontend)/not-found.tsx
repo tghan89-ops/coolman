@@ -17,7 +17,7 @@ export default function NotFound() {
             The page you are looking for has moved or no longer exists.
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Button asChild className="bg-accent-dark text-white hover:bg-accent">
+            <Button asChild className="bg-accent text-white hover:opacity-90">
               <Link href="/">Back to home</Link>
             </Button>
             <Button asChild variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white dark:bg-transparent">

@@ -54,8 +54,8 @@ function renderOrderEmail(args: RenderArgs): { subject: string; html: string } {
 
   const subject =
     args.kind === 'admin'
-      ? `New order request — ${companyName} — ${lineCount} item(s) — ${grandFmt}`
-      : `Order received — ${lineCount} item(s) — ${grandFmt}`
+      ? `New order request | ${companyName} | ${lineCount} item(s) | ${grandFmt}`
+      : `Order received | ${lineCount} item(s) | ${grandFmt}`
 
   const rows = args.perLine
     .map(
@@ -86,7 +86,7 @@ function renderOrderEmail(args: RenderArgs): { subject: string; html: string } {
       : `<p>Hi ${escapeHtml(companyName)},</p><p>Your order request has been received. Alan or the Coolman team will contact you shortly.</p>`
 
   const html = `<div style="font-family:sans-serif;max-width:640px">
-    <h2>${escapeHtml(subject.split(' — ')[0])}</h2>
+    <h2>${escapeHtml(subject.split(' | ')[0])}</h2>
     <p>Submission: <code>${escapeHtml(args.submissionId)}</code></p>
     ${contractorSection}
     <p>Delivery address: ${escapeHtml(args.deliveryAddress)}</p>
@@ -104,7 +104,7 @@ function renderOrderEmail(args: RenderArgs): { subject: string; html: string } {
     ${priceBreakdownSection}
     <p style="font-size:20px"><strong>Grand total: ${grandFmt}</strong></p>
     ${duplicateWarning}
-    ${args.kind === 'contractor' ? `<p style="margin-top:16px;">If anything looks wrong, reply to this email or call Coolman directly.</p><p>— Coolman</p>` : ''}
+    ${args.kind === 'contractor' ? `<p style="margin-top:16px;">If anything looks wrong, reply to this email or call Coolman directly.</p><p>Coolman</p>` : ''}
   </div>`
 
   return { subject, html }

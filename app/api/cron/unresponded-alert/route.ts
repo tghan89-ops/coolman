@@ -102,7 +102,7 @@ export async function GET(req: NextRequest) {
         ? new Date(order.submitted_at).toLocaleString('en-GB', { timeZone: 'Asia/Kuala_Lumpur' })
         : 'unknown'
 
-      const subject = `[Coolman] Unresponded order ${order.id} — over ${thresholdHours}h old`
+      const subject = `[Coolman] Unresponded order ${order.id} | over ${thresholdHours}h old`
       const html = `
         <p>Hi,</p>
         <p>This order has been pending for more than ${thresholdHours} hours:</p>

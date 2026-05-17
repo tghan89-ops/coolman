@@ -37,7 +37,7 @@ export default function FrontendError({
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Button
               onClick={reset}
-              className="bg-accent-dark text-white hover:bg-accent"
+              className="bg-accent text-white hover:opacity-90"
             >
               Try again
             </Button>

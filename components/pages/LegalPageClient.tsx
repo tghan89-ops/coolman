@@ -37,7 +37,7 @@ export function LegalPageClient({
         <div className="mx-auto max-w-3xl px-6 py-20 lg:px-8 lg:py-24">
           <div className="border-l-2 border-accent/30 pl-6">
             <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink/50">
-              Draft
+              {t.legal.draftBadge}
             </p>
             <p className="mt-3 text-base leading-relaxed text-ink/70">
               The full text of this notice is being prepared with counsel. Until it

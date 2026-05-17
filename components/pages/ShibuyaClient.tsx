@@ -203,7 +203,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="font-fraunces text-[clamp(40px,6vw,84px)] font-normal leading-[1.02] tracking-[-0.025em] text-white">
               {heroLine1}
               <span className="block text-white/40">{heroLine2}</span>
             </h1>
@@ -254,7 +254,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
       <section className="bg-shibuya-paper py-32">
         <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
           <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{t.pages.shibuya.sincePrefix} {heritageSince}</p>
-          <h2 className="mt-8 text-3xl font-bold leading-snug tracking-tight text-navy md:text-4xl lg:text-5xl">
+          <h2 className="mt-8 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
             {heritageStatement}
           </h2>
           <div className="mx-auto mt-12 h-px w-16 bg-navy/20" />
@@ -278,7 +278,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
             {/* Content */}
             <div className="flex flex-col justify-center">
               <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{craftEyebrow}</p>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-navy md:text-4xl">
+              <h2 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
                 {craftHeadline}
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-ink-muted">
@@ -306,7 +306,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mb-20 text-center">
             <p className="text-sm font-medium tracking-[0.2em] text-white/40">{t.pages.shibuya.modelsEyebrow}</p>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
+            <h2 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-white">
               {t.pages.shibuya.modelsHeadline}
             </h2>
           </div>
@@ -325,8 +325,8 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
               <Link
                 href="/contact"
                 className={cn(
-                  'mt-10 inline-flex items-center gap-2 bg-accent-dark px-8 py-4 text-sm font-semibold text-white',
-                  'min-h-[48px] transition-colors hover:bg-accent',
+                  'mt-10 inline-flex items-center gap-2 bg-accent px-8 py-4 text-sm font-semibold text-white',
+                  'min-h-[48px] transition-opacity hover:opacity-90',
                 )}
               >
                 {t.pages.shibuya.requestQuote}
@@ -390,7 +390,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
                         {pick(selectedMachine.tagline, selectedMachine.taglineBM)}
                       </p>
                     )}
-                    <h3 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
+                    <h3 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-white">
                       {t.pages.shibuya.modelNamePrefix} {selectedMachine.modelName}
                     </h3>
                     {pick(selectedMachine.description, selectedMachine.descriptionBM) && (
@@ -442,8 +442,8 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
                       <Link
                         href="/contact"
                         className={cn(
-                          'inline-flex items-center gap-2 bg-accent-dark px-8 py-4 text-sm font-semibold text-white',
-                          'min-h-[48px] transition-colors hover:bg-accent',
+                          'inline-flex items-center gap-2 bg-accent px-8 py-4 text-sm font-semibold text-white',
+                          'min-h-[48px] transition-opacity hover:opacity-90',
                         )}
                       >
                         {t.pages.shibuya.requestQuote}
@@ -476,7 +476,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="max-w-xl">
               <p className="text-sm font-medium tracking-[0.2em] text-white/40">{t.pages.shibuya.inActionEyebrow}</p>
-              <h2 className="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">
+              <h2 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-white">
                 {inActionHeadline}
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-white/60">
@@ -500,7 +500,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
           <div className="grid gap-16 lg:grid-cols-3">
             <div>
               <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{t.pages.shibuya.supportEyebrow}</p>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-navy">
+              <h2 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
                 {supportHeadline}
               </h2>
             </div>
