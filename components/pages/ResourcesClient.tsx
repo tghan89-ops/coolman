@@ -33,7 +33,7 @@ function getDownloadIcon(title: string) {
   return BookOpen
 }
 
-export function ResourcesClient({ initialData, posts = [] }: { initialData: any; posts?: any[] }) {
+export function ResourcesClient({ initialData }: { initialData: any }) {
   const { language, t } = useLanguage()
   const pick = (en?: string | null, bm?: string | null): string => {
     if (language === 'BM' && bm && bm.trim()) return bm
@@ -91,77 +91,6 @@ export function ResourcesClient({ initialData, posts = [] }: { initialData: any;
               {heroSubtitle}
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Technical Guides */}
-      <section className="bg-white py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wider text-accent">{t.pages.resources.guidesEyebrow}</p>
-            <h2 className="mt-3 text-3xl font-bold text-navy">{t.pages.resources.guidesHeading}</h2>
-            <p className="mt-4 text-ink-muted">{t.pages.resources.guidesSubheading}</p>
-          </div>
-
-          {posts.length === 0 ? (
-            <div className="mt-12 rounded-2xl border border-rule bg-secondary/40 p-10 text-center">
-              <p className="text-sm text-ink-muted">{t.pages.resources.guidesEmpty}</p>
-            </div>
-          ) : (
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {posts.map((post: any) => {
-                const title = pick(post.title, post.titleBM)
-                const excerpt = pick(post.excerpt, post.excerptBM)
-                const hero =
-                  post.heroImage && typeof post.heroImage === 'object'
-                    ? post.heroImage.url
-                    : null
-                const date = post.publishedAt || post.createdAt
-                return (
-                  <Link
-                    key={post.id}
-                    href={`/resources/${post.slug}`}
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-rule bg-white transition-[border-color,box-shadow] duration-150 ease-out hover:border-accent/50 hover:shadow-lg"
-                  >
-                    {hero ? (
-                      <div className="aspect-[16/10] overflow-hidden bg-secondary">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={hero}
-                          alt={post.heroImage?.alt || title}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                    ) : (
-                      <div className="aspect-[16/10] bg-secondary" />
-                    )}
-                    <div className="flex flex-1 flex-col p-6">
-                      {date ? (
-                        <p className="font-mono text-xs uppercase tracking-wider text-ink-muted">
-                          {new Date(date).toLocaleDateString(language === 'BM' ? 'ms-MY' : 'en-MY', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                          })}
-                        </p>
-                      ) : null}
-                      <h3 className="mt-3 text-lg font-semibold text-navy">{title}</h3>
-                      {excerpt ? (
-                        <p className="mt-2 line-clamp-3 flex-1 text-sm text-ink-muted">{excerpt}</p>
-                      ) : (
-                        <div className="flex-1" />
-                      )}
-                      <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent-dark transition-colors group-hover:text-accent">
-                        {t.pages.resources.readMore}
-                        <ArrowRight className="h-4 w-4" />
-                      </span>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          )}
         </div>
       </section>
 

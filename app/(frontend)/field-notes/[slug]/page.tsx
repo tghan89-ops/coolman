@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getPostBySlug, getAllPublishedPostSlugs } from '@/lib/payload'
-import { PostDetailClient } from '@/components/pages/PostDetailClient'
+import { FieldNoteArticleClient } from './FieldNoteArticleClient'
 
 export const revalidate = 60
 
@@ -9,7 +9,11 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }))
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) return {}
@@ -18,9 +22,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title, description }
 }
 
-export default async function PostDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function FieldNoteDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) notFound()
-  return <PostDetailClient post={post} />
+  return <FieldNoteArticleClient post={post} />
 }

@@ -2,7 +2,10 @@ import * as React from 'react'
 import { cn } from '@/lib/utils'
 
 export interface DataStripCell {
-  value: string
+  // Widened to ReactNode so editorial pages can embed sub/superscript inside
+  // a metric (e.g. <>4<sup>m</sup></>). Existing string call-sites are
+  // unaffected because string assigns to ReactNode.
+  value: React.ReactNode
   label?: string
 }
 

@@ -15,6 +15,7 @@ export interface CopyStructure {
     cart: string
     whyCoolman: string
     resources: string
+    fieldNotes: string
     signIn: string
     signOut: string
     createAccount: string
@@ -597,6 +598,40 @@ export interface CopyStructure {
       headline: string
       lede: string
     }
+    // Keys used by the dynamic Payload-backed index + article pages. These
+    // are separate from the three hardcoded prototype articles below
+    // (pileCutting / midnightRoad / productRecall) which remain as preview
+    // fixtures and will be removed once enough real Payload posts exist.
+    index: {
+      eyebrowPrefix: string
+      eyebrowSincePrefix: string
+      eyebrowPublishedSuffix: string
+      filterAll: string
+      filterAllShort: string
+      sortLabel: string
+      sortRecent: string
+      sortOldest: string
+      archiveHeading: string
+      archiveHeadingNote: string
+      featuredBadge: string
+      readMore: string
+      emptyHeadline: string
+      emptyBody: string
+    }
+    article: {
+      back: string
+      breadcrumbHome: string
+      breadcrumbFieldNotes: string
+      filedUnderLabel: string
+      bylineLabel: string
+      publishedLabel: string
+      readTimeUnit: string
+      relatedHeading: string
+      relatedLede: string
+      sharePrefix: string
+      missingTitle: string
+      missingBody: string
+    }
     byline: string
     filedUnder: string
     pileCutting: {
@@ -781,6 +816,7 @@ export const COPY: Record<Language, CopyStructure> = {
       cart: 'Cart',
       whyCoolman: 'Why Coolman',
       resources: 'Resources',
+      fieldNotes: 'Field Notes',
       signIn: 'Sign In',
       signOut: 'Sign Out',
       createAccount: 'Create account',
@@ -1436,6 +1472,36 @@ export const COPY: Record<Language, CopyStructure> = {
         headline: 'Three jobs that taught us how to make a better blade.',
         lede: 'Written by Coolman Engineering. Filed as they happened. Nothing in these notes is hypothetical.',
       },
+      index: {
+        eyebrowPrefix: 'Field Notes',
+        eyebrowSincePrefix: 'Since',
+        eyebrowPublishedSuffix: 'published',
+        filterAll: 'All notes',
+        filterAllShort: 'All',
+        sortLabel: 'Sort',
+        sortRecent: 'Most recent',
+        sortOldest: 'Oldest first',
+        archiveHeading: 'Archive',
+        archiveHeadingNote: 'Earlier notes, by year.',
+        featuredBadge: 'Latest note',
+        readMore: 'Read the note',
+        emptyHeadline: 'No Field Notes yet.',
+        emptyBody: 'New notes are filed when a job teaches us something worth writing down. Check back soon.',
+      },
+      article: {
+        back: 'Back to Field Notes',
+        breadcrumbHome: 'Coolman',
+        breadcrumbFieldNotes: 'Field Notes',
+        filedUnderLabel: 'Filed under',
+        bylineLabel: 'Written by',
+        publishedLabel: 'Published',
+        readTimeUnit: 'min read',
+        relatedHeading: 'Mentioned in this Field Note',
+        relatedLede: 'The products the engineer specified on this job.',
+        sharePrefix: 'Share this note',
+        missingTitle: 'Note not available',
+        missingBody: 'This Field Note is not currently available. It may be in draft, or the link is stale.',
+      },
       byline: 'Coolman Engineering',
       filedUnder: 'Filed under Coolman Malaysia Sdn Bhd · Petaling Jaya · Manufactured in Malaysia',
       pileCutting: {
@@ -1756,6 +1822,7 @@ export const COPY: Record<Language, CopyStructure> = {
       cart: 'Troli',
       whyCoolman: 'Kenapa Coolman',
       resources: 'Sumber',
+      fieldNotes: 'Catatan Lapangan',
       signIn: 'Log Masuk',
       signOut: 'Log Keluar',
       createAccount: 'Buka akaun',
@@ -2410,6 +2477,36 @@ export const COPY: Record<Language, CopyStructure> = {
         eyebrow: 'Field Notes',
         headline: 'Tiga kerja yang mengajar kami bagaimana membuat bilah yang lebih baik.',
         lede: 'Ditulis oleh Coolman Engineering. Difail apabila berlaku. Tiada apa-apa dalam catatan ini yang hipotesis.',
+      },
+      index: {
+        eyebrowPrefix: 'Catatan Lapangan',
+        eyebrowSincePrefix: 'Sejak',
+        eyebrowPublishedSuffix: 'diterbitkan',
+        filterAll: 'Semua catatan',
+        filterAllShort: 'Semua',
+        sortLabel: 'Susun',
+        sortRecent: 'Terbaru',
+        sortOldest: 'Paling lama dahulu',
+        archiveHeading: 'Arkib',
+        archiveHeadingNote: 'Catatan terdahulu, mengikut tahun.',
+        featuredBadge: 'Catatan terbaru',
+        readMore: 'Baca catatan',
+        emptyHeadline: 'Belum ada Catatan Lapangan.',
+        emptyBody: 'Catatan baharu difailkan apabila sebuah kerja mengajar kami sesuatu yang berbaloi ditulis. Sila semak semula tidak lama lagi.',
+      },
+      article: {
+        back: 'Kembali ke Catatan Lapangan',
+        breadcrumbHome: 'Coolman',
+        breadcrumbFieldNotes: 'Catatan Lapangan',
+        filedUnderLabel: 'Difailkan di bawah',
+        bylineLabel: 'Ditulis oleh',
+        publishedLabel: 'Diterbitkan',
+        readTimeUnit: 'minit bacaan',
+        relatedHeading: 'Disebut dalam Catatan Lapangan ini',
+        relatedLede: 'Produk yang jurutera tetapkan untuk kerja ini.',
+        sharePrefix: 'Kongsi catatan ini',
+        missingTitle: 'Catatan tidak tersedia',
+        missingBody: 'Catatan Lapangan ini tidak tersedia buat masa ini. Mungkin ia masih draf, atau pautan sudah lapuk.',
       },
       byline: 'Coolman Engineering',
       filedUnder: 'Difailkan di bawah Coolman Malaysia Sdn Bhd · Petaling Jaya · Dikilangkan di Malaysia',

@@ -195,6 +195,25 @@ export async function getActiveShibuyaMachines(): Promise<RawShibuyaMachineRow[]
   }
 }
 
+// Lightweight totalDocs probe used by the header to decide whether to surface
+// the Field Notes nav link. The gate is `>= 3` — until at least three notes
+// are published, the link stays hidden so the section doesn't ship empty.
+// `limit: 0` keeps the query cheap; Payload still returns totalDocs.
+export async function getPublishedPostCount(): Promise<number> {
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection: 'posts',
+      where: { status: { equals: 'published' } },
+      limit: 0,
+      depth: 0,
+    })
+    return result.totalDocs ?? 0
+  } catch {
+    return 0
+  }
+}
+
 export async function getAllPublishedPostSlugs(): Promise<string[]> {
   try {
     const payload = await getPayloadClient()

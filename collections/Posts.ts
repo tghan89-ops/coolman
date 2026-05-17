@@ -7,10 +7,10 @@ export const Posts: CollectionConfig = {
     defaultColumns: ['title', 'status', 'publishedAt'],
     livePreview: {
       url: ({ data }) =>
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/resources/${data.slug}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/field-notes/${data?.slug || 'preview'}`,
     },
     description:
-      'Technical guides and editorial content rendered at /resources. Drafts are admin-only; only "published" posts appear on the public site.',
+      'Field Notes — long-form editorial articles rendered at /field-notes. Drafts are admin-only; only "published" posts appear on the public site. The Field Notes nav link surfaces only once at least 3 posts are published.',
   },
   access: {
     // Public read is filtered to published posts at the query layer in lib/payload.ts
@@ -55,6 +55,34 @@ export const Posts: CollectionConfig = {
       },
     },
     {
+      name: 'noteNumber',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        description:
+          'Editorial issue number shown in the article header — e.g. "№ 001". Optional; leave blank to omit.',
+      },
+    },
+    {
+      name: 'readTimeMin',
+      type: 'number',
+      min: 1,
+      max: 60,
+      admin: {
+        position: 'sidebar',
+        description: 'Estimated reading time in minutes. Shown in the byline.',
+      },
+    },
+    {
+      name: 'editorialNotes',
+      type: 'textarea',
+      admin: {
+        position: 'sidebar',
+        description:
+          'Internal-only editor notes (never rendered on the public site). Use this for sign-off requirements or sensitive-copy flags.',
+      },
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,
@@ -74,6 +102,21 @@ export const Posts: CollectionConfig = {
       name: 'excerptBM',
       type: 'textarea',
       admin: { description: 'Bahasa Melayu summary. Leave blank to fall back to English.' },
+    },
+    {
+      name: 'application',
+      type: 'text',
+      admin: {
+        description:
+          'English "filed under" tag shown in the article header — e.g. "Wet cut · Reinforced concrete". Used to derive the Field Notes index filter chips.',
+      },
+    },
+    {
+      name: 'applicationBM',
+      type: 'text',
+      admin: {
+        description: 'Bahasa Melayu "filed under" tag. Leave blank to fall back to English.',
+      },
     },
     {
       name: 'heroImage',

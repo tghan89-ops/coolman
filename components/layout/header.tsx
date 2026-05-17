@@ -16,16 +16,49 @@ import { useLanguage } from '@/lib/i18n/context'
 import { useAuth } from '@/lib/auth/context'
 import { CartBadge } from '@/components/cart/CartBadge'
 
+// Minimum published Field Notes before the nav link surfaces. Below this,
+// the section is judged too thin to send users to — the link stays hidden.
+// Tuneable here; if we ever move to a Settings table, that justification
+// (frontend-editability) belongs in LEARNINGS.md.
+const FIELD_NOTES_NAV_THRESHOLD = 3
+
 export function Header({ variant = 'default' }: { variant?: 'default' | 'transparent' }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [fieldNotesCount, setFieldNotesCount] = useState<number>(0)
   const { language, toggleLanguage, t } = useLanguage()
   const { user, isAuthenticated, isAdmin, logout } = useAuth()
+
+  // Lightweight client-side probe: ask the route handler how many Field Notes
+  // are published. The route is CDN-cached with a 60s window so this is
+  // effectively one request per minute per region. Failures stay silent —
+  // the link simply doesn't appear, which is the safe default.
+  useEffect(() => {
+    let cancelled = false
+    fetch('/api/field-notes-count', { cache: 'no-store' })
+      .then((r) => (r.ok ? r.json() : { count: 0 }))
+      .then((data) => {
+        if (!cancelled && typeof data?.count === 'number') {
+          setFieldNotesCount(data.count)
+        }
+      })
+      .catch(() => {
+        // Silent: no link, no broken UI.
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const showFieldNotesLink = fieldNotesCount >= FIELD_NOTES_NAV_THRESHOLD
 
   const navItems = [
     { label: t.nav.applications, href: '/applications' },
     { label: t.nav.whyCoolman, href: '/why-coolman' },
     { label: t.nav.resources, href: '/resources' },
+    ...(showFieldNotesLink
+      ? [{ label: t.nav.fieldNotes, href: '/field-notes' }]
+      : []),
     { label: t.nav.contact, href: '/contact' },
   ]
 
