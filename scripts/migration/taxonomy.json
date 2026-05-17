@@ -1,0 +1,51 @@
+{
+  "_note": "Canonical Payload taxonomy designed from inspection of all 225 source-site products. EN + BM names are seed values for Payload categories/materials/applications/machineTiers collections. BM translations follow Malaysian construction-trade convention; Alan/GH should review before publishing.",
+
+  "categories": [
+    { "key": "cutting_blades",     "name": "Diamond Blades",        "nameBM": "Mata Pemotong Berlian" },
+    { "key": "core_bits",          "name": "Core Bits",             "nameBM": "Mata Gerudi Teras" },
+    { "key": "drill_bits",         "name": "Drill Bits",            "nameBM": "Mata Gerudi" },
+    { "key": "grinding_wheels",    "name": "Grinding Wheels",       "nameBM": "Roda Canai" },
+    { "key": "polishing_pads",     "name": "Polishing Pads",        "nameBM": "Pad Penggilap" },
+    { "key": "drilling_machines",  "name": "Drilling Machines",     "nameBM": "Mesin Penggerudi" },
+    { "key": "cutting_machines",   "name": "Cutting Machines",      "nameBM": "Mesin Pemotong" },
+    { "key": "floor_equipment",    "name": "Floor Equipment",       "nameBM": "Peralatan Lantai" },
+    { "key": "hole_saws",          "name": "Hole Saws",             "nameBM": "Gergaji Lubang" },
+    { "key": "anchors_fixings",    "name": "Anchors & Fixings",     "nameBM": "Tambat & Pengikat" },
+    { "key": "anchor_removal",     "name": "Anchor Removal Tools",  "nameBM": "Alat Tanggal Tambat" },
+    { "key": "accessories",        "name": "Accessories & Parts",   "nameBM": "Aksesori & Alat Ganti" }
+  ],
+
+  "materials": [
+    { "key": "concrete",            "name": "Concrete",             "nameBM": "Konkrit" },
+    { "key": "reinforced_concrete", "name": "Reinforced Concrete",  "nameBM": "Konkrit Bertetulang" },
+    { "key": "asphalt",             "name": "Asphalt",              "nameBM": "Asfalt" },
+    { "key": "aluminium",           "name": "Aluminium",            "nameBM": "Aluminium" },
+    { "key": "wood",                "name": "Wood",                 "nameBM": "Kayu" },
+    { "key": "steel",               "name": "Steel",                "nameBM": "Keluli" },
+    { "key": "tile",                "name": "Tile",                 "nameBM": "Jubin" },
+    { "key": "granite",             "name": "Granite",              "nameBM": "Granit" },
+    { "key": "marble",              "name": "Marble",               "nameBM": "Marmar" },
+    { "key": "stone",               "name": "Stone",                "nameBM": "Batu" },
+    { "key": "masonry",             "name": "Masonry/Brick",        "nameBM": "Bata" }
+  ],
+
+  "applications": [
+    { "key": "wet_cutting",        "name": "Wet Cutting",          "nameBM": "Pemotongan Basah" },
+    { "key": "dry_cutting",        "name": "Dry Cutting",          "nameBM": "Pemotongan Kering" },
+    { "key": "floor_sawing",       "name": "Floor Sawing",         "nameBM": "Penggergajian Lantai" },
+    { "key": "wall_sawing",        "name": "Wall Sawing",          "nameBM": "Penggergajian Dinding" },
+    { "key": "handheld_cutting",   "name": "Hand-held Cutting",    "nameBM": "Pemotongan Tangan" },
+    { "key": "core_drilling",      "name": "Core Drilling",        "nameBM": "Penggerudian Teras" },
+    { "key": "anchor_drilling",    "name": "Anchor Drilling",      "nameBM": "Penggerudian Tambat" },
+    { "key": "surface_grinding",   "name": "Surface Grinding",     "nameBM": "Pencanaian Permukaan" },
+    { "key": "polishing",          "name": "Polishing",            "nameBM": "Penggilapan" },
+    { "key": "anchor_removal",     "name": "Anchor Removal",       "nameBM": "Penanggalan Tambat" }
+  ],
+
+  "machineTiers": [
+    { "key": "trade",        "name": "Trade",        "nameBM": "Perdagangan",    "powerRange": "< 2kW / hand-held" },
+    { "key": "professional", "name": "Professional", "nameBM": "Profesional",    "powerRange": "2–4kW / contractor-grade" },
+    { "key": "industrial",   "name": "Industrial",   "nameBM": "Industri",       "powerRange": "> 4kW / heavy-duty rigs" }
+  ]
+}

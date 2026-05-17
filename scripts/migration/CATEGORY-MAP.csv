@@ -1,0 +1,24 @@
+wp_category,product_count,payload_category,payload_category_label,is_brand_tag,note
+Diamond Blade,105,cutting_blades,Diamond Blades,,
+Diamond Bit,47,core_bits,Core Bits,,
+SHIBUYA®,46,(ignored),brand tag,yes,"brand tags collapsed into product.brand field, not Payload Category"
+COOLMAN®,35,(ignored),brand tag,yes,"brand tags collapsed into product.brand field, not Payload Category"
+Diamond Core Bit Wet,31,core_bits,Core Bits,,
+Optional Parts,24,accessories,Accessories & Parts,,
+DymoDrill,14,drilling_machines,Drilling Machines,,
+Diamond Grinding,12,grinding_wheels,Grinding Wheels,,
+UNIKAÂ®,6,(ignored),brand tag,yes,"brand tags collapsed into product.brand field, not Payload Category"
+Anchor Removing System,5,anchor_removal,Anchor Removal Tools,,
+Dorai Handheld Core Bit,5,core_bits,Core Bits,,
+Power Cutter,4,cutting_machines,Cutting Machines,,
+Walk Behind Saw,4,cutting_machines,Cutting Machines,,
+Diamond Stone Bit,3,drill_bits,Drill Bits,,
+Tile Saw &amp; Masonry Saw,3,cutting_machines,Cutting Machines,,
+Diamond Polishing Pad,1,polishing_pads,Polishing Pads,,
+Uncategorized,1,(REVIEW),,,
+MCTR Hole Saw,1,hole_saws,Hole Saws,,
+Concrete Drill Bit,1,drill_bits,Drill Bits,,
+Shaving Collection System,1,floor_equipment,Floor Equipment,,
+T.C.T Hole Saw,1,hole_saws,Hole Saws,,
+Floor Grinder,1,floor_equipment,Floor Equipment,,
+Wall Saw Machine,1,cutting_machines,Cutting Machines,,

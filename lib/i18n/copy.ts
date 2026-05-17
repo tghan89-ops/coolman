@@ -147,6 +147,13 @@ export interface CopyStructure {
       ctaTitle: string
       ctaMessage: string
       ctaButton: string
+      guidesEyebrow: string
+      guidesHeading: string
+      guidesSubheading: string
+      guidesEmpty: string
+      readMore: string
+      publishedOn: string
+      backToResources: string
     }
     contact: {
       heroEyebrow: string
@@ -657,6 +664,13 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaTitle: 'Need Technical Assistance?',
         ctaMessage: 'Our engineering team is ready to help with blade selection, technical questions, and application support.',
         ctaButton: 'Contact Technical Support',
+        guidesEyebrow: 'Technical Guides',
+        guidesHeading: 'Field-tested guides from our workshop',
+        guidesSubheading: 'Practical articles on blade selection, core drilling, and choosing the right cutting tool for the job.',
+        guidesEmpty: 'New guides are being prepared. Check back soon.',
+        readMore: 'Read article',
+        publishedOn: 'Published',
+        backToResources: 'Back to Resources',
       },
       contact: {
         heroEyebrow: 'Get in touch',
@@ -1165,6 +1179,13 @@ export const COPY: Record<Language, CopyStructure> = {
         ctaTitle: 'Perlukan Bantuan Teknikal?',
         ctaMessage: 'Pasukan kejuruteraan kami sedia membantu dengan pemilihan bilah, soalan teknikal dan sokongan aplikasi.',
         ctaButton: 'Hubungi Sokongan Teknikal',
+        guidesEyebrow: 'Panduan Teknikal',
+        guidesHeading: 'Panduan praktikal dari bengkel kami',
+        guidesSubheading: 'Artikel praktikal tentang pemilihan bilah, gerudi teras, dan memilih alat pemotong yang sesuai.',
+        guidesEmpty: 'Panduan baharu sedang disediakan. Sila kembali tidak lama lagi.',
+        readMore: 'Baca artikel',
+        publishedOn: 'Diterbitkan',
+        backToResources: 'Kembali ke Sumber',
       },
       contact: {
         heroEyebrow: 'Hubungi kami',

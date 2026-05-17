@@ -1,0 +1,12 @@
+import pg from '../../node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/index.js'
+const c = new pg.Client({ connectionString: process.env.DATABASE_URI, ssl: { rejectUnauthorized: false } })
+await c.connect()
+const r = await c.query('select sku, name, list_price, created_at from products order by created_at')
+console.log(`existing products (${r.rows.length}):`)
+for (const row of r.rows) console.log(`  ${row.sku} | ${row.name} | RM${row.list_price} | ${row.created_at.toISOString().slice(0,10)}`)
+const m = await c.query('select count(*) as n from media')
+console.log(`existing media rows: ${m.rows[0].n}`)
+const cats = await c.query('select count(*) as n from categories')
+const mats = await c.query('select count(*) as n from materials')
+console.log(`existing categories: ${cats.rows[0].n}, materials: ${mats.rows[0].n}`)
+await c.end()

@@ -21,6 +21,7 @@ import { SearchLogs } from './collections/SearchLogs'
 import { EmailDeliveries } from './collections/EmailDeliveries'
 import { CronRuns } from './collections/CronRuns'
 import { Media } from './collections/Media'
+import { Posts } from './collections/Posts'
 
 import { HomePage } from './globals/HomePage'
 import { ApplicationsPage } from './globals/ApplicationsPage'
@@ -75,6 +76,7 @@ export default buildConfig({
     EmailDeliveries,
     CronRuns,
     Media,
+    Posts,
   ],
   globals: [HomePage, ApplicationsPage, ResourcesPage, ContactPage, ShibuyaPage, WhyCoolmanPage, Settings],
   db: vercelPostgresAdapter({
