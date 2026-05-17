@@ -1,5 +1,9 @@
 import { getGlobal } from '@/lib/payload'
-import { ContactClient } from '@/components/pages/ContactClient'
+import {
+  ContactClient,
+  type RawContactPage,
+  type RawSettings,
+} from '@/components/pages/ContactClient'
 
 export const revalidate = 60
 
@@ -11,5 +15,15 @@ export default async function ContactPage() {
     getGlobal('contact-page'),
     getGlobal('settings', { overrideAccess: true }),
   ])
-  return <ContactClient initialData={contactPage} settings={settings} />
+  // Cast at this single server boundary. Payload's generated global types are
+  // an internal shape; we narrow to the honest, minimal `RawContactPage` /
+  // `RawSettings` contracts the client component actually consumes (mirrors
+  // the brotherhood + shibuya pages' pattern with `RawDealerRow` /
+  // `RawShibuyaMachineRow`).
+  return (
+    <ContactClient
+      initialData={contactPage as unknown as RawContactPage | null}
+      settings={settings as unknown as RawSettings | null}
+    />
+  )
 }

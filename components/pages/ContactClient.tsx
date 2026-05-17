@@ -10,19 +10,46 @@ import { Textarea } from '@/components/ui/textarea'
 import { useLanguage } from '@/lib/i18n/context'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 
-interface ContactClientProps {
-  initialData: any
-  // Settings is admin-restricted at the global level but the public contact
-  // page needs its values (WhatsApp number, legal entity, address, opening
-  // hours, dispatch cut-off). The server page reads it with `overrideAccess`
-  // and hands it down here. Fields are best-effort optional; every render path
-  // tolerates a missing or partial `settings` object.
-  settings: any
+// Raw row shape from the Payload `contact-page` global. Mirrors the fields
+// actually consumed by this client (live preview re-renders the page when an
+// admin edits the global, so the contract here is what comes back from
+// Payload's `findGlobal`). Payload's own generated types are an internal
+// shape; we narrow at the server boundary in `app/(frontend)/contact/page.tsx`
+// so the rest of this component consumes an honest, minimal contract.
+export type RawContactPage = {
+  heroTitle?: string | null
+  heroTitleBM?: string | null
+  heroSubtitle?: string | null
+  heroSubtitleBM?: string | null
+  phone?: string | null
 }
 
-export function ContactClient({ initialData, settings }: ContactClientProps) {
-  const { data } = useLivePreview({
-    initialData,
+// Raw row shape from the Payload `settings` global. Admin-restricted at the
+// global level but the public contact page needs these specific values
+// (WhatsApp number, legal entity, address, opening hours, dispatch cut-off).
+// Fields are best-effort optional; every render path tolerates a missing or
+// partial value.
+export type RawSettings = {
+  whatsapp_number?: string | null
+  legal_entity_name?: string | null
+  legal_entity_reg_no?: string | null
+  legal_entity_address?: string | null
+  opening_hours?: {
+    mon_fri?: string | null
+    sat?: string | null
+    sun?: string | null
+  } | null
+  inventory_dispatch_cutoff?: string | null
+}
+
+type Props = { initialData: RawContactPage | null; settings: RawSettings | null }
+
+export function ContactClient({ initialData, settings }: Props) {
+  // useLivePreview's generic requires `Record<string, any>`; widen `null` to an
+  // empty object so the hook constraint is satisfied without losing the
+  // narrowed field shape downstream.
+  const { data } = useLivePreview<RawContactPage>({
+    initialData: initialData ?? ({} as RawContactPage),
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
     depth: 1,
   })
@@ -30,40 +57,30 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
   const { language, t } = useLanguage()
   const pick = (en?: string | null, bm?: string | null): string => {
     if (language === 'BM' && bm && bm.trim()) return bm
-    return en ?? ''
+    return en ?? bm ?? ''
   }
   const c = t.pages.contact
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const [focusedField, setFocusedField] = useState<string | null>(null)
 
-  // ContactPage global drives the office phone + map embed; copy lede + form
-  // strings come from the i18n COPY table. Live preview re-renders this client
-  // when an admin edits the ContactPage global.
-  const officePhone = (data?.phone as string | undefined) ?? ''
-  const officeEmail = (data?.email as string | undefined) ?? 'sales@coolman.com.my'
+  // ContactPage global drives the office phone; copy lede + form strings come
+  // from the i18n COPY table. Live preview re-renders this client when an
+  // admin edits the ContactPage global.
+  const officePhone = data?.phone?.trim() ?? ''
 
   // Settings is read-only here. Defaults below mirror the schema defaults in
   // globals/Settings.ts so the page renders sensibly even if the global has
   // never been visited in /admin.
-  const legalEntityName: string =
-    (settings?.legal_entity_name as string | undefined)?.trim() || 'Coolman Malaysia Sdn Bhd'
-  const legalEntityRegNo: string =
-    (settings?.legal_entity_reg_no as string | undefined)?.trim() || ''
-  const legalEntityAddress: string =
-    (settings?.legal_entity_address as string | undefined)?.trim() || ''
-  const whatsappNumber: string =
-    (settings?.whatsapp_number as string | undefined)?.trim() || '+60126363156'
-  const openingMonFri: string =
-    (settings?.opening_hours?.mon_fri as string | undefined)?.trim() || '09:00–18:00'
-  const openingSat: string =
-    (settings?.opening_hours?.sat as string | undefined)?.trim() || '09:00–13:00'
-  const openingSun: string =
-    (settings?.opening_hours?.sun as string | undefined)?.trim() || 'Closed'
-  const dispatchCutoff: string =
-    (settings?.inventory_dispatch_cutoff as string | undefined)?.trim() || '14:00'
+  const legalEntityName: string = settings?.legal_entity_name?.trim() || 'Coolman Malaysia Sdn Bhd'
+  const legalEntityRegNo: string = settings?.legal_entity_reg_no?.trim() || ''
+  const legalEntityAddress: string = settings?.legal_entity_address?.trim() || ''
+  const whatsappNumber: string = settings?.whatsapp_number?.trim() || '+60126363156'
+  const openingMonFri: string = settings?.opening_hours?.mon_fri?.trim() || '09:00–18:00'
+  const openingSat: string = settings?.opening_hours?.sat?.trim() || '09:00–13:00'
+  const openingSun: string = settings?.opening_hours?.sun?.trim() || 'Closed'
+  const dispatchCutoff: string = settings?.inventory_dispatch_cutoff?.trim() || '14:00'
 
   // wa.me deep-link wants digits only. Strip "+" and any spaces just in case.
   const whatsappDigits = whatsappNumber.replace(/\D/g, '')
@@ -75,6 +92,12 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
   // Settings/ContactPage. Numbers render in mono.
   const whatsappDisplay = whatsappNumber
   const officePhoneDisplay = officePhone || whatsappNumber
+  // tel: dialer needs digits only — dashes/spaces in `officePhoneDisplay` (e.g.
+  // "+60 3-1234 5678") otherwise break iOS dial intent. Mirrors the WhatsApp
+  // strip above.
+  const officePhoneTel = officePhoneDisplay
+    ? `tel:+${officePhoneDisplay.replace(/\D/g, '')}`
+    : null
 
   // Google Maps deep-link: only render the "Open in maps" button if we have
   // an address. Otherwise the button has nowhere to send the visitor.
@@ -248,7 +271,7 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                   variant="outline"
                   className="h-12 border-navy text-navy hover:bg-navy hover:text-white"
                 >
-                  <a href={`tel:${officePhoneDisplay.replace(/\s+/g, '')}`}>
+                  <a href={officePhoneTel ?? '#'} aria-disabled={!officePhoneTel}>
                     {c.channel2Cta}
                     <ArrowRight className="h-4 w-4" />
                   </a>
@@ -380,11 +403,14 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
               ) : null}
             </div>
 
-            {/* Schematic SVG map — ported from contact.html. "SINCE 2007" not 1998. */}
-            <div
-              className="relative aspect-[4/3] overflow-hidden border border-accent/20 bg-navy-light"
-              aria-label="Workshop location, Petaling Jaya"
-            >
+            {/* Schematic SVG map — ported from contact.html. "SINCE 2007" not 1998.
+                NOTE: the coordinates rendered at the bottom-left of the SVG are
+                placeholder until Alan confirms real workshop coordinates. The
+                road labels (FEDERAL HIGHWAY / JLN PJS 1 / JLN TEMPLER / JLN PJS
+                1/46) are decorative SVG signage — proper nouns, do not
+                translate, hardcoded per the Frontend-editability exception in
+                LEARNINGS.md. */}
+            <div className="relative aspect-[4/3] overflow-hidden border border-accent/20 bg-navy-light">
               <svg
                 viewBox="0 0 600 450"
                 xmlns="http://www.w3.org/2000/svg"
@@ -432,11 +458,11 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                 </text>
 
                 {/* Coordinates — placeholder until Alan supplies real coords. */}
-                <text x="20" y="430" fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#475569" letterSpacing="0.1em">3.0840° N · 101.6336° E</text>
-                <text x="580" y="430" fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#475569" letterSpacing="0.1em" textAnchor="end">PETALING JAYA</text>
+                <text x="20" y="430" fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#475569" letterSpacing="0.1em">{c.locationMapCoords}</text>
+                <text x="580" y="430" fontFamily="JetBrains Mono, monospace" fontSize="10" fill="#475569" letterSpacing="0.1em" textAnchor="end">{c.locationMapCity}</text>
               </svg>
               <div className="absolute bottom-6 left-6 max-w-[220px] border border-accent/24 bg-navy/90 px-[18px] py-[14px] font-mono text-[11px] uppercase tracking-[0.12em] text-paper">
-                <span className="mb-1 block text-accent-light">Coolman</span>
+                <span className="mb-1 block text-accent-light">{c.locationOverlayBrand}</span>
                 {legalEntityAddress
                   ? legalEntityAddress.split('\n')[0]
                   : c.locationAddressFallback}
@@ -519,7 +545,14 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                     `website` must stay in sync with /api/contact/submit. */}
                 <div aria-hidden="true" className="absolute -left-[9999px]">
                   <Label htmlFor="website">Website</Label>
-                  <Input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                  <Input
+                    id="website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                  />
                 </div>
                 {submitError && (
                   <div
@@ -533,9 +566,7 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                   <div className="group space-y-2">
                     <Label
                       htmlFor="name"
-                      className={`text-sm transition-colors ${
-                        focusedField === 'name' ? 'text-accent-dark' : 'text-ink-muted'
-                      }`}
+                      className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
                     >
                       {c.formNameLabel}
                     </Label>
@@ -544,16 +575,12 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                       name="name"
                       placeholder={c.formNamePlaceholder}
                       required
-                      onFocus={() => setFocusedField('name')}
-                      onBlur={() => setFocusedField(null)}
                     />
                   </div>
                   <div className="group space-y-2">
                     <Label
                       htmlFor="company"
-                      className={`text-sm transition-colors ${
-                        focusedField === 'company' ? 'text-accent-dark' : 'text-ink-muted'
-                      }`}
+                      className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
                     >
                       {c.formCompanyLabel}
                     </Label>
@@ -561,17 +588,13 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                       id="company"
                       name="company"
                       placeholder={c.formCompanyPlaceholder}
-                      onFocus={() => setFocusedField('company')}
-                      onBlur={() => setFocusedField(null)}
                     />
                   </div>
                 </div>
-                <div className="space-y-2">
+                <div className="group space-y-2">
                   <Label
                     htmlFor="email"
-                    className={`text-sm transition-colors ${
-                      focusedField === 'email' ? 'text-accent-dark' : 'text-ink-muted'
-                    }`}
+                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
                   >
                     {c.formEmailLabel}
                   </Label>
@@ -581,16 +604,12 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                     type="email"
                     placeholder={c.formEmailPlaceholder}
                     required
-                    onFocus={() => setFocusedField('email')}
-                    onBlur={() => setFocusedField(null)}
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="group space-y-2">
                   <Label
                     htmlFor="phone"
-                    className={`text-sm transition-colors ${
-                      focusedField === 'phone' ? 'text-accent-dark' : 'text-ink-muted'
-                    }`}
+                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
                   >
                     {c.formPhoneLabel}
                   </Label>
@@ -599,16 +618,12 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                     name="phone"
                     type="tel"
                     placeholder={c.formPhonePlaceholder}
-                    onFocus={() => setFocusedField('phone')}
-                    onBlur={() => setFocusedField(null)}
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="group space-y-2">
                   <Label
                     htmlFor="message"
-                    className={`text-sm transition-colors ${
-                      focusedField === 'message' ? 'text-accent-dark' : 'text-ink-muted'
-                    }`}
+                    className="text-sm text-ink-muted transition-colors duration-150 group-focus-within:text-accent-dark"
                   >
                     {c.formMessageLabel}
                   </Label>
@@ -618,8 +633,6 @@ export function ContactClient({ initialData, settings }: ContactClientProps) {
                     placeholder={c.formMessagePlaceholder}
                     rows={5}
                     required
-                    onFocus={() => setFocusedField('message')}
-                    onBlur={() => setFocusedField(null)}
                     className="resize-none"
                   />
                 </div>

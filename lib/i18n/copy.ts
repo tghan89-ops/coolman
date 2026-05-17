@@ -209,6 +209,9 @@ export interface CopyStructure {
       locationOpenInMaps: string
       locationMapWorkshop: string
       locationMapSince: string
+      locationMapCity: string
+      locationMapCoords: string
+      locationOverlayBrand: string
       directLinesEyebrow: string
       directLinesHeadline: string
       directLinesLede: string
@@ -1106,6 +1109,9 @@ export const COPY: Record<Language, CopyStructure> = {
         locationOpenInMaps: 'Open in maps',
         locationMapWorkshop: 'COOLMAN',
         locationMapSince: 'NO. 14 · SINCE 2007',
+        locationMapCity: 'PETALING JAYA',
+        locationMapCoords: '3.0840° N · 101.6336° E',
+        locationOverlayBrand: 'Coolman',
         directLinesEyebrow: 'Direct lines',
         directLinesHeadline: 'If you already know who you need.',
         directLinesLede: 'Direct contact points for the four most common reasons people reach the company. Each one goes to a named team, not a queue.',
@@ -2175,6 +2181,9 @@ export const COPY: Record<Language, CopyStructure> = {
         locationOpenInMaps: 'Buka di peta',
         locationMapWorkshop: 'COOLMAN',
         locationMapSince: 'NO. 14 · SEJAK 2007',
+        locationMapCity: 'PETALING JAYA',
+        locationMapCoords: '3.0840° N · 101.6336° E',
+        locationOverlayBrand: 'Coolman',
         directLinesEyebrow: 'Talian terus',
         directLinesHeadline: 'Jika anda sudah tahu siapa yang anda perlukan.',
         directLinesLede: 'Tempat hubungan terus untuk empat sebab paling biasa orang menghubungi syarikat. Setiap satu pergi kepada pasukan yang dinamakan, bukan barisan menunggu.',
