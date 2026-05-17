@@ -159,6 +159,68 @@ export interface CopyStructure {
     contact: {
       heroEyebrow: string
       fallbackHeroSubtitle: string
+      heroTitle: string
+      heroTitleEmphasis: string
+      heroLede: string
+      channelsEyebrow: string
+      channelsHeadline: string
+      channelsLede: string
+      channel1Badge: string
+      channel1Title: string
+      channel1Body: string
+      channel1HoursLabel: string
+      channel1ResponseLabel: string
+      channel1LanguagesLabel: string
+      channel1NumberLabel: string
+      channel1Hours: string
+      channel1Response: string
+      channel1Languages: string
+      channel1Cta: string
+      channel2Badge: string
+      channel2Title: string
+      channel2Body: string
+      channel2NumberLabel: string
+      channel2HoursLabel: string
+      channel2ResponseLabel: string
+      channel2Hours: string
+      channel2Response: string
+      channel2Cta: string
+      channel3Badge: string
+      channel3Title: string
+      channel3Body: string
+      channel3FormatLabel: string
+      channel3ResponseLabel: string
+      channel3OutputLabel: string
+      channel3Format: string
+      channel3Response: string
+      channel3Output: string
+      channel3Cta: string
+      locationEyebrow: string
+      locationHeadline: string
+      locationLede: string
+      locationAddressFallback: string
+      locationAddressNote: string
+      locationLabelMonFri: string
+      locationLabelSat: string
+      locationLabelSun: string
+      locationRegPrefix: string
+      locationDispatchLabel: string
+      locationDispatchSuffix: string
+      locationOpenInMaps: string
+      locationMapWorkshop: string
+      locationMapSince: string
+      directLinesEyebrow: string
+      directLinesHeadline: string
+      directLinesLede: string
+      directLineSalesLabel: string
+      directLineSalesNote: string
+      directLinePartsLabel: string
+      directLinePartsNote: string
+      directLineTrainingLabel: string
+      directLineTrainingNote: string
+      directLineCareersLabel: string
+      directLineCareersNote: string
+      formEyebrow: string
       formTitle: string
       formSubtitle: string
       formNameLabel: string
@@ -190,6 +252,7 @@ export interface CopyStructure {
       liveChatLabel: string
       liveChatMessage: string
       openWhatsapp: string
+      whatsappPrefillText: string
     }
     shibuya: {
       heroEyebrow: string
@@ -991,10 +1054,72 @@ export const COPY: Record<Language, CopyStructure> = {
         backToResources: 'Back to Resources',
       },
       contact: {
-        heroEyebrow: 'Get in touch',
-        fallbackHeroSubtitle: 'Have questions about our products or need a custom quote? Our team is ready to help you find the perfect solution.',
-        formTitle: 'Send us a message',
-        formSubtitle: "Fill out the form below and we'll respond within 24 hours.",
+        heroEyebrow: 'Contact · Engineering desk',
+        fallbackHeroSubtitle: 'The fastest way to reach Coolman is the engineering desk on WhatsApp. For general enquiries, the office line works. For site visits, the form helps us prepare.',
+        heroTitle: 'Most cuts begin with',
+        heroTitleEmphasis: 'a phone call.',
+        heroLede: 'The fastest way to reach Coolman is the engineering desk on WhatsApp. For general enquiries, the office line works. For site visits, the form helps us prepare.',
+        channelsEyebrow: 'Three channels · pick what fits',
+        channelsHeadline: 'Each channel maps to a kind of conversation.',
+        channelsLede: 'WhatsApp for fast technical answers and photos. The office line for general enquiries and trade accounts. The site visit form when you need an engineer on site.',
+        channel1Badge: 'Channel 01 · WhatsApp',
+        channel1Title: 'The engineering desk.',
+        channel1Body: 'Send a photo of the job, the aggregate, the existing blade. Alan or the technical team replies the same working day. The fastest path from question to bond recommendation.',
+        channel1HoursLabel: 'Hours',
+        channel1ResponseLabel: 'Response',
+        channel1LanguagesLabel: 'Language',
+        channel1NumberLabel: 'Number',
+        channel1Hours: 'Mon to Sat, 8:30am to 5:30pm',
+        channel1Response: 'Usually within an hour',
+        channel1Languages: 'EN · BM',
+        channel1Cta: 'Open WhatsApp',
+        channel2Badge: 'Channel 02 · Office line',
+        channel2Title: 'Call the office.',
+        channel2Body: 'For general enquiries, account questions, and trade applications. Monday to Saturday, office hours. Picks up at the front desk and routes you to the right person.',
+        channel2NumberLabel: 'Number',
+        channel2HoursLabel: 'Hours',
+        channel2ResponseLabel: 'Routes to',
+        channel2Hours: 'Mon to Sat, 8:30am to 5:30pm',
+        channel2Response: 'Sales, accounts, or trade',
+        channel2Cta: 'Call the office',
+        channel3Badge: 'Channel 03 · Site visit',
+        channel3Title: 'Request a site visit.',
+        channel3Body: 'For project-specific consultations. Tell us about your project, your site conditions, and your timeline. An engineer responds with a proposed visit slot.',
+        channel3FormatLabel: 'Best for',
+        channel3ResponseLabel: 'Reply',
+        channel3OutputLabel: 'Output',
+        channel3Format: 'New projects, unusual aggregate, tender prep',
+        channel3Response: 'Within 2 working days',
+        channel3Output: 'Proposed visit slot · engineer assigned',
+        channel3Cta: 'Request a visit',
+        locationEyebrow: 'The workshop · Petaling Jaya',
+        locationHeadline: 'The press, the kiln, the laser-weld.',
+        locationLede: 'Visitors welcome by appointment. The technical team can walk you through the press, the segment kiln, and the laser-weld station. The three machines every blade we ship passes through.',
+        locationAddressFallback: 'Petaling Jaya, Selangor · Malaysia',
+        locationAddressNote: 'Full address available on request.',
+        locationLabelMonFri: 'Mon to Fri',
+        locationLabelSat: 'Saturday',
+        locationLabelSun: 'Sunday',
+        locationRegPrefix: 'Reg.',
+        locationDispatchLabel: 'Site dispatch cut-off',
+        locationDispatchSuffix: 'for same-day dispatch from PJ stock',
+        locationOpenInMaps: 'Open in maps',
+        locationMapWorkshop: 'COOLMAN',
+        locationMapSince: 'NO. 14 · SINCE 2007',
+        directLinesEyebrow: 'Direct lines',
+        directLinesHeadline: 'If you already know who you need.',
+        directLinesLede: 'Direct contact points for the four most common reasons people reach the company. Each one goes to a named team, not a queue.',
+        directLineSalesLabel: 'Sales',
+        directLineSalesNote: 'Quotes, account questions, general enquiries.',
+        directLinePartsLabel: 'Parts and orders',
+        directLinePartsNote: 'Re-orders, dispatch, invoices for trade accounts.',
+        directLineTrainingLabel: 'Training and service',
+        directLineTrainingNote: 'Operator training, certifications, Shibuya service.',
+        directLineCareersLabel: 'Careers',
+        directLineCareersNote: 'Job applications. Goes direct to Alan.',
+        formEyebrow: 'Site visit form',
+        formTitle: 'Tell us about the project.',
+        formSubtitle: 'Project type, site conditions, timeline. An engineer responds with a proposed visit slot.',
         formNameLabel: 'Name *',
         formNamePlaceholder: 'Your name',
         formCompanyLabel: 'Company',
@@ -1003,27 +1128,28 @@ export const COPY: Record<Language, CopyStructure> = {
         formEmailPlaceholder: 'name@company.com',
         formPhoneLabel: 'Phone',
         formPhonePlaceholder: '+60 12-345 6789',
-        formMessageLabel: 'Message *',
-        formMessagePlaceholder: 'Tell us about your requirements...',
-        formSubmit: 'Send Message',
+        formMessageLabel: 'Project details *',
+        formMessagePlaceholder: 'Project type, site conditions, aggregate if known, target timeline.',
+        formSubmit: 'Request a visit',
         formSubmitting: 'Sending...',
         formSuccess: 'Thanks. We will be in touch shortly.',
         formError: 'Something went wrong. Please try again.',
         networkError: 'Network error. Please check your connection and try again.',
-        successTitle: 'Message Sent!',
-        successMessage: "Thank you for reaching out. We'll get back to you within 24 hours.",
-        sendAnother: 'Send another message',
+        successTitle: 'Request received.',
+        successMessage: 'An engineer will respond with a proposed visit slot within two working days.',
+        sendAnother: 'Send another request',
         infoHeading: 'Get in touch',
         phoneTitle: 'Phone',
-        phoneSubtitle: 'Mon-Fri 9am-6pm MYT',
+        phoneSubtitle: 'Mon to Sat office hours',
         emailTitle: 'Email',
         emailSubtitle: 'We reply within 24 hours',
         officeTitle: 'Office',
-        responseTimeLabel: 'Average Response Time',
+        responseTimeLabel: 'Average response time',
         responseTimeSubtitle: 'During business hours',
-        liveChatLabel: 'Prefer live chat?',
-        liveChatMessage: 'Chat with our support team in real-time via WhatsApp.',
+        liveChatLabel: 'Prefer WhatsApp?',
+        liveChatMessage: 'Reach the engineering desk on WhatsApp for fast technical answers.',
         openWhatsapp: 'Open WhatsApp',
+        whatsappPrefillText: 'Hi, I have a question about your blades.',
       },
       shibuya: {
         heroEyebrow: 'Shibuya',
@@ -1997,10 +2123,72 @@ export const COPY: Record<Language, CopyStructure> = {
         backToResources: 'Kembali ke Sumber',
       },
       contact: {
-        heroEyebrow: 'Hubungi kami',
-        fallbackHeroSubtitle: 'Ada soalan tentang produk kami atau perlukan sebut harga tersuai? Pasukan kami sedia membantu anda mencari penyelesaian yang sesuai.',
-        formTitle: 'Hantar mesej kepada kami',
-        formSubtitle: 'Isi borang di bawah dan kami akan membalas dalam masa 24 jam.',
+        heroEyebrow: 'Hubungi · Meja kejuruteraan',
+        fallbackHeroSubtitle: 'Cara paling pantas untuk menghubungi Coolman ialah meja kejuruteraan di WhatsApp. Untuk pertanyaan am, talian pejabat berfungsi. Untuk lawatan tapak, borang membantu kami bersiap sedia.',
+        heroTitle: 'Kebanyakan potongan bermula dengan',
+        heroTitleEmphasis: 'satu panggilan telefon.',
+        heroLede: 'Cara paling pantas untuk menghubungi Coolman ialah meja kejuruteraan di WhatsApp. Untuk pertanyaan am, talian pejabat berfungsi. Untuk lawatan tapak, borang membantu kami bersiap sedia.',
+        channelsEyebrow: 'Tiga saluran · pilih yang sesuai',
+        channelsHeadline: 'Setiap saluran sesuai untuk jenis perbualan berbeza.',
+        channelsLede: 'WhatsApp untuk jawapan teknikal pantas dan foto. Talian pejabat untuk pertanyaan am dan akaun perdagangan. Borang lawatan tapak apabila anda perlukan jurutera di tapak.',
+        channel1Badge: 'Saluran 01 · WhatsApp',
+        channel1Title: 'Meja kejuruteraan.',
+        channel1Body: 'Hantar foto kerja, agregat, atau bilah sedia ada. Alan atau pasukan teknikal membalas pada hari bekerja yang sama. Laluan paling pantas dari soalan kepada cadangan ikatan.',
+        channel1HoursLabel: 'Waktu',
+        channel1ResponseLabel: 'Respons',
+        channel1LanguagesLabel: 'Bahasa',
+        channel1NumberLabel: 'Nombor',
+        channel1Hours: 'Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang',
+        channel1Response: 'Biasanya dalam masa satu jam',
+        channel1Languages: 'EN · BM',
+        channel1Cta: 'Buka WhatsApp',
+        channel2Badge: 'Saluran 02 · Talian pejabat',
+        channel2Title: 'Hubungi pejabat.',
+        channel2Body: 'Untuk pertanyaan am, soalan akaun, dan permohonan perdagangan. Isnin hingga Sabtu, waktu pejabat. Diangkat di meja depan dan dihalakan kepada orang yang betul.',
+        channel2NumberLabel: 'Nombor',
+        channel2HoursLabel: 'Waktu',
+        channel2ResponseLabel: 'Dihalakan ke',
+        channel2Hours: 'Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang',
+        channel2Response: 'Jualan, akaun, atau perdagangan',
+        channel2Cta: 'Hubungi pejabat',
+        channel3Badge: 'Saluran 03 · Lawatan tapak',
+        channel3Title: 'Minta lawatan tapak.',
+        channel3Body: 'Untuk perundingan khusus projek. Beritahu kami tentang projek, keadaan tapak, dan jangka masa anda. Jurutera membalas dengan slot lawatan yang dicadangkan.',
+        channel3FormatLabel: 'Sesuai untuk',
+        channel3ResponseLabel: 'Balasan',
+        channel3OutputLabel: 'Hasil',
+        channel3Format: 'Projek baharu, agregat luar biasa, persiapan tender',
+        channel3Response: 'Dalam 2 hari bekerja',
+        channel3Output: 'Slot lawatan dicadangkan · jurutera ditugaskan',
+        channel3Cta: 'Minta lawatan',
+        locationEyebrow: 'Bengkel · Petaling Jaya',
+        locationHeadline: 'Mesin tekan, relau, dan stesen kimpalan laser.',
+        locationLede: 'Pelawat dialu-alukan dengan janji temu. Pasukan teknikal boleh memandu anda melalui mesin tekan, relau segmen, dan stesen kimpalan laser. Tiga mesin yang dilalui oleh setiap bilah yang kami hantar.',
+        locationAddressFallback: 'Petaling Jaya, Selangor · Malaysia',
+        locationAddressNote: 'Alamat penuh tersedia atas permintaan.',
+        locationLabelMonFri: 'Isnin hingga Jumaat',
+        locationLabelSat: 'Sabtu',
+        locationLabelSun: 'Ahad',
+        locationRegPrefix: 'Pendaftaran',
+        locationDispatchLabel: 'Tarikh akhir penghantaran tapak',
+        locationDispatchSuffix: 'untuk penghantaran hari yang sama dari stok PJ',
+        locationOpenInMaps: 'Buka di peta',
+        locationMapWorkshop: 'COOLMAN',
+        locationMapSince: 'NO. 14 · SEJAK 2007',
+        directLinesEyebrow: 'Talian terus',
+        directLinesHeadline: 'Jika anda sudah tahu siapa yang anda perlukan.',
+        directLinesLede: 'Tempat hubungan terus untuk empat sebab paling biasa orang menghubungi syarikat. Setiap satu pergi kepada pasukan yang dinamakan, bukan barisan menunggu.',
+        directLineSalesLabel: 'Jualan',
+        directLineSalesNote: 'Sebut harga, soalan akaun, pertanyaan am.',
+        directLinePartsLabel: 'Alat ganti dan pesanan',
+        directLinePartsNote: 'Pesanan semula, penghantaran, invois untuk akaun perdagangan.',
+        directLineTrainingLabel: 'Latihan dan servis',
+        directLineTrainingNote: 'Latihan pengendali, pensijilan, servis Shibuya.',
+        directLineCareersLabel: 'Kerjaya',
+        directLineCareersNote: 'Permohonan kerja. Terus kepada Alan.',
+        formEyebrow: 'Borang lawatan tapak',
+        formTitle: 'Beritahu kami tentang projek.',
+        formSubtitle: 'Jenis projek, keadaan tapak, jangka masa. Jurutera membalas dengan slot lawatan yang dicadangkan.',
         formNameLabel: 'Nama *',
         formNamePlaceholder: 'Nama anda',
         formCompanyLabel: 'Syarikat',
@@ -2009,27 +2197,28 @@ export const COPY: Record<Language, CopyStructure> = {
         formEmailPlaceholder: 'nama@syarikat.com',
         formPhoneLabel: 'Telefon',
         formPhonePlaceholder: '+60 12-345 6789',
-        formMessageLabel: 'Mesej *',
-        formMessagePlaceholder: 'Beritahu kami tentang keperluan anda...',
-        formSubmit: 'Hantar Mesej',
+        formMessageLabel: 'Butiran projek *',
+        formMessagePlaceholder: 'Jenis projek, keadaan tapak, agregat jika diketahui, jangka masa sasaran.',
+        formSubmit: 'Minta lawatan',
         formSubmitting: 'Menghantar...',
         formSuccess: 'Terima kasih. Kami akan menghubungi anda tidak lama lagi.',
         formError: 'Terdapat ralat. Sila cuba lagi.',
         networkError: 'Ralat rangkaian. Sila semak sambungan anda dan cuba lagi.',
-        successTitle: 'Mesej Dihantar!',
-        successMessage: 'Terima kasih kerana menghubungi kami. Kami akan membalas dalam masa 24 jam.',
-        sendAnother: 'Hantar mesej lain',
+        successTitle: 'Permintaan diterima.',
+        successMessage: 'Seorang jurutera akan membalas dengan slot lawatan yang dicadangkan dalam masa dua hari bekerja.',
+        sendAnother: 'Hantar permintaan lain',
         infoHeading: 'Hubungi kami',
         phoneTitle: 'Telefon',
-        phoneSubtitle: 'Isnin-Jumaat 9 pagi-6 petang MYT',
+        phoneSubtitle: 'Isnin hingga Sabtu, waktu pejabat',
         emailTitle: 'Emel',
         emailSubtitle: 'Kami membalas dalam masa 24 jam',
         officeTitle: 'Pejabat',
-        responseTimeLabel: 'Masa Respons Purata',
+        responseTimeLabel: 'Masa respons purata',
         responseTimeSubtitle: 'Semasa waktu perniagaan',
-        liveChatLabel: 'Mahu sembang langsung?',
-        liveChatMessage: 'Sembang dengan pasukan sokongan kami secara langsung melalui WhatsApp.',
+        liveChatLabel: 'Lebih suka WhatsApp?',
+        liveChatMessage: 'Hubungi meja kejuruteraan di WhatsApp untuk jawapan teknikal pantas.',
         openWhatsapp: 'Buka WhatsApp',
+        whatsappPrefillText: 'Hai, saya ada soalan tentang bilah anda.',
       },
       shibuya: {
         heroEyebrow: 'Shibuya',

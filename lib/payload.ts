@@ -82,10 +82,21 @@ export async function filterProducts(params: {
   }
 }
 
-export async function getGlobal(slug: string): Promise<any> {
+export async function getGlobal(
+  slug: string,
+  opts?: { overrideAccess?: boolean },
+): Promise<any> {
   try {
     const payload = await getPayloadClient()
-    return await payload.findGlobal({ slug: slug as any })
+    // `overrideAccess` lets public server pages read globals whose `access.read`
+    // is restricted to admins (e.g. `settings`). The contact page needs this to
+    // render the legal entity, WhatsApp number, address, and opening hours that
+    // live on the Settings global. Existing callers omit the option and get the
+    // default `false`, preserving previous behaviour.
+    return await payload.findGlobal({
+      slug: slug as any,
+      overrideAccess: opts?.overrideAccess ?? false,
+    })
   } catch {
     return null
   }
