@@ -508,7 +508,7 @@ export function ProductDetailClient({
                         {p.name}
                       </h3>
                       <p className="mt-1 text-sm text-white/60">
-                        {p.diameter} | {bondLabel(p.bondType)} Bond
+                        {p.diameter} | {bondLabel(p.bondType)} {pd.bondLabel}
                       </p>
                       <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
                         <PriceStackCard

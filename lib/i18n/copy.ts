@@ -324,6 +324,7 @@ export interface CopyStructure {
       }
       requestQuote: string
       skuLabel: string
+      bondLabel: string
     }
   }
   products: {
@@ -1300,6 +1301,7 @@ export const COPY: Record<Language, CopyStructure> = {
         },
         requestQuote: 'Request a quote',
         skuLabel: 'SKU',
+        bondLabel: 'Bond',
       },
     },
     products: {
@@ -2448,6 +2450,7 @@ export const COPY: Record<Language, CopyStructure> = {
         },
         requestQuote: 'Minta sebut harga',
         skuLabel: 'SKU',
+        bondLabel: 'Ikatan',
       },
     },
     products: {
