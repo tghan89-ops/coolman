@@ -41,7 +41,7 @@ export default function FrontendError({
             >
               Try again
             </Button>
-            <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white/10">
+            <Button asChild variant="outline-dark">
               <Link href="/">Back to home</Link>
             </Button>
           </div>

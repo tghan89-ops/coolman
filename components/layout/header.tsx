@@ -255,9 +255,9 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
                 </>
               ) : (
                 <div className="flex flex-col gap-3 pt-4">
-                  <Button 
-                    variant="outline" 
-                    className="h-12 border-white/20 bg-transparent text-white hover:bg-white/10"
+                  <Button
+                    variant="outline-dark"
+                    className="h-12"
                     asChild
                   >
                     <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>

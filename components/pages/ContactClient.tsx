@@ -104,8 +104,8 @@ export function ContactClient({ initialData }: { initialData: any }) {
                     {t.pages.contact.successMessage}
                   </p>
                   <Button
-                    variant="outline"
-                    className="mt-8 border-white/20 text-white hover:bg-white/10"
+                    variant="outline-dark"
+                    className="mt-8"
                     onClick={() => setSubmitted(false)}
                   >
                     {t.pages.contact.sendAnother}
@@ -293,8 +293,8 @@ export function ContactClient({ initialData }: { initialData: any }) {
                   {t.pages.contact.liveChatMessage}
                 </p>
                 <Button
-                  variant="outline"
-                  className="mt-4 w-full border-white/20 text-white hover:bg-white/10"
+                  variant="outline-dark"
+                  className="mt-4 w-full"
                   asChild
                 >
                   <a href={whatsappHref} target="_blank" rel="noopener noreferrer">

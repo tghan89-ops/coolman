@@ -53,7 +53,7 @@ function VerifyEmailContent() {
             <>
               <h1 className="text-2xl font-bold text-white">Verification failed</h1>
               <p className="text-ink-muted">{message}</p>
-              <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white/10">
+              <Button asChild variant="outline-dark">
                 <Link href="/account">Back to account</Link>
               </Button>
             </>
