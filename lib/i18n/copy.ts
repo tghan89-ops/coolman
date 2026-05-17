@@ -481,6 +481,260 @@ export interface CopyStructure {
       contact: string
     }
   }
+  manifesto: {
+    line1: string
+    line2: string
+    line3: string
+  }
+  homeNarrative: {
+    opening: {
+      eyebrow: string
+      headline: string
+      lede: string
+    }
+    fearGrid: {
+      eyebrow: string
+      headline: string
+      cards: Array<{ title: string; body: string }>
+    }
+    threeMythsIntro: {
+      eyebrow: string
+      headline: string
+      lede: string
+      ctaLabel: string
+    }
+    brotherhoodIntro: {
+      eyebrow: string
+      headline: string
+      lede: string
+      ctaLabel: string
+    }
+    fieldNotesPreview: {
+      eyebrow: string
+      headline: string
+      lede: string
+      cards: Array<{ title: string; meta: string; readingTime: string }>
+      ctaLabel: string
+    }
+    alansLetter: {
+      eyebrow: string
+      paragraphs: string[]
+      signature: string
+      signatureLine2: string
+    }
+    quietDoor: {
+      eyebrow: string
+      headline: string
+      lede: string
+      stats: Array<{ value: string; label: string }>
+      ctaPrimary: string
+      ctaSecondary: string
+    }
+    conversation: {
+      eyebrow: string
+      headline: string
+      lede: string
+      channels: Array<{ tag: string; title: string; body: string; ctaLabel: string }>
+    }
+  }
+  heritage: {
+    hero: {
+      eyebrow: string
+      headline: string
+      lede: string
+    }
+    pj2007: {
+      eyebrow: string
+      headline: string
+      body: string[]
+    }
+    founding: {
+      eyebrow: string
+      headline: string
+      body: string[]
+    }
+    workshopDay: {
+      eyebrow: string
+      headline: string
+      note?: string
+      body: string[]
+    }
+    shibuyaYears: {
+      eyebrow: string
+      headline: string
+      body: string[]
+    }
+    hardestYear: {
+      eyebrow: string
+      headline: string
+      body: string[]
+    }
+    twentyYears: {
+      eyebrow: string
+      headline: string
+      body: string[]
+    }
+    timeline: {
+      eyebrow: string
+      headline: string
+      events: Array<{ year: string; title: string; body: string; note?: string }>
+    }
+  }
+  fieldNotes: {
+    indexHero: {
+      eyebrow: string
+      headline: string
+      lede: string
+    }
+    byline: string
+    filedUnder: string
+    pileCutting: {
+      title: string
+      meta: string
+      readingTime: string
+      pullQuote: string
+      sections: Array<{ heading: string; paragraphs: string[] }>
+    }
+    midnightRoad: {
+      title: string
+      meta: string
+      readingTime: string
+      pullQuote: string
+      sections: Array<{ heading: string; paragraphs: string[] }>
+    }
+    productRecall: {
+      title: string
+      meta: string
+      readingTime: string
+      pullQuote: string
+      sections: Array<{ heading: string; paragraphs: string[] }>
+    }
+  }
+  engineeringFolio: {
+    indexHero: {
+      eyebrow: string
+      headline: string
+      lede: string
+    }
+    threeMyths: {
+      title: string
+      readingTime: string
+      pullQuote: string
+      sections: Array<{ heading: string; paragraphs: string[] }>
+    }
+    malaysianAggregate: {
+      title: string
+      readingTime: string
+      pullQuote: string
+      sections: Array<{ heading: string; paragraphs: string[] }>
+    }
+    brotherhood: {
+      title: string
+      readingTime: string
+      pullQuote: string
+      sections: Array<{ heading: string; paragraphs: string[] }>
+    }
+  }
+  catalogueIntro: {
+    eyebrow: string
+    headline: string
+    lede: string
+    filters: {
+      materialLabel: string
+      applicationLabel: string
+      diameterLabel: string
+    }
+  }
+  productPageTemplate: {
+    categoryEyebrow: string
+    tagline: string
+    heroSpecBlock: {
+      diameterLabel: string
+      bondLabel: string
+      segmentLabel: string
+      flangeLabel: string
+    }
+    whatItsFor: {
+      heading: string
+      body: string
+    }
+    whenToChoose: {
+      heading: string
+      body: string
+    }
+    specsTable: {
+      heading: string
+      rows: Array<{ key: string; value: string }>
+    }
+    unusualCuts: {
+      heading: string
+      body: string
+      ctaLabel: string
+    }
+  }
+  tradePage: {
+    hero: {
+      eyebrow: string
+      headline: string
+      lede: string
+    }
+    tiers: {
+      buyer: { title: string; body: string; bullets: string[] }
+      dealer: { title: string; body: string; bullets: string[] }
+    }
+    application: {
+      eyebrow: string
+      headline: string
+      steps: Array<{ title: string; body: string }>
+      ctaLabel: string
+    }
+  }
+  contactPage: {
+    hero: {
+      eyebrow: string
+      headline: string
+      lede: string
+    }
+    channels: Array<{ tag: string; title: string; body: string; ctaLabel: string }>
+    hours: {
+      heading: string
+      line1: string
+      line2: string
+    }
+  }
+  aboutPage: {
+    hero: {
+      eyebrow: string
+      headline: string
+      lede: string
+    }
+    founded: { value: string; label: string }
+    builtIn: { value: string; label: string }
+    accounts: { value: string; label: string }
+  }
+  legal: {
+    privacy: { title: string; lede: string }
+    terms: { title: string; lede: string }
+    returns: { title: string; lede: string }
+    cookies: { title: string; lede: string }
+  }
+  seo: {
+    home: { title: string; description: string }
+    heritage: { title: string; description: string }
+    whyCoolman: { title: string; description: string }
+    fieldNotes: { title: string; description: string }
+    catalogue: { title: string; description: string }
+    productTemplate: { title: string; description: string }
+    trade: { title: string; description: string }
+    contact: { title: string; description: string }
+    about: { title: string; description: string }
+    shibuya: { title: string; description: string }
+    privacy: { title: string; description: string }
+    terms: { title: string; description: string }
+    returns: { title: string; description: string }
+    cookies: { title: string; description: string }
+    folioThreeMyths: { title: string; description: string }
+  }
 }
 
 export const COPY: Record<Language, CopyStructure> = {
@@ -619,7 +873,7 @@ export const COPY: Record<Language, CopyStructure> = {
         heroEyebrow: 'Why Coolman',
         ctaTitle: 'Ready to Experience the Coolman Difference?',
         ctaMessage: 'Join the contractors who trust Coolman for performance, reliability and support.',
-        ctaButton: 'Get in Touch',
+        ctaButton: 'Speak to engineering',
         hero: {
           eyebrow: 'Why Coolman',
           title: 'The Coolman Advantage',
@@ -628,7 +882,7 @@ export const COPY: Record<Language, CopyStructure> = {
         advantages: [
           { iconKey: 'zap', title: 'Superior Cutting Performance', body: 'Our diamond segments are formulated for 40% faster cutting speeds while maintaining precision.' },
           { iconKey: 'shield', title: 'Extended Blade Life', body: 'Proprietary bonding technology delivers up to 3x longer operational life.' },
-          { iconKey: 'award', title: '25+ Years of Excellence', body: 'Since 1998, engineering cutting solutions for Malaysian contractors.' },
+          { iconKey: 'award', title: '19 Years in the Trade', body: 'Coolman has built diamond cutting tools for Malaysian contractors since 2007. Alan, our founder, has been in the cutting trade since 1998.' },
           { iconKey: 'truck', title: 'Rapid Fulfillment', body: 'Same-day dispatch for orders placed before 2pm.' },
           { iconKey: 'headphones', title: 'Technical Partnership', body: 'Dedicated engineering support to help you select the right tools.' },
           { iconKey: 'barChart3', title: 'B2B Pricing Advantage', body: 'Registered contractors enjoy exclusive pricing tiers.' },
@@ -689,7 +943,7 @@ export const COPY: Record<Language, CopyStructure> = {
         formMessagePlaceholder: 'Tell us about your requirements...',
         formSubmit: 'Send Message',
         formSubmitting: 'Sending...',
-        formSuccess: 'Thanks — we will be in touch shortly.',
+        formSuccess: 'Thanks. We will be in touch shortly.',
         formError: 'Something went wrong. Please try again.',
         networkError: 'Network error. Please check your connection and try again.',
         successTitle: 'Message Sent!',
@@ -710,7 +964,7 @@ export const COPY: Record<Language, CopyStructure> = {
       shibuya: {
         heroEyebrow: 'Shibuya',
         heroPrimaryLabel: 'Explore Models',
-        heroSecondaryLabel: 'Watch Film',
+        heroSecondaryLabel: 'See the machine',
         scroll: 'SCROLL',
         sincePrefix: 'SINCE',
         modelsEyebrow: 'THE RANGE',
@@ -970,10 +1224,10 @@ export const COPY: Record<Language, CopyStructure> = {
       quickLinks: 'Quick Links',
       contact: 'Contact Us',
       email: 'sales@coolman.com.my',
-      phone: '+60 3-1234 5678',
-      address: 'Kuala Lumpur, Malaysia',
-      copyright: '© 2024 Coolman. All rights reserved.',
-      brandStory: 'Industrial-grade diamond cutting tools engineered for precision and durability. Trusted by professional contractors across Malaysia since 1998.',
+      phone: '+6012-6363156',
+      address: 'Petaling Jaya, Malaysia',
+      copyright: '© 2026 Coolman. All rights reserved.',
+      brandStory: 'Diamond cutting tools, designed in Malaysia for Malaysia. Built in Petaling Jaya since 2007 by contractors, for contractors.',
       diamondToolsHeading: 'Diamond Tools',
       shibuyaHeading: 'Shibuya',
       companyHeading: 'Company',
@@ -982,7 +1236,7 @@ export const COPY: Record<Language, CopyStructure> = {
       joinBlurb: 'Join 500+ contractors and access exclusive B2B pricing.',
       privacyPolicy: 'Privacy Policy',
       termsOfService: 'Terms of Service',
-      bottomCopyright: 'Coolman Sdn Bhd. All rights reserved.',
+      bottomCopyright: 'Coolman Malaysia Sdn Bhd. All rights reserved.',
       links: {
         allDiamondTools: 'All Diamond Tools',
         diamondBlades: 'Diamond Blades',
@@ -997,6 +1251,446 @@ export const COPY: Record<Language, CopyStructure> = {
         resources: 'Resources',
         contact: 'Contact',
       },
+    },
+    manifesto: {
+      line1: "A blade is the answer to a question the contractor hasn't fully asked yet.",
+      line2: "Don't just sell the product. Solve the problem.",
+      line3: 'The worksite tells the truth.',
+    },
+    homeNarrative: {
+      opening: {
+        eyebrow: 'Coolman',
+        headline: 'Diamond cutting tools, built in Petaling Jaya for the way Malaysian sites actually cut.',
+        lede: 'Coolman has built diamond blades, core bits and cutting systems in Malaysia since 2007. Our founder, Alan, has been in the cutting trade since 1998. Every blade we make is engineered for the rock, the rebar and the schedule Malaysian contractors face.',
+      },
+      fearGrid: {
+        eyebrow: 'What contractors live with',
+        headline: "Four things keep the boss up at night. We've watched all four on site.",
+        cards: [
+          { title: 'A delay you cannot explain to the developer', body: 'The blade is slow. The schedule is gone. The conversation upstairs is already lost. We have watched this happen more times than we wish.' },
+          { title: 'Equipment that fails at 11pm on a road closure', body: "When the cut has to be done tonight and the blade gives out at the wrong moment, the cost isn't the blade. It's the closure, the police, the developer phoning at 6am." },
+          { title: 'Inconsistency between blades that should be identical', body: 'One blade cuts. The next one of the same SKU lasts half as long. The crew loses faith. The supplier loses the account.' },
+          { title: 'Being left alone with a cut nobody else has seen', body: 'A new aggregate. An unusual depth. A spec the supplier has never tested. The crew gets it. The supplier ducks the call.' },
+        ],
+      },
+      threeMythsIntro: {
+        eyebrow: 'Three myths',
+        headline: 'Three things the cutting trade keeps getting wrong.',
+        lede: 'Price as the proxy for value. Dealers as the proxy for partnership. Made in Japan as the proxy for fit. Nineteen years on site, we have watched each one fail in turn.',
+        ctaLabel: 'Read the folio',
+      },
+      brotherhoodIntro: {
+        eyebrow: 'The Brotherhood System',
+        headline: 'How we work with the people who buy from us.',
+        lede: 'Not a loyalty programme. Not a tier chart. A working agreement between Coolman and the people who carry our blade to the site: dealers, foremen, brothers in the trade.',
+        ctaLabel: 'See the five principles',
+      },
+      fieldNotesPreview: {
+        eyebrow: 'Field Notes',
+        headline: 'Three jobs that taught us how to make a better blade.',
+        lede: 'These are not case studies. They are the conversations we had on site, the cuts that went wrong, the lessons that ended up engineered into the next batch.',
+        cards: [
+          { title: 'When the contractor stopped trying, and just called', meta: 'Reinforced concrete · piling · Klang Valley', readingTime: '9 min read' },
+          { title: "'If I don't finish tonight, I'm done.'", meta: 'Road cutting · utility cable', readingTime: '7 min read' },
+          { title: 'We trusted the factory spec. We should not have.', meta: 'Product recall', readingTime: '6 min read' },
+        ],
+        ctaLabel: 'Read all Field Notes',
+      },
+      alansLetter: {
+        eyebrow: 'A letter from Alan',
+        paragraphs: [
+          'When I started in the cutting trade in 1998, I thought I knew what a good blade was. Nine years later, when I founded Coolman in 2007, I knew I had been wrong. A good blade is not the one with the best segment formulation on paper. It is the one that finishes the cut on the night the contractor cannot afford to fail.',
+          'Coolman is built around that single sentence. Every blade we ship is engineered for the kind of cut that breaks weaker blades: Malaysian aggregate, hard rebar, long pours, monsoon damp, a foreman with three jobs running and no time to nurse a slow tool.',
+          'I started Coolman because I had watched too many contractors get sold a blade by someone who had never been on site at 2am. That has not happened to a Coolman customer in 19 years and it never will. If your cut goes wrong, you call me. Not a hotline. Me.',
+          'The next pages are not marketing. They are how we work, what we have learned, and the jobs that taught us. If you read them and we still feel right for your worksite, we should talk.',
+        ],
+        signature: 'Alan',
+        signatureLine2: 'Founder, Coolman',
+      },
+      quietDoor: {
+        eyebrow: 'The quiet door',
+        headline: 'The full range, in stock and ready to ship from Petaling Jaya.',
+        lede: 'No catalogue front. No PDF download chase. Just the inventory, the spec, and a phone call away if the blade you need is not the one we list.',
+        stats: [
+          { value: '247', label: 'SKUs in stock' },
+          { value: '100 to 900 mm', label: 'Diameter range' },
+          { value: '96%', label: 'On-time dispatch' },
+          { value: '14:00', label: 'Same-day cut-off' },
+        ],
+        ctaPrimary: 'Open the catalogue',
+        ctaSecondary: 'Speak to engineering',
+      },
+      conversation: {
+        eyebrow: 'How to start the conversation',
+        headline: 'Three ways in. WhatsApp is the fastest.',
+        lede: "Most cuts begin with a phone call. We don't hide ours.",
+        channels: [
+          { tag: 'Primary', title: 'Engineering desk on WhatsApp', body: 'Send a photo of the cut, the aggregate, the blade. We will tell you what we think before we tell you what we sell.', ctaLabel: 'Open WhatsApp' },
+          { tag: 'Office', title: 'Petaling Jaya office line', body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.', ctaLabel: 'Call the office' },
+          { tag: 'On site', title: 'Site visit form', body: "If the cut is unusual, we'd rather come and see it than guess. Tell us where and when.", ctaLabel: 'Request a site visit' },
+        ],
+      },
+    },
+    heritage: {
+      hero: {
+        eyebrow: 'Heritage',
+        headline: 'Coolman, since 2007. Nineteen years of cuts that taught us how to build the blade.',
+        lede: 'A short history of a Malaysian diamond tools company. Founded in Petaling Jaya by a tradesman who had been in the cutting trade since 1998.',
+      },
+      pj2007: {
+        eyebrow: 'PJ, 2007',
+        headline: 'A workshop on a side road in Petaling Jaya.',
+        body: [
+          'Coolman started in a single rented unit in Petaling Jaya in 2007. Two segment presses, a bench, and a phone that rang too often. Alan, the founder, had spent nine years in the cutting trade and had finally heard one complaint too many about blades that did not fit the rock.',
+          'The first year was quiet. The second was not. By the end of 2008, the workshop was running two shifts.',
+        ],
+      },
+      founding: {
+        eyebrow: 'The founding decision',
+        headline: 'After nine years in the trade, a tradesman started his own.',
+        body: [
+          'Alan had been selling other companies\' blades since 1998. He had watched the same three things go wrong on site, again and again. Price as the proxy for value. Dealers who had never held a blade. Imported blades that performed in Japan and failed in Selangor.',
+          'In 2007, he stopped explaining other people\'s blades and started making his own. Coolman is the result.',
+        ],
+      },
+      workshopDay: {
+        eyebrow: 'The day it stopped being a workshop',
+        headline: 'A piling job that ended in a redesign.',
+        note: 'Year TBC. Alan to supply.',
+        body: [
+          "A contractor in Shah Alam called at 11pm. The blade we'd sold him that morning had not made it through the second pile. Alan drove out. He watched the cut. The aggregate was sharper than the spec had predicted. The bond was wrong.",
+          'The blade was redesigned over the next four weeks. The new formulation, sandwich cobalt, became what the CM-X line is built on today. The workshop became a manufacturer the day Alan accepted that the contractor was right and the spec sheet was wrong. (Year TBC. Alan to supply.)',
+        ],
+      },
+      shibuyaYears: {
+        eyebrow: 'Twelve years with Shibuya',
+        headline: 'Signed 2014. Renewed every year since.',
+        body: [
+          'In 2014 Coolman signed the exclusive Malaysian distribution agreement for Shibuya core drills. Twelve years on, it has been renewed every year. The same machines built in Japan since 1923, supported by a Malaysian engineering team that has seen the cuts they actually do.',
+          'Shibuya makes the drill. Coolman makes sure the drill is the right answer to the cut in front of you.',
+        ],
+      },
+      hardestYear: {
+        eyebrow: 'The hardest year',
+        headline: 'The product recall, and what came after.',
+        body: [
+          'In one production batch, the wrong bonding agent was used. The blades passed factory test. They failed on site. We recalled every unit, replaced every one, and wrote off the cost.',
+          "What we kept was the customer base. Not one Brotherhood dealer left. The contractors who got the failed blade got the replacement, the apology, and a free second blade. Most of them are still with us. Business isn't a race for who can grow fastest. It's a question of who can endure longest.",
+        ],
+      },
+      twentyYears: {
+        eyebrow: 'Twenty years from now',
+        headline: "What we want Coolman to be when Alan's children run it.",
+        body: [
+          'The same company. Larger inventory. More Field Notes in the archive. The same direct line to engineering. The same answer when a contractor calls at 11pm.',
+          'Coolman is built to outlast its founder. That is the only metric of success we trust.',
+        ],
+      },
+      timeline: {
+        eyebrow: 'The timeline',
+        headline: 'Nineteen years on one page.',
+        events: [
+          { year: '1998', title: 'Alan enters the cutting trade', body: 'Nine years of selling other companies\' blades begins.' },
+          { year: '2007', title: 'Coolman founded in Petaling Jaya', body: 'Two segment presses, a bench, a phone.' },
+          { year: 'TBC', title: 'Sandwich cobalt formulation developed', body: 'After a piling job in Shah Alam taught us the spec sheet was wrong.', note: 'Alan to supply year' },
+          { year: '2014', title: 'Shibuya exclusive distribution signed', body: 'Renewed every year since.' },
+          { year: 'TBC', title: 'SIRIM certification awarded', body: 'Independent verification of the bonding spec.', note: 'Alan to supply year' },
+          { year: '2026', title: '247 SKUs in stock, ~500 active accounts', body: '96% on-time dispatch. Same-day cut-off at 2pm.' },
+        ],
+      },
+    },
+    fieldNotes: {
+      indexHero: {
+        eyebrow: 'Field Notes',
+        headline: 'Three jobs that taught us how to make a better blade.',
+        lede: 'Written by Coolman Engineering. Filed as they happened. Nothing in these notes is hypothetical.',
+      },
+      byline: 'Coolman Engineering',
+      filedUnder: 'Filed under Coolman Malaysia Sdn Bhd · Petaling Jaya · Manufactured in Malaysia',
+      pileCutting: {
+        title: 'When the contractor stopped trying, and just called',
+        meta: 'Reinforced concrete · piling · Klang Valley',
+        readingTime: '9 min read',
+        pullQuote: "Many times, contractors think it's a product problem. In fact, it's a system problem.",
+        sections: [
+          { heading: 'The call', paragraphs: [
+            "The foreman called the engineering desk at 4:48pm. He had been cutting reinforced concrete piles for a Klang Valley development since the morning. The blade he was using, not ours, had stopped advancing. He was on the third blade of the day.",
+            "He did not ask for a quote. He asked if we could come and look.",
+          ] },
+          { heading: 'What we did before quoting', paragraphs: [
+            "An engineer drove out the same evening. He looked at the aggregate, the rebar density, the saw, the cooling, and the way the blade had glazed. He took two photos and sent them back to the workshop.",
+            "We did not quote that night. We told the foreman what we thought was wrong and that we would call him in the morning.",
+          ] },
+          { heading: 'What the worksite told us', paragraphs: [
+            "The aggregate was harder than the spec had said. The blade he had been using was bonded for general concrete. The bond had glazed because the diamond was not exposing fast enough on this rock.",
+            "The problem was not the contractor. The problem was that the supplier had sold him a blade for a job they had not seen.",
+          ] },
+          { heading: 'What changed', paragraphs: [
+            "We delivered a CM-X Pro 350 Hard-Bond the next morning. The foreman cut the remaining piles in two days, on time, on budget.",
+            "We did not charge for the engineer\'s visit. The contractor became a Brotherhood account three weeks later.",
+          ] },
+          { heading: 'The lesson', paragraphs: [
+            "We engineered a sharper bond profile into the next batch of CM-X Pro 350 Hard-Bond, on the strength of what we saw on that pile.",
+            "A blade is the answer to a question the contractor has not fully asked yet. Our job is to ask it for him.",
+          ] },
+        ],
+      },
+      midnightRoad: {
+        title: "'If I don't finish tonight, I'm done.'",
+        meta: 'Road cutting · utility cable',
+        readingTime: '7 min read',
+        pullQuote: "Contractors don't always need a supplier. Sometimes they need someone willing to stand with them when the job goes hard.",
+        sections: [
+          { heading: 'The call', paragraphs: [
+            "10:42pm. A road closure permit that expired at 6am. A utility cable that had to be exposed before then. The blade the crew was using had snapped on the second cut.",
+            "The foreman was not panicking on the phone. He was past panicking. He was calm in a way that told us he was about to lose the job.",
+          ] },
+          { heading: 'What we did', paragraphs: [
+            "We dispatched a CM-X Road 450 from the Petaling Jaya warehouse. An engineer met the crew on site at 12:10am. He inspected the saw, set the blade, watched the first cut.",
+            "He stayed on site until 4am.",
+          ] },
+          { heading: 'What happened', paragraphs: [
+            "The crew finished at 5:36am. The road reopened on time. The developer never knew.",
+            "The foreman called Alan at 9am the next morning. He did not want to thank him. He wanted to know what it would take to buy his blades for every job from now on.",
+          ] },
+          { heading: 'The lesson', paragraphs: [
+            "A blade is a product. A delivered cut at 4am is something else. Coolman is built around the second one.",
+          ] },
+        ],
+      },
+      productRecall: {
+        title: 'We trusted the factory spec. We should not have.',
+        meta: 'Product recall',
+        readingTime: '6 min read',
+        pullQuote: "What destroys a brand isn't a single loss. It's the moment a customer stops believing you.",
+        sections: [
+          { heading: 'What went wrong', paragraphs: [
+            "One batch. One bonding agent that had been substituted at the supplier without our knowledge. The blades passed our standard factory test. They failed on site within the first 20% of the rated cut life.",
+            "We had shipped 312 units.",
+          ] },
+          { heading: 'What we did', paragraphs: [
+            "We called every customer who had taken a blade from that batch. Not emailed. Called.",
+            "We replaced every blade. We added a second blade, free, to every account. We absorbed the freight, the inspection, and the engineer time.",
+          ] },
+          { heading: 'What it cost', paragraphs: [
+            "More than the year\'s profit on the line.",
+            "Not one Brotherhood dealer left. Three new dealers signed up in the next six months because they had heard how we handled it.",
+          ] },
+          { heading: 'The lesson', paragraphs: [
+            "We changed the supplier qualification process. Every bonding agent change at any tier now triggers a full re-test before it can enter the manufacturing line.",
+            "A brand is what you do when no one would have known if you had stayed quiet.",
+          ] },
+        ],
+      },
+    },
+    engineeringFolio: {
+      indexHero: {
+        eyebrow: 'Engineering folio',
+        headline: 'Why we make the blade the way we make it.',
+        lede: 'Three pieces written by Coolman Engineering. The thinking behind the product, the manufacturing, and the way we work with our customers.',
+      },
+      threeMyths: {
+        title: 'Three things the cutting trade keeps getting wrong',
+        readingTime: '14 min read',
+        pullQuote: 'The choice, in the end, is between buying the myth and buying the cut.',
+        sections: [
+          { heading: 'A word on the people who repeat them', paragraphs: [
+            'Every trade has its received wisdom. Diamond cutting has three pieces of it that have been repeated so often they sound true. They are not.',
+            'We have spent 19 years watching these three ideas cost contractors money, time, and reputation. This folio is our attempt to lay them out plainly.',
+          ] },
+          { heading: 'Myth 1: Price tells you what the blade is worth.', paragraphs: [
+            'The cheapest blade on a hard cut becomes the most expensive blade by lunchtime. The crew is paid. The site is on a schedule. The replacement is shipped twice. Price per blade is the wrong metric. Cost per cut is the only metric that matters.',
+            "We price our blades to last. The contractor who works that out becomes a Brotherhood customer for life.",
+          ] },
+          { heading: 'Myth 2: The dealer with the loudest catalogue is the partner.', paragraphs: [
+            "A dealer who sells eight brands is not a partner. A dealer who has cut concrete is. The Brotherhood System exists because we believe the relationship between the dealer and the engineer matters more than the relationship between the dealer and the catalogue.",
+            "Half our dealers have been on site with us inside the last 12 months. That is the number we measure.",
+          ] },
+          { heading: 'Myth 3: Made in Japan means right for Malaysia.', paragraphs: [
+            "Japanese diamond technology is excellent. The aggregate it was developed for is not the aggregate Malaysian sites cut. Our CM-X line is engineered for Malaysian rock: higher silica, harder rebar, longer pours.",
+            "We carry Shibuya machines because Shibuya makes the best drill in the trade. We make our own blades because no one else was making the blade Malaysian aggregate needed.",
+          ] },
+          { heading: 'What this means for the way we sell', paragraphs: [
+            "We do not lead with price. We lead with the cut. If the cut is right, the price is right. If the cut is wrong, the cheap blade becomes the most expensive one on the job.",
+          ] },
+          { heading: 'Why this matters', paragraphs: [
+            "A blade is bought once. A relationship with the people who make it is bought every year. The choice, in the end, is between buying the myth and buying the cut.",
+          ] },
+        ],
+      },
+      malaysianAggregate: {
+        title: 'Malaysian aggregate breaks European blades',
+        readingTime: '13 min read',
+        pullQuote: "The blade doesn't care what the spec sheet says. It cares what the rock does.",
+        sections: [
+          { heading: 'The rock under our feet', paragraphs: [
+            "Malaysian crushed aggregate runs higher in silica than the European reference rock most diamond blades are engineered for. The figure we work to is around 60 to 65% silica content, to verify against the latest quarry data.",
+            "Higher silica is harder on the diamond. It glazes weaker bonds. It exposes the diamond too slowly. The blade does not cut. It rubs.",
+          ] },
+          { heading: 'What that does to a blade', paragraphs: [
+            "A blade engineered for the European spec arrives in Selangor and runs hot. The bond glazes. The diamond stops exposing. The crew complains about a slow blade. The supplier blames the saw, the operator, or the water.",
+            "The real answer is the rock. It is harder than the bond was designed for.",
+          ] },
+          { heading: 'Sandwich cobalt: the answer we built', paragraphs: [
+            "The CM-X line is built on a sandwich cobalt construction. A harder cobalt core, softer cobalt outer layers. The diamond exposes at the rate the aggregate needs. The blade self-sharpens through the cut.",
+            "It is more expensive to manufacture. It is the only honest answer to the rock Malaysian contractors actually cut.",
+          ] },
+          { heading: 'What the spec sheet does not say', paragraphs: [
+            "We have stopped trying to match European spec on paper. We match the cut on site. Every CM-X SKU is tested against Malaysian aggregate before it ships.",
+            "The blade does not care what the spec sheet says. It cares what the rock does.",
+          ] },
+        ],
+      },
+      brotherhood: {
+        title: 'The Brotherhood System',
+        readingTime: '11 min read',
+        pullQuote: "We don't grow by signing dealers. We grow by keeping the ones who have stood with us on bad days.",
+        sections: [
+          { heading: 'What it is, and what it is not', paragraphs: [
+            "The Brotherhood System is the working agreement between Coolman and the people who carry our blade to the worksite. Dealers, foremen, and the operators who actually mount the blade and start the cut.",
+            "It is not a loyalty programme. It is not a discount tier. It is the principle that the relationship between us and the people who use our blades is more important than the volume on the invoice.",
+          ] },
+          { heading: 'Principle 1: We do not sell what we have not cut.', paragraphs: [
+            "Every CM-X SKU has been cut by a Coolman engineer on Malaysian aggregate before it enters the catalogue. We do not sell blades from a brochure.",
+          ] },
+          { heading: 'Principle 2: We answer the call.', paragraphs: [
+            "Our engineering desk is on WhatsApp. The reply time is measured in minutes, not hours. If the foreman has a photo of a cut that is not working, we want to see it.",
+          ] },
+          { heading: 'Principle 3: We stand the cost when we are wrong.', paragraphs: [
+            "If a Coolman blade fails before its rated life on a cut we approved, we replace it. The contractor does not eat the cost of our mistake.",
+          ] },
+          { heading: 'Principle 4: We share what we learn.', paragraphs: [
+            "Field Notes is not marketing. It is the lessons from the jobs that taught us. We publish them so the next contractor does not have to learn the same lesson the hard way.",
+          ] },
+          { heading: 'Principle 5: We grow slowly, on purpose.', paragraphs: [
+            "We are not building the biggest diamond tools company in Malaysia. We are building the one that is still here in 20 years, with the same direct line between the foreman and the engineer.",
+          ] },
+        ],
+      },
+    },
+    catalogueIntro: {
+      eyebrow: 'Catalogue',
+      headline: 'The full range, in stock and ready to ship from Petaling Jaya.',
+      lede: 'Two hundred and forty-seven SKUs across diamond blades, core drills, and segment systems. Filter by material, application, or diameter. If the blade you need is not listed, call engineering.',
+      filters: {
+        materialLabel: 'Material',
+        applicationLabel: 'Application',
+        diameterLabel: 'Diameter',
+      },
+    },
+    productPageTemplate: {
+      categoryEyebrow: 'Diamond blade',
+      tagline: 'For hard reinforced concrete on long Malaysian pours.',
+      heroSpecBlock: {
+        diameterLabel: 'Diameter',
+        bondLabel: 'Bond',
+        segmentLabel: 'Segment height',
+        flangeLabel: 'Flange',
+      },
+      whatItsFor: {
+        heading: 'What this blade is for',
+        body: 'Reinforced concrete with high silica aggregate. Piling, slab cutting, hard precast. Engineered for Malaysian rock and the long pours that come with monsoon damp.',
+      },
+      whenToChoose: {
+        heading: 'When to choose this over alternatives',
+        body: 'Choose CM-X Pro 350 Hard-Bond when the cut is slow on a general-purpose blade and the aggregate is sharper than the spec predicted. If the cut runs softer, see CM-X Pro 350 Medium-Bond.',
+      },
+      specsTable: {
+        heading: 'Specifications',
+        rows: [
+          { key: 'Diameter', value: '350 mm' },
+          { key: 'Bond', value: 'Hard, sandwich cobalt' },
+          { key: 'Segment height', value: '10 mm' },
+          { key: 'Flange', value: '25.4 mm' },
+          { key: 'Rated cut life', value: 'Up to 240 m on reinforced concrete' },
+          { key: 'Manufactured in', value: 'Petaling Jaya, Malaysia' },
+        ],
+      },
+      unusualCuts: {
+        heading: 'For unusual cuts',
+        body: 'If your cut is unusual, send us a photo. Engineering will tell you what they think before they tell you what we sell.',
+        ctaLabel: 'Send a photo on WhatsApp',
+      },
+    },
+    tradePage: {
+      hero: {
+        eyebrow: 'Trade',
+        headline: 'For dealers and trade buyers. The relationship matters more than the order.',
+        lede: 'Two ways to work with Coolman. The right one depends on whether you want a supplier or a partner.',
+      },
+      tiers: {
+        buyer: {
+          title: 'Trade buyer',
+          body: 'Access to the full Coolman catalogue at trade pricing. Same-day dispatch from Petaling Jaya before 2pm.',
+          bullets: ['Full catalogue access', 'Trade pricing', 'Same-day dispatch'],
+        },
+        dealer: {
+          title: 'Brotherhood dealer',
+          body: 'Everything the trade buyer gets, plus joint site visits, exclusive territory in agreed regions, and a direct line to engineering for your customers.',
+          bullets: ['Trade pricing + Brotherhood tier', 'Joint site visits with engineering', 'Direct line for your customers', 'Exclusive territory by agreement'],
+        },
+      },
+      application: {
+        eyebrow: 'How to apply',
+        headline: 'Four steps. We will be honest about whether the fit is right.',
+        steps: [
+          { title: '1. Send your business profile', body: 'Tell us who you are, where you operate, and what you cut. A short message is enough to start.' },
+          { title: '2. We come and see you', body: 'For Brotherhood applications, we visit your premises or a site you are working on.' },
+          { title: '3. We agree the terms', body: 'Pricing, territory, support. Nothing complicated, all in writing.' },
+          { title: '4. We start working', body: 'A first order, an engineering introduction to your customers, and a working relationship.' },
+        ],
+        ctaLabel: 'Start the conversation',
+      },
+    },
+    contactPage: {
+      hero: {
+        eyebrow: 'Contact',
+        headline: 'Most cuts begin with a phone call. We do not hide ours.',
+        lede: 'Three ways to reach Coolman. The engineering desk on WhatsApp is the fastest.',
+      },
+      channels: [
+        { tag: 'Primary', title: 'Engineering desk on WhatsApp', body: 'Photos welcome. Replies in minutes during office hours.', ctaLabel: 'Open WhatsApp' },
+        { tag: 'Office', title: 'Petaling Jaya office line', body: 'For orders, dispatch and returns questions.', ctaLabel: 'Call the office' },
+        { tag: 'Site', title: 'Site visit request', body: 'If the cut is unusual, an engineer will come and see it.', ctaLabel: 'Request a site visit' },
+      ],
+      hours: {
+        heading: 'Office hours',
+        line1: 'Monday to Saturday, 8:30am to 5:30pm',
+        line2: 'Same-day dispatch cut-off at 2:00pm',
+      },
+    },
+    aboutPage: {
+      hero: {
+        eyebrow: 'About',
+        headline: 'Diamond cutting tools. Designed in Malaysia, for Malaysia.',
+        lede: 'Coolman has been built in Petaling Jaya since 2007. We make diamond blades, core bits and segment systems for Malaysian contractors. Around 500 active accounts. Same range, same direct line to engineering, for 19 years.',
+      },
+      founded: { value: '2007', label: 'Founded in Petaling Jaya' },
+      builtIn: { value: 'Petaling Jaya', label: 'Where the blade is made' },
+      accounts: { value: '~500', label: 'Active accounts' },
+    },
+    legal: {
+      privacy: { title: 'Privacy', lede: 'How Coolman handles the personal information of contractors, dealers and site visitors. Plain English. No surprises.' },
+      terms: { title: 'Terms of sale', lede: 'The terms under which Coolman Malaysia Sdn Bhd sells diamond cutting tools to trade and Brotherhood customers in Malaysia.' },
+      returns: { title: 'Returns and warranty', lede: 'How to return a Coolman blade, what the warranty covers, and what to do if a blade fails before its rated life.' },
+      cookies: { title: 'Cookie notice', lede: 'The cookies our site uses, what they do, and how to switch them off if you prefer.' },
+    },
+    seo: {
+      home: { title: 'Coolman · Diamond cutting tools built in Petaling Jaya since 2007', description: 'Malaysian-engineered diamond blades, core bits and segment systems. 247 SKUs in stock. Same-day dispatch from Petaling Jaya before 2pm.' },
+      heritage: { title: 'Heritage · Coolman, since 2007', description: 'A short history of Coolman: founded in Petaling Jaya in 2007 by a tradesman in the cutting trade since 1998.' },
+      whyCoolman: { title: 'Why Coolman · The engineering folio', description: 'Three pieces on why we make the blade the way we make it. Three myths, Malaysian aggregate, and the Brotherhood System.' },
+      fieldNotes: { title: 'Field Notes · Coolman Engineering', description: 'Three jobs that taught us how to make a better blade. Written as they happened.' },
+      catalogue: { title: 'Catalogue · 247 SKUs in stock', description: 'Diamond blades, core bits and segment systems. Filter by material, application, or diameter.' },
+      productTemplate: { title: 'Coolman product page', description: 'Specification, application, and engineering notes for the Coolman range.' },
+      trade: { title: 'Trade · Coolman for dealers and trade buyers', description: 'Trade buyer and Brotherhood dealer programmes. Application in four steps.' },
+      contact: { title: 'Contact Coolman', description: 'WhatsApp engineering, office line, or site visit. Most cuts begin with a phone call.' },
+      about: { title: 'About Coolman · Designed in Malaysia, for Malaysia', description: 'Diamond cutting tools built in Petaling Jaya since 2007. Around 500 active accounts.' },
+      shibuya: { title: 'Shibuya core drills · Exclusive Malaysian distributor', description: 'Coolman has carried Shibuya core drills as exclusive Malaysian distributor since 2014.' },
+      privacy: { title: 'Privacy · Coolman', description: 'How Coolman handles your personal information.' },
+      terms: { title: 'Terms of sale · Coolman', description: 'The terms under which Coolman Malaysia Sdn Bhd sells in Malaysia.' },
+      returns: { title: 'Returns and warranty · Coolman', description: 'Returning a Coolman blade and the warranty cover.' },
+      cookies: { title: 'Cookie notice · Coolman', description: 'The cookies our site uses and how to switch them off.' },
+      folioThreeMyths: { title: 'Three things the cutting trade keeps getting wrong', description: 'A Coolman Engineering folio on price, dealers, and the Made in Japan myth.' },
     },
   },
   BM: {
@@ -1134,7 +1828,7 @@ export const COPY: Record<Language, CopyStructure> = {
         heroEyebrow: 'Kenapa Coolman',
         ctaTitle: 'Sedia Untuk Merasai Perbezaan Coolman?',
         ctaMessage: 'Sertai kontraktor yang mempercayai Coolman untuk prestasi, kebolehpercayaan dan sokongan.',
-        ctaButton: 'Hubungi Kami',
+        ctaButton: 'Hubungi kejuruteraan',
         hero: {
           eyebrow: 'Kenapa Coolman',
           title: 'Kelebihan Coolman',
@@ -1143,7 +1837,7 @@ export const COPY: Record<Language, CopyStructure> = {
         advantages: [
           { iconKey: 'zap', title: 'Prestasi Pemotongan Unggul', body: 'Segmen berlian kami diformulasi untuk kelajuan pemotongan 40% lebih pantas sambil mengekalkan ketepatan.' },
           { iconKey: 'shield', title: 'Hayat Bilah Yang Panjang', body: 'Teknologi pengikatan proprietari memberikan hayat operasi sehingga 3x lebih lama.' },
-          { iconKey: 'award', title: '25+ Tahun Kecemerlangan', body: 'Sejak 1998, mereka bentuk penyelesaian pemotongan untuk kontraktor Malaysia.' },
+          { iconKey: 'award', title: '19 Tahun dalam Bidang', body: 'Coolman telah membina alat pemotong berlian untuk kontraktor Malaysia sejak 2007. Pengasas kami, Alan, telah berada dalam bidang pemotongan sejak 1998.' },
           { iconKey: 'truck', title: 'Penghantaran Pantas', body: 'Penghantaran pada hari yang sama untuk pesanan sebelum 2 petang.' },
           { iconKey: 'headphones', title: 'Perkongsian Teknikal', body: 'Sokongan kejuruteraan khusus untuk membantu anda memilih alat yang tepat.' },
           { iconKey: 'barChart3', title: 'Kelebihan Harga B2B', body: 'Kontraktor berdaftar menikmati harga eksklusif berperingkat.' },
@@ -1204,7 +1898,7 @@ export const COPY: Record<Language, CopyStructure> = {
         formMessagePlaceholder: 'Beritahu kami tentang keperluan anda...',
         formSubmit: 'Hantar Mesej',
         formSubmitting: 'Menghantar...',
-        formSuccess: 'Terima kasih — kami akan menghubungi anda tidak lama lagi.',
+        formSuccess: 'Terima kasih. Kami akan menghubungi anda tidak lama lagi.',
         formError: 'Terdapat ralat. Sila cuba lagi.',
         networkError: 'Ralat rangkaian. Sila semak sambungan anda dan cuba lagi.',
         successTitle: 'Mesej Dihantar!',
@@ -1225,7 +1919,7 @@ export const COPY: Record<Language, CopyStructure> = {
       shibuya: {
         heroEyebrow: 'Shibuya',
         heroPrimaryLabel: 'Terokai Model',
-        heroSecondaryLabel: 'Tonton Filem',
+        heroSecondaryLabel: 'Lihat mesin',
         scroll: 'SKROL',
         sincePrefix: 'SEJAK',
         modelsEyebrow: 'RANGKAIAN',
@@ -1485,10 +2179,10 @@ export const COPY: Record<Language, CopyStructure> = {
       quickLinks: 'Pautan Pantas',
       contact: 'Hubungi Kami',
       email: 'sales@coolman.com.my',
-      phone: '+60 3-1234 5678',
-      address: 'Kuala Lumpur, Malaysia',
-      copyright: '© 2024 Coolman. Hak cipta terpelihara.',
-      brandStory: 'Alat pemotong berlian gred industri direka untuk ketepatan dan ketahanan. Dipercayai oleh kontraktor profesional di seluruh Malaysia sejak 1998.',
+      phone: '+6012-6363156',
+      address: 'Petaling Jaya, Malaysia',
+      copyright: '© 2026 Coolman. Hak cipta terpelihara.',
+      brandStory: 'Alat pemotong berlian, direka di Malaysia untuk Malaysia. Dibina di Petaling Jaya sejak 2007 oleh kontraktor, untuk kontraktor.',
       diamondToolsHeading: 'Alat Berlian',
       shibuyaHeading: 'Shibuya',
       companyHeading: 'Syarikat',
@@ -1497,7 +2191,7 @@ export const COPY: Record<Language, CopyStructure> = {
       joinBlurb: 'Sertai 500+ kontraktor dan dapatkan harga B2B eksklusif.',
       privacyPolicy: 'Dasar Privasi',
       termsOfService: 'Terma Perkhidmatan',
-      bottomCopyright: 'Coolman Sdn Bhd. Hak cipta terpelihara.',
+      bottomCopyright: 'Coolman Malaysia Sdn Bhd. Hak cipta terpelihara.',
       links: {
         allDiamondTools: 'Semua Alat Berlian',
         diamondBlades: 'Bilah Berlian',
@@ -1512,6 +2206,446 @@ export const COPY: Record<Language, CopyStructure> = {
         resources: 'Sumber',
         contact: 'Hubungi',
       },
+    },
+    manifesto: {
+      line1: 'Bilah adalah jawapan kepada soalan yang belum sepenuhnya ditanya oleh kontraktor.',
+      line2: 'Jangan jual produk sahaja. Selesaikan masalah.',
+      line3: 'Tapak kerja yang akan beritahu anda kebenaran.',
+    },
+    homeNarrative: {
+      opening: {
+        eyebrow: 'Coolman',
+        headline: 'Alat pemotong berlian, dibina di Petaling Jaya untuk cara tapak Malaysia sebenar-benarnya memotong.',
+        lede: 'Coolman telah membina bilah berlian, mata teras dan sistem pemotongan di Malaysia sejak 2007. Pengasas kami, Alan, telah berada dalam bidang pemotongan sejak 1998. Setiap bilah yang kami hasilkan direka untuk batu, besi tetulang dan jadual yang dihadapi kontraktor Malaysia.',
+      },
+      fearGrid: {
+        eyebrow: 'Apa yang kontraktor tanggung',
+        headline: 'Empat perkara yang menjadikan bos sukar tidur. Kami sudah menyaksi keempat-empatnya di tapak.',
+        cards: [
+          { title: 'Kelewatan yang anda tidak boleh jelaskan kepada pemaju', body: 'Bilah perlahan. Jadual sudah hilang. Perbualan di atas sudah pun kalah. Kami sudah lihat ini berlaku lebih kerap daripada yang kami mahu.' },
+          { title: 'Peralatan yang gagal pada 11 malam semasa penutupan jalan', body: 'Apabila potongan mesti siap malam ini dan bilah putus pada saat yang salah, kos itu bukan bilah. Ia adalah penutupan, polis, dan pemaju yang menelefon pada jam 6 pagi.' },
+          { title: 'Ketidakkonsistenan antara bilah yang sepatutnya serupa', body: 'Satu bilah memotong. Bilah seterusnya dengan SKU yang sama tahan separuh sahaja. Krew hilang keyakinan. Pembekal hilang akaun.' },
+          { title: 'Ditinggalkan keseorangan dengan potongan yang belum pernah dilihat orang lain', body: 'Agregat baru. Kedalaman luar biasa. Spesifikasi yang pembekal tidak pernah uji. Krew faham. Pembekal mengelak panggilan.' },
+        ],
+      },
+      threeMythsIntro: {
+        eyebrow: 'Tiga mitos',
+        headline: 'Tiga perkara yang industri pemotongan terus salah faham.',
+        lede: 'Harga sebagai ukuran nilai. Pengedar sebagai ukuran perkongsian. Buatan Jepun sebagai ukuran kesesuaian. Sembilan belas tahun di tapak, kami telah menyaksi setiap satu gagal bergilir-gilir.',
+        ctaLabel: 'Baca folio',
+      },
+      brotherhoodIntro: {
+        eyebrow: 'Sistem Brotherhood',
+        headline: 'Bagaimana kami bekerja dengan orang yang membeli daripada kami.',
+        lede: 'Bukan program kesetiaan. Bukan carta peringkat. Suatu kefahaman kerja antara Coolman dan orang yang membawa bilah kami ke tapak: pengedar, mandor, saudara dalam bidang.',
+        ctaLabel: 'Lihat lima prinsip',
+      },
+      fieldNotesPreview: {
+        eyebrow: 'Field Notes',
+        headline: 'Tiga kerja yang mengajar kami bagaimana membuat bilah yang lebih baik.',
+        lede: 'Ini bukan kajian kes. Ini adalah perbualan yang kami buat di tapak, potongan yang gagal, pengajaran yang akhirnya kami terapkan ke dalam batch seterusnya.',
+        cards: [
+          { title: 'Apabila kontraktor berhenti mencuba, dan terus menelefon', meta: 'Konkrit bertetulang · pancang · Lembah Klang', readingTime: '9 minit bacaan' },
+          { title: '"Kalau saya tak habis malam ini, saya habis."', meta: 'Pemotongan jalan · kabel utiliti', readingTime: '7 minit bacaan' },
+          { title: 'Kami percayakan spesifikasi kilang. Kami sepatutnya tidak.', meta: 'Penarikan balik produk', readingTime: '6 minit bacaan' },
+        ],
+        ctaLabel: 'Baca semua Field Notes',
+      },
+      alansLetter: {
+        eyebrow: 'Surat daripada Alan',
+        paragraphs: [
+          'Apabila saya memulakan kerjaya dalam bidang pemotongan pada 1998, saya fikir saya tahu apa itu bilah yang baik. Sembilan tahun kemudian, ketika saya mengasaskan Coolman pada 2007, saya sedar saya silap. Bilah yang baik bukan yang mempunyai formulasi segmen terbaik di atas kertas. Ia adalah yang menyiapkan potongan pada malam kontraktor tidak mampu untuk gagal.',
+          'Coolman dibina di sekitar satu ayat itu. Setiap bilah yang kami hantar direka untuk jenis potongan yang memecahkan bilah yang lebih lemah: agregat Malaysia, besi tetulang keras, tuangan panjang, lembap monsun, mandor dengan tiga kerja berjalan dan tiada masa untuk menjaga alat yang perlahan.',
+          'Saya mengasaskan Coolman kerana saya telah menyaksi terlalu ramai kontraktor dijual bilah oleh orang yang tidak pernah berada di tapak pada jam 2 pagi. Itu tidak pernah berlaku kepada pelanggan Coolman selama 19 tahun dan ia tidak akan berlaku. Jika potongan anda gagal, anda telefon saya. Bukan talian hotline. Saya.',
+          'Halaman seterusnya bukan pemasaran. Itu adalah cara kami bekerja, apa yang kami telah pelajari, dan kerja yang mengajar kami. Jika anda membaca dan kami masih dirasakan sesuai untuk tapak anda, mari kita berbual.',
+        ],
+        signature: 'Alan',
+        signatureLine2: 'Pengasas, Coolman',
+      },
+      quietDoor: {
+        eyebrow: 'Pintu yang senyap',
+        headline: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',
+        lede: 'Tiada muka katalog. Tiada perlu memburu PDF. Hanya inventori, spesifikasi, dan satu panggilan telefon jika bilah yang anda perlukan bukan yang kami senaraikan.',
+        stats: [
+          { value: '247', label: 'SKU dalam stok' },
+          { value: '100 hingga 900 mm', label: 'Julat diameter' },
+          { value: '96%', label: 'Hantar tepat waktu' },
+          { value: '14:00', label: 'Hadang hari sama' },
+        ],
+        ctaPrimary: 'Buka katalog',
+        ctaSecondary: 'Hubungi kejuruteraan',
+      },
+      conversation: {
+        eyebrow: 'Bagaimana memulakan perbualan',
+        headline: 'Tiga cara masuk. WhatsApp paling cepat.',
+        lede: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tidak sembunyikan kami punya.',
+        channels: [
+          { tag: 'Utama', title: 'Meja kejuruteraan di WhatsApp', body: 'Hantar gambar potongan, agregat, bilah. Kami akan beritahu apa kami fikir sebelum kami beritahu apa kami jual.', ctaLabel: 'Buka WhatsApp' },
+          { tag: 'Pejabat', title: 'Talian pejabat Petaling Jaya', body: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.', ctaLabel: 'Telefon pejabat' },
+          { tag: 'Di tapak', title: 'Borang lawatan tapak', body: 'Jika potongan luar biasa, kami lebih rela datang melihat daripada meneka. Beritahu kami di mana dan bila.', ctaLabel: 'Minta lawatan tapak' },
+        ],
+      },
+    },
+    heritage: {
+      hero: {
+        eyebrow: 'Warisan',
+        headline: 'Coolman, sejak 2007. Sembilan belas tahun potongan yang mengajar kami bagaimana membina bilah.',
+        lede: 'Sejarah ringkas sebuah syarikat alat berlian Malaysia. Diasaskan di Petaling Jaya oleh seorang tukang yang telah berada dalam bidang pemotongan sejak 1998.',
+      },
+      pj2007: {
+        eyebrow: 'PJ, 2007',
+        headline: 'Sebuah bengkel di jalan kecil di Petaling Jaya.',
+        body: [
+          'Coolman bermula di satu unit sewa di Petaling Jaya pada 2007. Dua mesin penekan segmen, sebuah meja, dan satu telefon yang berdering terlalu kerap. Alan, pengasas, telah menghabiskan sembilan tahun dalam bidang pemotongan dan akhirnya mendengar satu aduan terlalu banyak tentang bilah yang tidak sesuai untuk batu kita.',
+          'Tahun pertama senyap. Tahun kedua tidak. Menjelang akhir 2008, bengkel itu beroperasi dua syif.',
+        ],
+      },
+      founding: {
+        eyebrow: 'Keputusan pengasasan',
+        headline: 'Selepas sembilan tahun dalam bidang, seorang tukang memulakan syarikat sendiri.',
+        body: [
+          'Alan telah menjual bilah syarikat lain sejak 1998. Beliau telah menyaksi tiga perkara yang sama berlaku salah di tapak, berulang kali. Harga sebagai ukuran nilai. Pengedar yang tidak pernah memegang bilah. Bilah import yang berfungsi di Jepun dan gagal di Selangor.',
+          'Pada 2007, beliau berhenti menjelaskan bilah orang lain dan mula membuat bilah sendiri. Coolman adalah hasilnya.',
+        ],
+      },
+      workshopDay: {
+        eyebrow: 'Hari ia berhenti menjadi bengkel',
+        headline: 'Sebuah kerja pancang yang berakhir dengan reka bentuk semula.',
+        note: 'Tahun TBA. Alan untuk sahkan tahun.',
+        body: [
+          'Seorang kontraktor di Shah Alam menelefon pada jam 11 malam. Bilah yang kami jual kepadanya pada pagi itu tidak dapat menembusi pancang kedua. Alan memandu ke tapak. Beliau melihat potongan itu. Agregat lebih tajam daripada yang spesifikasi ramalkan. Ikatan bilah itu salah.',
+          'Bilah itu direka semula dalam empat minggu seterusnya. Formulasi baru, sandwic kobalt, menjadi asas barisan CM-X hari ini. Bengkel itu menjadi pengeluar pada hari Alan menerima kontraktor itu betul dan helaian spesifikasi itu salah. (Tahun TBA. Alan untuk sahkan tahun.)',
+        ],
+      },
+      shibuyaYears: {
+        eyebrow: 'Dua belas tahun bersama Shibuya',
+        headline: 'Ditandatangani 2014. Diperbaharui setiap tahun sejak itu.',
+        body: [
+          'Pada 2014, Coolman menandatangani perjanjian pengedaran eksklusif Malaysia untuk penggerudi teras Shibuya. Dua belas tahun kemudian, ia diperbaharui setiap tahun. Mesin yang sama dibuat di Jepun sejak 1923, disokong oleh pasukan kejuruteraan Malaysia yang telah melihat potongan yang ia sebenarnya buat.',
+          'Shibuya membuat penggerudi. Coolman memastikan penggerudi itu adalah jawapan yang tepat kepada potongan di hadapan anda.',
+        ],
+      },
+      hardestYear: {
+        eyebrow: 'Tahun paling sukar',
+        headline: 'Penarikan balik produk, dan apa yang berlaku selepasnya.',
+        body: [
+          'Dalam satu batch pengeluaran, agen pengikat yang salah digunakan. Bilah lulus ujian kilang. Ia gagal di tapak. Kami menarik balik setiap unit, menggantikan setiap satu, dan menanggung kos.',
+          'Apa yang kami kekalkan ialah pangkalan pelanggan. Tiada seorang pengedar Brotherhood meninggalkan. Kontraktor yang menerima bilah gagal menerima penggantian, permohonan maaf, dan satu bilah kedua percuma. Kebanyakan mereka masih bersama kami. Perniagaan bukan perlumbaan siapa boleh berkembang paling cepat. Ia adalah soalan siapa boleh bertahan paling lama.',
+        ],
+      },
+      twentyYears: {
+        eyebrow: 'Dua puluh tahun dari sekarang',
+        headline: 'Apa yang kami mahukan Coolman menjadi apabila anak-anak Alan menjalankannya.',
+        body: [
+          'Syarikat yang sama. Inventori yang lebih besar. Lebih banyak Field Notes dalam arkib. Talian terus yang sama ke kejuruteraan. Jawapan yang sama apabila seorang kontraktor menelefon pada jam 11 malam.',
+          'Coolman dibina untuk bertahan lebih lama daripada pengasasnya. Itu satu-satunya ukuran kejayaan yang kami percaya.',
+        ],
+      },
+      timeline: {
+        eyebrow: 'Garis masa',
+        headline: 'Sembilan belas tahun pada satu halaman.',
+        events: [
+          { year: '1998', title: 'Alan memasuki bidang pemotongan', body: 'Sembilan tahun menjual bilah syarikat lain bermula.' },
+          { year: '2007', title: 'Coolman diasaskan di Petaling Jaya', body: 'Dua mesin penekan segmen, sebuah meja, sebuah telefon.' },
+          { year: 'TBA', title: 'Formulasi sandwic kobalt dibangunkan', body: 'Selepas sebuah kerja pancang di Shah Alam mengajar kami spesifikasi adalah salah.', note: 'Alan untuk sahkan tahun' },
+          { year: '2014', title: 'Pengedaran eksklusif Shibuya ditandatangani', body: 'Diperbaharui setiap tahun sejak itu.' },
+          { year: 'TBA', title: 'Pensijilan SIRIM dianugerahkan', body: 'Pengesahan bebas spesifikasi ikatan kami.', note: 'Alan untuk sahkan tahun' },
+          { year: '2026', title: '247 SKU dalam stok, ~500 akaun aktif', body: '96% hantar tepat waktu. Hadang hari sama jam 2 petang.' },
+        ],
+      },
+    },
+    fieldNotes: {
+      indexHero: {
+        eyebrow: 'Field Notes',
+        headline: 'Tiga kerja yang mengajar kami bagaimana membuat bilah yang lebih baik.',
+        lede: 'Ditulis oleh Coolman Engineering. Difail apabila berlaku. Tiada apa-apa dalam catatan ini yang hipotesis.',
+      },
+      byline: 'Coolman Engineering',
+      filedUnder: 'Difailkan di bawah Coolman Malaysia Sdn Bhd · Petaling Jaya · Dikilangkan di Malaysia',
+      pileCutting: {
+        title: 'Apabila kontraktor berhenti mencuba, dan terus menelefon',
+        meta: 'Konkrit bertetulang · pancang · Lembah Klang',
+        readingTime: '9 minit bacaan',
+        pullQuote: 'Banyak kali, kontraktor fikir ini masalah produk. Sebenarnya, ia masalah sistem.',
+        sections: [
+          { heading: 'Panggilan', paragraphs: [
+            'Mandor itu menelefon meja kejuruteraan pada jam 4:48 petang. Beliau telah memotong pancang konkrit bertetulang untuk sebuah pembangunan Lembah Klang sejak pagi. Bilah yang beliau gunakan, bukan kami punya, sudah berhenti maju. Beliau telah berada pada bilah ketiga hari itu.',
+            'Beliau tidak meminta sebut harga. Beliau bertanya jika kami boleh datang melihat.',
+          ] },
+          { heading: 'Apa kami buat sebelum membuat sebut harga', paragraphs: [
+            'Seorang jurutera memandu ke tapak pada malam yang sama. Beliau melihat agregat, kepadatan besi tetulang, gergaji, penyejukan, dan cara bilah itu menjadi licin. Beliau mengambil dua gambar dan menghantarnya kembali ke bengkel.',
+            'Kami tidak membuat sebut harga malam itu. Kami beritahu mandor apa yang kami fikir salah dan kami akan menelefonnya pada pagi esok.',
+          ] },
+          { heading: 'Apa yang tapak beritahu kami', paragraphs: [
+            'Agregat lebih keras daripada yang spesifikasi telah katakan. Bilah yang beliau gunakan diikat untuk konkrit umum. Ikatan menjadi licin kerana berlian tidak terdedah cukup cepat untuk batu ini.',
+            'Masalahnya bukan kontraktor. Masalahnya pembekal telah menjual bilah untuk kerja yang mereka tidak pernah lihat.',
+          ] },
+          { heading: 'Apa yang berubah', paragraphs: [
+            'Kami menghantar CM-X Pro 350 Hard-Bond pada pagi esok. Mandor menyiapkan baki pancang dalam dua hari, tepat masa, dalam bajet.',
+            'Kami tidak mengenakan caj untuk lawatan jurutera. Kontraktor menjadi akaun Brotherhood tiga minggu kemudian.',
+          ] },
+          { heading: 'Pengajaran', paragraphs: [
+            'Kami merekayasakan profil ikatan yang lebih tajam ke dalam batch CM-X Pro 350 Hard-Bond yang seterusnya, berdasarkan apa yang kami lihat di pancang itu.',
+            'Bilah adalah jawapan kepada soalan yang belum sepenuhnya ditanya oleh kontraktor. Tugas kami adalah untuk menanyakannya bagi pihaknya.',
+          ] },
+        ],
+      },
+      midnightRoad: {
+        title: '"Kalau saya tak habis malam ini, saya habis."',
+        meta: 'Pemotongan jalan · kabel utiliti',
+        readingTime: '7 minit bacaan',
+        pullQuote: 'Kontraktor tidak selalu memerlukan pembekal. Kadang-kadang mereka memerlukan seseorang yang sanggup berdiri dengan mereka apabila kerja menjadi sukar.',
+        sections: [
+          { heading: 'Panggilan', paragraphs: [
+            '10:42 malam. Permit penutupan jalan yang tamat pada jam 6 pagi. Kabel utiliti yang mesti didedahkan sebelum itu. Bilah yang krew gunakan telah putus pada potongan kedua.',
+            'Mandor tidak panik pada telefon. Beliau sudah melepasi panik. Beliau tenang dengan cara yang memberitahu kami beliau hampir kehilangan kerja itu.',
+          ] },
+          { heading: 'Apa yang kami buat', paragraphs: [
+            'Kami menghantar CM-X Road 450 dari gudang Petaling Jaya. Seorang jurutera bertemu krew di tapak pada jam 12:10 pagi. Beliau memeriksa gergaji, memasang bilah, melihat potongan pertama.',
+            'Beliau tinggal di tapak sehingga jam 4 pagi.',
+          ] },
+          { heading: 'Apa yang berlaku', paragraphs: [
+            'Krew selesai pada jam 5:36 pagi. Jalan dibuka semula tepat masa. Pemaju tidak pernah tahu.',
+            'Mandor menelefon Alan pada jam 9 pagi keesokannya. Beliau tidak mahu mengucapkan terima kasih. Beliau mahu tahu apa diperlukan untuk membeli bilah kami untuk setiap kerja mulai sekarang.',
+          ] },
+          { heading: 'Pengajaran', paragraphs: [
+            'Bilah ialah produk. Potongan yang dihantar pada jam 4 pagi adalah perkara lain. Coolman dibina di sekitar perkara kedua itu.',
+          ] },
+        ],
+      },
+      productRecall: {
+        title: 'Kami percayakan spesifikasi kilang. Kami sepatutnya tidak.',
+        meta: 'Penarikan balik produk',
+        readingTime: '6 minit bacaan',
+        pullQuote: 'Apa yang memusnahkan jenama bukan satu kerugian. Ia adalah saat pelanggan berhenti mempercayai anda.',
+        sections: [
+          { heading: 'Apa yang salah', paragraphs: [
+            'Satu batch. Satu agen pengikat yang telah digantikan di pembekal tanpa pengetahuan kami. Bilah lulus ujian kilang standard kami. Ia gagal di tapak dalam 20% pertama hayat potongan yang dinilai.',
+            'Kami telah menghantar 312 unit.',
+          ] },
+          { heading: 'Apa yang kami buat', paragraphs: [
+            'Kami menelefon setiap pelanggan yang menerima bilah dari batch itu. Bukan emel. Telefon.',
+            'Kami menggantikan setiap bilah. Kami menambah bilah kedua, percuma, ke setiap akaun. Kami menanggung pengangkutan, pemeriksaan, dan masa jurutera.',
+          ] },
+          { heading: 'Apa kosnya', paragraphs: [
+            'Lebih daripada keuntungan setahun pada barisan itu.',
+            'Tiada seorang pengedar Brotherhood meninggalkan. Tiga pengedar baru mendaftar dalam enam bulan berikutnya kerana mereka mendengar bagaimana kami menanganinya.',
+          ] },
+          { heading: 'Pengajaran', paragraphs: [
+            'Kami mengubah proses kelayakan pembekal. Setiap perubahan agen pengikat di mana-mana peringkat kini mencetuskan ujian semula penuh sebelum ia boleh memasuki barisan pengeluaran.',
+            'Jenama adalah apa yang anda buat apabila tiada siapa akan tahu jika anda diam.',
+          ] },
+        ],
+      },
+    },
+    engineeringFolio: {
+      indexHero: {
+        eyebrow: 'Folio kejuruteraan',
+        headline: 'Mengapa kami membuat bilah dengan cara kami membuatnya.',
+        lede: 'Tiga karya ditulis oleh Coolman Engineering. Pemikiran di sebalik produk, pengilangan, dan cara kami bekerja dengan pelanggan kami.',
+      },
+      threeMyths: {
+        title: 'Tiga perkara yang industri pemotongan terus salah faham',
+        readingTime: '14 minit bacaan',
+        pullQuote: 'Pilihan, akhirnya, adalah antara membeli mitos atau membeli potongan.',
+        sections: [
+          { heading: 'Sepatah kata tentang orang yang mengulanginya', paragraphs: [
+            'Setiap bidang mempunyai kebijaksanaan yang diterima. Pemotongan berlian mempunyai tiga perkara yang telah diulang begitu kerap sehingga bunyinya benar. Ia tidak.',
+            'Kami telah menghabiskan 19 tahun menyaksi ketiga-tiga idea ini merugikan kontraktor wang, masa, dan reputasi. Folio ini ialah percubaan kami untuk menjelaskannya dengan terus terang.',
+          ] },
+          { heading: 'Mitos 1: Harga memberitahu anda nilai bilah.', paragraphs: [
+            'Bilah paling murah pada potongan keras menjadi bilah paling mahal menjelang waktu makan tengah hari. Krew dibayar. Tapak ada jadual. Penggantian dihantar dua kali. Harga seunit ialah ukuran yang salah. Kos sepotong adalah satu-satunya ukuran yang penting.',
+            'Kami harga bilah kami supaya tahan lama. Kontraktor yang memahami itu menjadi pelanggan Brotherhood seumur hidup.',
+          ] },
+          { heading: 'Mitos 2: Pengedar dengan katalog paling lantang ialah rakan kongsi.', paragraphs: [
+            'Pengedar yang menjual lapan jenama bukan rakan kongsi. Pengedar yang telah memotong konkrit ialah. Sistem Brotherhood wujud kerana kami percaya hubungan antara pengedar dan jurutera lebih penting daripada hubungan antara pengedar dan katalog.',
+            'Separuh daripada pengedar kami telah berada di tapak bersama kami dalam tempoh 12 bulan terakhir. Itu ukuran yang kami ambil kira.',
+          ] },
+          { heading: 'Mitos 3: Buatan Jepun bermakna sesuai untuk Malaysia.', paragraphs: [
+            'Teknologi berlian Jepun adalah cemerlang. Agregat yang ia direka untuk bukan agregat yang tapak Malaysia memotong. Barisan CM-X kami direka untuk batu Malaysia: silika lebih tinggi, besi tetulang lebih keras, tuangan lebih panjang.',
+            'Kami membawa mesin Shibuya kerana Shibuya membuat penggerudi terbaik dalam bidang. Kami membuat bilah kami sendiri kerana tiada orang lain membuat bilah yang agregat Malaysia perlukan.',
+          ] },
+          { heading: 'Apa ini bermakna untuk cara kami menjual', paragraphs: [
+            'Kami tidak utamakan harga. Kami utamakan potongan. Jika potongan betul, harga betul. Jika potongan salah, bilah murah menjadi yang paling mahal pada kerja itu.',
+          ] },
+          { heading: 'Kenapa ini penting', paragraphs: [
+            'Bilah dibeli sekali. Hubungan dengan orang yang membuatnya dibeli setiap tahun. Pilihan, akhirnya, adalah antara membeli mitos atau membeli potongan.',
+          ] },
+        ],
+      },
+      malaysianAggregate: {
+        title: 'Agregat Malaysia memecahkan bilah Eropah',
+        readingTime: '13 minit bacaan',
+        pullQuote: 'Bilah tidak ambil peduli apa yang helaian spesifikasi katakan. Ia ambil peduli apa yang batu lakukan.',
+        sections: [
+          { heading: 'Batu di bawah kaki kita', paragraphs: [
+            'Agregat hancur Malaysia mempunyai kandungan silika yang lebih tinggi daripada batu rujukan Eropah yang kebanyakan bilah berlian direka untuk. Angka yang kami gunakan ialah sekitar 60 hingga 65% kandungan silika, untuk disahkan terhadap data kuari terkini.',
+            'Silika lebih tinggi adalah lebih keras pada berlian. Ia melicinkan ikatan yang lebih lemah. Ia mendedahkan berlian terlalu perlahan. Bilah tidak memotong. Ia menggosok.',
+          ] },
+          { heading: 'Apa itu buat pada bilah', paragraphs: [
+            'Bilah direka untuk spesifikasi Eropah tiba di Selangor dan menjadi panas. Ikatan menjadi licin. Berlian berhenti terdedah. Krew mengadu tentang bilah perlahan. Pembekal menyalahkan gergaji, operator, atau air.',
+            'Jawapan sebenar ialah batu. Ia lebih keras daripada ikatan yang direka.',
+          ] },
+          { heading: 'Sandwic kobalt: jawapan yang kami bina', paragraphs: [
+            'Barisan CM-X dibina pada pembinaan sandwic kobalt. Teras kobalt yang lebih keras, lapisan luar kobalt yang lebih lembut. Berlian terdedah pada kadar yang agregat perlukan. Bilah mengasah dirinya sendiri melalui potongan.',
+            'Ia lebih mahal untuk dikilangkan. Ia jawapan jujur tunggal kepada batu yang kontraktor Malaysia sebenarnya memotong.',
+          ] },
+          { heading: 'Apa yang helaian spesifikasi tidak katakan', paragraphs: [
+            'Kami telah berhenti cuba memadankan spesifikasi Eropah di atas kertas. Kami memadankan potongan di tapak. Setiap SKU CM-X diuji terhadap agregat Malaysia sebelum dihantar.',
+            'Bilah tidak ambil peduli apa yang helaian spesifikasi katakan. Ia ambil peduli apa yang batu lakukan.',
+          ] },
+        ],
+      },
+      brotherhood: {
+        title: 'Sistem Brotherhood',
+        readingTime: '11 minit bacaan',
+        pullQuote: 'Kami tidak berkembang dengan menandatangani pengedar. Kami berkembang dengan mengekalkan mereka yang telah berdiri dengan kami pada hari yang buruk.',
+        sections: [
+          { heading: 'Apa itu, dan apa yang ia bukan', paragraphs: [
+            'Sistem Brotherhood ialah perjanjian kerja antara Coolman dan orang yang membawa bilah kami ke tapak kerja. Pengedar, mandor, dan operator yang sebenarnya memasang bilah dan memulakan potongan.',
+            'Ia bukan program kesetiaan. Ia bukan peringkat diskaun. Ia adalah prinsip bahawa hubungan antara kami dan orang yang menggunakan bilah kami lebih penting daripada jumlah pada invois.',
+          ] },
+          { heading: 'Prinsip 1: Kami tidak menjual apa yang kami belum potong.', paragraphs: [
+            'Setiap SKU CM-X telah dipotong oleh jurutera Coolman pada agregat Malaysia sebelum ia memasuki katalog. Kami tidak menjual bilah dari brosur.',
+          ] },
+          { heading: 'Prinsip 2: Kami menjawab panggilan.', paragraphs: [
+            'Meja kejuruteraan kami ada di WhatsApp. Masa balasan diukur dalam minit, bukan jam. Jika mandor mempunyai gambar potongan yang tidak berfungsi, kami mahu melihatnya.',
+          ] },
+          { heading: 'Prinsip 3: Kami tanggung kos apabila kami silap.', paragraphs: [
+            'Jika bilah Coolman gagal sebelum hayat yang dinilai pada potongan yang kami luluskan, kami menggantikannya. Kontraktor tidak menanggung kos kesilapan kami.',
+          ] },
+          { heading: 'Prinsip 4: Kami berkongsi apa yang kami pelajari.', paragraphs: [
+            'Field Notes bukan pemasaran. Ia adalah pengajaran daripada kerja yang mengajar kami. Kami menerbitkannya supaya kontraktor seterusnya tidak perlu mempelajari pengajaran yang sama dengan cara yang sukar.',
+          ] },
+          { heading: 'Prinsip 5: Kami berkembang perlahan, dengan sengaja.', paragraphs: [
+            'Kami bukan membina syarikat alat berlian terbesar di Malaysia. Kami membina yang masih ada selepas 20 tahun, dengan talian terus yang sama antara mandor dan jurutera.',
+          ] },
+        ],
+      },
+    },
+    catalogueIntro: {
+      eyebrow: 'Katalog',
+      headline: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',
+      lede: 'Dua ratus empat puluh tujuh SKU di seluruh bilah berlian, penggerudi teras, dan sistem segmen. Tapis mengikut bahan, aplikasi, atau diameter. Jika bilah yang anda perlukan tidak disenaraikan, hubungi kejuruteraan.',
+      filters: {
+        materialLabel: 'Bahan',
+        applicationLabel: 'Aplikasi',
+        diameterLabel: 'Diameter',
+      },
+    },
+    productPageTemplate: {
+      categoryEyebrow: 'Bilah berlian',
+      tagline: 'Untuk konkrit bertetulang keras pada tuangan Malaysia yang panjang.',
+      heroSpecBlock: {
+        diameterLabel: 'Diameter',
+        bondLabel: 'Ikatan',
+        segmentLabel: 'Tinggi segmen',
+        flangeLabel: 'Flens',
+      },
+      whatItsFor: {
+        heading: 'Apa bilah ini untuk',
+        body: 'Konkrit bertetulang dengan agregat silika tinggi. Pancang, pemotongan papak, prakacau keras. Direka untuk batu Malaysia dan tuangan panjang yang datang dengan lembap monsun.',
+      },
+      whenToChoose: {
+        heading: 'Bila pilih ini berbanding alternatif',
+        body: 'Pilih CM-X Pro 350 Hard-Bond apabila potongan perlahan pada bilah serbaguna dan agregat lebih tajam daripada yang spesifikasi ramalkan. Jika potongan lebih lembut, lihat CM-X Pro 350 Medium-Bond.',
+      },
+      specsTable: {
+        heading: 'Spesifikasi',
+        rows: [
+          { key: 'Diameter', value: '350 mm' },
+          { key: 'Ikatan', value: 'Keras, sandwic kobalt' },
+          { key: 'Tinggi segmen', value: '10 mm' },
+          { key: 'Flens', value: '25.4 mm' },
+          { key: 'Hayat potongan dinilai', value: 'Sehingga 240 m pada konkrit bertetulang' },
+          { key: 'Dikilangkan di', value: 'Petaling Jaya, Malaysia' },
+        ],
+      },
+      unusualCuts: {
+        heading: 'Untuk potongan luar biasa',
+        body: 'Jika potongan anda luar biasa, hantar kami gambar. Kejuruteraan akan beritahu apa mereka fikir sebelum mereka beritahu apa kami jual.',
+        ctaLabel: 'Hantar gambar di WhatsApp',
+      },
+    },
+    tradePage: {
+      hero: {
+        eyebrow: 'Perdagangan',
+        headline: 'Untuk pengedar dan pembeli perdagangan. Hubungan lebih penting daripada pesanan.',
+        lede: 'Dua cara untuk bekerja dengan Coolman. Pilihan yang betul bergantung kepada sama ada anda mahukan pembekal atau rakan kongsi.',
+      },
+      tiers: {
+        buyer: {
+          title: 'Pembeli perdagangan',
+          body: 'Akses kepada katalog Coolman penuh pada harga perdagangan. Penghantaran hari sama dari Petaling Jaya sebelum jam 2 petang.',
+          bullets: ['Akses katalog penuh', 'Harga perdagangan', 'Penghantaran hari sama'],
+        },
+        dealer: {
+          title: 'Pengedar Brotherhood',
+          body: 'Semua yang diterima oleh pembeli perdagangan, ditambah lawatan tapak bersama, wilayah eksklusif di kawasan yang dipersetujui, dan talian terus ke kejuruteraan untuk pelanggan anda.',
+          bullets: ['Harga perdagangan + peringkat Brotherhood', 'Lawatan tapak bersama dengan kejuruteraan', 'Talian terus untuk pelanggan anda', 'Wilayah eksklusif mengikut perjanjian'],
+        },
+      },
+      application: {
+        eyebrow: 'Bagaimana memohon',
+        headline: 'Empat langkah. Kami akan jujur sama ada kesesuaian itu betul.',
+        steps: [
+          { title: '1. Hantar profil perniagaan anda', body: 'Beritahu kami siapa anda, di mana anda beroperasi, dan apa yang anda potong. Mesej ringkas sudah cukup untuk bermula.' },
+          { title: '2. Kami datang melihat anda', body: 'Untuk permohonan Brotherhood, kami melawat premis anda atau tapak yang anda sedang kerjakan.' },
+          { title: '3. Kami persetujui terma', body: 'Harga, wilayah, sokongan. Tiada yang rumit, semua secara bertulis.' },
+          { title: '4. Kami mula bekerja', body: 'Pesanan pertama, pengenalan kejuruteraan kepada pelanggan anda, dan hubungan kerja.' },
+        ],
+        ctaLabel: 'Mulakan perbualan',
+      },
+    },
+    contactPage: {
+      hero: {
+        eyebrow: 'Hubungi',
+        headline: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tidak sembunyikan kami punya.',
+        lede: 'Tiga cara untuk menghubungi Coolman. Meja kejuruteraan di WhatsApp adalah paling cepat.',
+      },
+      channels: [
+        { tag: 'Utama', title: 'Meja kejuruteraan di WhatsApp', body: 'Gambar dialu-alukan. Balasan dalam minit semasa waktu pejabat.', ctaLabel: 'Buka WhatsApp' },
+        { tag: 'Pejabat', title: 'Talian pejabat Petaling Jaya', body: 'Untuk pesanan, penghantaran dan soalan pemulangan.', ctaLabel: 'Telefon pejabat' },
+        { tag: 'Tapak', title: 'Permintaan lawatan tapak', body: 'Jika potongan luar biasa, seorang jurutera akan datang melihatnya.', ctaLabel: 'Minta lawatan tapak' },
+      ],
+      hours: {
+        heading: 'Waktu pejabat',
+        line1: 'Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang',
+        line2: 'Hadang penghantaran hari sama jam 2:00 petang',
+      },
+    },
+    aboutPage: {
+      hero: {
+        eyebrow: 'Tentang',
+        headline: 'Alat pemotong berlian. Direka di Malaysia, untuk Malaysia.',
+        lede: 'Coolman telah dibina di Petaling Jaya sejak 2007. Kami membuat bilah berlian, mata teras dan sistem segmen untuk kontraktor Malaysia. Sekitar 500 akaun aktif. Rangkaian yang sama, talian terus yang sama ke kejuruteraan, untuk 19 tahun.',
+      },
+      founded: { value: '2007', label: 'Diasaskan di Petaling Jaya' },
+      builtIn: { value: 'Petaling Jaya', label: 'Di mana bilah dibuat' },
+      accounts: { value: '~500', label: 'Akaun aktif' },
+    },
+    legal: {
+      privacy: { title: 'Privasi', lede: 'Bagaimana Coolman mengendalikan maklumat peribadi kontraktor, pengedar dan pelawat tapak. Bahasa Inggeris yang jelas. Tiada kejutan.' },
+      terms: { title: 'Terma jualan', lede: 'Terma di bawah mana Coolman Malaysia Sdn Bhd menjual alat pemotong berlian kepada pelanggan perdagangan dan Brotherhood di Malaysia.' },
+      returns: { title: 'Pemulangan dan jaminan', lede: 'Bagaimana untuk memulangkan bilah Coolman, apa yang dilindungi oleh jaminan, dan apa yang perlu dibuat jika bilah gagal sebelum hayatnya yang dinilai.' },
+      cookies: { title: 'Notis kuki', lede: 'Kuki yang digunakan tapak kami, apa yang mereka buat, dan bagaimana untuk mematikannya jika anda lebih suka.' },
+    },
+    seo: {
+      home: { title: 'Coolman · Alat pemotong berlian dibina di Petaling Jaya sejak 2007', description: 'Bilah berlian, mata teras dan sistem segmen direka Malaysia. 247 SKU dalam stok. Penghantaran hari sama dari Petaling Jaya sebelum jam 2 petang.' },
+      heritage: { title: 'Warisan · Coolman, sejak 2007', description: 'Sejarah ringkas Coolman: diasaskan di Petaling Jaya pada 2007 oleh seorang tukang dalam bidang pemotongan sejak 1998.' },
+      whyCoolman: { title: 'Kenapa Coolman · Folio kejuruteraan', description: 'Tiga karya tentang mengapa kami membuat bilah dengan cara kami membuatnya. Tiga mitos, agregat Malaysia, dan Sistem Brotherhood.' },
+      fieldNotes: { title: 'Field Notes · Coolman Engineering', description: 'Tiga kerja yang mengajar kami bagaimana membuat bilah yang lebih baik. Ditulis ketika berlaku.' },
+      catalogue: { title: 'Katalog · 247 SKU dalam stok', description: 'Bilah berlian, mata teras dan sistem segmen. Tapis mengikut bahan, aplikasi, atau diameter.' },
+      productTemplate: { title: 'Halaman produk Coolman', description: 'Spesifikasi, aplikasi, dan nota kejuruteraan untuk rangkaian Coolman.' },
+      trade: { title: 'Perdagangan · Coolman untuk pengedar dan pembeli perdagangan', description: 'Program pembeli perdagangan dan pengedar Brotherhood. Permohonan dalam empat langkah.' },
+      contact: { title: 'Hubungi Coolman', description: 'WhatsApp kejuruteraan, talian pejabat, atau lawatan tapak. Kebanyakan potongan bermula dengan satu panggilan telefon.' },
+      about: { title: 'Tentang Coolman · Direka di Malaysia, untuk Malaysia', description: 'Alat pemotong berlian dibina di Petaling Jaya sejak 2007. Sekitar 500 akaun aktif.' },
+      shibuya: { title: 'Penggerudi teras Shibuya · Pengedar eksklusif Malaysia', description: 'Coolman telah membawa penggerudi teras Shibuya sebagai pengedar eksklusif Malaysia sejak 2014.' },
+      privacy: { title: 'Privasi · Coolman', description: 'Bagaimana Coolman mengendalikan maklumat peribadi anda.' },
+      terms: { title: 'Terma jualan · Coolman', description: 'Terma di bawah mana Coolman Malaysia Sdn Bhd menjual di Malaysia.' },
+      returns: { title: 'Pemulangan dan jaminan · Coolman', description: 'Memulangkan bilah Coolman dan liputan jaminan.' },
+      cookies: { title: 'Notis kuki · Coolman', description: 'Kuki yang digunakan tapak kami dan bagaimana untuk mematikannya.' },
+      folioThreeMyths: { title: 'Tiga perkara yang industri pemotongan terus salah faham', description: 'Sebuah folio Coolman Engineering tentang harga, pengedar, dan mitos Buatan Jepun.' },
     },
   },
 }
