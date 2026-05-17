@@ -51,6 +51,7 @@ export function ChinesePullquote({ quote, className }: ChinesePullquoteProps) {
 
   return (
     <blockquote
+      lang="zh"
       className={cn(
         'border-l-[3px] border-accent pl-6 my-8',
         className,

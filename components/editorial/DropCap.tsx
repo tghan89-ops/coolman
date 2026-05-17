@@ -6,30 +6,33 @@ export interface DropCapProps {
   className?: string
 }
 
+/**
+ * Renders a paragraph with a CSS-driven drop-cap on the first letter.
+ *
+ * Accessibility: the full paragraph text is rendered as a single text node,
+ * so screen readers read the paragraph in the natural left-to-right order
+ * (including the first letter). The visual drop-cap is purely presentational,
+ * applied via the CSS ::first-letter pseudo-element.
+ */
 export function DropCap({ children, className }: DropCapProps) {
   if (!children || !children.trim()) return null
 
-  const trimmed = children.trimStart()
-  const firstChar = trimmed.charAt(0)
-  const rest = trimmed.slice(1)
-
   return (
-    <p className={cn('text-base leading-relaxed text-ink', className)}>
-      <span
-        aria-hidden="true"
-        className={cn(
-          'font-fraunces float-left text-navy',
-          'mr-3 mt-1',
-        )}
-        style={{
-          fontSize: '4rem',
-          lineHeight: 1,
-          fontWeight: 600,
-        }}
-      >
-        {firstChar}
-      </span>
-      {rest}
+    <p
+      className={cn(
+        'text-base leading-relaxed text-ink',
+        '[&::first-letter]:font-fraunces',
+        '[&::first-letter]:text-[5rem]',
+        '[&::first-letter]:float-left',
+        '[&::first-letter]:leading-[0.8]',
+        '[&::first-letter]:mr-2',
+        '[&::first-letter]:mt-2',
+        '[&::first-letter]:text-navy',
+        '[&::first-letter]:font-semibold',
+        className,
+      )}
+    >
+      {children}
     </p>
   )
 }

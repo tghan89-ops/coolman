@@ -495,7 +495,11 @@ export interface CopyStructure {
     fearGrid: {
       eyebrow: string
       headline: string
-      cards: Array<{ title: string; body: string }>
+      cards: Array<{
+        key: 'delay' | 'equipment' | 'inconsistency' | 'alone'
+        title: string
+        body: string
+      }>
     }
     threeMythsIntro: {
       eyebrow: string
@@ -526,7 +530,11 @@ export interface CopyStructure {
       eyebrow: string
       headline: string
       lede: string
-      stats: Array<{ value: string; label: string }>
+      stats: Array<{
+        key: 'sku' | 'diameter' | 'onTimePct' | 'dispatchCutoff'
+        value: string
+        label: string
+      }>
       ctaPrimary: string
       ctaSecondary: string
     }
@@ -1267,10 +1275,10 @@ export const COPY: Record<Language, CopyStructure> = {
         eyebrow: 'What contractors live with',
         headline: "Four things keep the boss up at night. We've watched all four on site.",
         cards: [
-          { title: 'A delay you cannot explain to the developer', body: 'The blade is slow. The schedule is gone. The conversation upstairs is already lost. We have watched this happen more times than we wish.' },
-          { title: 'Equipment that fails at 11pm on a road closure', body: "When the cut has to be done tonight and the blade gives out at the wrong moment, the cost isn't the blade. It's the closure, the police, the developer phoning at 6am." },
-          { title: 'Inconsistency between blades that should be identical', body: 'One blade cuts. The next one of the same SKU lasts half as long. The crew loses faith. The supplier loses the account.' },
-          { title: 'Being left alone with a cut nobody else has seen', body: 'A new aggregate. An unusual depth. A spec the supplier has never tested. The crew gets it. The supplier ducks the call.' },
+          { key: 'delay', title: 'A delay you cannot explain to the developer', body: 'The blade is slow. The schedule is gone. The conversation upstairs is already lost. We have watched this happen more times than we wish.' },
+          { key: 'equipment', title: 'Equipment that fails at 11pm on a road closure', body: "When the cut has to be done tonight and the blade gives out at the wrong moment, the cost isn't the blade. It's the closure, the police, the developer phoning at 6am." },
+          { key: 'inconsistency', title: 'Inconsistency between blades that should be identical', body: 'One blade cuts. The next one of the same SKU lasts half as long. The crew loses faith. The supplier loses the account.' },
+          { key: 'alone', title: 'Being left alone with a cut nobody else has seen', body: 'A new aggregate. An unusual depth. A spec the supplier has never tested. The crew gets it. The supplier ducks the call.' },
         ],
       },
       threeMythsIntro: {
@@ -1312,10 +1320,10 @@ export const COPY: Record<Language, CopyStructure> = {
         headline: 'The full range, in stock and ready to ship from Petaling Jaya.',
         lede: 'No catalogue front. No PDF download chase. Just the inventory, the spec, and a phone call away if the blade you need is not the one we list.',
         stats: [
-          { value: '247', label: 'SKUs in stock' },
-          { value: '100 to 900 mm', label: 'Diameter range' },
-          { value: '96%', label: 'On-time dispatch' },
-          { value: '14:00', label: 'Same-day cut-off' },
+          { key: 'sku', value: '247', label: 'SKUs in stock' },
+          { key: 'diameter', value: '100 to 900 mm', label: 'Diameter range' },
+          { key: 'onTimePct', value: '96%', label: 'On-time dispatch' },
+          { key: 'dispatchCutoff', value: '14:00', label: 'Same-day cut-off' },
         ],
         ctaPrimary: 'Open the catalogue',
         ctaSecondary: 'Speak to engineering',
@@ -2222,10 +2230,10 @@ export const COPY: Record<Language, CopyStructure> = {
         eyebrow: 'Apa yang kontraktor tanggung',
         headline: 'Empat perkara yang menjadikan bos sukar tidur. Kami sudah menyaksi keempat-empatnya di tapak.',
         cards: [
-          { title: 'Kelewatan yang anda tidak boleh jelaskan kepada pemaju', body: 'Bilah perlahan. Jadual sudah hilang. Perbualan di atas sudah pun kalah. Kami sudah lihat ini berlaku lebih kerap daripada yang kami mahu.' },
-          { title: 'Peralatan yang gagal pada 11 malam semasa penutupan jalan', body: 'Apabila potongan mesti siap malam ini dan bilah putus pada saat yang salah, kos itu bukan bilah. Ia adalah penutupan, polis, dan pemaju yang menelefon pada jam 6 pagi.' },
-          { title: 'Ketidakkonsistenan antara bilah yang sepatutnya serupa', body: 'Satu bilah memotong. Bilah seterusnya dengan SKU yang sama tahan separuh sahaja. Krew hilang keyakinan. Pembekal hilang akaun.' },
-          { title: 'Ditinggalkan keseorangan dengan potongan yang belum pernah dilihat orang lain', body: 'Agregat baru. Kedalaman luar biasa. Spesifikasi yang pembekal tidak pernah uji. Krew faham. Pembekal mengelak panggilan.' },
+          { key: 'delay', title: 'Kelewatan yang anda tidak boleh jelaskan kepada pemaju', body: 'Bilah perlahan. Jadual sudah hilang. Perbualan di atas sudah pun kalah. Kami sudah lihat ini berlaku lebih kerap daripada yang kami mahu.' },
+          { key: 'equipment', title: 'Peralatan yang gagal pada 11 malam semasa penutupan jalan', body: 'Apabila potongan mesti siap malam ini dan bilah putus pada saat yang salah, kos itu bukan bilah. Ia adalah penutupan, polis, dan pemaju yang menelefon pada jam 6 pagi.' },
+          { key: 'inconsistency', title: 'Ketidakkonsistenan antara bilah yang sepatutnya serupa', body: 'Satu bilah memotong. Bilah seterusnya dengan SKU yang sama tahan separuh sahaja. Krew hilang keyakinan. Pembekal hilang akaun.' },
+          { key: 'alone', title: 'Ditinggalkan keseorangan dengan potongan yang belum pernah dilihat orang lain', body: 'Agregat baru. Kedalaman luar biasa. Spesifikasi yang pembekal tidak pernah uji. Krew faham. Pembekal mengelak panggilan.' },
         ],
       },
       threeMythsIntro: {
@@ -2267,10 +2275,10 @@ export const COPY: Record<Language, CopyStructure> = {
         headline: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',
         lede: 'Tiada muka katalog. Tiada perlu memburu PDF. Hanya inventori, spesifikasi, dan satu panggilan telefon jika bilah yang anda perlukan bukan yang kami senaraikan.',
         stats: [
-          { value: '247', label: 'SKU dalam stok' },
-          { value: '100 hingga 900 mm', label: 'Julat diameter' },
-          { value: '96%', label: 'Hantar tepat waktu' },
-          { value: '14:00', label: 'Hadang hari sama' },
+          { key: 'sku', value: '247', label: 'SKU dalam stok' },
+          { key: 'diameter', value: '100 hingga 900 mm', label: 'Julat diameter' },
+          { key: 'onTimePct', value: '96%', label: 'Hantar tepat waktu' },
+          { key: 'dispatchCutoff', value: '14:00', label: 'Hadang hari sama' },
         ],
         ctaPrimary: 'Buka katalog',
         ctaSecondary: 'Hubungi kejuruteraan',

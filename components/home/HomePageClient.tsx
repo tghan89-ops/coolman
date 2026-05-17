@@ -10,6 +10,7 @@ import {
   MessageCircle,
   Phone,
   MapPin,
+  type LucideIcon,
 } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { useLanguage } from '@/lib/i18n/context'
@@ -19,9 +20,10 @@ import { ChannelCard } from '@/components/industrial/ChannelCard'
 import { HeritageBadge } from '@/components/industrial/HeritageBadge'
 import { ChinesePullquote } from '@/components/editorial/Pullquote'
 import { DropCap } from '@/components/editorial/DropCap'
+import type { Setting } from '@/payload-types'
 
 interface HomePageClientProps {
-  settings: any
+  settings: Partial<Setting>
   publishedPostsCount: number
 }
 
@@ -36,12 +38,22 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
     : 96
   const dispatchCutoff = settings?.inventory_dispatch_cutoff || '14:00'
 
-  const fearIcons = [
-    <Clock key="clock" className="h-6 w-6" />,
-    <Wrench key="wrench" className="h-6 w-6" />,
-    <Repeat2 key="repeat" className="h-6 w-6" />,
-    <UserX key="userx" className="h-6 w-6" />,
-  ]
+  // Guard against admin-entered non-numeric or short values for the WhatsApp/tel
+  // fields in Payload Settings. Malaysian mobile numbers are 9–10 digits
+  // including the leading 60 country code; require ≥ 8 to consider valid.
+  const whatsappHref =
+    whatsappDigits.length >= 8 ? `https://wa.me/${whatsappDigits}` : '#'
+  const telHref = whatsappDigits.length >= 8 ? `tel:+${whatsappDigits}` : '#'
+
+  // Pair fear icons by stable key, not by array index. If copy.ts ever
+  // reorders or adds/removes a fear card, the icon-to-card pairing still
+  // holds because each card declares its own `key`.
+  const fearIconMap: Record<string, LucideIcon> = {
+    delay: Clock,
+    equipment: Wrench,
+    inconsistency: Repeat2,
+    alone: UserX,
+  }
 
   const channelIcons = [
     <MessageCircle key="wa" className="h-6 w-6" />,
@@ -49,15 +61,13 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
     <MapPin key="map" className="h-6 w-6" />,
   ]
 
-  const channelHrefs = [
-    `https://wa.me/${whatsappDigits}`,
-    `tel:${whatsappNumber}`,
-    '/contact#site-visit',
-  ]
+  const channelHrefs = [whatsappHref, telHref, '/contact#site-visit']
 
-  const quietDoorStats = n.quietDoor.stats.map((s, i) => {
-    if (i === 2) return { value: `${onTimePct}%`, label: s.label }
-    if (i === 3) return { value: dispatchCutoff, label: s.label }
+  // Overlay live Settings values onto the quietDoor stats by stable key, not
+  // by magic array index.
+  const quietDoorStats = n.quietDoor.stats.map((s) => {
+    if (s.key === 'onTimePct') return { ...s, value: `${onTimePct}%` }
+    if (s.key === 'dispatchCutoff') return { ...s, value: dispatchCutoff }
     return s
   })
 
@@ -100,14 +110,17 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
             </div>
           </div>
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {n.fearGrid.cards.map((card, i) => (
-              <FearCard
-                key={i}
-                icon={fearIcons[i]}
-                title={card.title}
-                body={card.body}
-              />
-            ))}
+            {n.fearGrid.cards.map((card) => {
+              const Icon = fearIconMap[card.key]
+              return (
+                <FearCard
+                  key={card.key}
+                  icon={Icon ? <Icon className="h-6 w-6" /> : null}
+                  title={card.title}
+                  body={card.body}
+                />
+              )
+            })}
           </div>
         </div>
       </section>
@@ -274,8 +287,8 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
           </div>
 
           <div className="mt-16 border-t border-b border-rule py-10 grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-            {quietDoorStats.map((stat, i) => (
-              <InventoryStat key={i} value={stat.value} label={stat.label} />
+            {quietDoorStats.map((stat) => (
+              <InventoryStat key={stat.key} value={stat.value} label={stat.label} />
             ))}
           </div>
 
