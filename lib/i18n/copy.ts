@@ -116,23 +116,8 @@ export interface CopyStructure {
       }>
     }
     whyCoolman: {
-      heroEyebrow: string
-      ctaTitle: string
-      ctaMessage: string
-      ctaButton: string
-      hero: { eyebrow: string; title: string; lede: string }
-      advantages: Array<{ iconKey: string; title: string; body: string }>
-      statsSection: { title: string; subtitle: string }
-      stats: Array<{ value: string; label: string }>
-      testimonialsSection: { eyebrow: string; title: string }
-      cta: {
-        title: string
-        body: string
-        primaryLabel: string
-        primaryHref: string
-        secondaryLabel: string
-        secondaryHref: string
-      }
+      hero: { eyebrow: string; title: string; titleEmphasis: string; lede: string }
+      placeholder: { eyebrow: string; headline: string; body: string; fieldNotesCtaLabel: string }
     }
     resources: {
       heroEyebrow: string
@@ -1059,38 +1044,17 @@ export const COPY: Record<Language, CopyStructure> = {
         ],
       },
       whyCoolman: {
-        heroEyebrow: 'Why Coolman',
-        ctaTitle: 'Ready to Experience the Coolman Difference?',
-        ctaMessage: 'Join the contractors who trust Coolman for performance, reliability and support.',
-        ctaButton: 'Speak to engineering',
         hero: {
           eyebrow: 'Why Coolman',
-          title: 'The Coolman Advantage',
-          lede: 'More than just tools - we provide complete cutting solutions and ongoing partnership for contractors who demand excellence.',
+          title: 'The engineering folio',
+          titleEmphasis: 'arrives next.',
+          lede: 'Three myths the cutting industry still teaches. The Malaysian aggregate question. The Brotherhood System. Written long-form, with the cross-sections.',
         },
-        advantages: [
-          { iconKey: 'zap', title: 'Superior Cutting Performance', body: 'Our diamond segments are formulated for 40% faster cutting speeds while maintaining precision.' },
-          { iconKey: 'shield', title: 'Extended Blade Life', body: 'Proprietary bonding technology delivers up to 3x longer operational life.' },
-          { iconKey: 'award', title: '19 Years in the Trade', body: 'Coolman has built diamond cutting tools for Malaysian contractors since 2007. Alan, our founder, has been in the cutting trade since 1998.' },
-          { iconKey: 'truck', title: 'Rapid Fulfillment', body: 'Same-day dispatch for orders placed before 2pm.' },
-          { iconKey: 'headphones', title: 'Technical Partnership', body: 'Dedicated engineering support to help you select the right tools.' },
-          { iconKey: 'barChart3', title: 'B2B Pricing Advantage', body: 'Registered contractors enjoy exclusive pricing tiers.' },
-        ],
-        statsSection: { title: 'Trusted by Professionals', subtitle: 'Our track record speaks for itself.' },
-        stats: [
-          { value: '500+', label: 'Active Contractors' },
-          { value: '50,000+', label: 'Projects Completed' },
-          { value: '99.2%', label: 'On-Time Delivery' },
-          { value: '4.9/5', label: 'Customer Rating' },
-        ],
-        testimonialsSection: { eyebrow: 'Testimonials', title: 'What Our Partners Say' },
-        cta: {
-          title: 'Ready to Experience the Difference?',
-          body: 'Join 500+ professional contractors who trust Coolman.',
-          primaryLabel: 'Become a Partner',
-          primaryHref: '/auth/register',
-          secondaryLabel: 'Contact Sales',
-          secondaryHref: '/contact',
+        placeholder: {
+          eyebrow: 'Coming soon',
+          headline: 'Engineering Folio in preparation.',
+          body: 'The long-form pieces that make up the Engineering Folio are still being drafted. While we finish them, the same technical thinking shows up in Field Notes. Three jobs that taught us how to make a better blade, written as they happened.',
+          fieldNotesCtaLabel: 'Read Field Notes',
         },
       },
       resources: {
@@ -2208,38 +2172,17 @@ export const COPY: Record<Language, CopyStructure> = {
         ],
       },
       whyCoolman: {
-        heroEyebrow: 'Kenapa Coolman',
-        ctaTitle: 'Sedia Untuk Merasai Perbezaan Coolman?',
-        ctaMessage: 'Sertai kontraktor yang mempercayai Coolman untuk prestasi, kebolehpercayaan dan sokongan.',
-        ctaButton: 'Hubungi kejuruteraan',
         hero: {
           eyebrow: 'Kenapa Coolman',
-          title: 'Kelebihan Coolman',
-          lede: 'Lebih daripada sekadar alat - kami menyediakan penyelesaian pemotongan lengkap dan perkongsian berterusan untuk kontraktor yang menuntut kecemerlangan.',
+          title: 'Folio kejuruteraan',
+          titleEmphasis: 'akan tiba.',
+          lede: 'Tiga mitos yang industri pemotongan masih ajar. Soalan agregat Malaysia. Sistem Brotherhood. Ditulis panjang, dengan keratan rentas.',
         },
-        advantages: [
-          { iconKey: 'zap', title: 'Prestasi Pemotongan Unggul', body: 'Segmen berlian kami diformulasi untuk kelajuan pemotongan 40% lebih pantas sambil mengekalkan ketepatan.' },
-          { iconKey: 'shield', title: 'Hayat Bilah Yang Panjang', body: 'Teknologi pengikatan proprietari memberikan hayat operasi sehingga 3x lebih lama.' },
-          { iconKey: 'award', title: '19 Tahun dalam Bidang', body: 'Coolman telah membina alat pemotong berlian untuk kontraktor Malaysia sejak 2007. Pengasas kami, Alan, telah berada dalam bidang pemotongan sejak 1998.' },
-          { iconKey: 'truck', title: 'Penghantaran Pantas', body: 'Penghantaran pada hari yang sama untuk pesanan sebelum 2 petang.' },
-          { iconKey: 'headphones', title: 'Perkongsian Teknikal', body: 'Sokongan kejuruteraan khusus untuk membantu anda memilih alat yang tepat.' },
-          { iconKey: 'barChart3', title: 'Kelebihan Harga B2B', body: 'Kontraktor berdaftar menikmati harga eksklusif berperingkat.' },
-        ],
-        statsSection: { title: 'Dipercayai Oleh Profesional', subtitle: 'Rekod prestasi kami bercakap sendiri.' },
-        stats: [
-          { value: '500+', label: 'Kontraktor Aktif' },
-          { value: '50,000+', label: 'Projek Disiapkan' },
-          { value: '99.2%', label: 'Penghantaran Tepat Masa' },
-          { value: '4.9/5', label: 'Penilaian Pelanggan' },
-        ],
-        testimonialsSection: { eyebrow: 'Testimoni', title: 'Apa Kata Rakan Kongsi Kami' },
-        cta: {
-          title: 'Sedia Merasai Perbezaannya?',
-          body: 'Sertai 500+ kontraktor profesional yang mempercayai Coolman.',
-          primaryLabel: 'Jadi Rakan Kongsi',
-          primaryHref: '/auth/register',
-          secondaryLabel: 'Hubungi Jualan',
-          secondaryHref: '/contact',
+        placeholder: {
+          eyebrow: 'Akan datang',
+          headline: 'Folio Kejuruteraan dalam persediaan.',
+          body: 'Karya panjang yang membentuk Folio Kejuruteraan masih dalam draf. Sementara kami menyiapkannya, pemikiran teknikal yang sama muncul dalam Field Notes. Tiga kerja yang mengajar kami bagaimana membuat bilah yang lebih baik, ditulis ketika berlaku.',
+          fieldNotesCtaLabel: 'Baca Field Notes',
         },
       },
       resources: {
