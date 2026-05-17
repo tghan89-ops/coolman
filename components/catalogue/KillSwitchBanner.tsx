@@ -34,7 +34,15 @@ export function KillSwitchBanner({
 
   return (
     <div
-      role="status"
+      // `role="alert"` (live = assertive) is correct for a kill-switch state
+      // change — when orders flip from open to paused, screen readers should
+      // interrupt and announce immediately. `role="status"` (live = polite)
+      // would queue behind whatever the user is currently reading.
+      role="alert"
+      // Stable id so disabled controls on the page (Add to cart, quantity
+      // stepper) can point at this banner via `aria-describedby` and a
+      // screen-reader user understands *why* the action is unavailable.
+      id="kill-switch-banner"
       className={cn(
         'w-full border-y border-warn/30 bg-warn/10 text-ink',
         className,

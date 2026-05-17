@@ -339,6 +339,7 @@ export function ProductDetailClient({
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                     disabled={ordersPaused || quantity <= 1}
                     aria-label="Decrease quantity"
+                    aria-describedby={ordersPaused ? 'kill-switch-banner' : undefined}
                     className="flex h-12 w-12 items-center justify-center border border-white/20 bg-white/5 text-white transition-colors hover:border-accent hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <Minus className="h-4 w-4" />
@@ -350,6 +351,7 @@ export function ProductDetailClient({
                     disabled={ordersPaused}
                     onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
                     aria-label="Quantity"
+                    aria-describedby={ordersPaused ? 'kill-switch-banner' : undefined}
                     className="font-mono h-12 w-20 border border-white/20 bg-white/5 text-center text-lg font-bold text-white focus:border-accent focus:outline-none disabled:cursor-not-allowed disabled:opacity-40"
                   />
                   <button
@@ -357,6 +359,7 @@ export function ProductDetailClient({
                     onClick={() => setQuantity((q) => q + 1)}
                     disabled={ordersPaused}
                     aria-label="Increase quantity"
+                    aria-describedby={ordersPaused ? 'kill-switch-banner' : undefined}
                     className="flex h-12 w-12 items-center justify-center border border-white/20 bg-white/5 text-white transition-colors hover:border-accent hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <Plus className="h-4 w-4" />
@@ -371,6 +374,7 @@ export function ProductDetailClient({
                   quantity={quantity}
                   nextHref={nextHref}
                   disabled={ordersPaused}
+                  ariaDescribedBy={ordersPaused ? 'kill-switch-banner' : undefined}
                 />
                 <Button size="lg" variant="outline" className="h-14 border-2 border-white/30 bg-transparent font-sans font-bold text-white hover:border-white hover:bg-white hover:text-navy" asChild>
                   <Link href="/contact">{pd.requestQuote}</Link>
@@ -546,6 +550,7 @@ export function ProductDetailClient({
                 quantity={quantity}
                 nextHref={nextHref}
                 disabled={ordersPaused}
+                ariaDescribedBy={ordersPaused ? 'kill-switch-banner' : undefined}
               />
               <Button variant="outline" className="h-12 border-2 border-white bg-transparent px-6 font-sans font-bold text-white hover:bg-white hover:text-accent" asChild>
                 <Link href="/contact">{pd.ctaStrip.primaryLabel}</Link>

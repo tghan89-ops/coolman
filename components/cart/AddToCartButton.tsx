@@ -13,6 +13,7 @@ export function AddToCartButton({
   quantity,
   nextHref,
   disabled = false,
+  ariaDescribedBy,
 }: {
   productId: string | number
   quantity: number
@@ -24,6 +25,12 @@ export function AddToCartButton({
    * respect the kill switch (CLAUDE.md hard rule).
    */
   disabled?: boolean
+  /**
+   * When the parent renders a kill-switch banner explaining *why* orders are
+   * paused, it passes the banner's id here so a screen reader announces the
+   * banner copy as the explanation for the disabled control.
+   */
+  ariaDescribedBy?: string
 }) {
   const { isAuthenticated } = useAuth()
   const { add } = useCart()
@@ -38,6 +45,11 @@ export function AddToCartButton({
           disabled ? 'pointer-events-none opacity-60' : ''
         }`}
         aria-disabled={disabled || undefined}
+        aria-describedby={ariaDescribedBy}
+        // Keep a disabled link out of the keyboard tab order. Without this,
+        // sighted keyboard users can still tab to a visually-disabled link and
+        // hit Enter to follow it — bypassing the visual gate.
+        tabIndex={disabled ? -1 : undefined}
         asChild
       >
         <Link href={`/auth/login?next=${encodeURIComponent(nextHref)}`}>
@@ -55,6 +67,7 @@ export function AddToCartButton({
         disabled ? 'cursor-not-allowed opacity-60' : ''
       }`}
       disabled={disabled || state === 'adding'}
+      aria-describedby={ariaDescribedBy}
       onClick={async () => {
         // Defensive: even if the disabled prop didn't reach the underlying
         // button (e.g. asChild wrapper, custom styling), we never want to call

@@ -106,5 +106,72 @@ describe('AddToCartButton — unauthenticated branch respects disabled', () => {
     // it can't navigate either.
     expect(html).toMatch(/aria-disabled="true"/)
     expect(html).toMatch(/pointer-events-none/)
+    // tabIndex=-1 keeps the visually-disabled link out of the keyboard tab
+    // order — without this a sighted keyboard user could still focus it and
+    // press Enter, bypassing the visual gate.
+    expect(html).toMatch(/tabindex="-1"/)
+  })
+})
+
+describe('AddToCartButton — aria-describedby threading', () => {
+  it('authenticated branch surfaces aria-describedby on the button', async () => {
+    vi.resetModules()
+    vi.doMock('@/lib/auth/context', () => ({
+      useAuth: () => ({ isAuthenticated: true }),
+    }))
+    vi.doMock('@/lib/cart/context', () => ({
+      useCart: () => ({ add: vi.fn() }),
+    }))
+    vi.doMock('@/lib/i18n/context', () => ({
+      useLanguage: () => ({
+        language: 'EN',
+        t: {
+          product: { addToCart: 'Add to cart', loginToOrder: 'Sign in to order' },
+          cart: { added: 'Added' },
+        },
+      }),
+    }))
+    const { AddToCartButton: Reloaded } = await import('@/components/cart/AddToCartButton')
+    const html = renderToString(
+      createElement(Reloaded, {
+        productId: '1',
+        quantity: 1,
+        nextHref: '/products/1',
+        disabled: true,
+        ariaDescribedBy: 'kill-switch-banner',
+      }),
+    )
+    // Wired so screen readers explain WHY the button is disabled.
+    expect(html).toMatch(/aria-describedby="kill-switch-banner"/)
+  })
+
+  it('unauthenticated branch surfaces aria-describedby on the link', async () => {
+    vi.resetModules()
+    vi.doMock('@/lib/auth/context', () => ({
+      useAuth: () => ({ isAuthenticated: false }),
+    }))
+    vi.doMock('@/lib/cart/context', () => ({
+      useCart: () => ({ add: vi.fn() }),
+    }))
+    vi.doMock('@/lib/i18n/context', () => ({
+      useLanguage: () => ({
+        language: 'EN',
+        t: {
+          product: { addToCart: 'Add to cart', loginToOrder: 'Sign in to order' },
+          cart: { added: 'Added' },
+        },
+      }),
+    }))
+    const { AddToCartButton: Reloaded } = await import('@/components/cart/AddToCartButton')
+    const html = renderToString(
+      createElement(Reloaded, {
+        productId: '1',
+        quantity: 1,
+        nextHref: '/products/1',
+        disabled: true,
+        ariaDescribedBy: 'kill-switch-banner',
+      }),
+    )
+    expect(html).toMatch(/aria-describedby="kill-switch-banner"/)
   })
 })
