@@ -1,4 +1,4 @@
-import { getActiveDealers } from '@/lib/payload'
+import { getActiveDealers, type RawDealerRow } from '@/lib/payload'
 import { COPY } from '@/lib/i18n/copy'
 import {
   BrotherhoodDirectoryClient,
@@ -27,20 +27,20 @@ export default async function BrotherhoodPage() {
   // contract. Defensive: if any required string is missing on a row, drop it.
   const dealers: DealerRow[] = docs
     .filter(
-      (d: any) =>
+      (d: RawDealerRow) =>
         typeof d?.name === 'string' &&
         typeof d?.area === 'string' &&
         typeof d?.address === 'string' &&
         typeof d?.whatsapp_number === 'string' &&
         typeof d?.google_maps_query === 'string',
     )
-    .map((d: any) => ({
+    .map((d: RawDealerRow) => ({
       id: d.id,
-      name: d.name,
-      area: d.area,
-      address: d.address,
-      whatsapp_number: d.whatsapp_number,
-      google_maps_query: d.google_maps_query,
+      name: d.name as string,
+      area: d.area as string,
+      address: d.address as string,
+      whatsapp_number: d.whatsapp_number as string,
+      google_maps_query: d.google_maps_query as string,
       operating_hours: d.operating_hours ?? undefined,
       languages: d.languages ?? undefined,
       specialisations: d.specialisations ?? undefined,

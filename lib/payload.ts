@@ -5,6 +5,24 @@ async function getPayloadClient() {
   return getPayload({ config })
 }
 
+// Raw row shape from the Payload `dealers` collection. Mirrors the snake_case
+// field names on the collection. All fields except `id` are optional+nullable
+// because that's what Payload can actually return for partially-filled admin
+// rows; the runtime filter at the server boundary (in `app/(frontend)/
+// brotherhood/page.tsx`) is what guarantees the trimmed `DealerRow` shape
+// passed to the client component.
+export type RawDealerRow = {
+  id: string | number
+  name?: string | null
+  area?: string | null
+  address?: string | null
+  whatsapp_number?: string | null
+  google_maps_query?: string | null
+  operating_hours?: string | null
+  languages?: string | null
+  specialisations?: string | null
+}
+
 export async function getProducts(): Promise<any[]> {
   try {
     const payload = await getPayloadClient()
@@ -112,7 +130,7 @@ export async function getPostBySlug(slug: string): Promise<any | null> {
 
 // Public-facing dealer directory: only return active rows. Inactive dealers
 // stay in /admin for archival but never render on /brotherhood.
-export async function getActiveDealers(): Promise<any[]> {
+export async function getActiveDealers(): Promise<RawDealerRow[]> {
   try {
     const payload = await getPayloadClient()
     const result = await payload.find({
@@ -121,7 +139,10 @@ export async function getActiveDealers(): Promise<any[]> {
       sort: 'area,display_order,name',
       limit: 200,
     })
-    return result.docs
+    // Payload's generated row type is an internal shape; cast at this single
+    // boundary so the rest of the codebase consumes the honest snake_case
+    // RawDealerRow contract.
+    return result.docs as unknown as RawDealerRow[]
   } catch {
     return []
   }
