@@ -640,6 +640,13 @@ export interface CopyStructure {
       headline: string
       lede: string
     }
+    heroCard: {
+      corner: string
+      eyebrow: string
+      title: string
+      rows: Array<{ key: string; value: string }>
+      readLabel: string
+    }
     fearGrid: {
       eyebrow: string
       headline: string
@@ -667,6 +674,19 @@ export interface CopyStructure {
       lede: string
       cards: Array<{ title: string; meta: string; readingTime: string }>
       ctaLabel: string
+    }
+    engineering: {
+      eyebrow: string
+      pullPrefix: string
+      pullEmphasis: string
+      pullSuffix: string
+      body: string[]
+      callouts: Array<{ num: string; sup: string; label: string }>
+      blueprint: {
+        drawingNumber: string
+        scaleNote: string
+        caption: string
+      }
     }
     alansLetter: {
       eyebrow: string
@@ -1866,6 +1886,17 @@ export const COPY: Record<Language, CopyStructure> = {
         headline: 'Diamond cutting tools, built in Petaling Jaya for the way Malaysian sites actually cut.',
         lede: 'Coolman has built diamond blades, core bits and cutting systems in Malaysia since 2007. Our founder, Alan, has been in the cutting trade since 1998. Every blade we make is engineered for the rock, the rebar and the schedule Malaysian contractors face.',
       },
+      heroCard: {
+        corner: 'FIELD NOTE № 014',
+        eyebrow: 'Cover story · October 2025',
+        title: 'Cutting the Merdeka 118 podium slab without losing a segment.',
+        rows: [
+          { key: 'Site', value: 'Merdeka 118 podium, KL' },
+          { key: 'Problem', value: 'European 600 mm wall saw blade glazing on G60 high-silica aggregate after 4 m of cut.' },
+          { key: 'Outcome', value: 'Coolman C-Series cobalt sandwich, 12 mm segment, ran 38 m before re-dressing.' },
+        ],
+        readLabel: 'Read the field note →',
+      },
       fearGrid: {
         eyebrow: 'What contractors live with',
         headline: "Four things keep the boss up at night. We've watched all four on site.",
@@ -1898,6 +1929,29 @@ export const COPY: Record<Language, CopyStructure> = {
           { title: 'We trusted the factory spec. We should not have.', meta: 'Product recall', readingTime: '6 min read' },
         ],
         ctaLabel: 'Read all Field Notes',
+      },
+      engineering: {
+        eyebrow: 'Engineering',
+        pullPrefix: 'Malaysian aggregate is not European aggregate. It ',
+        pullEmphasis: 'breaks blades',
+        pullSuffix: ' built for Europe.',
+        body: [
+          'The diamond segment is a wear part. It is engineered to erode at a specific rate so that fresh diamond is continuously exposed to the cut. The matrix — the cobalt-bronze alloy holding the diamond — must wear at the same rate as the work the blade is doing. When the matrix is too hard, the diamond glazes over and the blade stops cutting. When it is too soft, the diamond falls out before it has done its work.',
+          'The matrix that works in Europe is calibrated for European aggregate: limestone-based, low-silica, predictable mineralogy. Malaysian aggregate is the opposite. KL crushed granite runs above 60% silica content. The fines are sharper, the inclusion of quartz is higher, and the compressive strength does not predict the cutting behaviour the way a European spec sheet implies it should.',
+          "Coolman's response is a cobalt sandwich segment. Three matrix layers of graded hardness, laser-welded to a tensioned high-carbon steel core. The outer layers carry the cutting load. The middle layer is softer cobalt — it releases the diamond before the matrix glazes. The result is a segment that wears at the rate the work demands, not the rate the bond was originally calibrated for.",
+          'The argument is unremarkable inside a tool manufacturer. It is rare in this market because most blades sold in Malaysia are imported finished and not re-formulated for what the ground here actually does.',
+        ],
+        callouts: [
+          { num: '62', sup: '%', label: 'Silica content. Malaysian crushed granite, KL aggregate sample, Q2 2024.' },
+          { num: '3.1', sup: '×', label: 'Faster matrix wear. European cobalt-bond blades on Malaysian aggregate vs. their home market.' },
+          { num: '12', sup: 'mm', label: 'Segment height. Coolman C-Series sandwich cobalt segment, current generation.' },
+          { num: '38', sup: 'm', label: 'Cut length before re-dressing on a Merdeka 118 G60 slab. European baseline: 4 m.' },
+        ],
+        blueprint: {
+          drawingNumber: 'DWG · CL-SS-012 · SANDWICH COBALT SEGMENT · CROSS-SECTION',
+          scaleNote: 'SCALE 4:1 · ALL DIM. IN MM · REV. C · 2026-04',
+          caption: "Sandwich cobalt segment, current generation. Three matrix layers of graded hardness laser-welded to a tensioned high-carbon steel core. The soft centre cobalt releases diamond before the outer matrix glazes — the wear rate matches the work, not the bond's original calibration.",
+        },
       },
       alansLetter: {
         eyebrow: 'A letter from Alan',
@@ -3264,6 +3318,17 @@ export const COPY: Record<Language, CopyStructure> = {
         headline: 'Alat pemotong berlian, dibina di Petaling Jaya untuk cara tapak Malaysia sebenar-benarnya memotong.',
         lede: 'Coolman telah membina bilah berlian, mata teras dan sistem pemotongan di Malaysia sejak 2007. Pengasas kami, Alan, telah berada dalam bidang pemotongan sejak 1998. Setiap bilah yang kami hasilkan direka untuk batu, besi tetulang dan jadual yang dihadapi kontraktor Malaysia.',
       },
+      heroCard: {
+        corner: 'FIELD NOTE № 014',
+        eyebrow: 'Liputan utama · Oktober 2025',
+        title: 'Memotong papak podium Merdeka 118 tanpa kehilangan satu segmen pun.',
+        rows: [
+          { key: 'Tapak', value: 'Podium Merdeka 118, KL' },
+          { key: 'Masalah', value: 'Bilah gergaji dinding 600 mm Eropah mengaca pada agregat G60 bersilika tinggi selepas 4 m potongan.' },
+          { key: 'Hasil', value: 'Sandwic kobalt C-Series Coolman, segmen 12 mm, berjalan 38 m sebelum menyerut semula.' },
+        ],
+        readLabel: 'Baca field note →',
+      },
       fearGrid: {
         eyebrow: 'Apa yang kontraktor tanggung',
         headline: 'Empat perkara yang menjadikan bos sukar tidur. Kami sudah menyaksi keempat-empatnya di tapak.',
@@ -3296,6 +3361,29 @@ export const COPY: Record<Language, CopyStructure> = {
           { title: 'Kami percayakan spesifikasi kilang. Kami sepatutnya tidak.', meta: 'Penarikan balik produk', readingTime: '6 minit bacaan' },
         ],
         ctaLabel: 'Baca semua Field Notes',
+      },
+      engineering: {
+        eyebrow: 'Kejuruteraan',
+        pullPrefix: 'Agregat Malaysia bukan agregat Eropah. Ia ',
+        pullEmphasis: 'memecahkan bilah',
+        pullSuffix: ' yang dibina untuk Eropah.',
+        body: [
+          'Segmen berlian adalah bahagian haus. Ia direka untuk menghakis pada kadar tertentu supaya berlian segar sentiasa terdedah kepada potongan. Matriks — aloi kobalt-gangsa yang memegang berlian — mesti haus pada kadar yang sama dengan kerja yang dilakukan oleh bilah. Apabila matriks terlalu keras, berlian mengaca dan bilah berhenti memotong. Apabila terlalu lembut, berlian jatuh sebelum ia sempat melakukan kerjanya.',
+          'Matriks yang berfungsi di Eropah dikalibrasi untuk agregat Eropah: berasas batu kapur, rendah silika, mineralogi yang mudah dijangka. Agregat Malaysia adalah sebaliknya. Granit hancur KL mempunyai kandungan silika melebihi 60%. Butiran halus lebih tajam, kemasukan kuarza lebih tinggi, dan kekuatan mampatan tidak meramalkan tingkah laku pemotongan seperti yang dicadangkan oleh helaian spesifikasi Eropah.',
+          'Tindak balas Coolman adalah segmen sandwic kobalt. Tiga lapisan matriks kekerasan bertahap, dikimpal laser ke teras keluli karbon tinggi berketegangan. Lapisan luar menanggung beban pemotongan. Lapisan tengah adalah kobalt lebih lembut — ia melepaskan berlian sebelum matriks mengaca. Hasilnya adalah segmen yang haus pada kadar yang diperlukan oleh kerja, bukan kadar yang matriks pada asalnya dikalibrasi.',
+          'Hujah ini biasa dalam kalangan pengeluar alat. Ia jarang berlaku di pasaran ini kerana kebanyakan bilah yang dijual di Malaysia diimport siap dan tidak diformulasi semula untuk apa yang tanah di sini sebenarnya lakukan.',
+        ],
+        callouts: [
+          { num: '62', sup: '%', label: 'Kandungan silika. Granit hancur Malaysia, sampel agregat KL, S2 2024.' },
+          { num: '3.1', sup: '×', label: 'Haus matriks lebih cepat. Bilah kobalt-ikatan Eropah pada agregat Malaysia berbanding pasaran asal mereka.' },
+          { num: '12', sup: 'mm', label: 'Ketinggian segmen. Segmen kobalt sandwic C-Series Coolman, generasi semasa.' },
+          { num: '38', sup: 'm', label: 'Panjang potongan sebelum menyerut semula pada papak G60 Merdeka 118. Garis asas Eropah: 4 m.' },
+        ],
+        blueprint: {
+          drawingNumber: 'DWG · CL-SS-012 · SEGMEN KOBALT SANDWIC · KERATAN RENTAS',
+          scaleNote: 'SKALA 4:1 · SEMUA DIM. DALAM MM · REV. C · 2026-04',
+          caption: 'Segmen kobalt sandwic, generasi semasa. Tiga lapisan matriks kekerasan bertahap dikimpal laser ke teras keluli karbon tinggi berketegangan. Kobalt tengah yang lembut melepaskan berlian sebelum matriks luar mengaca — kadar haus sepadan dengan kerja, bukan kalibrasi asal matriks.',
+        },
       },
       alansLetter: {
         eyebrow: 'Surat daripada Alan',

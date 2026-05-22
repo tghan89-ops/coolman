@@ -17,7 +17,8 @@ import { useLanguage } from '@/lib/i18n/context'
 import { FearCard } from '@/components/industrial/FearCard'
 import { InventoryStat } from '@/components/industrial/InventoryStat'
 import { ChannelCard } from '@/components/industrial/ChannelCard'
-import { HeritageBadge } from '@/components/industrial/HeritageBadge'
+import { HeroFeatureCard } from '@/components/home/HeroFeatureCard'
+import { EngineeringSection } from '@/components/home/EngineeringSection'
 import { ChinesePullquote } from '@/components/editorial/Pullquote'
 import { DropCap } from '@/components/editorial/DropCap'
 import type { Setting } from '@/payload-types'
@@ -89,8 +90,8 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
                 {n.opening.lede}
               </p>
             </div>
-            <div className="flex lg:items-start lg:justify-end">
-              <HeritageBadge />
+            <div className="lg:items-start">
+              <HeroFeatureCard />
             </div>
           </div>
         </div>
@@ -238,7 +239,10 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
         </section>
       )}
 
-      {/* ── 7. ALAN'S LETTER ─────────────────────────────────────── */}
+      {/* ── 7. ENGINEERING THESIS ────────────────────────────────── */}
+      <EngineeringSection />
+
+      {/* ── 8. ALAN'S LETTER ─────────────────────────────────────── */}
       <section className="bg-paper border-t border-rule">
         <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
@@ -269,7 +273,7 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
         </div>
       </section>
 
-      {/* ── 8. THE QUIET DOOR ────────────────────────────────────── */}
+      {/* ── 9. THE QUIET DOOR ────────────────────────────────────── */}
       <section className="bg-paper border-t border-rule">
         <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
           <div className="grid gap-12 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
@@ -310,7 +314,7 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
         </div>
       </section>
 
-      {/* ── 9. THE CONVERSATION ──────────────────────────────────── */}
+      {/* ── 10. THE CONVERSATION ─────────────────────────────────── */}
       <section className="bg-navy text-paper">
         <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
           <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
