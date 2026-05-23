@@ -11,7 +11,10 @@
 
 import { defineConfig, devices } from '@playwright/test'
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3000'
+// Port 3000 is often occupied by other local servers (e.g. the static file
+// server used for design prototypes in the parent directory). Use 3099 as the
+// dedicated test port so pnpm e2e never accidentally hits the wrong server.
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:3099'
 const useExternalServer = Boolean(process.env.PLAYWRIGHT_BASE_URL)
 
 export default defineConfig({
@@ -32,7 +35,7 @@ export default defineConfig({
   webServer: useExternalServer
     ? undefined
     : {
-        command: 'pnpm dev',
+        command: 'pnpm dev --port 3099',
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

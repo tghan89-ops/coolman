@@ -24,24 +24,37 @@ test.describe('Public catalogue', () => {
     const initial = await productLinks.count()
     test.skip(initial === 0, 'No products on the catalogue — seed prerequisites not set up')
 
-    // Find the first clickable filter chip (button or link) that isn't "Clear".
-    const chips = page.getByRole('button').filter({ hasNotText: /clear/i })
-    const chipCount = await chips.count()
-    test.skip(chipCount === 0, 'No filter chips found — seed prerequisites not set up')
+    // Filters use checkboxes inside the aside sidebar (not buttons).
+    // Locate the first checkbox in the filter sidebar.
+    const filterSidebar = page.locator('aside').filter({ hasText: /filters/i })
+    const firstCheckbox = filterSidebar.getByRole('checkbox').first()
+    const checkboxCount = await firstCheckbox.count()
+    test.skip(checkboxCount === 0, 'No filter checkboxes found — seed prerequisites not set up')
 
-    await chips.first().click()
-    await page.waitForLoadState('networkidle')
+    await firstCheckbox.click()
+    // Filtering is client-side; wait for React state update to settle.
+    await page.waitForTimeout(500)
 
-    // Grid changed in some way (count differs OR a "clear filters" affordance appeared).
+    // After ticking a checkbox the "Clear" button must appear (totalSelected > 0).
+    const clearVisible = await page
+      .locator('aside')
+      .filter({ hasText: /filters/i })
+      .getByRole('button', { name: /clear/i })
+      .first()
+      .isVisible()
+      .catch(() => false)
     const afterFilter = await productLinks.count()
-    const clearVisible = await page.getByRole('button', { name: /clear/i }).first().isVisible().catch(() => false)
     expect(afterFilter !== initial || clearVisible).toBeTruthy()
 
-    // Reset.
-    const clearBtn = page.getByRole('button', { name: /clear/i }).first()
+    // Reset via Clear button.
+    const clearBtn = page
+      .locator('aside')
+      .filter({ hasText: /filters/i })
+      .getByRole('button', { name: /clear/i })
+      .first()
     if (await clearBtn.isVisible().catch(() => false)) {
       await clearBtn.click()
-      await page.waitForLoadState('networkidle')
+      await page.waitForTimeout(300)
       expect(await productLinks.count()).toBe(initial)
     }
   })

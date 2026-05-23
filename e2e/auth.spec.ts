@@ -44,7 +44,8 @@ test.describe('Login page', () => {
   })
 
   test('"Create account" link navigates to register page', async ({ page }) => {
-    await page.getByRole('link', { name: /register|create|sign up/i }).click()
+    // Two matching links exist (button variant + inline anchor) — take the first.
+    await page.getByRole('link', { name: /register|create|sign up/i }).first().click()
     await expect(page).toHaveURL(/register/)
   })
 })

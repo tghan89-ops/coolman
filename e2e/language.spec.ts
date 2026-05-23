@@ -7,10 +7,11 @@ import { test, expect } from '@playwright/test'
 test.describe('EN / BM language switcher', () => {
   test('switcher button is visible on the home page', async ({ page }) => {
     await page.goto('/')
-    // Language toggle is typically "BM" or "EN" or "Bahasa" button
+    // Language toggle renders the current language code ("EN" or "BM") as its
+    // only text content — match exactly to avoid hitting unrelated buttons.
     const langButton = page
-      .getByRole('button', { name: /BM|EN|Bahasa|English/i })
-      .or(page.locator('[aria-label*="language" i]'))
+      .locator('header button')
+      .filter({ hasText: /^(EN|BM)$/ })
       .first()
     await expect(langButton).toBeVisible({ timeout: 10_000 })
   })

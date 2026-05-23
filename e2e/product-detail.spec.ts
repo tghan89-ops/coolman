@@ -10,7 +10,8 @@ test.describe('Product detail', () => {
 
     const href = await firstCard.getAttribute('href')
     await firstCard.click()
-    await page.waitForLoadState('domcontentloaded')
+    // Wait for Next.js client-side navigation to complete (not just DOM ready).
+    await page.waitForURL(/\/products\/.+/, { timeout: 10_000 })
 
     // We're on a /products/<something> route and the page rendered.
     expect(page.url()).toContain('/products/')
