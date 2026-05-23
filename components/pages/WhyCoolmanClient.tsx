@@ -3,10 +3,46 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { ArrowRight, MessageCircle } from 'lucide-react'
+import { useLivePreview } from '@payloadcms/live-preview-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { ChinesePullquote, Pullquote } from '@/components/editorial/Pullquote'
 import { useLanguage } from '@/lib/i18n/context'
 import { useSettings } from '@/lib/settings/context'
+
+export type RawFolioParagraph = { paragraph?: string | null; paragraphBM?: string | null }
+export type RawFolioGroup = {
+  folioLabel?: string | null; folioLabelBM?: string | null
+  category?: string | null; categoryBM?: string | null
+  title?: string | null; titleBM?: string | null
+  titleEmphasis?: string | null; titleEmphasisBM?: string | null
+  summary?: string | null; summaryBM?: string | null
+  metaAuthor?: string | null
+  metaSubject?: string | null; metaSubjectBM?: string | null
+  metaRead?: string | null; metaReadBM?: string | null
+  paragraphs?: RawFolioParagraph[] | null
+  pullquote?: string | null; pullquoteBM?: string | null
+}
+export type RawWhyCoolmanPage = {
+  hero?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    title?: string | null; titleBM?: string | null
+    titleEmphasis?: string | null; titleEmphasisBM?: string | null
+    lede?: string | null; ledeBM?: string | null
+  } | null
+  folio01?: RawFolioGroup | null
+  folio02?: RawFolioGroup | null
+  folio03?: RawFolioGroup | null
+  closingCta?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    title?: string | null; titleBM?: string | null
+    titleEmphasis?: string | null; titleEmphasisBM?: string | null
+    body?: string | null; bodyBM?: string | null
+    whatsappCtaLabel?: string | null; whatsappCtaLabelBM?: string | null
+    fieldNotesCtaLabel?: string | null; fieldNotesCtaLabelBM?: string | null
+  } | null
+}
+
+type Props = { initialData: RawWhyCoolmanPage | null }
 
 interface Folio {
   folioLabel: string
@@ -65,15 +101,70 @@ function FolioBody({ folio }: { folio: Folio }) {
   )
 }
 
-export function WhyCoolmanClient() {
-  const { t } = useLanguage()
+export function WhyCoolmanClient({ initialData }: Props) {
+  const { data } = useLivePreview<RawWhyCoolmanPage>({
+    initialData: initialData ?? ({} as RawWhyCoolmanPage),
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+    depth: 1,
+  })
+
+  const { language, t } = useLanguage()
   const { whatsapp_number } = useSettings()
   const whatsappDigits = whatsapp_number.replace(/\D/g, '')
-  const { hero, folio01, folio02, folio03, closingCta } = t.pages.whyCoolman
+  const copy = t.pages.whyCoolman
+
+  const pickL = (en: string | null | undefined, bm: string | null | undefined, fallback: string): string => {
+    if (language === 'BM' && bm && bm.trim()) return bm
+    if (en && en.trim()) return en
+    return fallback
+  }
+
+  const mergeParas = (
+    cmsParas: RawFolioParagraph[] | null | undefined,
+    copyParas: string[]
+  ): string[] => {
+    if (cmsParas && cmsParas.length > 0) {
+      return cmsParas.map((p, i) => pickL(p.paragraph, p.paragraphBM, copyParas[i] ?? ''))
+    }
+    return copyParas
+  }
+
+  const buildFolio = (raw: RawFolioGroup | null | undefined, c: typeof copy.folio01): Folio => ({
+    folioLabel:    pickL(raw?.folioLabel,    raw?.folioLabelBM,    c.folioLabel),
+    category:      pickL(raw?.category,      raw?.categoryBM,      c.category),
+    title:         pickL(raw?.title,         raw?.titleBM,         c.title),
+    titleEmphasis: pickL(raw?.titleEmphasis, raw?.titleEmphasisBM, c.titleEmphasis),
+    summary:       pickL(raw?.summary,       raw?.summaryBM,       c.summary),
+    metaAuthor:    raw?.metaAuthor?.trim()  || c.metaAuthor,
+    metaSubject:   pickL(raw?.metaSubject,   raw?.metaSubjectBM,   c.metaSubject),
+    metaRead:      pickL(raw?.metaRead,      raw?.metaReadBM,      c.metaRead),
+    paragraphs:    mergeParas(raw?.paragraphs, c.paragraphs),
+    pullquote:     pickL(raw?.pullquote,     raw?.pullquoteBM,     c.pullquote),
+  })
+
+  const hero = {
+    eyebrow:       pickL(data?.hero?.eyebrow,       data?.hero?.eyebrowBM,       copy.hero.eyebrow),
+    title:         pickL(data?.hero?.title,         data?.hero?.titleBM,         copy.hero.title),
+    titleEmphasis: pickL(data?.hero?.titleEmphasis, data?.hero?.titleEmphasisBM, copy.hero.titleEmphasis),
+    lede:          pickL(data?.hero?.lede,          data?.hero?.ledeBM,          copy.hero.lede),
+  }
+
+  const folios: Folio[] = [
+    buildFolio(data?.folio01, copy.folio01),
+    buildFolio(data?.folio02, copy.folio02),
+    buildFolio(data?.folio03, copy.folio03),
+  ]
+
+  const closingCta = {
+    eyebrow:           pickL(data?.closingCta?.eyebrow,           data?.closingCta?.eyebrowBM,           copy.closingCta.eyebrow),
+    title:             pickL(data?.closingCta?.title,             data?.closingCta?.titleBM,             copy.closingCta.title),
+    titleEmphasis:     pickL(data?.closingCta?.titleEmphasis,     data?.closingCta?.titleEmphasisBM,     copy.closingCta.titleEmphasis),
+    body:              pickL(data?.closingCta?.body,              data?.closingCta?.bodyBM,              copy.closingCta.body),
+    whatsappCtaLabel:  pickL(data?.closingCta?.whatsappCtaLabel,  data?.closingCta?.whatsappCtaLabelBM,  copy.closingCta.whatsappCtaLabel),
+    fieldNotesCtaLabel: pickL(data?.closingCta?.fieldNotesCtaLabel, data?.closingCta?.fieldNotesCtaLabelBM, copy.closingCta.fieldNotesCtaLabel),
+  }
 
   const [activeTab, setActiveTab] = useState(0)
-
-  const folios: Folio[] = [folio01, folio02, folio03]
 
   return (
     <PublicLayout>

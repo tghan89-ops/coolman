@@ -9,6 +9,7 @@ import {
   UserX,
   type LucideIcon,
 } from 'lucide-react'
+import { useLivePreview } from '@payloadcms/live-preview-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { useLanguage } from '@/lib/i18n/context'
 import { FearCard } from '@/components/industrial/FearCard'
@@ -19,14 +20,79 @@ import { ChinesePullquote } from '@/components/editorial/Pullquote'
 import { DropCap } from '@/components/editorial/DropCap'
 import type { Setting } from '@/payload-types'
 
+export type RawHomePage = {
+  opening?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    headlinePrefix?: string | null; headlinePrefixBM?: string | null
+    headlineEmphasis?: string | null; headlineEmphasisBM?: string | null
+    lede?: string | null; ledeBM?: string | null
+    ctaPrimary?: string | null; ctaPrimaryBM?: string | null
+    ctaSecondary?: string | null; ctaSecondaryBM?: string | null
+  } | null
+  fearGrid?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    headline?: string | null; headlineBM?: string | null
+    cards?: Array<{ key?: string | null; title?: string | null; titleBM?: string | null; body?: string | null; bodyBM?: string | null }> | null
+  } | null
+  threeMythsIntro?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    headline?: string | null; headlineBM?: string | null
+    lede?: string | null; ledeBM?: string | null
+    ctaLabel?: string | null; ctaLabelBM?: string | null
+  } | null
+  brotherhoodIntro?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    headline?: string | null; headlineBM?: string | null
+    lede?: string | null; ledeBM?: string | null
+    ctaLabel?: string | null; ctaLabelBM?: string | null
+  } | null
+  alansLetter?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    paragraphs?: Array<{ paragraph?: string | null; paragraphBM?: string | null }> | null
+    signature?: string | null
+    signatureLine2?: string | null; signatureLine2BM?: string | null
+  } | null
+  quietDoor?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    headline?: string | null; headlineBM?: string | null
+    lede?: string | null; ledeBM?: string | null
+    ctaPrimary?: string | null; ctaPrimaryBM?: string | null
+    ctaSecondary?: string | null; ctaSecondaryBM?: string | null
+  } | null
+  conversation?: {
+    eyebrow?: string | null; eyebrowBM?: string | null
+    headline?: string | null; headlineBM?: string | null
+    lede?: string | null; ledeBM?: string | null
+    channels?: Array<{
+      tag?: string | null; tagBM?: string | null
+      title?: string | null; titleBM?: string | null
+      body?: string | null; bodyBM?: string | null
+      ctaLabel?: string | null; ctaLabelBM?: string | null
+    }> | null
+  } | null
+}
+
 interface HomePageClientProps {
   settings: Partial<Setting>
   publishedPostsCount: number
+  initialData: RawHomePage | null
 }
 
-export function HomePageClient({ settings, publishedPostsCount }: HomePageClientProps) {
-  const { t } = useLanguage()
+export function HomePageClient({ settings, publishedPostsCount, initialData }: HomePageClientProps) {
+  const { data } = useLivePreview<RawHomePage>({
+    initialData: initialData ?? ({} as RawHomePage),
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+    depth: 1,
+  })
+
+  const { t, language } = useLanguage()
   const n = t.homeNarrative
+
+  const pickL = (en: string | null | undefined, bm: string | null | undefined, fallback: string): string => {
+    if (language === 'BM' && bm && bm.trim()) return bm
+    if (en && en.trim()) return en
+    return fallback
+  }
 
   const whatsappNumber = settings?.whatsapp_number || '+60126363156'
   const whatsappDigits = whatsappNumber.replace(/\D/g, '')
@@ -35,16 +101,10 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
     : 96
   const dispatchCutoff = settings?.inventory_dispatch_cutoff || '14:00'
 
-  // Guard against admin-entered non-numeric or short values for the WhatsApp/tel
-  // fields in Payload Settings. Malaysian mobile numbers are 9–10 digits
-  // including the leading 60 country code; require ≥ 8 to consider valid.
   const whatsappHref =
     whatsappDigits.length >= 8 ? `https://wa.me/${whatsappDigits}` : '#'
   const telHref = whatsappDigits.length >= 8 ? `tel:+${whatsappDigits}` : '#'
 
-  // Pair fear icons by stable key, not by array index. If copy.ts ever
-  // reorders or adds/removes a fear card, the icon-to-card pairing still
-  // holds because each card declares its own `key`.
   const fearIconMap: Record<string, LucideIcon> = {
     delay: Clock,
     equipment: Wrench,
@@ -54,8 +114,31 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
 
   const channelHrefs = [whatsappHref, telHref, '/contact#site-visit']
 
-  // Overlay live Settings values onto the quietDoor stats by stable key, not
-  // by magic array index.
+  // Build fear cards: CMS array takes precedence over copy.ts
+  const fearCards = (data?.fearGrid?.cards && data.fearGrid.cards.length > 0)
+    ? data.fearGrid.cards.map((c, i) => ({
+        key:  c.key  || n.fearGrid.cards[i]?.key  || '',
+        title: pickL(c.title, c.titleBM, n.fearGrid.cards[i]?.title ?? ''),
+        body:  pickL(c.body,  c.bodyBM,  n.fearGrid.cards[i]?.body  ?? ''),
+      }))
+    : n.fearGrid.cards
+
+  // Build letter paragraphs: CMS array takes precedence over copy.ts
+  const letterParas = (data?.alansLetter?.paragraphs && data.alansLetter.paragraphs.length > 0)
+    ? data.alansLetter.paragraphs.map((p, i) =>
+        pickL(p.paragraph, p.paragraphBM, n.alansLetter.paragraphs[i] ?? ''))
+    : n.alansLetter.paragraphs
+
+  // Build conversation channels: CMS array takes precedence over copy.ts
+  const channels = (data?.conversation?.channels && data.conversation.channels.length > 0)
+    ? data.conversation.channels.map((ch, i) => ({
+        tag:      pickL(ch.tag,      ch.tagBM,      n.conversation.channels[i]?.tag      ?? ''),
+        title:    pickL(ch.title,    ch.titleBM,    n.conversation.channels[i]?.title    ?? ''),
+        body:     pickL(ch.body,     ch.bodyBM,     n.conversation.channels[i]?.body     ?? ''),
+        ctaLabel: pickL(ch.ctaLabel, ch.ctaLabelBM, n.conversation.channels[i]?.ctaLabel ?? ''),
+      }))
+    : n.conversation.channels
+
   const quietDoorStats = n.quietDoor.stats.map((s) => {
     if (s.key === 'onTimePct') return { ...s, value: `${onTimePct}%` }
     if (s.key === 'dispatchCutoff') return { ...s, value: dispatchCutoff }
@@ -71,14 +154,16 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
           <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
-                {n.opening.eyebrow}
+                {pickL(data?.opening?.eyebrow, data?.opening?.eyebrowBM, n.opening.eyebrow)}
               </p>
               <h1 className="mt-6 font-fraunces text-[clamp(48px,6vw,84px)] font-normal leading-[1.02] tracking-[-0.025em] text-paper max-w-[14ch]">
-                {n.opening.headlinePrefix}
-                <em className="italic font-light text-accent-light">{n.opening.headlineEmphasis}</em>
+                {pickL(data?.opening?.headlinePrefix, data?.opening?.headlinePrefixBM, n.opening.headlinePrefix)}
+                <em className="italic font-light text-accent-light">
+                  {pickL(data?.opening?.headlineEmphasis, data?.opening?.headlineEmphasisBM, n.opening.headlineEmphasis)}
+                </em>
               </h1>
               <p className="mt-7 max-w-[52ch] text-lg leading-[1.55] text-ink-faint">
-                {n.opening.lede}
+                {pickL(data?.opening?.lede, data?.opening?.ledeBM, n.opening.lede)}
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
                 <a
@@ -87,13 +172,13 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
                   rel="noopener noreferrer"
                   className="inline-flex h-12 items-center justify-center bg-paper px-6 text-sm font-medium text-navy rounded-sm transition-[box-shadow] duration-150 ease-out hover:shadow-[0_4px_12px_rgba(0,0,0,0.25)]"
                 >
-                  {n.opening.ctaPrimary}
+                  {pickL(data?.opening?.ctaPrimary, data?.opening?.ctaPrimaryBM, n.opening.ctaPrimary)}
                 </a>
                 <Link
                   href="/products"
                   className="inline-flex h-12 items-center justify-center border border-[rgba(250,250,247,0.4)] bg-transparent px-6 text-sm font-medium text-paper rounded-sm transition-[border-color] duration-150 ease-out hover:border-paper"
                 >
-                  {n.opening.ctaSecondary}
+                  {pickL(data?.opening?.ctaSecondary, data?.opening?.ctaSecondaryBM, n.opening.ctaSecondary)}
                 </Link>
               </div>
             </div>
@@ -110,15 +195,15 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
           <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-                {n.fearGrid.eyebrow}
+                {pickL(data?.fearGrid?.eyebrow, data?.fearGrid?.eyebrowBM, n.fearGrid.eyebrow)}
               </p>
               <h2 className="mt-4 max-w-[18ch] font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
-                {n.fearGrid.headline}
+                {pickL(data?.fearGrid?.headline, data?.fearGrid?.headlineBM, n.fearGrid.headline)}
               </h2>
             </div>
           </div>
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {n.fearGrid.cards.map((card) => {
+            {fearCards.map((card) => {
               const Icon = fearIconMap[card.key]
               return (
                 <FearCard
@@ -139,21 +224,21 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
           <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-20 lg:items-start">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-                {n.threeMythsIntro.eyebrow}
+                {pickL(data?.threeMythsIntro?.eyebrow, data?.threeMythsIntro?.eyebrowBM, n.threeMythsIntro.eyebrow)}
               </p>
               <h2 className="mt-4 max-w-[22ch] font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
-                {n.threeMythsIntro.headline}
+                {pickL(data?.threeMythsIntro?.headline, data?.threeMythsIntro?.headlineBM, n.threeMythsIntro.headline)}
               </h2>
             </div>
             <div className="lg:pt-2">
               <p className="text-base leading-[1.7] text-ink-muted">
-                {n.threeMythsIntro.lede}
+                {pickL(data?.threeMythsIntro?.lede, data?.threeMythsIntro?.ledeBM, n.threeMythsIntro.lede)}
               </p>
               <Link
                 href="/why-coolman"
                 className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors duration-150 ease-out hover:text-accent-light min-h-[44px]"
               >
-                {n.threeMythsIntro.ctaLabel}
+                {pickL(data?.threeMythsIntro?.ctaLabel, data?.threeMythsIntro?.ctaLabelBM, n.threeMythsIntro.ctaLabel)}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -167,21 +252,21 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
           <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-20 lg:items-start">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-                {n.brotherhoodIntro.eyebrow}
+                {pickL(data?.brotherhoodIntro?.eyebrow, data?.brotherhoodIntro?.eyebrowBM, n.brotherhoodIntro.eyebrow)}
               </p>
               <h2 className="mt-4 max-w-[22ch] font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
-                {n.brotherhoodIntro.headline}
+                {pickL(data?.brotherhoodIntro?.headline, data?.brotherhoodIntro?.headlineBM, n.brotherhoodIntro.headline)}
               </h2>
             </div>
             <div className="lg:pt-2">
               <p className="text-base leading-[1.7] text-ink-muted">
-                {n.brotherhoodIntro.lede}
+                {pickL(data?.brotherhoodIntro?.lede, data?.brotherhoodIntro?.ledeBM, n.brotherhoodIntro.lede)}
               </p>
               <Link
                 href="/why-coolman"
                 className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors duration-150 ease-out hover:text-accent-light min-h-[44px]"
               >
-                {n.brotherhoodIntro.ctaLabel}
+                {pickL(data?.brotherhoodIntro?.ctaLabel, data?.brotherhoodIntro?.ctaLabelBM, n.brotherhoodIntro.ctaLabel)}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -253,10 +338,10 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
       <section className="bg-paper border-t border-rule">
         <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-            {n.alansLetter.eyebrow}
+            {pickL(data?.alansLetter?.eyebrow, data?.alansLetter?.eyebrowBM, n.alansLetter.eyebrow)}
           </p>
           <div className="mt-10 max-w-[680px]">
-            {n.alansLetter.paragraphs.map((para, i) => (
+            {letterParas.map((para, i) => (
               i === 0 ? (
                 <DropCap key={i} className="text-[16px] leading-[1.75] text-navy">
                   {para}
@@ -271,10 +356,10 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
               )
             ))}
             <p className="mt-10 font-fraunces italic text-[18px] text-ink-muted">
-              {n.alansLetter.signature}
+              {data?.alansLetter?.signature?.trim() || n.alansLetter.signature}
             </p>
             <p className="mt-1 font-fraunces italic text-[15px] text-ink-muted">
-              {n.alansLetter.signatureLine2}
+              {pickL(data?.alansLetter?.signatureLine2, data?.alansLetter?.signatureLine2BM, n.alansLetter.signatureLine2)}
             </p>
           </div>
         </div>
@@ -286,14 +371,14 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
           <div className="grid gap-12 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
-                {n.quietDoor.eyebrow}
+                {pickL(data?.quietDoor?.eyebrow, data?.quietDoor?.eyebrowBM, n.quietDoor.eyebrow)}
               </p>
               <h2 className="mt-4 max-w-[22ch] font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
-                {n.quietDoor.headline}
+                {pickL(data?.quietDoor?.headline, data?.quietDoor?.headlineBM, n.quietDoor.headline)}
               </h2>
             </div>
             <p className="max-w-[36ch] text-[15px] leading-[1.6] text-ink-muted">
-              {n.quietDoor.lede}
+              {pickL(data?.quietDoor?.lede, data?.quietDoor?.ledeBM, n.quietDoor.lede)}
             </p>
           </div>
 
@@ -308,14 +393,14 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
               href="/products"
               className="inline-flex h-12 items-center justify-center bg-navy px-6 text-sm font-medium text-paper rounded-sm transition-[background-color,box-shadow] duration-150 ease-out hover:bg-navy-light hover:shadow-[0_4px_12px_rgba(10,22,40,0.12)]"
             >
-              {n.quietDoor.ctaPrimary}
+              {pickL(data?.quietDoor?.ctaPrimary, data?.quietDoor?.ctaPrimaryBM, n.quietDoor.ctaPrimary)}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
             <Link
               href="/contact"
               className="inline-flex h-12 items-center justify-center border border-navy bg-transparent px-6 text-sm font-medium text-navy rounded-sm transition-[background-color,color] duration-150 ease-out hover:bg-navy hover:text-paper"
             >
-              {n.quietDoor.ctaSecondary}
+              {pickL(data?.quietDoor?.ctaSecondary, data?.quietDoor?.ctaSecondaryBM, n.quietDoor.ctaSecondary)}
             </Link>
           </div>
         </div>
@@ -327,19 +412,19 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
           <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
-                {n.conversation.eyebrow}
+                {pickL(data?.conversation?.eyebrow, data?.conversation?.eyebrowBM, n.conversation.eyebrow)}
               </p>
               <h2 className="mt-4 max-w-[18ch] font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-paper">
-                {n.conversation.headline}
+                {pickL(data?.conversation?.headline, data?.conversation?.headlineBM, n.conversation.headline)}
               </h2>
             </div>
             <p className="max-w-[36ch] text-[15px] leading-[1.6] text-ink-faint">
-              {n.conversation.lede}
+              {pickL(data?.conversation?.lede, data?.conversation?.ledeBM, n.conversation.lede)}
             </p>
           </div>
 
           <div className="mt-16 grid gap-6 md:grid-cols-3">
-            {n.conversation.channels.map((ch, i) => (
+            {channels.map((ch, i) => (
               <article
                 key={i}
                 className="bg-paper text-navy p-9 flex flex-col min-h-[280px]"
