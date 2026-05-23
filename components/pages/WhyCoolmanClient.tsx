@@ -17,6 +17,8 @@ interface Folio {
   metaAuthor: string
   metaSubject: string
   metaRead: string
+  paragraphs: string[]
+  pullquote: string
 }
 
 function FolioHeader({ folio }: { folio: Folio }) {
@@ -34,21 +36,15 @@ function FolioHeader({ folio }: { folio: Folio }) {
       </p>
       <dl className="mt-8 grid grid-cols-1 gap-4 border-t border-ink/10 pt-6 sm:grid-cols-3">
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/50">
-            By
-          </dt>
+          <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/50">By</dt>
           <dd className="mt-1 text-sm text-ink">{folio.metaAuthor}</dd>
         </div>
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/50">
-            Subject
-          </dt>
+          <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/50">Subject</dt>
           <dd className="mt-1 text-sm text-ink">{folio.metaSubject}</dd>
         </div>
         <div>
-          <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/50">
-            Length
-          </dt>
+          <dt className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/50">Length</dt>
           <dd className="mt-1 font-mono text-sm text-ink">{folio.metaRead}</dd>
         </div>
       </dl>
@@ -56,21 +52,16 @@ function FolioHeader({ folio }: { folio: Folio }) {
   )
 }
 
-function Prose({ paragraphs }: { paragraphs: string[] }) {
+function FolioBody({ folio }: { folio: Folio }) {
   return (
-    <div className="space-y-5 text-base leading-relaxed text-ink/85 sm:text-[17px] sm:leading-[1.75]">
-      {paragraphs.map((p, i) => (
-        <p key={i}>{p}</p>
-      ))}
-    </div>
-  )
-}
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <h3 className="mb-6 mt-12 font-fraunces text-[clamp(22px,2.4vw,30px)] font-normal leading-[1.15] tracking-[-0.015em] text-navy">
-      {children}
-    </h3>
+    <>
+      <div className="space-y-5 text-base leading-relaxed text-ink/85 sm:text-[17px] sm:leading-[1.75]">
+        {folio.paragraphs.map((p, i) => (
+          <p key={i}>{p}</p>
+        ))}
+      </div>
+      <Pullquote>{folio.pullquote}</Pullquote>
+    </>
   )
 }
 
@@ -82,11 +73,7 @@ export function WhyCoolmanClient() {
 
   const [activeTab, setActiveTab] = useState(0)
 
-  const tabs = [
-    { label: folio01.category, key: 'folio01' },
-    { label: folio02.category, key: 'folio02' },
-    { label: folio03.category, key: 'folio03' },
-  ]
+  const folios: Folio[] = [folio01, folio02, folio03]
 
   return (
     <PublicLayout>
@@ -108,9 +95,9 @@ export function WhyCoolmanClient() {
       <div className="sticky top-0 z-10 bg-paper border-b border-ink/10">
         <div className="mx-auto max-w-3xl px-6 sm:px-12">
           <div className="flex" role="tablist">
-            {tabs.map((tab, idx) => (
+            {folios.map((folio, idx) => (
               <button
-                key={tab.key}
+                key={folio.folioLabel}
                 role="tab"
                 aria-selected={activeTab === idx}
                 onClick={() => setActiveTab(idx)}
@@ -122,104 +109,19 @@ export function WhyCoolmanClient() {
                     : 'border-transparent text-ink/40 hover:text-ink/70',
                 ].join(' ')}
               >
-                {tab.label}
+                {folio.category}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      <div role="tabpanel">
-        {activeTab === 0 && (
-          <article className="bg-paper text-ink">
-            <div className="mx-auto max-w-3xl px-6 py-24 sm:px-12 sm:py-32">
-              <FolioHeader folio={folio01} />
-
-              <SectionHeading>{folio01.intro.heading}</SectionHeading>
-              <Prose paragraphs={folio01.intro.paragraphs} />
-
-              {folio01.myths.map((myth, idx) => (
-                <section key={idx} className="mt-16">
-                  <p className="font-mono text-[12px] uppercase tracking-[0.14em] text-accent">
-                    {myth.label}
-                  </p>
-                  <h3 className="mt-3 font-fraunces text-[clamp(26px,3vw,36px)] font-normal leading-[1.1] tracking-[-0.02em] text-navy">
-                    {myth.title}
-                  </h3>
-                  <p className="mt-6 border-l-2 border-ink/15 pl-5 font-fraunces italic text-[clamp(17px,1.6vw,20px)] leading-[1.5] text-ink/70">
-                    {myth.claim}
-                  </p>
-                  <div className="mt-8">
-                    <Prose paragraphs={myth.paragraphs} />
-                  </div>
-                  {myth.pullquote ? <Pullquote>{myth.pullquote}</Pullquote> : null}
-                  {myth.coda ? (
-                    <div className="mt-10 border-t border-ink/10 pt-8">
-                      <h4 className="mb-5 font-fraunces text-[clamp(20px,2vw,24px)] font-normal leading-[1.2] tracking-[-0.01em] text-navy">
-                        {myth.coda.heading}
-                      </h4>
-                      <Prose paragraphs={myth.coda.paragraphs} />
-                    </div>
-                  ) : null}
-                </section>
-              ))}
-
-              <div className="mt-16">
-                <Pullquote>{folio01.bridgeQuote}</Pullquote>
-              </div>
-
-              <SectionHeading>{folio01.coda.heading}</SectionHeading>
-              <Prose paragraphs={folio01.coda.paragraphs} />
-            </div>
-          </article>
-        )}
-
-        {activeTab === 1 && (
-          <article className="bg-paper text-ink">
-            <div className="mx-auto max-w-3xl px-6 py-24 sm:px-12 sm:py-32">
-              <FolioHeader folio={folio02} />
-
-              {folio02.sections.map((s, idx) => (
-                <section key={idx} className="mt-4">
-                  <SectionHeading>{s.heading}</SectionHeading>
-                  <Prose paragraphs={s.paragraphs} />
-                  {s.pullquote ? <Pullquote>{s.pullquote}</Pullquote> : null}
-                </section>
-              ))}
-
-              <div className="mt-16">
-                <Pullquote>{folio02.bridgeQuote}</Pullquote>
-              </div>
-
-              <SectionHeading>{folio02.coda.heading}</SectionHeading>
-              <Prose paragraphs={folio02.coda.paragraphs} />
-            </div>
-          </article>
-        )}
-
-        {activeTab === 2 && (
-          <article className="bg-paper text-ink">
-            <div className="mx-auto max-w-3xl px-6 py-24 sm:px-12 sm:py-32">
-              <FolioHeader folio={folio03} />
-
-              {folio03.sections.map((s, idx) => (
-                <section key={idx} className="mt-4">
-                  <SectionHeading>{s.heading}</SectionHeading>
-                  <Prose paragraphs={s.paragraphs} />
-                  {s.pullquote ? <Pullquote>{s.pullquote}</Pullquote> : null}
-                </section>
-              ))}
-
-              <div className="mt-16">
-                <Pullquote>{folio03.bridgeQuote}</Pullquote>
-              </div>
-
-              <SectionHeading>{folio03.coda.heading}</SectionHeading>
-              <Prose paragraphs={folio03.coda.paragraphs} />
-            </div>
-          </article>
-        )}
-      </div>
+      <article className="bg-paper text-ink" role="tabpanel">
+        <div className="mx-auto max-w-3xl px-6 py-24 sm:px-12 sm:py-32">
+          <FolioHeader folio={folios[activeTab]} />
+          <FolioBody folio={folios[activeTab]} />
+        </div>
+      </article>
 
       <section className="bg-paper">
         <div className="mx-auto max-w-7xl px-6 pb-12 sm:px-12 sm:pb-16">
