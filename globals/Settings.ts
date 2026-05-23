@@ -196,6 +196,15 @@ export const Settings: GlobalConfig = {
       },
     },
     {
+      name: 'demo_request_email',
+      type: 'text',
+      defaultValue: 'alan@diamantool.com',
+      admin: {
+        description:
+          'Email address that receives Shibuya demo requests submitted via the /shibuya page form. Change this any time without a code deploy. Falls back to alan@diamantool.com if left blank.',
+      },
+    },
+    {
       name: 'inventory_on_time_pct',
       type: 'number',
       defaultValue: 96,

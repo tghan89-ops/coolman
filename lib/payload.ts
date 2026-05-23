@@ -179,6 +179,12 @@ export type RawShibuyaMachineRow = {
   max_diameter?: string | null
   weight?: string | null
   rpm_range?: string | null
+  voltage?: string | null
+  max_depth?: string | null
+  feed_system?: string | null
+  hole_runout?: string | null
+  bit_pairing?: string | null
+  stock_note?: string | null
   anchor?: string | null
   anchorBM?: string | null
   price?: string | null

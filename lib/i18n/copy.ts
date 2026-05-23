@@ -300,17 +300,37 @@ export interface CopyStructure {
       weightLabel: string
       anchorLabel: string
       rpmRangeLabel: string
+      voltageLabel: string
+      maxDepthLabel: string
+      feedSystemLabel: string
+      holeRunoutLabel: string
+      bitPairingLabel: string
       keyFeaturesLabel: string
       startingFromLabel: string
       requestQuote: string
+      downloadSpecSheet: string
       inActionEyebrow: string
       inActionCtaLabel: string
       supportEyebrow: string
       ctaTitle: string
       ctaMessage: string
       ctaButton: string
+      ctaWhatsApp: string
+      ctaAllChannels: string
       emptyStateHeadline: string
       emptyStateBody: string
+      demoFormTitle: string
+      demoFormName: string
+      demoFormCompany: string
+      demoFormPhone: string
+      demoFormModel: string
+      demoFormModelPlaceholder: string
+      demoFormProject: string
+      demoFormNotes: string
+      demoFormSubmit: string
+      demoFormSuccessTitle: string
+      demoFormSuccessBody: string
+      demoFormError: string
     }
     productDetail: {
       breadcrumbProducts: string
@@ -1330,17 +1350,37 @@ export const COPY: Record<Language, CopyStructure> = {
         weightLabel: 'Weight',
         anchorLabel: 'Anchor',
         rpmRangeLabel: 'RPM Range',
+        voltageLabel: 'Voltage',
+        maxDepthLabel: 'Max Drilling Depth',
+        feedSystemLabel: 'Feed System',
+        holeRunoutLabel: 'Hole Runout',
+        bitPairingLabel: 'Coolman Bit Pairing',
         keyFeaturesLabel: 'KEY FEATURES',
         startingFromLabel: 'Starting from',
         requestQuote: 'Request Quote',
+        downloadSpecSheet: 'Download Spec Sheet',
         inActionEyebrow: 'IN THE FIELD',
         inActionCtaLabel: 'View Applications',
         supportEyebrow: 'SUPPORT',
         ctaTitle: 'Want a Shibuya Demo?',
         ctaMessage: 'Speak to our team for a live walkthrough and pricing.',
         ctaButton: 'Request a Demo',
+        ctaWhatsApp: 'WhatsApp Us Now',
+        ctaAllChannels: 'All Contact Channels',
         emptyStateHeadline: 'Roster coming soon',
         emptyStateBody: 'The Shibuya range is being prepared. Speak to our team for a live walkthrough.',
+        demoFormTitle: 'Request a Shibuya Demo',
+        demoFormName: 'Your Name',
+        demoFormCompany: 'Company',
+        demoFormPhone: 'Phone Number',
+        demoFormModel: 'Machine Model of Interest',
+        demoFormModelPlaceholder: 'Select a model…',
+        demoFormProject: 'Project / Application',
+        demoFormNotes: 'Additional Notes',
+        demoFormSubmit: 'Send Request',
+        demoFormSuccessTitle: 'Request received',
+        demoFormSuccessBody: 'Our team will contact you within one business day to arrange the demo.',
+        demoFormError: 'Something went wrong. Please try again or contact us via WhatsApp.',
       },
       productDetail: {
         breadcrumbProducts: 'Products',
@@ -2577,17 +2617,37 @@ export const COPY: Record<Language, CopyStructure> = {
         weightLabel: 'Berat',
         anchorLabel: 'Pengangkur',
         rpmRangeLabel: 'Julat RPM',
+        voltageLabel: 'Voltan',
+        maxDepthLabel: 'Kedalaman Gerudi Maksimum',
+        feedSystemLabel: 'Sistem Suapan',
+        holeRunoutLabel: 'Runout Lubang',
+        bitPairingLabel: 'Padanan Bit Coolman',
         keyFeaturesLabel: 'CIRI UTAMA',
         startingFromLabel: 'Bermula dari',
         requestQuote: 'Minta Sebut Harga',
+        downloadSpecSheet: 'Muat Turun Helaian Spesifikasi',
         inActionEyebrow: 'DI LAPANGAN',
         inActionCtaLabel: 'Lihat Aplikasi',
         supportEyebrow: 'SOKONGAN',
         ctaTitle: 'Mahukan Demo Shibuya?',
         ctaMessage: 'Bercakap dengan pasukan kami untuk tunjuk cara langsung dan harga.',
         ctaButton: 'Minta Demo',
+        ctaWhatsApp: 'WhatsApp Kami Sekarang',
+        ctaAllChannels: 'Semua Saluran Hubungi',
         emptyStateHeadline: 'Senarai akan datang',
         emptyStateBody: 'Rangkaian Shibuya sedang disediakan. Bercakap dengan pasukan kami untuk tunjuk cara langsung.',
+        demoFormTitle: 'Minta Demo Shibuya',
+        demoFormName: 'Nama Anda',
+        demoFormCompany: 'Syarikat',
+        demoFormPhone: 'Nombor Telefon',
+        demoFormModel: 'Model Mesin yang Diminati',
+        demoFormModelPlaceholder: 'Pilih model…',
+        demoFormProject: 'Projek / Aplikasi',
+        demoFormNotes: 'Nota Tambahan',
+        demoFormSubmit: 'Hantar Permintaan',
+        demoFormSuccessTitle: 'Permintaan diterima',
+        demoFormSuccessBody: 'Pasukan kami akan menghubungi anda dalam satu hari bekerja untuk mengatur demo.',
+        demoFormError: 'Sesuatu telah berlaku. Sila cuba lagi atau hubungi kami melalui WhatsApp.',
       },
       productDetail: {
         breadcrumbProducts: 'Produk',

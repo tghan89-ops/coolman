@@ -42,6 +42,12 @@ export default async function ShibuyaPage() {
       anchor: m.anchor ?? null,
       anchorBM: m.anchorBM ?? null,
       rpmRange: m.rpm_range ?? null,
+      voltage: m.voltage ?? null,
+      maxDepth: m.max_depth ?? null,
+      feedSystem: m.feed_system ?? null,
+      holeRunout: m.hole_runout ?? null,
+      bitPairing: m.bit_pairing ?? null,
+      stockNote: m.stock_note ?? null,
       price: m.price ?? null,
       heroImageUrl:
         typeof m.hero_image === 'object' && m.hero_image !== null && 'url' in m.hero_image

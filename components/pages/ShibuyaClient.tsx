@@ -3,15 +3,12 @@
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, ArrowDown, Play, Check } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import { useLanguage } from '@/lib/i18n/context'
+import { useSettings } from '@/lib/settings/context'
 import { cn } from '@/lib/utils'
 
-// Machine roster row shape exposed to this client. Snake_case from the
-// `shibuya-machines` collection is mapped to camelCase at the server
-// boundary in `app/(frontend)/shibuya/page.tsx`.
 export interface ShibuyaMachineFeature {
   feature: string
   featureBM: string | null
@@ -33,6 +30,12 @@ export interface ShibuyaMachine {
   anchor: string | null
   anchorBM: string | null
   rpmRange: string | null
+  voltage: string | null
+  maxDepth: string | null
+  feedSystem: string | null
+  holeRunout: string | null
+  bitPairing: string | null
+  stockNote: string | null
   price: string | null
   heroImageUrl: string | null
   heroImageAlt: string | null
@@ -44,35 +47,42 @@ interface ShibuyaClientProps {
   machines: ShibuyaMachine[]
 }
 
+type FormState = 'idle' | 'submitting' | 'success' | 'error'
+
+function CameraPlaceholder() {
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-navy/20">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+        <rect x="4" y="9" width="28" height="21" rx="2" stroke="currentColor" strokeWidth="1.5" />
+        <circle cx="18" cy="19" r="5" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M12 9V7a2 2 0 012-2h8a2 2 0 012 2v2" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    </div>
+  )
+}
+
 export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
   const { language, t } = useLanguage()
+  const settings = useSettings()
+
   const pick = (en?: string | null, bm?: string | null): string => {
     if (language === 'BM' && bm && bm.trim()) return bm
     return en ?? ''
   }
+
   const { data: liveData } = useLivePreview({
     initialData: initialData ?? {},
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
     depth: 2,
   })
-  // Tolerate a missing global (e.g. fresh production DB where ShibuyaPage
-  // hasn't been seeded yet) — every field below falls back to a hardcoded
-  // default already, but only if `data` itself is an object.
   const data: any = liveData ?? initialData ?? {}
 
-  // Default-selected machine = the middle of the roster (mirrors the legacy
-  // index-2 default), falling back to the first if there are fewer than three.
+  // Default to first machine in roster
   const defaultMachineId = useMemo(() => {
     if (machines.length === 0) return null
-    const middleIdx = Math.min(2, machines.length - 1)
-    return machines[middleIdx].modelId
+    return machines[0].modelId
   }, [machines])
 
-  // Pure-derived selection: `userSelectedModelId` stores the user's last tab
-  // click (or null on first render). `effectiveModelId` falls back to the
-  // default whenever the user hasn't picked yet, or when their previous pick
-  // is no longer in the roster (e.g. live admin publish removed a machine).
-  // This avoids the one-render flicker that `useState` + `useEffect` caused.
   const [userSelectedModelId, setUserSelectedModelId] = useState<string | null>(null)
   const effectiveModelId =
     userSelectedModelId && machines.some((m) => m.modelId === userSelectedModelId)
@@ -84,260 +94,286 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
     [machines, effectiveModelId],
   )
 
-  // ── Hero ────────────────────────────────────────────────────────────────────
-  const heroBadge = pick(data.hero?.badge, data.hero?.badgeBM) || 'ENGINEERED IN JAPAN'
-  const heroLine1 = pick(data.hero?.headlineLine1, data.hero?.headlineLine1BM) || 'Precision Without'
-  const heroLine2 = pick(data.hero?.headlineLine2, data.hero?.headlineLine2BM) || 'Compromise'
-  const heroSubheadline =
-    pick(data.hero?.subheadline, data.hero?.subheadlineBM) ||
-    'Shibuya core drilling machines represent five decades of Japanese engineering excellence. Trusted by professionals who demand nothing less than perfection.'
-  const heroImageUrl = data.hero?.heroImage?.url ?? '/images/shibuya-hero.jpg'
+  // Demo form
+  const [formState, setFormState] = useState<FormState>('idle')
+  const [formError, setFormError] = useState('')
 
-  // ── Heritage ────────────────────────────────────────────────────────────────
-  const heritageSince = data.heritage?.since ?? '1973'
-  const heritageStatement =
-    pick(data.heritage?.statement, data.heritage?.statementBM) ||
-    'Five decades of relentless pursuit of perfection. Every Shibuya machine is a testament to Japanese craftsmanship.'
-
-  // ── Craftsmanship ───────────────────────────────────────────────────────────
-  const craftEyebrow = pick(data.craftsmanship?.sectionLabel, data.craftsmanship?.sectionLabelBM) || 'CRAFTSMANSHIP'
-  const craftHeadline = pick(data.craftsmanship?.title, data.craftsmanship?.titleBM) || 'Built to Last Generations'
-  const craftBody =
-    pick(data.craftsmanship?.body, data.craftsmanship?.bodyBM) ||
-    'Every Shibuya machine begins its life in our Osaka manufacturing facility, where traditional Japanese craftsmanship meets modern precision engineering.'
-  const craftPoints = data.craftsmanship?.points ?? []
-  const craftImageUrl = data.craftsmanship?.image?.url ?? '/images/shibuya-detail.jpg'
-
-  // ── InAction ────────────────────────────────────────────────────────────────
-  const inActionHeadline = pick(data.inAction?.title, data.inAction?.titleBM) || 'Built for Real Work'
-  const inActionBody =
-    pick(data.inAction?.body, data.inAction?.bodyBM) ||
-    'From high-rise construction to infrastructure projects, Shibuya machines perform flawlessly in the most demanding conditions.'
-  const inActionCtaHref = '/applications'
-  const inActionImageUrl = data.inAction?.image?.url ?? '/images/shibuya-action.jpg'
-
-  // ── Support ─────────────────────────────────────────────────────────────────
-  const supportHeadline = pick(data.support?.title, data.support?.titleBM) || 'We Stand Behind Every Machine'
-  const supportItems = data.support?.items ?? []
-
-  // ── CTA ─────────────────────────────────────────────────────────────────────
-  const ctaHeadline = pick(data.cta?.headline, data.cta?.headlineBM) || 'Experience the Difference'
-  const ctaSubheadline =
-    pick(data.cta?.subheadline, data.cta?.subheadlineBM) ||
-    'Schedule a demonstration at your site or visit our showroom to see Shibuya performance firsthand.'
-  const ctaPrimaryLabel = pick(data.cta?.primaryCtaLabel, data.cta?.primaryCtaLabelBM) || 'Request a demo'
-  const ctaPrimaryHref = '/contact'
-  const ctaSecondaryLabel = pick(data.cta?.secondaryCtaLabel, data.cta?.secondaryCtaLabelBM) || 'Download Brochure'
-  const ctaSecondaryHref = '/contact'
-
-  // ── Machine spec tile data ──────────────────────────────────────────────────
-  // The visible-by-default row is Diameter / Anchor / Weight — that's what
-  // shibuya.html surfaces today. Motor / RPM / Starting From only show when
-  // the row actually has a value (no empty tiles).
-  const visibleSpecs: Array<{ key: string; value: string; label: string }> = []
-  if (selectedMachine) {
-    if (selectedMachine.maxDiameter) {
-      visibleSpecs.push({
-        key: 'diameter',
-        value: selectedMachine.maxDiameter,
-        label: t.pages.shibuya.maxDiameterLabel,
+  async function handleDemoSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setFormState('submitting')
+    setFormError('')
+    const fd = new FormData(e.currentTarget)
+    try {
+      const res = await fetch('/api/demo-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: fd.get('name'),
+          company: fd.get('company'),
+          phone: fd.get('phone'),
+          model: fd.get('model'),
+          project: fd.get('project'),
+          notes: fd.get('notes'),
+        }),
       })
-    }
-    const anchorValue = pick(selectedMachine.anchor, selectedMachine.anchorBM)
-    if (anchorValue) {
-      visibleSpecs.push({
-        key: 'anchor',
-        value: anchorValue,
-        label: t.pages.shibuya.anchorLabel,
-      })
-    }
-    if (selectedMachine.weight) {
-      visibleSpecs.push({
-        key: 'weight',
-        value: selectedMachine.weight,
-        label: t.pages.shibuya.weightLabel,
-      })
-    }
-    if (selectedMachine.motorPower) {
-      visibleSpecs.push({
-        key: 'motor',
-        value: selectedMachine.motorPower,
-        label: t.pages.shibuya.motorPowerLabel,
-      })
-    }
-    if (selectedMachine.rpmRange) {
-      visibleSpecs.push({
-        key: 'rpm',
-        value: selectedMachine.rpmRange,
-        label: t.pages.shibuya.rpmRangeLabel,
-      })
+      const json = await res.json()
+      if (!res.ok || json.error) {
+        setFormError(json.error || t.pages.shibuya.demoFormError)
+        setFormState('error')
+        return
+      }
+      setFormState('success')
+    } catch {
+      setFormError(t.pages.shibuya.demoFormError)
+      setFormState('error')
     }
   }
+
+  // ── Hero ──────────────────────────────────────────────────────────────────
+  const heroBadge =
+    pick(data.hero?.badge, data.hero?.badgeBM) || 'Coolman × Shibuya Tools · Hiroshima'
+  const heroBadgeSince = data.hero?.badgeSince || 'Sole MY Partner Since 2011'
+  const heroLine1 =
+    pick(data.hero?.headlineLine1, data.hero?.headlineLine1BM) || 'The best machine in the world.'
+  const heroEmphasis =
+    pick(data.hero?.headlineEmphasis, data.hero?.headlineEmphasisBM) || 'The bond built for here.'
+  const heroSub =
+    pick(data.hero?.subheadline, data.hero?.subheadlineBM) ||
+    'Shibuya Tools, Hiroshima, has built precision core drilling machines since 1933. Coolman has built diamond segments calibrated for Malaysian aggregate since 1998. The partnership matches the machine to the ground — and the ground to the machine.'
+
+  // ── Trust Bar ─────────────────────────────────────────────────────────────
+  const trustStats: Array<{ number: string; label: string; labelBM: string }> =
+    data.trustBar?.stats ?? [
+      { number: '300+', label: 'Shibuya machines\nin Malaysia', labelBM: 'Mesin Shibuya\ndi Malaysia' },
+      { number: '2011', label: 'Sole authorised\nMalaysian partner', labelBM: 'Rakan kongsi Malaysia\nsah tunggal' },
+      { number: '3 yr', label: 'Full mechanical\nwarranty', labelBM: 'Waranti mekanikal\npenuh' },
+      { number: '48 h', label: 'Replacement parts\nfrom PJ workshop', labelBM: 'Alat ganti\ndari bengkel PJ' },
+    ]
+
+  // ── Machine Story ─────────────────────────────────────────────────────────
+  const storyEyebrow =
+    pick(data.machineStory?.eyebrow, data.machineStory?.eyebrowBM) || 'Two workshops, one cut'
+  const storyHeadline =
+    pick(data.machineStory?.headline, data.machineStory?.headlineBM) ||
+    'The machine is Japanese. The bond is Malaysian.'
+  const storyIntro = pick(data.machineStory?.intro, data.machineStory?.introBM) || ''
+  const col1Tag =
+    pick(data.machineStory?.col1Tag, data.machineStory?.col1TagBM) || 'Shibuya · Since 1933'
+  const col1Title =
+    pick(data.machineStory?.col1Title, data.machineStory?.col1TitleBM) || 'The machine.'
+  const col1Body = pick(data.machineStory?.col1Body, data.machineStory?.col1BodyBM) || ''
+  const col1Country = data.machineStory?.col1Country || 'Hiroshima, Japan'
+  const col2Tag =
+    pick(data.machineStory?.col2Tag, data.machineStory?.col2TagBM) || 'Coolman · Since 1998'
+  const col2Title =
+    pick(data.machineStory?.col2Title, data.machineStory?.col2TitleBM) || 'The bond.'
+  const col2Body = pick(data.machineStory?.col2Body, data.machineStory?.col2BodyBM) || ''
+  const col2Country = data.machineStory?.col2Country || 'Petaling Jaya, Malaysia'
+  const sitePhotoUrl =
+    typeof data.machineStory?.sitePhoto === 'object' &&
+    data.machineStory?.sitePhoto !== null &&
+    'url' in data.machineStory.sitePhoto
+      ? (data.machineStory.sitePhoto.url ?? null)
+      : null
+  const sitePhotoAlt = data.machineStory?.sitePhotoAlt ?? ''
+
+  // ── Service Section ───────────────────────────────────────────────────────
+  const serviceEyebrow =
+    pick(data.serviceSection?.eyebrow, data.serviceSection?.eyebrowBM) ||
+    'In-house service · Since 2011'
+  const serviceHeadline =
+    pick(data.serviceSection?.headline, data.serviceSection?.headlineBM) ||
+    'Two trained Shibuya technicians. Same workshop, same building.'
+  const serviceBody = pick(data.serviceSection?.body, data.serviceSection?.bodyBM) || ''
+  const serviceStats: Array<{ number: string; label: string; labelBM: string }> =
+    data.serviceSection?.stats ?? [
+      {
+        number: '3 yr',
+        label: 'Full mechanical warranty\nmotor, gearbox, feed assembly',
+        labelBM: 'Waranti mekanikal penuh\nmotor, kotak gear, pemasangan suap',
+      },
+      {
+        number: '48 h',
+        label: 'Parts turnaround\nfrom PJ workshop stock',
+        labelBM: 'Pusing ganti alat ganti\ndari stok bengkel PJ',
+      },
+      {
+        number: '2',
+        label: 'Factory-trained Shibuya\ntechnicians on staff',
+        labelBM: 'Juruteknik Shibuya\nterlatih kilang dalam kakitangan',
+      },
+    ]
+  const servicePhotos: Array<{
+    photo: any
+    caption?: string | null
+    captionBM?: string | null
+  }> = data.serviceSection?.photos ?? []
+  const servicePoints: Array<{
+    number: string
+    label: string
+    labelBM?: string | null
+    title: string
+    titleBM?: string | null
+    body: string
+    bodyBM?: string | null
+  }> = data.serviceSection?.servicePoints ?? []
+
+  // ── CTA ───────────────────────────────────────────────────────────────────
+  const ctaEyebrow = pick(data.cta?.eyebrow, data.cta?.eyebrowBM) || 'Order, service, or training'
+  const ctaHeadline =
+    pick(data.cta?.headline, data.cta?.headlineBM) ||
+    'One conversation for the machine, the bit, and the cut.'
+  const ctaBody = pick(data.cta?.body, data.cta?.bodyBM) || ''
+  const ctaPrimaryLabel =
+    pick(data.cta?.primaryCtaLabel, data.cta?.primaryCtaLabelBM) || t.pages.shibuya.ctaWhatsApp
+  const ctaSecondaryLabel =
+    pick(data.cta?.secondaryCtaLabel, data.cta?.secondaryCtaLabelBM) ||
+    t.pages.shibuya.ctaAllChannels
+  const waNumber = settings.whatsapp_number.replace(/\D/g, '')
+  const waHref = `https://wa.me/${waNumber}`
 
   return (
     <PublicLayout>
 
-      {/* Hero - Cinematic reveal */}
-      <section className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-shibuya-ink">
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-shibuya-ink" />
-
-        {/* Background image */}
-        <div className="absolute inset-0 opacity-40">
-          <Image
-            src={heroImageUrl}
-            alt="Shibuya Core Drill"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-7xl px-6 py-32 lg:px-8">
-          <div className="max-w-3xl">
-            {/* Origin badge */}
-            <div className="mb-8">
-              <span className="inline-block border border-white/20 px-4 py-2 text-xs font-medium tracking-[0.3em] text-white/60">
-                {heroBadge}
-              </span>
-            </div>
-
-            {/* Headline */}
-            <h1 className="font-fraunces text-[clamp(40px,6vw,84px)] font-normal leading-[1.02] tracking-[-0.025em] text-white">
-              {heroLine1}
-              <span className="block text-white/40">{heroLine2}</span>
-            </h1>
-
-            {/* Subheading */}
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/50">
-              {heroSubheadline}
-            </p>
-
-            {/* CTA */}
-            <div className="mt-12 flex flex-wrap gap-6">
-              <Link
-                href="#models"
-                className={cn(
-                  'inline-flex items-center gap-3 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink',
-                  'min-h-[48px] transition-colors hover:bg-white/90',
-                )}
-              >
-                {t.pages.shibuya.heroPrimaryLabel}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <button
-                type="button"
-                className={cn(
-                  'inline-flex items-center gap-3 border border-white/20 px-8 py-4 text-sm font-semibold text-white',
-                  'min-h-[48px] transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5',
-                )}
-              >
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/30">
-                  <Play className="h-3 w-3 fill-white" />
-                </div>
-                {t.pages.shibuya.heroSecondaryLabel}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-3 text-white/30">
-            <span className="text-xs tracking-[0.2em]">{t.pages.shibuya.scroll}</span>
-            <ArrowDown className="h-4 w-4" />
-          </div>
-        </div>
-      </section>
-
-      {/* Heritage Statement */}
-      <section className="bg-shibuya-paper py-32">
-        <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{t.pages.shibuya.sincePrefix} {heritageSince}</p>
-          <h2 className="mt-8 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
-            {heritageStatement}
-          </h2>
-          <div className="mx-auto mt-12 h-px w-16 bg-navy/20" />
-        </div>
-      </section>
-
-      {/* Craftsmanship */}
-      <section className="bg-white py-24">
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      <section className="bg-paper py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-            {/* Image */}
-            <div className="relative aspect-[4/5] overflow-hidden bg-shibuya-paper">
-              <Image
-                src={craftImageUrl}
-                alt="Shibuya precision engineering"
-                fill
-                className="object-cover"
-              />
-            </div>
+          {/* Partnership badge */}
+          <div className="mb-10 inline-flex items-center gap-3 border border-rule px-4 py-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-navy">
+              {heroBadge}
+            </span>
+            <span className="h-3 w-px bg-rule" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
+              {heroBadgeSince}
+            </span>
+          </div>
 
-            {/* Content */}
-            <div className="flex flex-col justify-center">
-              <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{craftEyebrow}</p>
-              <h2 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
-                {craftHeadline}
-              </h2>
-              <p className="mt-6 text-lg leading-relaxed text-ink-muted">
-                {craftBody}
-              </p>
+          <h1 className="font-fraunces text-[clamp(36px,5vw,68px)] font-normal leading-[1.04] tracking-[-0.025em] text-navy">
+            {heroLine1}
+            <br />
+            <em className="not-italic text-accent">{heroEmphasis}</em>
+          </h1>
 
-              <div className="mt-12 space-y-8">
-                {craftPoints.map((point: any) => (
-                  <div key={point.number} className="flex gap-6">
-                    <span className="text-sm font-medium text-navy/20">{point.number}</span>
-                    <div>
-                      <h3 className="font-semibold text-navy">{pick(point.title, point.titleBM)}</h3>
-                      <p className="mt-1 text-sm text-ink-muted">{pick(point.description, point.descriptionBM)}</p>
-                    </div>
-                  </div>
-                ))}
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-muted">{heroSub}</p>
+
+          <div className="mt-10 flex flex-wrap gap-4">
+            <a
+              href="#lineup"
+              className="inline-flex min-h-[48px] items-center gap-2 bg-navy px-8 py-3 text-sm font-semibold text-paper transition-opacity hover:opacity-90"
+            >
+              {t.pages.shibuya.modelsEyebrow || 'See Machines'}
+            </a>
+            <a
+              href="#demo"
+              className="inline-flex min-h-[48px] items-center gap-2 border border-rule px-8 py-3 text-sm font-semibold text-navy transition-colors hover:border-navy"
+            >
+              {t.pages.shibuya.demoFormTitle}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TRUST BAR ─────────────────────────────────────────────────────── */}
+      <section className="border-y border-rule bg-paper">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid grid-cols-2 divide-x divide-rule lg:grid-cols-4">
+            {trustStats.map((stat, i) => (
+              <div key={i} className="px-6 py-8 text-center lg:py-10">
+                <p className="font-mono text-[26px] font-bold leading-none text-navy tabular-nums">
+                  {stat.number}
+                </p>
+                <p className="mt-2 whitespace-pre-line font-mono text-[10px] uppercase tracking-[0.12em] text-ink-muted">
+                  {pick(stat.label, stat.labelBM)}
+                </p>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Models - Premium showcase */}
-      <section id="models" className="bg-shibuya-ink py-32">
+      {/* ── MACHINE STORY ─────────────────────────────────────────────────── */}
+      <section className="bg-paper py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mb-20 text-center">
-            <p className="text-sm font-medium tracking-[0.2em] text-white/40">{t.pages.shibuya.modelsEyebrow}</p>
-            <h2 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-white">
-              {t.pages.shibuya.modelsHeadline}
-            </h2>
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
+            {storyEyebrow}
+          </p>
+          <h2 className="mt-4 max-w-2xl font-fraunces text-[clamp(28px,3.2vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
+            {storyHeadline}
+          </h2>
+          {storyIntro && (
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-muted">{storyIntro}</p>
+          )}
+
+          {/* Story pair */}
+          <div className="mt-12 grid gap-px border border-rule bg-rule lg:grid-cols-2">
+            <div className="bg-paper p-8 lg:p-10">
+              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint">
+                {col1Tag}
+              </p>
+              <h3 className="mt-3 font-fraunces text-2xl font-normal text-navy">{col1Title}</h3>
+              {col1Body && (
+                <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-ink-muted">
+                  {col1Body}
+                </p>
+              )}
+              {col1Country && (
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint">
+                  {col1Country}
+                </p>
+              )}
+            </div>
+            <div className="bg-paper p-8 lg:p-10">
+              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint">
+                {col2Tag}
+              </p>
+              <h3 className="mt-3 font-fraunces text-2xl font-normal text-navy">{col2Title}</h3>
+              {col2Body && (
+                <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-ink-muted">
+                  {col2Body}
+                </p>
+              )}
+              {col2Country && (
+                <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint">
+                  {col2Country}
+                </p>
+              )}
+            </div>
           </div>
+
+          {sitePhotoUrl && (
+            <div className="relative mt-12 aspect-[16/7] overflow-hidden">
+              <Image src={sitePhotoUrl} alt={sitePhotoAlt} fill className="object-cover" />
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── MACHINE LINEUP ────────────────────────────────────────────────── */}
+      <section id="lineup" className="border-t border-rule bg-paper py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
+            {t.pages.shibuya.modelsEyebrow}
+          </p>
+          <h2 className="mt-4 font-fraunces text-[clamp(28px,3.2vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
+            {t.pages.shibuya.modelsHeadline}
+          </h2>
 
           {machines.length === 0 ? (
-            // Empty state — admins haven't seeded the collection yet, or every
-            // row is inactive. Keep the section visible (the eyebrow above
-            // already framed it) and offer the CTA out to /contact.
-            <div className="mx-auto flex max-w-[60ch] flex-col items-center text-center">
-              <h3 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
-                {t.pages.shibuya.emptyStateHeadline}
-              </h3>
-              <p className="mt-6 text-lg leading-relaxed text-white/50">
-                {t.pages.shibuya.emptyStateBody}
-              </p>
+            <div className="mt-12 flex max-w-[55ch] flex-col gap-4">
+              <p className="text-base text-ink-muted">{t.pages.shibuya.emptyStateBody}</p>
               <Link
                 href="/contact"
-                className={cn(
-                  'mt-10 inline-flex items-center gap-2 bg-accent px-8 py-4 text-sm font-semibold text-white',
-                  'min-h-[48px] transition-opacity hover:opacity-90',
-                )}
+                className="inline-flex min-h-[48px] w-fit items-center gap-2 bg-navy px-8 py-3 text-sm font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 {t.pages.shibuya.requestQuote}
-                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           ) : (
             <>
-              {/* Model tabs */}
+              {/* Border tab nav */}
               <div
-                className="mb-16 flex flex-wrap justify-center gap-2 border-b border-white/10 pb-8"
+                className="mt-10 flex flex-wrap border-b border-rule"
                 role="tablist"
                 aria-label={t.pages.shibuya.modelsHeadline}
               >
@@ -351,8 +387,10 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
                       aria-selected={isActive}
                       onClick={() => setUserSelectedModelId(machine.modelId)}
                       className={cn(
-                        'px-6 py-3 text-sm font-medium min-h-[44px] transition-colors',
-                        isActive ? 'bg-white text-shibuya-ink' : 'text-white/50 hover:text-white',
+                        '-mb-px min-h-[44px] border-b-[3px] px-6 py-3 font-mono text-[11px] uppercase tracking-[0.10em] transition-colors',
+                        isActive
+                          ? 'border-b-accent text-navy'
+                          : 'border-b-transparent text-ink-muted hover:text-navy',
                       )}
                     >
                       {machine.modelName}
@@ -361,12 +399,10 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
                 })}
               </div>
 
-              {/* Selected model */}
               {selectedMachine && (
-                <div key={selectedMachine.modelId} className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-                  {/* Image — render only when admin has uploaded one. Placeholder
-                      block keeps the column layout stable when there's no image. */}
-                  <div className="relative aspect-square overflow-hidden bg-white/5">
+                <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16">
+                  {/* Photo / placeholder */}
+                  <div className="relative aspect-square overflow-hidden bg-[#EFF4FB]">
                     {selectedMachine.heroImageUrl ? (
                       <Image
                         src={selectedMachine.heroImageUrl}
@@ -375,85 +411,182 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
                         className="object-contain p-8"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center">
-                        <span className="font-mono text-sm tracking-[0.2em] text-white/20">
-                          {selectedMachine.modelName}
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-3 text-navy/20">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                          <rect x="6" y="12" width="36" height="28" rx="3" stroke="currentColor" strokeWidth="2" />
+                          <circle cx="24" cy="26" r="7" stroke="currentColor" strokeWidth="2" />
+                          <path d="M16 12V10a2 2 0 012-2h12a2 2 0 012 2v2" stroke="currentColor" strokeWidth="2" />
+                        </svg>
+                        <span className="font-mono text-[11px] uppercase tracking-[0.12em]">
+                          {selectedMachine.modelId}
                         </span>
                       </div>
                     )}
                   </div>
 
                   {/* Details */}
-                  <div className="flex flex-col justify-center">
+                  <div>
                     {pick(selectedMachine.tagline, selectedMachine.taglineBM) && (
-                      <p className="text-sm font-medium tracking-[0.2em] text-accent">
+                      <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
                         {pick(selectedMachine.tagline, selectedMachine.taglineBM)}
                       </p>
                     )}
-                    <h3 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-white">
-                      {t.pages.shibuya.modelNamePrefix} {selectedMachine.modelName}
+                    <h3 className="mt-2 font-fraunces text-[clamp(24px,2.4vw,32px)] font-normal text-navy">
+                      {selectedMachine.modelName}
                     </h3>
                     {pick(selectedMachine.description, selectedMachine.descriptionBM) && (
-                      <p className="mt-6 text-lg leading-relaxed text-white/50">
+                      <p className="mt-4 text-base leading-relaxed text-ink-muted">
                         {pick(selectedMachine.description, selectedMachine.descriptionBM)}
                       </p>
                     )}
 
-                    {/* Specs grid — visible tiles only. Two-column on the
-                        inner grid keeps the JetBrains Mono numbers anchored. */}
-                    {visibleSpecs.length > 0 && (
-                      <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/10 pt-8">
-                        {visibleSpecs.map((spec) => (
-                          <div key={spec.key}>
-                            <p className="font-mono text-3xl font-bold text-white">{spec.value}</p>
-                            <p className="mt-1 text-sm text-white/40">{spec.label}</p>
-                          </div>
-                        ))}
-                      </div>
+                    {/* Spec table — row only rendered when field has a value */}
+                    <table className="mt-8 w-full border-collapse text-sm">
+                      <tbody>
+                        {selectedMachine.maxDiameter && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.maxDiameterLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.maxDiameter}
+                            </td>
+                          </tr>
+                        )}
+                        {pick(selectedMachine.anchor, selectedMachine.anchorBM) && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.anchorLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {pick(selectedMachine.anchor, selectedMachine.anchorBM)}
+                            </td>
+                          </tr>
+                        )}
+                        {selectedMachine.motorPower && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.motorPowerLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.motorPower}
+                            </td>
+                          </tr>
+                        )}
+                        {selectedMachine.voltage && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.voltageLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.voltage}
+                            </td>
+                          </tr>
+                        )}
+                        {selectedMachine.feedSystem && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.feedSystemLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.feedSystem}
+                            </td>
+                          </tr>
+                        )}
+                        {selectedMachine.maxDepth && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.maxDepthLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.maxDepth}
+                            </td>
+                          </tr>
+                        )}
+                        {selectedMachine.holeRunout && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.holeRunoutLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.holeRunout}
+                            </td>
+                          </tr>
+                        )}
+                        {selectedMachine.weight && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.weightLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.weight}
+                            </td>
+                          </tr>
+                        )}
+                        {selectedMachine.bitPairing && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.bitPairingLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.bitPairing}
+                            </td>
+                          </tr>
+                        )}
+                        {selectedMachine.rpmRange && (
+                          <tr className="border-b border-rule">
+                            <td className="w-[140px] py-2 pr-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                              {t.pages.shibuya.rpmRangeLabel}
+                            </td>
+                            <td className="py-2 font-mono text-sm text-navy">
+                              {selectedMachine.rpmRange}
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+
+                    {/* Actions */}
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <a
+                        href="#demo"
+                        className="inline-flex min-h-[44px] items-center gap-2 bg-navy px-6 py-2.5 text-sm font-semibold text-paper transition-opacity hover:opacity-90"
+                      >
+                        {t.pages.shibuya.demoFormTitle}
+                      </a>
+                      <button
+                        type="button"
+                        className="inline-flex min-h-[44px] items-center gap-2 border border-rule px-6 py-2.5 text-sm font-medium text-ink-muted transition-colors hover:border-navy hover:text-navy"
+                      >
+                        {t.pages.shibuya.downloadSpecSheet}
+                      </button>
+                    </div>
+
+                    {/* Stock / lead-time note */}
+                    {selectedMachine.stockNote && (
+                      <p className="mt-5 border-t border-dashed border-rule pt-4 font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                        {selectedMachine.stockNote}
+                      </p>
                     )}
 
                     {/* Features */}
                     {selectedMachine.features.length > 0 && (
-                      <div className="mt-12">
-                        <p className="mb-4 text-sm font-medium text-white/40">{t.pages.shibuya.keyFeaturesLabel}</p>
-                        <ul className="grid gap-3 sm:grid-cols-2">
-                          {selectedMachine.features.map((featureObj, idx) => (
+                      <div className="mt-8">
+                        <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint">
+                          {t.pages.shibuya.keyFeaturesLabel}
+                        </p>
+                        <ul className="mt-3 space-y-1.5">
+                          {selectedMachine.features.map((f, idx) => (
                             <li
-                              key={`${selectedMachine.modelId}-feature-${idx}`}
-                              className="flex items-center gap-3 text-sm text-white/70"
+                              key={`${selectedMachine.modelId}-f-${idx}`}
+                              className="flex items-start gap-2 text-sm text-ink-muted"
                             >
-                              <Check className="h-4 w-4 flex-shrink-0 text-accent" />
-                              {pick(featureObj.feature, featureObj.featureBM)}
+                              <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" />
+                              {pick(f.feature, f.featureBM)}
                             </li>
                           ))}
                         </ul>
                       </div>
-                    )}
-
-                    {/* Price (conditional) and CTA. Bond-match note surfaces
-                        below the price when the admin filled it in. */}
-                    <div className="mt-12 flex flex-wrap items-center gap-8">
-                      {selectedMachine.price && (
-                        <div>
-                          <p className="text-sm text-white/40">{t.pages.shibuya.startingFromLabel}</p>
-                          <p className="font-mono text-3xl font-bold text-white">{selectedMachine.price}</p>
-                        </div>
-                      )}
-                      <Link
-                        href="/contact"
-                        className={cn(
-                          'inline-flex items-center gap-2 bg-accent px-8 py-4 text-sm font-semibold text-white',
-                          'min-h-[48px] transition-opacity hover:opacity-90',
-                        )}
-                      >
-                        {t.pages.shibuya.requestQuote}
-                        <ArrowRight className="h-4 w-4" />
-                      </Link>
-                    </div>
-                    {pick(selectedMachine.bondMatch, selectedMachine.bondMatchBM) && (
-                      <p className="mt-6 text-sm leading-relaxed text-white/40">
-                        {pick(selectedMachine.bondMatch, selectedMachine.bondMatchBM)}
-                      </p>
                     )}
                   </div>
                 </div>
@@ -463,90 +596,292 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
         </div>
       </section>
 
-      {/* In Action */}
-      <section className="relative h-[80vh] overflow-hidden">
-        <Image
-          src={inActionImageUrl}
-          alt="Shibuya in action"
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-shibuya-ink/90 via-shibuya-ink/50 to-transparent" />
-        <div className="relative z-10 flex h-full items-center">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="max-w-xl">
-              <p className="text-sm font-medium tracking-[0.2em] text-white/40">{t.pages.shibuya.inActionEyebrow}</p>
-              <h2 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-white">
-                {inActionHeadline}
-              </h2>
-              <p className="mt-6 text-lg leading-relaxed text-white/60">
-                {inActionBody}
+      {/* ── SERVICE ───────────────────────────────────────────────────────── */}
+      <section className="border-t border-rule bg-paper py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
+            {serviceEyebrow}
+          </p>
+          <h2 className="mt-4 max-w-2xl font-fraunces text-[clamp(28px,3.2vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
+            {serviceHeadline}
+          </h2>
+          {serviceBody && (
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-muted">{serviceBody}</p>
+          )}
+
+          {/* Stats bar */}
+          <div className="mt-10 grid grid-cols-3 divide-x divide-rule border border-rule">
+            {serviceStats.map((stat, i) => (
+              <div key={i} className="px-6 py-6 text-center">
+                <p className="font-mono text-[26px] font-bold leading-none text-navy tabular-nums">
+                  {stat.number}
+                </p>
+                <p className="mt-2 whitespace-pre-line font-mono text-[10px] uppercase tracking-[0.10em] text-ink-muted">
+                  {pick(stat.label, stat.labelBM)}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Photos */}
+          <div className="mt-10 grid grid-cols-3 gap-4">
+            {servicePhotos.length > 0 ? (
+              servicePhotos.map((p, i) => {
+                const photoUrl =
+                  typeof p.photo === 'object' && p.photo !== null && 'url' in p.photo
+                    ? p.photo.url
+                    : null
+                return (
+                  <div key={i} className="flex flex-col gap-2">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-[#EFF4FB]">
+                      {photoUrl ? (
+                        <Image
+                          src={photoUrl}
+                          alt={pick(p.caption, p.captionBM) || ''}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <CameraPlaceholder />
+                      )}
+                    </div>
+                    {pick(p.caption, p.captionBM) && (
+                      <p className="font-mono text-[10px] uppercase tracking-[0.10em] text-ink-faint">
+                        {pick(p.caption, p.captionBM)}
+                      </p>
+                    )}
+                  </div>
+                )
+              })
+            ) : (
+              [0, 1, 2].map((i) => (
+                <div key={i} className="relative aspect-[4/3] overflow-hidden bg-[#EFF4FB]">
+                  <CameraPlaceholder />
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Numbered service points */}
+          {servicePoints.length > 0 && (
+            <div className="mt-16 space-y-8">
+              {servicePoints.map((sp) => (
+                <div key={sp.number} className="grid grid-cols-[140px_1fr] gap-6">
+                  <div>
+                    <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
+                      {sp.number}
+                    </p>
+                    <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-muted">
+                      {pick(sp.label, sp.labelBM)}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-fraunces text-lg font-normal text-navy">
+                      {pick(sp.title, sp.titleBM)}
+                    </h3>
+                    {pick(sp.body, sp.bodyBM) && (
+                      <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                        {pick(sp.body, sp.bodyBM)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── DEMO FORM ─────────────────────────────────────────────────────── */}
+      <section id="demo" className="border-t border-rule bg-paper py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+            {/* Left: text */}
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
+                {t.pages.shibuya.demoFormTitle}
               </p>
-              <Link
-                href={inActionCtaHref}
-                className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-white"
+              <h2 className="mt-4 font-fraunces text-[clamp(28px,3.2vw,40px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
+                {storyHeadline}
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-ink-muted">{heroSub}</p>
+            </div>
+
+            {/* Right: form card */}
+            <div className="border border-navy p-8">
+              {formState === 'success' ? (
+                <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path
+                        d="M5 13l4 4L19 7"
+                        stroke="#3B82F6"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="font-fraunces text-xl font-normal text-navy">
+                    {t.pages.shibuya.demoFormSuccessTitle}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-ink-muted">
+                    {t.pages.shibuya.demoFormSuccessBody}
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleDemoSubmit} className="space-y-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label
+                        htmlFor="demo-name"
+                        className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.12em] text-ink-muted"
+                      >
+                        {t.pages.shibuya.demoFormName} *
+                      </label>
+                      <input
+                        id="demo-name"
+                        name="name"
+                        type="text"
+                        required
+                        className="w-full border border-rule bg-white px-3 py-2.5 text-sm text-navy focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="demo-company"
+                        className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.12em] text-ink-muted"
+                      >
+                        {t.pages.shibuya.demoFormCompany}
+                      </label>
+                      <input
+                        id="demo-company"
+                        name="company"
+                        type="text"
+                        className="w-full border border-rule bg-white px-3 py-2.5 text-sm text-navy focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="demo-phone"
+                      className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.12em] text-ink-muted"
+                    >
+                      {t.pages.shibuya.demoFormPhone} *
+                    </label>
+                    <input
+                      id="demo-phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      className="w-full border border-rule bg-white px-3 py-2.5 text-sm text-navy focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="demo-model"
+                      className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.12em] text-ink-muted"
+                    >
+                      {t.pages.shibuya.demoFormModel} *
+                    </label>
+                    <select
+                      id="demo-model"
+                      name="model"
+                      required
+                      defaultValue=""
+                      className="w-full border border-rule bg-white px-3 py-2.5 text-sm text-navy focus:border-navy focus:outline-none"
+                    >
+                      <option value="" disabled>
+                        {t.pages.shibuya.demoFormModelPlaceholder}
+                      </option>
+                      {machines.map((m) => (
+                        <option key={m.modelId} value={m.modelId}>
+                          {m.modelName}
+                        </option>
+                      ))}
+                      {machines.length === 0 && (
+                        <option value="general">General enquiry</option>
+                      )}
+                    </select>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="demo-project"
+                      className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.12em] text-ink-muted"
+                    >
+                      {t.pages.shibuya.demoFormProject}
+                    </label>
+                    <input
+                      id="demo-project"
+                      name="project"
+                      type="text"
+                      className="w-full border border-rule bg-white px-3 py-2.5 text-sm text-navy focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="demo-notes"
+                      className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.12em] text-ink-muted"
+                    >
+                      {t.pages.shibuya.demoFormNotes}
+                    </label>
+                    <textarea
+                      id="demo-notes"
+                      name="notes"
+                      rows={3}
+                      className="w-full resize-none border border-rule bg-white px-3 py-2.5 text-sm text-navy focus:border-navy focus:outline-none"
+                    />
+                  </div>
+                  {formState === 'error' && formError && (
+                    <p className="text-sm text-danger">{formError}</p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={formState === 'submitting'}
+                    className="inline-flex min-h-[48px] w-full items-center justify-center bg-navy px-8 py-3 text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-50"
+                  >
+                    {formState === 'submitting' ? '…' : t.pages.shibuya.demoFormSubmit}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA STRIP ─────────────────────────────────────────────────────── */}
+      <section className="bg-navy py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+            {/* Left: text */}
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
+                {ctaEyebrow}
+              </p>
+              <h2 className="mt-4 font-fraunces text-[clamp(28px,3.2vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-paper">
+                {ctaHeadline}
+              </h2>
+              {ctaBody && (
+                <p className="mt-4 text-base leading-relaxed text-paper/60">{ctaBody}</p>
+              )}
+            </div>
+            {/* Right: stacked buttons */}
+            <div className="flex flex-col gap-3 lg:items-end">
+              <a
+                href={waHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 bg-paper px-8 py-3 text-sm font-semibold text-navy transition-opacity hover:opacity-90 lg:w-auto lg:min-w-[220px]"
               >
-                {t.pages.shibuya.inActionCtaLabel}
-                <ArrowRight className="h-4 w-4" />
+                {ctaPrimaryLabel}
+              </a>
+              <Link
+                href="/contact"
+                className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 border border-paper/30 px-8 py-3 text-sm font-semibold text-paper transition-colors hover:border-paper/60 lg:w-auto lg:min-w-[220px]"
+              >
+                {ctaSecondaryLabel}
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Support */}
-      <section className="bg-shibuya-paper py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid gap-16 lg:grid-cols-3">
-            <div>
-              <p className="text-sm font-medium tracking-[0.2em] text-navy/40">{t.pages.shibuya.supportEyebrow}</p>
-              <h2 className="mt-4 font-fraunces text-[clamp(32px,3.4vw,44px)] font-normal leading-[1.08] tracking-[-0.02em] text-navy">
-                {supportHeadline}
-              </h2>
-            </div>
-            <div className="lg:col-span-2">
-              <div className="grid gap-12 sm:grid-cols-2">
-                {supportItems.map((item: any, idx: number) => (
-                  <div key={idx}>
-                    <h3 className="text-lg font-semibold text-navy">{pick(item.title, item.titleBM)}</h3>
-                    <p className="mt-2 text-ink-muted">{pick(item.description, item.descriptionBM)}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-shibuya-ink py-32">
-        <div className="mx-auto max-w-4xl px-6 text-center lg:px-8">
-          <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
-            {ctaHeadline}
-          </h2>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-white/50">
-            {ctaSubheadline}
-          </p>
-          <div className="mt-12 flex flex-wrap justify-center gap-4">
-            <Link
-              href={ctaPrimaryHref}
-              className={cn(
-                'inline-flex items-center gap-2 bg-white px-8 py-4 text-sm font-semibold text-shibuya-ink',
-                'min-h-[48px] transition-colors hover:bg-white/90',
-              )}
-            >
-              {ctaPrimaryLabel}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href={ctaSecondaryHref}
-              className={cn(
-                'inline-flex items-center gap-2 border border-white/20 px-8 py-4 text-sm font-semibold text-white',
-                'min-h-[48px] transition-[border-color,background-color] hover:border-white/40 hover:bg-white/5',
-              )}
-            >
-              {ctaSecondaryLabel}
-            </Link>
           </div>
         </div>
       </section>

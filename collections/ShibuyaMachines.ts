@@ -109,6 +109,36 @@ export const ShibuyaMachines: CollectionConfig = {
       admin: { description: 'e.g. 480-1,800. Numeric/spec value shown in both languages — not translated.' },
     },
     {
+      name: 'voltage',
+      type: 'text',
+      admin: { description: 'e.g. 240 V / 50 Hz or 415 V / 3-phase. Not translated.' },
+    },
+    {
+      name: 'max_depth',
+      type: 'text',
+      admin: { description: 'e.g. 400 mm (1 barrel). Not translated.' },
+    },
+    {
+      name: 'feed_system',
+      type: 'text',
+      admin: { description: 'e.g. Servo-controlled hydraulic. Leave blank to hide this row on the page.' },
+    },
+    {
+      name: 'hole_runout',
+      type: 'text',
+      admin: { description: 'e.g. ± 0.08 mm over 800 mm. Leave blank to hide this row on the page.' },
+    },
+    {
+      name: 'bit_pairing',
+      type: 'text',
+      admin: { description: 'Recommended Coolman bit e.g. CM-CD-400 · sandwich cobalt. Not translated.' },
+    },
+    {
+      name: 'stock_note',
+      type: 'text',
+      admin: { description: 'e.g. Local stock · PJ workshop · delivery within 3 working days · 3-year warranty. Shown as a footer note under the machine panel.' },
+    },
+    {
       name: 'price',
       type: 'text',
       admin: {
