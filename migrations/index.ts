@@ -15,6 +15,8 @@ import * as migration_20260523_create_missing_tables from './20260523_create_mis
 import * as migration_20260523_shibuya_v2_redesign from './20260523_shibuya_v2_redesign';
 import * as migration_20260523_add_locked_docs_rels from './20260523_add_locked_docs_rels'
 import * as migration_20260523_rewire_home_and_why_coolman_globals from './20260523_rewire_home_and_why_coolman_globals';
+import * as migration_20260523_add_heritage_page_global from './20260523_add_heritage_page_global';
+import * as migration_20260523_fix_heritage_page_array_ids from './20260523_fix_heritage_page_array_ids';
 
 export const migrations = [
   {
@@ -101,5 +103,15 @@ export const migrations = [
     up: migration_20260523_rewire_home_and_why_coolman_globals.up,
     down: migration_20260523_rewire_home_and_why_coolman_globals.down,
     name: '20260523_rewire_home_and_why_coolman_globals',
+  },
+  {
+    up: migration_20260523_add_heritage_page_global.up,
+    down: migration_20260523_add_heritage_page_global.down,
+    name: '20260523_add_heritage_page_global',
+  },
+  {
+    up: migration_20260523_fix_heritage_page_array_ids.up,
+    down: migration_20260523_fix_heritage_page_array_ids.down,
+    name: '20260523_fix_heritage_page_array_ids',
   },
 ];

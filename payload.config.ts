@@ -31,6 +31,7 @@ import { ResourcesPage } from './globals/ResourcesPage'
 import { ContactPage } from './globals/ContactPage'
 import { ShibuyaPage } from './globals/ShibuyaPage'
 import { WhyCoolmanPage } from './globals/WhyCoolmanPage'
+import { HeritagePage } from './globals/HeritagePage'
 import { Settings } from './globals/Settings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -82,7 +83,7 @@ export default buildConfig({
     ShibuyaMachines,
     Dealers,
   ],
-  globals: [HomePage, ApplicationsPage, ResourcesPage, ContactPage, ShibuyaPage, WhyCoolmanPage, Settings],
+  globals: [HomePage, ApplicationsPage, ResourcesPage, ContactPage, ShibuyaPage, WhyCoolmanPage, HeritagePage, Settings],
   db: vercelPostgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || process.env.POSTGRES_URL || '',
