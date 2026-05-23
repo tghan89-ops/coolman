@@ -1,6 +1,5 @@
 import type { CollectionConfig } from 'payload'
-
-const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 // Shibuya machine roster as its own top-level collection. Lifted from the
 // `machines` array previously embedded inside the ShibuyaPage global so each
@@ -26,7 +25,7 @@ export const ShibuyaMachines: CollectionConfig = {
     delete: ({ req: { user } }) =>
       (user as any)?.collection === 'adminUsers' && (user as any)?.role === 'admin',
   },
-  fields: [
+  fields: bilingualTabs([
     {
       name: 'model_id',
       type: 'text',
@@ -49,7 +48,7 @@ export const ShibuyaMachines: CollectionConfig = {
     {
       name: 'taglineBM',
       type: 'text',
-      admin: bmDesc,
+      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
     },
     {
       name: 'bond_match',
@@ -62,7 +61,7 @@ export const ShibuyaMachines: CollectionConfig = {
     {
       name: 'bond_matchBM',
       type: 'text',
-      admin: bmDesc,
+      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
     },
     {
       name: 'description',
@@ -73,7 +72,7 @@ export const ShibuyaMachines: CollectionConfig = {
     {
       name: 'descriptionBM',
       type: 'textarea',
-      admin: bmDesc,
+      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
     },
     {
       name: 'motor_power',
@@ -101,7 +100,7 @@ export const ShibuyaMachines: CollectionConfig = {
     {
       name: 'anchorBM',
       type: 'text',
-      admin: bmDesc,
+      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
     },
     {
       name: 'rpm_range',
@@ -154,10 +153,10 @@ export const ShibuyaMachines: CollectionConfig = {
       name: 'features',
       type: 'array',
       admin: { description: 'Bullet-pointed feature list shown under the machine spec block.' },
-      fields: [
+      fields: bilingualTabs([
         { name: 'feature', type: 'text', required: true },
-        { name: 'featureBM', type: 'text', admin: bmDesc },
-      ],
+        { name: 'featureBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+      ]),
     },
     {
       name: 'display_order',
@@ -177,5 +176,5 @@ export const ShibuyaMachines: CollectionConfig = {
         description: 'Uncheck to hide this machine from the public page without deleting it.',
       },
     },
-  ],
+  ]),
 }

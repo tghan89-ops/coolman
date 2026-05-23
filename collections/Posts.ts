@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -22,7 +23,7 @@ export const Posts: CollectionConfig = {
     delete: ({ req: { user } }) =>
       (user as any)?.collection === 'adminUsers' && (user as any)?.role === 'admin',
   },
-  fields: [
+  fields: bilingualTabs([
     {
       name: 'slug',
       type: 'text',
@@ -180,5 +181,5 @@ export const Posts: CollectionConfig = {
         description: 'WordPress post ID (set by import script). Used for idempotent re-imports.',
       },
     },
-  ],
+  ]),
 }

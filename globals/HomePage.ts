@@ -1,6 +1,5 @@
 import type { GlobalConfig } from 'payload'
-
-const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 export const HomePage: GlobalConfig = {
   slug: 'home-page',
@@ -14,13 +13,13 @@ export const HomePage: GlobalConfig = {
     {
       name: 'opening',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',           type: 'text',     defaultValue: 'Coolman · Manufacturer of cutting tools · Petaling Jaya, 2007' },
-        { name: 'eyebrowBM',         type: 'text',     defaultValue: 'Coolman · Pengeluar alat pemotong · Petaling Jaya, 2007',  admin: bmDesc },
+        { name: 'eyebrowBM',         type: 'text',     defaultValue: 'Coolman · Pengeluar alat pemotong · Petaling Jaya, 2007',  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headlinePrefix',    type: 'text',     defaultValue: 'Right Job ' },
-        { name: 'headlinePrefixBM',  type: 'text',     defaultValue: 'Kerja yang Betul ',                                        admin: bmDesc },
+        { name: 'headlinePrefixBM',  type: 'text',     defaultValue: 'Kerja yang Betul ',                                        admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headlineEmphasis',  type: 'text',     defaultValue: 'Matched with the Right Blade.' },
-        { name: 'headlineEmphasisBM', type: 'text',    defaultValue: 'Dipadankan dengan Bilah yang Betul.',                      admin: bmDesc },
+        { name: 'headlineEmphasisBM', type: 'text',    defaultValue: 'Dipadankan dengan Bilah yang Betul.',                      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
           name: 'lede',
           type: 'textarea',
@@ -30,23 +29,23 @@ export const HomePage: GlobalConfig = {
           name: 'ledeBM',
           type: 'textarea',
           defaultValue: 'Coolman telah membina bilah berlian, mata teras dan sistem pemotongan di Malaysia sejak 2007. Pengasas kami, Alan, telah berada dalam bidang pemotongan sejak 1998. Setiap bilah yang kami hasilkan direka untuk batu, besi tetulang dan jadual yang dihadapi kontraktor Malaysia.',
-          admin: bmDesc,
+          admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
         },
         { name: 'ctaPrimary',     type: 'text', defaultValue: 'Speak to engineering' },
-        { name: 'ctaPrimaryBM',   type: 'text', defaultValue: 'Berbual dengan kejuruteraan', admin: bmDesc },
+        { name: 'ctaPrimaryBM',   type: 'text', defaultValue: 'Berbual dengan kejuruteraan', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'ctaSecondary',   type: 'text', defaultValue: 'Browse the tools' },
-        { name: 'ctaSecondaryBM', type: 'text', defaultValue: 'Lihat alat',                 admin: bmDesc },
-      ],
+        { name: 'ctaSecondaryBM', type: 'text', defaultValue: 'Lihat alat',                 admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+      ]),
     },
 
     {
       name: 'fearGrid',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',    type: 'text', defaultValue: 'What contractors live with' },
-        { name: 'eyebrowBM',  type: 'text', defaultValue: 'Apa yang kontraktor tanggung',                                         admin: bmDesc },
+        { name: 'eyebrowBM',  type: 'text', defaultValue: 'Apa yang kontraktor tanggung',                                         admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headline',   type: 'text', defaultValue: "Four things keep the boss up at night. We've watched all four on site." },
-        { name: 'headlineBM', type: 'text', defaultValue: 'Empat perkara yang menjadikan bos sukar tidur. Kami sudah menyaksi keempat-empatnya di tapak.', admin: bmDesc },
+        { name: 'headlineBM', type: 'text', defaultValue: 'Empat perkara yang menjadikan bos sukar tidur. Kami sudah menyaksi keempat-empatnya di tapak.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
           name: 'cards',
           type: 'array',
@@ -56,25 +55,25 @@ export const HomePage: GlobalConfig = {
             { key: 'inconsistency',  title: 'Inconsistency between blades that should be identical',    titleBM: 'Ketidakkonsistenan antara bilah yang sepatutnya serupa',                  body: 'One blade cuts. The next one of the same SKU lasts half as long. The crew loses faith. The supplier loses the account.',                                                                                                     bodyBM: 'Satu bilah memotong. Bilah seterusnya dengan SKU yang sama tahan separuh sahaja. Krew hilang keyakinan. Pembekal hilang akaun.' },
             { key: 'alone',          title: "Being left alone with a cut nobody else has seen",         titleBM: 'Ditinggalkan keseorangan dengan potongan yang belum pernah dilihat orang lain', body: 'A new aggregate. An unusual depth. A spec the supplier has never tested. The crew gets it. The supplier ducks the call.',                                                                                                  bodyBM: 'Agregat baru. Kedalaman luar biasa. Spesifikasi yang pembekal tidak pernah uji. Krew faham. Pembekal mengelak panggilan.' },
           ],
-          fields: [
+          fields: bilingualTabs([
             { name: 'key',     type: 'text',     required: true, admin: { description: 'Stable key matching the fear icon in the UI — do not change: delay, equipment, inconsistency, alone.' } },
             { name: 'title',   type: 'text',     required: true },
-            { name: 'titleBM', type: 'text',     admin: bmDesc },
+            { name: 'titleBM', type: 'text',     admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
             { name: 'body',    type: 'textarea', required: true },
-            { name: 'bodyBM',  type: 'textarea', admin: bmDesc },
-          ],
+            { name: 'bodyBM',  type: 'textarea', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ]),
         },
-      ],
+      ]),
     },
 
     {
       name: 'threeMythsIntro',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',    type: 'text',     defaultValue: 'Three myths' },
-        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Tiga mitos',                                                                                                                                                  admin: bmDesc },
+        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Tiga mitos',                                                                                                                                                  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headline',   type: 'text',     defaultValue: 'Three things the cutting trade keeps getting wrong.' },
-        { name: 'headlineBM', type: 'text',     defaultValue: 'Tiga perkara yang industri pemotongan terus salah faham.',                                                                                                      admin: bmDesc },
+        { name: 'headlineBM', type: 'text',     defaultValue: 'Tiga perkara yang industri pemotongan terus salah faham.',                                                                                                      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
           name: 'lede',
           type: 'textarea',
@@ -84,21 +83,21 @@ export const HomePage: GlobalConfig = {
           name: 'ledeBM',
           type: 'textarea',
           defaultValue: "Bilah yang murah sebenarnya lebih mahal pada akhir kerja. Pengedar yang tidak pernah ke tapak tidak dapat beritahu anda kenapa bilah anda mengaca. Dan 'Buatan Jepun' tidak bermakna ia dibuat untuk memotong konkrit Malaysia.",
-          admin: bmDesc,
+          admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
         },
         { name: 'ctaLabel',   type: 'text', defaultValue: 'Read the folio' },
-        { name: 'ctaLabelBM', type: 'text', defaultValue: 'Baca folio',      admin: bmDesc },
-      ],
+        { name: 'ctaLabelBM', type: 'text', defaultValue: 'Baca folio',      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+      ]),
     },
 
     {
       name: 'brotherhoodIntro',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',    type: 'text',     defaultValue: 'The Brotherhood System' },
-        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Sistem Brotherhood',                                                                                                                                        admin: bmDesc },
+        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Sistem Brotherhood',                                                                                                                                        admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headline',   type: 'text',     defaultValue: 'How we work with the people who buy from us.' },
-        { name: 'headlineBM', type: 'text',     defaultValue: 'Bagaimana kami bekerja dengan orang yang membeli daripada kami.',                                                                                            admin: bmDesc },
+        { name: 'headlineBM', type: 'text',     defaultValue: 'Bagaimana kami bekerja dengan orang yang membeli daripada kami.',                                                                                            admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
           name: 'lede',
           type: 'textarea',
@@ -108,19 +107,19 @@ export const HomePage: GlobalConfig = {
           name: 'ledeBM',
           type: 'textarea',
           defaultValue: 'Pengedar dan kontraktor yang bekerja dengan Coolman mendapat akses terus ke kejuruteraan, bukan sistem mata. Jika anda membawa bilah kami, kami layani anda seperti rakan kongsi — bukan nombor pelanggan.',
-          admin: bmDesc,
+          admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
         },
         { name: 'ctaLabel',   type: 'text', defaultValue: 'See the five principles' },
-        { name: 'ctaLabelBM', type: 'text', defaultValue: 'Lihat lima prinsip',       admin: bmDesc },
-      ],
+        { name: 'ctaLabelBM', type: 'text', defaultValue: 'Lihat lima prinsip',       admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+      ]),
     },
 
     {
       name: 'alansLetter',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',        type: 'text', defaultValue: 'A letter from Alan' },
-        { name: 'eyebrowBM',      type: 'text', defaultValue: 'Surat daripada Alan',  admin: bmDesc },
+        { name: 'eyebrowBM',      type: 'text', defaultValue: 'Surat daripada Alan',  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
           name: 'paragraphs',
           type: 'array',
@@ -142,44 +141,44 @@ export const HomePage: GlobalConfig = {
               paragraphBM: 'Halaman seterusnya bukan pemasaran. Itu adalah cara kami bekerja, apa yang kami telah pelajari, dan kerja yang mengajar kami. Jika anda membaca dan kami masih dirasakan sesuai untuk tapak anda, mari kita berbual.',
             },
           ],
-          fields: [
+          fields: bilingualTabs([
             { name: 'paragraph',   type: 'textarea', required: true },
-            { name: 'paragraphBM', type: 'textarea', admin: bmDesc },
-          ],
+            { name: 'paragraphBM', type: 'textarea', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ]),
         },
         { name: 'signature',      type: 'text', defaultValue: 'Alan',             admin: { description: 'Signature name — not translated.' } },
         { name: 'signatureLine2',   type: 'text', defaultValue: 'Founder, Coolman' },
-        { name: 'signatureLine2BM', type: 'text', defaultValue: 'Pengasas, Coolman', admin: bmDesc },
-      ],
+        { name: 'signatureLine2BM', type: 'text', defaultValue: 'Pengasas, Coolman', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+      ]),
     },
 
     {
       name: 'quietDoor',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',      type: 'text',     defaultValue: 'The quiet door' },
-        { name: 'eyebrowBM',    type: 'text',     defaultValue: 'Pintu yang senyap',                                                             admin: bmDesc },
+        { name: 'eyebrowBM',    type: 'text',     defaultValue: 'Pintu yang senyap',                                                             admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headline',     type: 'text',     defaultValue: 'The full range, in stock and ready to ship from Petaling Jaya.' },
-        { name: 'headlineBM',   type: 'text',     defaultValue: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',       admin: bmDesc },
+        { name: 'headlineBM',   type: 'text',     defaultValue: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',       admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'lede',         type: 'textarea', defaultValue: 'No catalogue front. No PDF download chase. Just the inventory, the spec, and a phone call away if the blade you need is not the one we list.' },
-        { name: 'ledeBM',       type: 'textarea', defaultValue: 'Tiada muka katalog. Tiada perlu memburu PDF. Hanya inventori, spesifikasi, dan satu panggilan telefon jika bilah yang anda perlukan bukan yang kami senaraikan.', admin: bmDesc },
+        { name: 'ledeBM',       type: 'textarea', defaultValue: 'Tiada muka katalog. Tiada perlu memburu PDF. Hanya inventori, spesifikasi, dan satu panggilan telefon jika bilah yang anda perlukan bukan yang kami senaraikan.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'ctaPrimary',   type: 'text',     defaultValue: 'Open the catalogue' },
-        { name: 'ctaPrimaryBM', type: 'text',     defaultValue: 'Buka katalog',                                                                  admin: bmDesc },
+        { name: 'ctaPrimaryBM', type: 'text',     defaultValue: 'Buka katalog',                                                                  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'ctaSecondary',   type: 'text',   defaultValue: 'Speak to engineering' },
-        { name: 'ctaSecondaryBM', type: 'text',   defaultValue: 'Hubungi kejuruteraan',                                                          admin: bmDesc },
-      ],
+        { name: 'ctaSecondaryBM', type: 'text',   defaultValue: 'Hubungi kejuruteraan',                                                          admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+      ]),
     },
 
     {
       name: 'conversation',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',    type: 'text',     defaultValue: 'How to start the conversation' },
-        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Bagaimana memulakan perbualan',                      admin: bmDesc },
+        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Bagaimana memulakan perbualan',                      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headline',   type: 'text',     defaultValue: 'Three ways in. WhatsApp is the fastest.' },
-        { name: 'headlineBM', type: 'text',     defaultValue: 'Tiga cara masuk. WhatsApp paling cepat.',            admin: bmDesc },
+        { name: 'headlineBM', type: 'text',     defaultValue: 'Tiga cara masuk. WhatsApp paling cepat.',            admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'lede',       type: 'textarea', defaultValue: "Most cuts begin with a phone call. We don't hide ours." },
-        { name: 'ledeBM',     type: 'textarea', defaultValue: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tidak sembunyikan kami punya.', admin: bmDesc },
+        { name: 'ledeBM',     type: 'textarea', defaultValue: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tidak sembunyikan kami punya.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
           name: 'channels',
           type: 'array',
@@ -188,18 +187,18 @@ export const HomePage: GlobalConfig = {
             { tag: 'Office',   tagBM: 'Pejabat',   title: 'Petaling Jaya office line',       titleBM: 'Talian pejabat Petaling Jaya',    body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.',                    bodyBM: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.', ctaLabel: 'Call the office', ctaLabelBM: 'Telefon pejabat' },
             { tag: 'On site',  tagBM: 'Di tapak',  title: 'Site visit form',                 titleBM: 'Borang lawatan tapak',            body: "If the cut is unusual, we'd rather come and see it than guess. Tell us where and when.",                               bodyBM: 'Jika potongan luar biasa, kami lebih rela datang melihat daripada meneka. Beritahu kami di mana dan bila.', ctaLabel: 'Request a site visit', ctaLabelBM: 'Minta lawatan tapak' },
           ],
-          fields: [
+          fields: bilingualTabs([
             { name: 'tag',        type: 'text',     required: true },
-            { name: 'tagBM',      type: 'text',     admin: bmDesc },
+            { name: 'tagBM',      type: 'text',     admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
             { name: 'title',      type: 'text',     required: true },
-            { name: 'titleBM',    type: 'text',     admin: bmDesc },
+            { name: 'titleBM',    type: 'text',     admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
             { name: 'body',       type: 'textarea', required: true },
-            { name: 'bodyBM',     type: 'textarea', admin: bmDesc },
+            { name: 'bodyBM',     type: 'textarea', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
             { name: 'ctaLabel',   type: 'text',     required: true },
-            { name: 'ctaLabelBM', type: 'text',     admin: bmDesc },
-          ],
+            { name: 'ctaLabelBM', type: 'text',     admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ]),
         },
-      ],
+      ]),
     },
   ],
 }

@@ -5,6 +5,7 @@ import {
   updateOptionList,
   deleteOptionList,
 } from '@/lib/access/optionLists'
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 export const MachineTiers: CollectionConfig = {
   slug: 'machineTiers',
@@ -18,7 +19,7 @@ export const MachineTiers: CollectionConfig = {
     update: updateOptionList,
     delete: deleteOptionList,
   },
-  fields: [
+  fields: bilingualTabs([
     {
       name: 'name',
       type: 'text',
@@ -36,5 +37,5 @@ export const MachineTiers: CollectionConfig = {
       type: 'text',
       admin: { description: 'e.g. < 2kW' },
     },
-  ],
+  ]),
 }

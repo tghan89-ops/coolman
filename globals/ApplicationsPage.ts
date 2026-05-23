@@ -1,6 +1,5 @@
 import type { GlobalConfig } from 'payload'
-
-const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 export const ApplicationsPage: GlobalConfig = {
   slug: 'applications-page',
@@ -10,11 +9,11 @@ export const ApplicationsPage: GlobalConfig = {
       url: () => `${process.env.NEXT_PUBLIC_SERVER_URL}/applications`,
     },
   },
-  fields: [
+  fields: bilingualTabs([
     { name: 'heroTitle', type: 'text', defaultValue: 'Applications' },
-    { name: 'heroTitleBM', type: 'text', defaultValue: 'Aplikasi', admin: bmDesc },
+    { name: 'heroTitleBM', type: 'text', defaultValue: 'Aplikasi', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
     { name: 'heroSubtitle', type: 'textarea', defaultValue: 'Find the right Coolman blade for your specific material and application.' },
-    { name: 'heroSubtitleBM', type: 'textarea', defaultValue: 'Cari bilah Coolman yang tepat untuk bahan dan aplikasi khusus anda.', admin: bmDesc },
+    { name: 'heroSubtitleBM', type: 'textarea', defaultValue: 'Cari bilah Coolman yang tepat untuk bahan dan aplikasi khusus anda.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
     {
       name: 'sections',
       type: 'array',
@@ -26,11 +25,11 @@ export const ApplicationsPage: GlobalConfig = {
         { title: 'Asphalt Cutting', titleBM: 'Pemotongan Asfalt', description: 'Durable blades designed for roadwork, asphalt overlays, and pavement cutting.', descriptionBM: 'Bilah tahan lasak yang direka untuk kerja jalan, lapisan asfalt dan pemotongan turapan.' },
         { title: 'Brick & Masonry', titleBM: 'Bata & Tembok', description: 'All-purpose blades for cutting brick, block, and general masonry materials.', descriptionBM: 'Bilah serba guna untuk memotong bata, blok dan bahan tembok am.' },
       ],
-      fields: [
+      fields: bilingualTabs([
         { name: 'title', type: 'text', required: true },
-        { name: 'titleBM', type: 'text', admin: bmDesc },
+        { name: 'titleBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'description', type: 'textarea' },
-        { name: 'descriptionBM', type: 'textarea', admin: bmDesc },
+        { name: 'descriptionBM', type: 'textarea', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'image', type: 'upload', relationTo: 'media' },
         {
           name: 'relatedProducts',
@@ -38,7 +37,7 @@ export const ApplicationsPage: GlobalConfig = {
           relationTo: 'products',
           hasMany: true,
         },
-      ],
+      ]),
     },
-  ],
+  ]),
 }

@@ -1,6 +1,5 @@
 import type { GlobalConfig } from 'payload'
-
-const bm = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 function sectionGroup(
   name: string,
@@ -13,26 +12,26 @@ function sectionGroup(
 ) {
   const fields: Parameters<typeof Object.assign>[0][] = [
     { name: 'eyebrow',    type: 'text' as const, defaultValue: defs.eyebrow },
-    { name: 'eyebrowBM',  type: 'text' as const, defaultValue: defs.eyebrowBM,  admin: bm },
+    { name: 'eyebrowBM',  type: 'text' as const, defaultValue: defs.eyebrowBM },
     { name: 'headline',   type: 'text' as const, defaultValue: defs.headline },
-    { name: 'headlineBM', type: 'text' as const, defaultValue: defs.headlineBM, admin: bm },
+    { name: 'headlineBM', type: 'text' as const, defaultValue: defs.headlineBM },
   ]
   if (defs.note !== undefined) {
     fields.push(
       { name: 'note',   type: 'text' as const, defaultValue: defs.note,   admin: { description: 'Optional editorial note shown under the headline.' } },
-      { name: 'noteBM', type: 'text' as const, defaultValue: defs.noteBM, admin: bm },
+      { name: 'noteBM', type: 'text' as const, defaultValue: defs.noteBM },
     )
   }
   fields.push({
     name: 'paragraphs',
     type: 'array' as const,
     defaultValue: defs.paragraphs,
-    fields: [
+    fields: bilingualTabs([
       { name: 'paragraph',   type: 'textarea' as const, required: true },
-      { name: 'paragraphBM', type: 'textarea' as const, admin: bm },
-    ],
+      { name: 'paragraphBM', type: 'textarea' as const },
+    ]),
   })
-  return { name, type: 'group' as const, fields }
+  return { name, type: 'group' as const, fields: bilingualTabs(fields as any) }
 }
 
 export const HeritagePage: GlobalConfig = {
@@ -48,14 +47,14 @@ export const HeritagePage: GlobalConfig = {
     {
       name: 'hero',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',    type: 'text',     defaultValue: 'Heritage' },
-        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Warisan',                                                         admin: bm },
+        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Warisan' },
         { name: 'headline',   type: 'textarea', defaultValue: 'Coolman, since 2007. Nineteen years of cuts that taught us how to build the blade.' },
-        { name: 'headlineBM', type: 'textarea', defaultValue: 'Coolman, sejak 2007. Sembilan belas tahun potongan yang mengajar kami bagaimana membina bilah.', admin: bm },
+        { name: 'headlineBM', type: 'textarea', defaultValue: 'Coolman, sejak 2007. Sembilan belas tahun potongan yang mengajar kami bagaimana membina bilah.' },
         { name: 'lede',       type: 'textarea', defaultValue: 'A short history of a Malaysian diamond tools company. Founded in Petaling Jaya by a tradesman who had been in the cutting trade since 1998.' },
-        { name: 'ledeBM',     type: 'textarea', defaultValue: 'Sejarah ringkas sebuah syarikat alat berlian Malaysia. Diasaskan di Petaling Jaya oleh seorang tukang yang telah berada dalam bidang pemotongan sejak 1998.', admin: bm },
-      ],
+        { name: 'ledeBM',     type: 'textarea', defaultValue: 'Sejarah ringkas sebuah syarikat alat berlian Malaysia. Diasaskan di Petaling Jaya oleh seorang tukang yang telah berada dalam bidang pemotongan sejak 1998.' },
+      ]),
     },
 
     // ── PJ, 2007 ───────────────────────────────────────────────────────────
@@ -165,11 +164,11 @@ export const HeritagePage: GlobalConfig = {
     {
       name: 'timeline',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',    type: 'text', defaultValue: 'The timeline' },
-        { name: 'eyebrowBM',  type: 'text', defaultValue: 'Garis masa',                          admin: bm },
+        { name: 'eyebrowBM',  type: 'text', defaultValue: 'Garis masa' },
         { name: 'headline',   type: 'text', defaultValue: 'Nineteen years on one page.' },
-        { name: 'headlineBM', type: 'text', defaultValue: 'Sembilan belas tahun pada satu halaman.', admin: bm },
+        { name: 'headlineBM', type: 'text', defaultValue: 'Sembilan belas tahun pada satu halaman.' },
         {
           name: 'events',
           type: 'array',
@@ -181,17 +180,17 @@ export const HeritagePage: GlobalConfig = {
             { year: 'TBC',  title: 'SIRIM certification awarded',                titleBM: 'Pensijilan SIRIM dianugerahkan',                  body: 'Independent verification of the bonding spec.',       bodyBM: 'Pengesahan bebas spesifikasi ikatan kami.', note: 'Alan to supply year', noteBM: 'Alan untuk sahkan tahun' },
             { year: '2026', title: '247 SKUs in stock, ~500 active accounts',    titleBM: '247 SKU dalam stok, ~500 akaun aktif',           body: '96% on-time dispatch. Same-day cut-off at 2pm.',     bodyBM: '96% hantar tepat waktu. Hadang hari sama jam 2 petang.' },
           ],
-          fields: [
+          fields: bilingualTabs([
             { name: 'year',    type: 'text',     required: true },
             { name: 'title',   type: 'text',     required: true },
-            { name: 'titleBM', type: 'text',     admin: bm },
+            { name: 'titleBM', type: 'text' },
             { name: 'body',    type: 'textarea', required: true },
-            { name: 'bodyBM',  type: 'textarea', admin: bm },
+            { name: 'bodyBM',  type: 'textarea' },
             { name: 'note',    type: 'text' },
-            { name: 'noteBM',  type: 'text',     admin: bm },
-          ],
+            { name: 'noteBM',  type: 'text' },
+          ]),
         },
-      ],
+      ]),
     },
   ],
 }

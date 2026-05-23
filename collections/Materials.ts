@@ -5,6 +5,7 @@ import {
   updateOptionList,
   deleteOptionList,
 } from '@/lib/access/optionLists'
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 export const Materials: CollectionConfig = {
   slug: 'materials',
@@ -18,7 +19,7 @@ export const Materials: CollectionConfig = {
     update: updateOptionList,
     delete: deleteOptionList,
   },
-  fields: [
+  fields: bilingualTabs([
     {
       name: 'name',
       type: 'text',
@@ -31,5 +32,5 @@ export const Materials: CollectionConfig = {
       required: true,
       admin: { description: 'Bahasa Melayu name e.g. Granit' },
     },
-  ],
+  ]),
 }

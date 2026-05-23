@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -18,7 +19,7 @@ export const Products: CollectionConfig = {
     delete: ({ req: { user } }) =>
       (user as any)?.collection === 'adminUsers' && (user as any)?.role === 'admin',
   },
-  fields: [
+  fields: bilingualTabs([
     {
       name: 'sku',
       type: 'text',
@@ -156,7 +157,7 @@ export const Products: CollectionConfig = {
       admin: {
         description: 'Product datasheets, safety guides, certificates — customers can download directly from the product page.',
       },
-      fields: [
+      fields: bilingualTabs([
         {
           name: 'title',
           type: 'text',
@@ -175,7 +176,7 @@ export const Products: CollectionConfig = {
           required: true,
           admin: { description: 'Upload a PDF, image, or Word document' },
         },
-      ],
+      ]),
     },
-  ],
+  ]),
 }

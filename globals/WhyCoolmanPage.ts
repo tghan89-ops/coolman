@@ -1,6 +1,5 @@
 import type { GlobalConfig } from 'payload'
-
-const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 function folioGroup(
   num: '01' | '02' | '03',
@@ -20,34 +19,34 @@ function folioGroup(
   return {
     name: `folio${num}`,
     type: 'group' as const,
-    fields: [
+    fields: bilingualTabs([
       { name: 'folioLabel',       type: 'text' as const,     defaultValue: defs.folioLabel },
-      { name: 'folioLabelBM',     type: 'text' as const,     defaultValue: defs.folioLabelBM,    admin: bmDesc },
+      { name: 'folioLabelBM',     type: 'text' as const,     defaultValue: defs.folioLabelBM },
       { name: 'category',         type: 'text' as const,     defaultValue: defs.category },
-      { name: 'categoryBM',       type: 'text' as const,     defaultValue: defs.categoryBM,      admin: bmDesc },
+      { name: 'categoryBM',       type: 'text' as const,     defaultValue: defs.categoryBM },
       { name: 'title',            type: 'text' as const,     defaultValue: defs.title },
-      { name: 'titleBM',          type: 'text' as const,     defaultValue: defs.titleBM,         admin: bmDesc },
+      { name: 'titleBM',          type: 'text' as const,     defaultValue: defs.titleBM },
       { name: 'titleEmphasis',    type: 'text' as const,     defaultValue: defs.titleEmphasis },
-      { name: 'titleEmphasisBM',  type: 'text' as const,     defaultValue: defs.titleEmphasisBM, admin: bmDesc },
+      { name: 'titleEmphasisBM',  type: 'text' as const,     defaultValue: defs.titleEmphasisBM },
       { name: 'summary',          type: 'textarea' as const, defaultValue: defs.summary },
-      { name: 'summaryBM',        type: 'textarea' as const, defaultValue: defs.summaryBM,       admin: bmDesc },
+      { name: 'summaryBM',        type: 'textarea' as const, defaultValue: defs.summaryBM },
       { name: 'metaAuthor',       type: 'text' as const,     defaultValue: defs.metaAuthor,      admin: { description: 'Author name — not translated.' } },
       { name: 'metaSubject',      type: 'text' as const,     defaultValue: defs.metaSubject },
-      { name: 'metaSubjectBM',    type: 'text' as const,     defaultValue: defs.metaSubjectBM,   admin: bmDesc },
+      { name: 'metaSubjectBM',    type: 'text' as const,     defaultValue: defs.metaSubjectBM },
       { name: 'metaRead',         type: 'text' as const,     defaultValue: defs.metaRead },
-      { name: 'metaReadBM',       type: 'text' as const,     defaultValue: defs.metaReadBM,      admin: bmDesc },
+      { name: 'metaReadBM',       type: 'text' as const,     defaultValue: defs.metaReadBM },
       {
         name: 'paragraphs',
         type: 'array' as const,
         defaultValue: defs.paragraphs,
-        fields: [
+        fields: bilingualTabs([
           { name: 'paragraph',   type: 'textarea' as const, required: true },
-          { name: 'paragraphBM', type: 'textarea' as const, admin: bmDesc },
-        ],
+          { name: 'paragraphBM', type: 'textarea' as const },
+        ]),
       },
       { name: 'pullquote',   type: 'text' as const, defaultValue: defs.pullquote },
-      { name: 'pullquoteBM', type: 'text' as const, defaultValue: defs.pullquoteBM, admin: bmDesc },
-    ],
+      { name: 'pullquoteBM', type: 'text' as const, defaultValue: defs.pullquoteBM },
+    ]),
   }
 }
 
@@ -63,13 +62,13 @@ export const WhyCoolmanPage: GlobalConfig = {
     {
       name: 'hero',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',        type: 'text',     defaultValue: 'Engineering Folio' },
-        { name: 'eyebrowBM',      type: 'text',     defaultValue: 'Folio Kejuruteraan',     admin: bmDesc },
+        { name: 'eyebrowBM',      type: 'text',     defaultValue: 'Folio Kejuruteraan' },
         { name: 'title',          type: 'text',     defaultValue: 'Three arguments.' },
-        { name: 'titleBM',        type: 'text',     defaultValue: 'Tiga hujah.',             admin: bmDesc },
+        { name: 'titleBM',        type: 'text',     defaultValue: 'Tiga hujah.' },
         { name: 'titleEmphasis',  type: 'text',     defaultValue: 'One trade.' },
-        { name: 'titleEmphasisBM', type: 'text',    defaultValue: 'Satu industri.',          admin: bmDesc },
+        { name: 'titleEmphasisBM', type: 'text',    defaultValue: 'Satu industri.' },
         {
           name: 'lede',
           type: 'textarea',
@@ -79,9 +78,8 @@ export const WhyCoolmanPage: GlobalConfig = {
           name: 'ledeBM',
           type: 'textarea',
           defaultValue: 'Tiga hujah yang menetapkan pendirian Coolman dalam industri pemotongan. Mitos yang masih diajar industri. Hujah untuk memadankan ikatan dengan agregat Malaysia. Falsafah Brotherhood.',
-          admin: bmDesc,
         },
-      ],
+      ]),
     },
 
     folioGroup('01', {
@@ -189,13 +187,13 @@ export const WhyCoolmanPage: GlobalConfig = {
     {
       name: 'closingCta',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow',             type: 'text',     defaultValue: 'A conversation' },
-        { name: 'eyebrowBM',           type: 'text',     defaultValue: 'Perbualan',                                  admin: bmDesc },
+        { name: 'eyebrowBM',           type: 'text',     defaultValue: 'Perbualan' },
         { name: 'title',               type: 'text',     defaultValue: 'Got a cut that the spec' },
-        { name: 'titleBM',             type: 'text',     defaultValue: 'Ada pemotongan yang lembaran spesifikasi',    admin: bmDesc },
+        { name: 'titleBM',             type: 'text',     defaultValue: 'Ada pemotongan yang lembaran spesifikasi' },
         { name: 'titleEmphasis',       type: 'text',     defaultValue: 'sheet cannot answer?' },
-        { name: 'titleEmphasisBM',     type: 'text',     defaultValue: 'tidak boleh jawab?',                         admin: bmDesc },
+        { name: 'titleEmphasisBM',     type: 'text',     defaultValue: 'tidak boleh jawab?' },
         {
           name: 'body',
           type: 'textarea',
@@ -205,13 +203,12 @@ export const WhyCoolmanPage: GlobalConfig = {
           name: 'bodyBM',
           type: 'textarea',
           defaultValue: 'Hantar gambar kerja, agregat, dan bilah sedia ada. Meja kejuruteraan membalas pada hari kerja yang sama. Jika anda mahu baca lebih lanjut dalam suara yang sama, tiga Field Notes meliputi kerja khusus yang mengajar kami apa yang folio di atas hujahkan.',
-          admin: bmDesc,
         },
         { name: 'whatsappCtaLabel',     type: 'text', defaultValue: 'Open the engineering desk on WhatsApp' },
-        { name: 'whatsappCtaLabelBM',   type: 'text', defaultValue: 'Buka meja kejuruteraan di WhatsApp',  admin: bmDesc },
+        { name: 'whatsappCtaLabelBM',   type: 'text', defaultValue: 'Buka meja kejuruteraan di WhatsApp' },
         { name: 'fieldNotesCtaLabel',   type: 'text', defaultValue: 'Read the Field Notes' },
-        { name: 'fieldNotesCtaLabelBM', type: 'text', defaultValue: 'Baca Field Notes',                    admin: bmDesc },
-      ],
+        { name: 'fieldNotesCtaLabelBM', type: 'text', defaultValue: 'Baca Field Notes' },
+      ]),
     },
   ],
 }

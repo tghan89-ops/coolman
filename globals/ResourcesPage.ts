@@ -1,6 +1,5 @@
 import type { GlobalConfig } from 'payload'
-
-const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 export const ResourcesPage: GlobalConfig = {
   slug: 'resources-page',
@@ -10,32 +9,32 @@ export const ResourcesPage: GlobalConfig = {
       url: () => `${process.env.NEXT_PUBLIC_SERVER_URL}/resources`,
     },
   },
-  fields: [
+  fields: bilingualTabs([
     { name: 'heroTitle', type: 'text', defaultValue: 'Resources' },
-    { name: 'heroTitleBM', type: 'text', admin: bmDesc },
+    { name: 'heroTitleBM', type: 'text' },
     { name: 'heroSubtitle', type: 'textarea', defaultValue: 'Technical guides, datasheets, and videos to help you get the most from Coolman tools.' },
-    { name: 'heroSubtitleBM', type: 'textarea', admin: bmDesc },
+    { name: 'heroSubtitleBM', type: 'textarea' },
     {
       name: 'downloads',
       type: 'array',
-      fields: [
+      fields: bilingualTabs([
         { name: 'title', type: 'text', required: true },
-        { name: 'titleBM', type: 'text', admin: bmDesc },
+        { name: 'titleBM', type: 'text' },
         { name: 'description', type: 'text' },
-        { name: 'descriptionBM', type: 'text', admin: bmDesc },
+        { name: 'descriptionBM', type: 'text' },
         { name: 'file', type: 'upload', relationTo: 'media' },
-      ],
+      ]),
     },
     {
       name: 'videos',
       type: 'array',
-      fields: [
+      fields: bilingualTabs([
         { name: 'title', type: 'text', required: true },
-        { name: 'titleBM', type: 'text', admin: bmDesc },
+        { name: 'titleBM', type: 'text' },
         { name: 'youtubeUrl', type: 'text', required: true },
         { name: 'description', type: 'text' },
-        { name: 'descriptionBM', type: 'text', admin: bmDesc },
-      ],
+        { name: 'descriptionBM', type: 'text' },
+      ]),
     },
     {
       name: 'faqs',
@@ -47,12 +46,12 @@ export const ResourcesPage: GlobalConfig = {
         { question: 'How do I maximize blade life?', answer: 'Use the correct blade for your material, maintain proper RPM and feed rates, ensure adequate water flow for wet cutting, and allow the blade to cut rather than forcing it.' },
         { question: 'Do you offer bulk pricing for contractors?', answer: 'Yes, registered contractors receive tiered pricing based on volume. Create a contractor account to view your pricing tier and available discounts.' },
       ],
-      fields: [
+      fields: bilingualTabs([
         { name: 'question', type: 'text', required: true },
-        { name: 'questionBM', type: 'text', admin: bmDesc },
+        { name: 'questionBM', type: 'text' },
         { name: 'answer', type: 'textarea', required: true },
-        { name: 'answerBM', type: 'textarea', admin: bmDesc },
-      ],
+        { name: 'answerBM', type: 'textarea' },
+      ]),
     },
-  ],
+  ]),
 }

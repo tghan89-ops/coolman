@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
+import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
-const bmDesc = { description: 'Bahasa Malaysia. Leave blank to fall back to English.' }
 const notTranslated = { description: 'Not translated — numeric/spec value shown in both languages.' }
 
 export const ShibuyaPage: GlobalConfig = {
@@ -16,14 +16,14 @@ export const ShibuyaPage: GlobalConfig = {
     {
       name: 'hero',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'badge', type: 'text', defaultValue: 'Coolman × Shibuya Tools · Hiroshima' },
-        { name: 'badgeBM', type: 'text', defaultValue: 'Coolman × Shibuya Tools · Hiroshima', admin: bmDesc },
+        { name: 'badgeBM', type: 'text', defaultValue: 'Coolman × Shibuya Tools · Hiroshima' },
         { name: 'badgeSince', type: 'text', defaultValue: 'Sole MY Partner Since 2011', admin: notTranslated },
         { name: 'headlineLine1', type: 'text', defaultValue: 'The best machine in the world.' },
-        { name: 'headlineLine1BM', type: 'text', defaultValue: 'Mesin terbaik di dunia.', admin: bmDesc },
+        { name: 'headlineLine1BM', type: 'text', defaultValue: 'Mesin terbaik di dunia.' },
         { name: 'headlineEmphasis', type: 'text', defaultValue: 'The bond built for here.' },
-        { name: 'headlineEmphasisBM', type: 'text', defaultValue: 'Ikatan yang dibina untuk sini.', admin: bmDesc },
+        { name: 'headlineEmphasisBM', type: 'text', defaultValue: 'Ikatan yang dibina untuk sini.' },
         {
           name: 'subheadline',
           type: 'textarea',
@@ -35,9 +35,8 @@ export const ShibuyaPage: GlobalConfig = {
           type: 'textarea',
           defaultValue:
             'Shibuya Tools, Hiroshima, telah membina mesin penggerudi teras berketepatan sejak 1933. Coolman telah membina segmen berlian yang dikalibrasi untuk agregat Malaysia sejak 1998.',
-          admin: bmDesc,
         },
-      ],
+      ]),
     },
 
     // ── Trust Bar ─────────────────────────────────────────────────────────────
@@ -45,7 +44,7 @@ export const ShibuyaPage: GlobalConfig = {
       name: 'trustBar',
       type: 'group',
       admin: { description: '4-stat strip shown below the hero.' },
-      fields: [
+      fields: bilingualTabs([
         {
           name: 'stats',
           type: 'array',
@@ -57,13 +56,13 @@ export const ShibuyaPage: GlobalConfig = {
             { number: '3 yr', label: 'Full mechanical\nwarranty', labelBM: 'Waranti mekanikal\npenuh' },
             { number: '48 h', label: 'Replacement parts\nfrom PJ workshop', labelBM: 'Alat ganti\ndari bengkel PJ' },
           ],
-          fields: [
+          fields: bilingualTabs([
             { name: 'number', type: 'text', required: true, admin: notTranslated },
             { name: 'label', type: 'text', required: true, admin: { description: 'Two lines separated by \\n' } },
-            { name: 'labelBM', type: 'text', admin: bmDesc },
-          ],
+            { name: 'labelBM', type: 'text' },
+          ]),
         },
-      ],
+      ]),
     },
 
     // ── Machine Story ─────────────────────────────────────────────────────────
@@ -71,11 +70,11 @@ export const ShibuyaPage: GlobalConfig = {
       name: 'machineStory',
       type: 'group',
       admin: { description: 'Two-column partnership narrative.' },
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow', type: 'text', defaultValue: 'Two workshops, one cut' },
-        { name: 'eyebrowBM', type: 'text', defaultValue: 'Dua bengkel, satu potongan', admin: bmDesc },
+        { name: 'eyebrowBM', type: 'text', defaultValue: 'Dua bengkel, satu potongan' },
         { name: 'headline', type: 'text', defaultValue: 'The machine is Japanese. The bond is Malaysian.' },
-        { name: 'headlineBM', type: 'text', defaultValue: 'Mesin itu Jepun. Ikatan itu Malaysia.', admin: bmDesc },
+        { name: 'headlineBM', type: 'text', defaultValue: 'Mesin itu Jepun. Ikatan itu Malaysia.' },
         {
           name: 'intro',
           type: 'textarea',
@@ -85,38 +84,37 @@ export const ShibuyaPage: GlobalConfig = {
           name: 'introBM',
           type: 'textarea',
           defaultValue: 'Setiap pihak melakukan apa yang pihak lain tidak akan lakukan. Hasilnya adalah pasangan mesin dan mata yang mana tidak ada separuh yang perlu berkompromi.',
-          admin: bmDesc,
         },
         // Column 1: Shibuya / The machine
         { name: 'col1Tag', type: 'text', defaultValue: 'Shibuya · Since 1933' },
-        { name: 'col1TagBM', type: 'text', defaultValue: 'Shibuya · Sejak 1933', admin: bmDesc },
+        { name: 'col1TagBM', type: 'text', defaultValue: 'Shibuya · Sejak 1933' },
         { name: 'col1Title', type: 'text', defaultValue: 'The machine.' },
-        { name: 'col1TitleBM', type: 'text', defaultValue: 'Mesin itu.', admin: bmDesc },
+        { name: 'col1TitleBM', type: 'text', defaultValue: 'Mesin itu.' },
         {
           name: 'col1Body',
           type: 'textarea',
           defaultValue:
             'Shibuya core drilling machines are precision instruments. Hand-built in Hiroshima. Servo-controlled feed rate, hydraulic counterbalance, magnetic-anchor and vacuum-anchor base systems, hole-runout tolerances measured in the tens of microns.\n\nWhat does not change in 92 years of Shibuya engineering: the machine is not the wear part. The blade is.',
         },
-        { name: 'col1BodyBM', type: 'textarea', admin: bmDesc },
+        { name: 'col1BodyBM', type: 'textarea' },
         { name: 'col1Country', type: 'text', defaultValue: 'Hiroshima, Japan', admin: notTranslated },
         // Column 2: Coolman / The bond
         { name: 'col2Tag', type: 'text', defaultValue: 'Coolman · Since 1998' },
-        { name: 'col2TagBM', type: 'text', defaultValue: 'Coolman · Sejak 1998', admin: bmDesc },
+        { name: 'col2TagBM', type: 'text', defaultValue: 'Coolman · Sejak 1998' },
         { name: 'col2Title', type: 'text', defaultValue: 'The bond.' },
-        { name: 'col2TitleBM', type: 'text', defaultValue: 'Ikatan itu.', admin: bmDesc },
+        { name: 'col2TitleBM', type: 'text', defaultValue: 'Ikatan itu.' },
         {
           name: 'col2Body',
           type: 'textarea',
           defaultValue:
             'A Shibuya rig fitted with a European-bond core bit on a KL podium will run with mechanical precision and a glazed bit. The fault is not the machine. The fault is that the bond holding the diamond was not calibrated for the ground.\n\nCoolman builds the core bit the Shibuya rig deserves. Cobalt blend formulated against KL crushed granite, MRT3 segment work, Genting granite stocks, Pahang aggregate.',
         },
-        { name: 'col2BodyBM', type: 'textarea', admin: bmDesc },
+        { name: 'col2BodyBM', type: 'textarea' },
         { name: 'col2Country', type: 'text', defaultValue: 'Petaling Jaya, Malaysia', admin: notTranslated },
         // Optional site photo below the story pair
         { name: 'sitePhoto', type: 'upload', relationTo: 'media' },
         { name: 'sitePhotoAlt', type: 'text', admin: notTranslated },
-      ],
+      ]),
     },
 
     // ── Service Section ───────────────────────────────────────────────────────
@@ -124,18 +122,18 @@ export const ShibuyaPage: GlobalConfig = {
       name: 'serviceSection',
       type: 'group',
       admin: { description: 'Service & warranty section with stats, photos, and numbered service points.' },
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow', type: 'text', defaultValue: 'In-house service · Since 2011' },
-        { name: 'eyebrowBM', type: 'text', defaultValue: 'Servis dalaman · Sejak 2011', admin: bmDesc },
+        { name: 'eyebrowBM', type: 'text', defaultValue: 'Servis dalaman · Sejak 2011' },
         { name: 'headline', type: 'text', defaultValue: 'Two trained Shibuya technicians. Same workshop, same building.' },
-        { name: 'headlineBM', type: 'text', defaultValue: 'Dua juruteknik Shibuya terlatih. Bengkel yang sama, bangunan yang sama.', admin: bmDesc },
+        { name: 'headlineBM', type: 'text', defaultValue: 'Dua juruteknik Shibuya terlatih. Bengkel yang sama, bangunan yang sama.' },
         {
           name: 'body',
           type: 'textarea',
           defaultValue:
             'The Shibuya service contract is not subcontracted. Every machine sold in Malaysia is serviced in the Petaling Jaya workshop by technicians factory-trained in Hiroshima. Replacement parts are stocked locally — not air-freighted on demand.',
         },
-        { name: 'bodyBM', type: 'textarea', admin: bmDesc },
+        { name: 'bodyBM', type: 'textarea' },
         {
           name: 'stats',
           type: 'array',
@@ -146,22 +144,22 @@ export const ShibuyaPage: GlobalConfig = {
             { number: '48 h', label: 'Parts turnaround\nfrom PJ workshop stock', labelBM: 'Pusing ganti alat ganti\ndari stok bengkel PJ' },
             { number: '2', label: 'Factory-trained Shibuya\ntechnicians on staff', labelBM: 'Juruteknik Shibuya\nterlatih kilang dalam kakitangan' },
           ],
-          fields: [
+          fields: bilingualTabs([
             { name: 'number', type: 'text', required: true, admin: notTranslated },
             { name: 'label', type: 'text', required: true },
-            { name: 'labelBM', type: 'text', admin: bmDesc },
-          ],
+            { name: 'labelBM', type: 'text' },
+          ]),
         },
         {
           name: 'photos',
           type: 'array',
           minRows: 0,
           maxRows: 3,
-          fields: [
+          fields: bilingualTabs([
             { name: 'photo', type: 'upload', relationTo: 'media' },
             { name: 'caption', type: 'text' },
-            { name: 'captionBM', type: 'text', admin: bmDesc },
-          ],
+            { name: 'captionBM', type: 'text' },
+          ]),
         },
         {
           name: 'servicePoints',
@@ -206,40 +204,40 @@ export const ShibuyaPage: GlobalConfig = {
               bodyBM: 'Setiap pembelian mesin baharu termasuk sesi latihan pengendali setengah hari. Dijalankan di bengkel Petaling Jaya atau di tapak anda — pilihan anda.',
             },
           ],
-          fields: [
+          fields: bilingualTabs([
             { name: 'number', type: 'text', required: true, admin: notTranslated },
             { name: 'label', type: 'text', required: true },
-            { name: 'labelBM', type: 'text', admin: bmDesc },
+            { name: 'labelBM', type: 'text' },
             { name: 'title', type: 'text', required: true },
-            { name: 'titleBM', type: 'text', admin: bmDesc },
+            { name: 'titleBM', type: 'text' },
             { name: 'body', type: 'textarea', required: true },
-            { name: 'bodyBM', type: 'textarea', admin: bmDesc },
-          ],
+            { name: 'bodyBM', type: 'textarea' },
+          ]),
         },
-      ],
+      ]),
     },
 
     // ── CTA ───────────────────────────────────────────────────────────────────
     {
       name: 'cta',
       type: 'group',
-      fields: [
+      fields: bilingualTabs([
         { name: 'eyebrow', type: 'text', defaultValue: 'Order, service, or training' },
-        { name: 'eyebrowBM', type: 'text', defaultValue: 'Pesanan, servis, atau latihan', admin: bmDesc },
+        { name: 'eyebrowBM', type: 'text', defaultValue: 'Pesanan, servis, atau latihan' },
         { name: 'headline', type: 'text', defaultValue: 'One conversation for the machine, the bit, and the cut.' },
-        { name: 'headlineBM', type: 'text', defaultValue: 'Satu perbualan untuk mesin, mata, dan potongan.', admin: bmDesc },
+        { name: 'headlineBM', type: 'text', defaultValue: 'Satu perbualan untuk mesin, mata, dan potongan.' },
         {
           name: 'body',
           type: 'textarea',
           defaultValue:
             'Whether you are buying a new Shibuya rig, sending one in for annual calibration, or wondering which line fits a job — the engineering desk handles all of it. Same number since 1998.',
         },
-        { name: 'bodyBM', type: 'textarea', admin: bmDesc },
+        { name: 'bodyBM', type: 'textarea' },
         { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Open WhatsApp →' },
-        { name: 'primaryCtaLabelBM', type: 'text', defaultValue: 'Buka WhatsApp →', admin: bmDesc },
+        { name: 'primaryCtaLabelBM', type: 'text', defaultValue: 'Buka WhatsApp →' },
         { name: 'secondaryCtaLabel', type: 'text', defaultValue: 'All channels' },
-        { name: 'secondaryCtaLabelBM', type: 'text', defaultValue: 'Semua saluran', admin: bmDesc },
-      ],
+        { name: 'secondaryCtaLabelBM', type: 'text', defaultValue: 'Semua saluran' },
+      ]),
     },
 
     // ── Legacy fields (hidden, preserved in DB) ───────────────────────────────
@@ -247,17 +245,17 @@ export const ShibuyaPage: GlobalConfig = {
       name: 'heritage',
       type: 'group',
       admin: { hidden: true },
-      fields: [
+      fields: bilingualTabs([
         { name: 'since', type: 'text' },
         { name: 'statement', type: 'textarea' },
         { name: 'statementBM', type: 'textarea' },
-      ],
+      ]),
     },
     {
       name: 'craftsmanship',
       type: 'group',
       admin: { hidden: true },
-      fields: [
+      fields: bilingualTabs([
         { name: 'sectionLabel', type: 'text' },
         { name: 'sectionLabelBM', type: 'text' },
         { name: 'title', type: 'text' },
@@ -268,46 +266,46 @@ export const ShibuyaPage: GlobalConfig = {
         {
           name: 'points',
           type: 'array',
-          fields: [
+          fields: bilingualTabs([
             { name: 'number', type: 'text' },
             { name: 'title', type: 'text' },
             { name: 'titleBM', type: 'text' },
             { name: 'description', type: 'textarea' },
             { name: 'descriptionBM', type: 'textarea' },
-          ],
+          ]),
         },
-      ],
+      ]),
     },
     {
       name: 'inAction',
       type: 'group',
       admin: { hidden: true },
-      fields: [
+      fields: bilingualTabs([
         { name: 'title', type: 'text' },
         { name: 'titleBM', type: 'text' },
         { name: 'body', type: 'textarea' },
         { name: 'bodyBM', type: 'textarea' },
         { name: 'image', type: 'upload', relationTo: 'media' },
-      ],
+      ]),
     },
     {
       name: 'support',
       type: 'group',
       admin: { hidden: true },
-      fields: [
+      fields: bilingualTabs([
         { name: 'title', type: 'text' },
         { name: 'titleBM', type: 'text' },
         {
           name: 'items',
           type: 'array',
-          fields: [
+          fields: bilingualTabs([
             { name: 'title', type: 'text' },
             { name: 'titleBM', type: 'text' },
             { name: 'description', type: 'textarea' },
             { name: 'descriptionBM', type: 'textarea' },
-          ],
+          ]),
         },
-      ],
+      ]),
     },
   ],
 }
