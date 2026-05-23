@@ -32,7 +32,7 @@ export function EngineeringSection() {
           </div>
 
           {/* Callout stats */}
-          <div className="flex flex-col gap-0">
+          <div className="flex flex-col gap-8">
             {e.callouts.map((c, i) => (
               <div
                 key={i}
@@ -153,6 +153,22 @@ export function EngineeringSection() {
             {e.blueprint.caption}
           </p>
         </figure>
+
+        {/* Workshop photo */}
+        <div className="mt-20 grid gap-20 lg:grid-cols-[1.3fr_1fr] lg:items-start">
+          <img
+            src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1200&q=80&auto=format&fit=crop"
+            alt="Coolman workshop floor — segment press and laser-weld station"
+            className="block w-full aspect-[4/3] object-cover"
+            style={{ filter: 'grayscale(0.4) contrast(1.04) brightness(0.96)' }}
+          />
+          <div className="text-[14px] leading-[1.7] text-ink-muted">
+            <h4 className="font-fraunces font-normal text-[22px] leading-[1.2] tracking-[-0.01em] text-navy m-0 mb-4">
+              {e.workshopPhoto.heading}
+            </h4>
+            <p className="m-0">{e.workshopPhoto.body}</p>
+          </div>
+        </div>
 
       </div>
     </section>

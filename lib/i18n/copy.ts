@@ -637,8 +637,11 @@ export interface CopyStructure {
   homeNarrative: {
     opening: {
       eyebrow: string
-      headline: string
+      headlinePrefix: string
+      headlineEmphasis: string
       lede: string
+      ctaPrimary: string
+      ctaSecondary: string
     }
     heroCard: {
       corner: string
@@ -686,6 +689,10 @@ export interface CopyStructure {
         drawingNumber: string
         scaleNote: string
         caption: string
+      }
+      workshopPhoto: {
+        heading: string
+        body: string
       }
     }
     alansLetter: {
@@ -1129,7 +1136,7 @@ export const COPY: Record<Language, CopyStructure> = {
           summary: 'After nearly thirty years in the Malaysian diamond tools industry, three beliefs are repeated so often they sound like wisdom. They are not. Each one has cost contractors money, dealers their margins, and the industry its reputation. This is a long argument about three short myths.',
           metaAuthor: 'Coolman Engineering',
           metaSubject: 'Industry positioning',
-          metaRead: '14 min read',
+          metaRead: '4 min read',
           intro: {
             heading: 'A word on the people who repeat them',
             paragraphs: [
@@ -1882,9 +1889,12 @@ export const COPY: Record<Language, CopyStructure> = {
     },
     homeNarrative: {
       opening: {
-        eyebrow: 'Coolman',
-        headline: 'Diamond cutting tools, built in Petaling Jaya for the way Malaysian sites actually cut.',
+        eyebrow: 'Coolman · Manufacturer of cutting tools · Petaling Jaya, 2007',
+        headlinePrefix: 'A blade is the answer to a question the contractor ',
+        headlineEmphasis: "hasn't fully asked yet.",
         lede: 'Coolman has built diamond blades, core bits and cutting systems in Malaysia since 2007. Our founder, Alan, has been in the cutting trade since 1998. Every blade we make is engineered for the rock, the rebar and the schedule Malaysian contractors face.',
+        ctaPrimary: 'Speak to engineering',
+        ctaSecondary: 'Browse the tools',
       },
       heroCard: {
         corner: 'FIELD NOTE № 014',
@@ -1951,6 +1961,10 @@ export const COPY: Record<Language, CopyStructure> = {
           drawingNumber: 'DWG · CL-SS-012 · SANDWICH COBALT SEGMENT · CROSS-SECTION',
           scaleNote: 'SCALE 4:1 · ALL DIM. IN MM · REV. C · 2026-04',
           caption: "Sandwich cobalt segment, current generation. Three matrix layers of graded hardness laser-welded to a tensioned high-carbon steel core. The soft centre cobalt releases diamond before the outer matrix glazes — the wear rate matches the work, not the bond's original calibration.",
+        },
+        workshopPhoto: {
+          heading: 'The workshop the bond is built in.',
+          body: 'Petaling Jaya, Section 14. Every segment we ship is pressed, sintered, and laser-welded in this single building. Every blade returned at end-of-life is sectioned here. The kilns are the same ones Coolman started with — the bond formulations are not.',
         },
       },
       alansLetter: {
@@ -3314,9 +3328,12 @@ export const COPY: Record<Language, CopyStructure> = {
     },
     homeNarrative: {
       opening: {
-        eyebrow: 'Coolman',
-        headline: 'Alat pemotong berlian, dibina di Petaling Jaya untuk cara tapak Malaysia sebenar-benarnya memotong.',
+        eyebrow: 'Coolman · Pengeluar alat pemotong · Petaling Jaya, 2007',
+        headlinePrefix: 'Bilah adalah jawapan kepada soalan yang kontraktor ',
+        headlineEmphasis: 'belum sepenuhnya tanya.',
         lede: 'Coolman telah membina bilah berlian, mata teras dan sistem pemotongan di Malaysia sejak 2007. Pengasas kami, Alan, telah berada dalam bidang pemotongan sejak 1998. Setiap bilah yang kami hasilkan direka untuk batu, besi tetulang dan jadual yang dihadapi kontraktor Malaysia.',
+        ctaPrimary: 'Berbual dengan kejuruteraan',
+        ctaSecondary: 'Lihat alat',
       },
       heroCard: {
         corner: 'FIELD NOTE № 014',
@@ -3383,6 +3400,10 @@ export const COPY: Record<Language, CopyStructure> = {
           drawingNumber: 'DWG · CL-SS-012 · SEGMEN KOBALT SANDWIC · KERATAN RENTAS',
           scaleNote: 'SKALA 4:1 · SEMUA DIM. DALAM MM · REV. C · 2026-04',
           caption: 'Segmen kobalt sandwic, generasi semasa. Tiga lapisan matriks kekerasan bertahap dikimpal laser ke teras keluli karbon tinggi berketegangan. Kobalt tengah yang lembut melepaskan berlian sebelum matriks luar mengaca — kadar haus sepadan dengan kerja, bukan kalibrasi asal matriks.',
+        },
+        workshopPhoto: {
+          heading: 'Bengkel tempat ikatan dibina.',
+          body: 'Petaling Jaya, Seksyen 14. Setiap segmen yang kami hantar ditekan, disinter dan dikimpal laser di bangunan tunggal ini. Setiap bilah yang dipulangkan pada akhir hayat dipotong di sini. Relau adalah relau yang sama sejak Coolman bermula — formulasi ikatan tidak.',
         },
       },
       alansLetter: {

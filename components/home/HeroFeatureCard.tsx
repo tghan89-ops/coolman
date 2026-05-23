@@ -11,6 +11,13 @@ export function HeroFeatureCard() {
       className="w-full bg-navy-surface border border-[rgba(96,165,250,0.18)] p-8"
       aria-label="Featured field note"
     >
+      {/* Bleed photo — placeholder until Alan supplies job-site photography */}
+      <img
+        src="https://images.unsplash.com/photo-1590725140246-20acdee442be?w=1400&q=80&auto=format&fit=crop"
+        alt="Concrete cutting on a Kuala Lumpur podium slab"
+        className="-mx-8 -mt-8 mb-6 block w-[calc(100%+4rem)] aspect-video object-cover"
+        style={{ filter: 'grayscale(0.5) contrast(1.05) brightness(0.85)' }}
+      />
       <span className="block font-mono text-[10px] tracking-[0.16em] text-accent-light mb-3">
         {card.corner}
       </span>

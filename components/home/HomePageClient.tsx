@@ -7,16 +7,12 @@ import {
   Wrench,
   Repeat2,
   UserX,
-  MessageCircle,
-  Phone,
-  MapPin,
   type LucideIcon,
 } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { useLanguage } from '@/lib/i18n/context'
 import { FearCard } from '@/components/industrial/FearCard'
 import { InventoryStat } from '@/components/industrial/InventoryStat'
-import { ChannelCard } from '@/components/industrial/ChannelCard'
 import { HeroFeatureCard } from '@/components/home/HeroFeatureCard'
 import { EngineeringSection } from '@/components/home/EngineeringSection'
 import { ChinesePullquote } from '@/components/editorial/Pullquote'
@@ -56,12 +52,6 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
     alone: UserX,
   }
 
-  const channelIcons = [
-    <MessageCircle key="wa" className="h-6 w-6" />,
-    <Phone key="phone" className="h-6 w-6" />,
-    <MapPin key="map" className="h-6 w-6" />,
-  ]
-
   const channelHrefs = [whatsappHref, telHref, '/contact#site-visit']
 
   // Overlay live Settings values onto the quietDoor stats by stable key, not
@@ -83,12 +73,29 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
                 {n.opening.eyebrow}
               </p>
-              <h1 className="mt-6 font-fraunces text-[clamp(40px,6vw,84px)] font-normal leading-[1.02] tracking-[-0.025em] text-paper">
-                {n.opening.headline}
+              <h1 className="mt-6 font-fraunces text-[clamp(48px,6vw,84px)] font-normal leading-[1.02] tracking-[-0.025em] text-paper max-w-[14ch]">
+                {n.opening.headlinePrefix}
+                <em className="italic font-light text-accent-light">{n.opening.headlineEmphasis}</em>
               </h1>
-              <p className="mt-8 max-w-[52ch] text-lg leading-relaxed text-ink-faint">
+              <p className="mt-7 max-w-[52ch] text-lg leading-[1.55] text-ink-faint">
                 {n.opening.lede}
               </p>
+              <div className="mt-10 flex flex-wrap gap-3">
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-12 items-center justify-center bg-paper px-6 text-sm font-medium text-navy rounded-sm transition-[box-shadow] duration-150 ease-out hover:shadow-[0_4px_12px_rgba(0,0,0,0.25)]"
+                >
+                  {n.opening.ctaPrimary}
+                </a>
+                <Link
+                  href="/products"
+                  className="inline-flex h-12 items-center justify-center border border-[rgba(250,250,247,0.4)] bg-transparent px-6 text-sm font-medium text-paper rounded-sm transition-[border-color] duration-150 ease-out hover:border-paper"
+                >
+                  {n.opening.ctaSecondary}
+                </Link>
+              </div>
             </div>
             <div className="lg:items-start">
               <HeroFeatureCard />
@@ -333,14 +340,34 @@ export function HomePageClient({ settings, publishedPostsCount }: HomePageClient
 
           <div className="mt-16 grid gap-6 md:grid-cols-3">
             {n.conversation.channels.map((ch, i) => (
-              <ChannelCard
+              <article
                 key={i}
-                icon={channelIcons[i]}
-                label={ch.tag}
-                value={ch.title}
-                href={channelHrefs[i]}
-                ariaLabel={`${ch.tag}: ${ch.title}`}
-              />
+                className="bg-paper text-navy p-9 flex flex-col min-h-[280px]"
+              >
+                <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-ink-faint mb-6">
+                  {ch.tag}
+                </p>
+                <h3 className="font-fraunces text-[22px] font-normal leading-[1.2] tracking-[-0.01em] text-navy mb-3.5">
+                  {ch.title}
+                </h3>
+                <p className="text-[14px] leading-[1.55] text-ink-muted flex-1 mb-7">
+                  {ch.body}
+                </p>
+                <a
+                  href={channelHrefs[i]}
+                  {...(i === 0
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
+                  className={
+                    i === 0
+                      ? 'self-start inline-flex h-12 items-center justify-center bg-navy px-6 text-sm font-medium text-paper rounded-sm transition-[background-color,box-shadow] duration-150 ease-out hover:bg-navy-light hover:shadow-[0_4px_12px_rgba(10,22,40,0.12)]'
+                      : 'self-start inline-flex h-12 items-center justify-center border border-navy bg-transparent px-6 text-sm font-medium text-navy rounded-sm transition-[background-color,color] duration-150 ease-out hover:bg-navy hover:text-paper'
+                  }
+                >
+                  {ch.ctaLabel}
+                  {i === 0 && <ArrowRight className="ml-2 h-4 w-4" />}
+                </a>
+              </article>
             ))}
           </div>
         </div>
