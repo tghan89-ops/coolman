@@ -150,5 +150,32 @@ export const Products: CollectionConfig = {
       relationTo: 'products',
       hasMany: true,
     },
+    {
+      name: 'documents',
+      type: 'array',
+      admin: {
+        description: 'Product datasheets, safety guides, certificates — customers can download directly from the product page.',
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          admin: { description: 'Document title in English e.g. "Product Datasheet"' },
+        },
+        {
+          name: 'titleBM',
+          type: 'text',
+          admin: { description: 'Document title in Bahasa Malaysia e.g. "Helaian Data Produk"' },
+        },
+        {
+          name: 'file',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+          admin: { description: 'Upload a PDF, image, or Word document' },
+        },
+      ],
+    },
   ],
 }

@@ -369,6 +369,8 @@ export interface CopyStructure {
       requestQuote: string
       skuLabel: string
       bondLabel: string
+      whatsappEnquiry: string
+      documentDownload: string
     }
   }
   products: {
@@ -1415,6 +1417,8 @@ export const COPY: Record<Language, CopyStructure> = {
         requestQuote: 'Request a quote',
         skuLabel: 'SKU',
         bondLabel: 'Bond',
+        whatsappEnquiry: 'Hi, I\'d like to enquire about {name} (SKU: {sku})',
+        documentDownload: 'Download',
       },
     },
     products: {
@@ -2660,6 +2664,8 @@ export const COPY: Record<Language, CopyStructure> = {
         requestQuote: 'Minta sebut harga',
         skuLabel: 'SKU',
         bondLabel: 'Ikatan',
+        whatsappEnquiry: 'Hai, saya ingin bertanya tentang {name} (SKU: {sku})',
+        documentDownload: 'Muat turun',
       },
     },
     products: {

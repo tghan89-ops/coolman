@@ -9,6 +9,7 @@ import * as migration_20260516_190000_carts_locked_docs_rels from './20260516_19
 import * as migration_20260516_210000_addresses from './20260516_210000_addresses';
 import * as migration_20260516_220000_search_logs_summary from './20260516_220000_search_logs_summary';
 import * as migration_20260517_030000_add_media_hero_size from './20260517_030000_add_media_hero_size';
+import * as migration_20260523_add_product_documents from './20260523_add_product_documents';
 
 export const migrations = [
   {
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20260517_030000_add_media_hero_size.up,
     down: migration_20260517_030000_add_media_hero_size.down,
     name: '20260517_030000_add_media_hero_size',
+  },
+  {
+    up: migration_20260523_add_product_documents.up,
+    down: migration_20260523_add_product_documents.down,
+    name: '20260523_add_product_documents',
   },
 ];

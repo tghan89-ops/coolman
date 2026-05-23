@@ -39,8 +39,10 @@ interface RelatedProductData {
 export interface ProductDetailData {
   id: string | number
   name: string
+  nameBM?: string | null
   sku: string
   description?: string | null
+  descriptionBM?: string | null
   image?: ProductMedia
   photos?: Array<{ id?: string | number; photo?: ProductMedia }> | null
   youtubeUrl?: string | null
@@ -54,6 +56,12 @@ export interface ProductDetailData {
   machineTier?: RelationOrScalar
   listPrice?: number | null
   relatedProducts?: RelatedProductData[] | null
+  documents?: Array<{
+    id: string | number
+    title: string
+    titleBM?: string | null
+    file?: ProductMedia
+  }> | null
 }
 
 export function ProductDetailClient({
@@ -80,6 +88,10 @@ export function ProductDetailClient({
   const { language, t } = useLanguage()
   const pd = t.pages.productDetail
   const data = initialData
+
+  const isBM = language === 'BM'
+  const displayName = isBM && data.nameBM ? data.nameBM : data.name
+  const displayDescription = isBM && data.descriptionBM ? data.descriptionBM : data.description
 
   const [activeTab, setActiveTab] = useState<'specs' | 'applications' | 'usage' | 'parameters' | 'documents'>('specs')
   const [quantity, setQuantity] = useState(1)
@@ -161,6 +173,8 @@ export function ProductDetailClient({
     { label: pd.specs.machineTier, value: machineTierLabel || '—' },
   ]
 
+  const documents = Array.isArray(data.documents) ? data.documents : []
+
   // Related products from Payload (depth:2 resolves these to full objects)
   const relatedProducts: RelatedProductData[] = Array.isArray(data.relatedProducts)
     ? data.relatedProducts.filter(
@@ -187,7 +201,9 @@ export function ProductDetailClient({
   const lineTotal = effectiveUnitPrice != null ? effectiveUnitPrice * quantity : null
 
   const whatsappHref = whatsappNumber
-    ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(`Hi Alan, I'd like to enquire about ${data.name} (SKU: ${data.sku})`)}`
+    ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(
+        pd.whatsappEnquiry.replace('{name}', displayName).replace('{sku}', data.sku),
+      )}`
     : '#'
 
   const tabs = [
@@ -239,7 +255,7 @@ export function ProductDetailClient({
               {activeMedia?.kind === 'video' ? (
                 <iframe
                   src={`${youTubeEmbedUrl(activeMedia.videoId)}?autoplay=1&rel=0`}
-                  title={`${data.name} — product video`}
+                  title={`${displayName} — product video`}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   loading="lazy"
@@ -248,7 +264,7 @@ export function ProductDetailClient({
               ) : activeMedia?.kind === 'image' ? (
                 <Image
                   src={activeMedia.url}
-                  alt={data.name}
+                  alt={displayName}
                   fill
                   className="object-contain"
                   priority
@@ -294,7 +310,7 @@ export function ProductDetailClient({
                         </div>
                       </>
                     ) : (
-                      <Image src={item.url} alt={`${data.name} photo ${i + 1}`} fill className="object-contain bg-[#EFF4FB]" />
+                      <Image src={item.url} alt={`${displayName} photo ${i + 1}`} fill className="object-contain bg-[#EFF4FB]" />
                     )}
                   </button>
                 ))}
@@ -326,11 +342,11 @@ export function ProductDetailClient({
               {primaryMaterial || pd.productTypeFallback}
             </p>
             <h1 className="mt-2 font-sans text-3xl font-bold leading-tight text-navy lg:text-4xl">
-              {data.name}
+              {displayName}
             </h1>
-            {data.description && (
+            {displayDescription && (
               <p className="mt-4 text-sm leading-relaxed text-ink-muted">
-                {data.description}
+                {displayDescription}
               </p>
             )}
 
@@ -547,7 +563,29 @@ export function ProductDetailClient({
 
           {/* Documents tab */}
           {activeTab === 'documents' && (
-            <p className="font-sans text-sm text-ink-muted">{pd.documentsEmpty}</p>
+            documents.length > 0 ? (
+              <ul className="max-w-2xl space-y-2">
+                {documents.map((doc) => {
+                  const docTitle = isBM && doc.titleBM ? doc.titleBM : doc.title
+                  const docUrl = typeof doc.file === 'object' && doc.file?.url ? doc.file.url : null
+                  return docUrl ? (
+                    <li key={doc.id}>
+                      <a
+                        href={docUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 border border-rule bg-white px-4 py-3 transition-colors duration-150 hover:border-navy"
+                      >
+                        <span className="flex-1 font-sans text-sm font-semibold text-navy">{docTitle}</span>
+                        <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink-muted">{pd.documentDownload} ↓</span>
+                      </a>
+                    </li>
+                  ) : null
+                })}
+              </ul>
+            ) : (
+              <p className="font-sans text-sm text-ink-muted">{pd.documentsEmpty}</p>
+            )
           )}
 
         </div>
