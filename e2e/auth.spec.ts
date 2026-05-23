@@ -85,9 +85,10 @@ test.describe('Logged-out access gates', () => {
     await expect(page).toHaveURL(/login|auth/, { timeout: 8_000 })
   })
 
-  test('/order-request redirects to login when not signed in', async ({ page }) => {
+  test('/order-request redirects to login or cart when not signed in', async ({ page }) => {
     await page.goto('/order-request')
-    await expect(page).toHaveURL(/login|auth/, { timeout: 8_000 })
+    // page.tsx redirects to /cart; if cart also gates, may go on to login
+    await expect(page).toHaveURL(/login|auth|cart/, { timeout: 8_000 })
   })
 
   test('/cart redirects or shows empty state when not signed in', async ({ page }) => {

@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from 'next'
+﻿import type { Metadata, Viewport } from 'next'
 import { IBM_Plex_Sans, JetBrains_Mono, Cormorant_Garamond, Ma_Shan_Zheng } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/lib/i18n/context'
@@ -98,7 +98,7 @@ export default async function FrontendLayout({
 
   return (
     <html lang="en" className="bg-background" data-scroll-behavior="smooth">
-      <body className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} ${maShanZheng.variable} font-sans antialiased`}>
+      <body className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} ${maShanZheng.variable} overflow-x-hidden font-sans antialiased`}>
         <SettingsProvider initialSettings={initialSettings}>
           <LanguageProvider>
             <AuthProvider>
@@ -113,3 +113,4 @@ export default async function FrontendLayout({
     </html>
   )
 }
+

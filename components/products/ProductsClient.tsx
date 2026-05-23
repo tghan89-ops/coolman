@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { FilterSidebar, type FilterGroup } from '@/components/catalogue/FilterSidebar'
 import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { bondLabel } from '@/lib/products/bond-label'
+import { diameterBucket } from '@/lib/products/diameter'
 import { useLanguage } from '@/lib/i18n/context'
 
 // Page size lives here as a justified hardcode — see LEARNINGS.md, section
@@ -133,7 +134,7 @@ export function ProductsClient({
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
               {t.catalogueIntro.eyebrow}
             </p>
-            <h1 className="mt-4 font-fraunces text-4xl font-semibold leading-tight text-navy sm:text-5xl">
+            <h1 className="mt-4 font-fraunces text-4xl font-normal leading-[1.08] tracking-[-0.01em] text-navy sm:text-5xl">
               {t.catalogueIntro.headline}
             </h1>
             <p className="mt-6 text-base leading-relaxed text-ink-muted sm:text-lg">
@@ -147,7 +148,7 @@ export function ProductsClient({
       </section>
 
       {/* Catalogue body — sidebar filters + product grid */}
-      <section className="bg-paper py-12 lg:py-16">
+      <section className="overflow-x-hidden bg-paper py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
             {/* Filter sidebar — handles its own debounced search-log fire. */}
@@ -156,9 +157,10 @@ export function ProductsClient({
               selected={selected}
               onChange={setSelected}
               onClear={handleClear}
+              className="min-w-0"
             />
 
-            <div>
+            <div className="min-w-0">
               {/* Result count line */}
               <div className="mb-6 flex items-baseline justify-between">
                 <p className="text-sm text-ink-muted">
@@ -287,16 +289,3 @@ export function ProductsClient({
 }
 
 // Diameter bucketing. We bucket the raw diameterMm value into 100mm increments
-// so the filter is short enough to fit in a sidebar (8 buckets) instead of
-// listing every distinct value (which gets unwieldy past ~30 SKUs). Buckets
-// are half-open intervals [start, start+100). Anything below 100mm, above
-// 900mm, or with no diameterMm value lands in 'other'. The label/value
-// strings here MUST stay byte-identical to the server-computed buckets in
-// app/(frontend)/products/page.tsx — that's where the filter chips originate.
-// See LEARNINGS.md "Frontend-editability exceptions" for why this is hardcoded.
-export function diameterBucket(diameterMm: unknown): string {
-  if (typeof diameterMm !== 'number' || !Number.isFinite(diameterMm)) return 'other'
-  if (diameterMm < 100 || diameterMm >= 900) return 'other'
-  const start = Math.floor(diameterMm / 100) * 100
-  return `${start}-${start + 100}`
-}

@@ -31,8 +31,8 @@ test.describe('Contact page', () => {
   })
 
   test('form validation — submitting empty form shows errors, does not send', async ({ page }) => {
-    // Click submit without filling anything
-    await page.getByRole('button', { name: /send|submit/i }).click()
+    // Click submit without filling anything — actual button text is "Request a visit"
+    await page.locator('button[type="submit"], [type="submit"]').first().click()
     // The page must NOT navigate away (form was rejected client-side)
     await expect(page).toHaveURL(/\/contact/)
     // Some error indication should appear (red text, border, aria-invalid, etc.)
@@ -46,7 +46,7 @@ test.describe('Contact page', () => {
   test('form validation — invalid email format shows error', async ({ page }) => {
     await page.getByLabel(/name/i).fill('Test User')
     await page.getByLabel(/email/i).fill('not-an-email')
-    await page.getByRole('button', { name: /send|submit/i }).click()
+    await page.locator('button[type="submit"], [type="submit"]').first().click()
     await expect(page).toHaveURL(/\/contact/)
     // Still on contact page = form not submitted
   })
