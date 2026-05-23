@@ -24,6 +24,7 @@ export interface CopyStructure {
     account: string
     switchToBM: string
     switchToEN: string
+    heritage: string
   }
   cart: {
     title: string
@@ -340,10 +341,25 @@ export interface CopyStructure {
         specifications: string
         applications: string
         usageGuide: string
+        parameters: string
+        documents: string
       }
       usageGuide: {
         steps: Array<{ title: string; body: string; bodyWithMaxRPM?: string }>
       }
+      orderForm: {
+        title: string
+        blurb: string
+        lineTotal: string
+        submitLabel: string
+        whatsappLabel: string
+        orLabel: string
+        footNote: string
+      }
+      priceCard: {
+        footNote: string
+      }
+      documentsEmpty: string
       ctaStrip: {
         heading: string
         body: string
@@ -1002,6 +1018,7 @@ export const COPY: Record<Language, CopyStructure> = {
       account: 'Account',
       switchToBM: 'Switch to Bahasa Malaysia',
       switchToEN: 'Switch to English',
+      heritage: 'Heritage',
     },
     cart: {
       title: 'Your Cart',
@@ -1349,9 +1366,11 @@ export const COPY: Record<Language, CopyStructure> = {
           machineTier: 'Machine Tier',
         },
         tabs: {
-          specifications: 'Specifications',
-          applications: 'Applications',
+          specifications: 'Full Specification',
+          applications: 'Application Notes',
           usageGuide: 'Usage Guide',
+          parameters: 'Cutting Parameters',
+          documents: 'Documents',
         },
         usageGuide: {
           steps: [
@@ -1374,6 +1393,19 @@ export const COPY: Record<Language, CopyStructure> = {
             },
           ],
         },
+        orderForm: {
+          title: 'Place an order request',
+          blurb: 'No payment now. Alan acknowledges within 24 h with final price, lead time, and delivery option.',
+          lineTotal: 'Line total',
+          submitLabel: 'Submit order request →',
+          whatsappLabel: 'WhatsApp engineering desk',
+          orLabel: 'or',
+          footNote: 'By submitting, you agree we may contact you about this request. Dispatch within 2 business days · ex-PJ warehouse.',
+        },
+        priceCard: {
+          footNote: 'Per unit · excl. SST · ex-warehouse Petaling Jaya',
+        },
+        documentsEmpty: 'No documents have been uploaded for this product yet.',
         ctaStrip: {
           heading: 'Ready to order or need technical advice?',
           body: 'Our engineers are available to help you choose the right blade.',
@@ -2231,6 +2263,7 @@ export const COPY: Record<Language, CopyStructure> = {
       account: 'Akaun',
       switchToBM: 'Tukar ke Bahasa Malaysia',
       switchToEN: 'Tukar ke Bahasa Inggeris',
+      heritage: 'Warisan',
     },
     cart: {
       title: 'Troli Anda',
@@ -2578,9 +2611,11 @@ export const COPY: Record<Language, CopyStructure> = {
           machineTier: 'Tahap Mesin',
         },
         tabs: {
-          specifications: 'Spesifikasi',
-          applications: 'Aplikasi',
+          specifications: 'Spesifikasi Penuh',
+          applications: 'Nota Aplikasi',
           usageGuide: 'Panduan Penggunaan',
+          parameters: 'Parameter Pemotongan',
+          documents: 'Dokumen',
         },
         usageGuide: {
           steps: [
@@ -2603,6 +2638,19 @@ export const COPY: Record<Language, CopyStructure> = {
             },
           ],
         },
+        orderForm: {
+          title: 'Buat permintaan pesanan',
+          blurb: 'Tiada bayaran sekarang. Alan akan mengesahkan dalam 24 jam dengan harga akhir, masa penyediaan, dan pilihan penghantaran.',
+          lineTotal: 'Jumlah baris',
+          submitLabel: 'Hantar permintaan pesanan →',
+          whatsappLabel: 'WhatsApp meja kejuruteraan',
+          orLabel: 'atau',
+          footNote: 'Dengan menghantar, anda bersetuju kami boleh menghubungi anda mengenai permintaan ini. Penghantaran dalam 2 hari bekerja · ex-gudang PJ.',
+        },
+        priceCard: {
+          footNote: 'Seunit · excl. SST · ex-gudang Petaling Jaya',
+        },
+        documentsEmpty: 'Tiada dokumen yang dimuat naik untuk produk ini lagi.',
         ctaStrip: {
           heading: 'Sedia membuat pesanan atau perlukan nasihat teknikal?',
           body: 'Jurutera kami sedia membantu anda memilih bilah yang sesuai.',
