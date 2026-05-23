@@ -12,6 +12,7 @@ import * as migration_20260517_030000_add_media_hero_size from './20260517_03000
 import * as migration_20260523_add_product_documents from './20260523_add_product_documents';
 import * as migration_20260523_add_settings_contact_emails from './20260523_add_settings_contact_emails';
 import * as migration_20260523_shibuya_v2_redesign from './20260523_shibuya_v2_redesign';
+import * as migration_20260523_add_locked_docs_rels from './20260523_add_locked_docs_rels';
 
 export const migrations = [
   {
@@ -83,5 +84,10 @@ export const migrations = [
     up: migration_20260523_shibuya_v2_redesign.up,
     down: migration_20260523_shibuya_v2_redesign.down,
     name: '20260523_shibuya_v2_redesign',
+  },
+  {
+    up: migration_20260523_add_locked_docs_rels.up,
+    down: migration_20260523_add_locked_docs_rels.down,
+    name: '20260523_add_locked_docs_rels',
   },
 ];
