@@ -64,6 +64,10 @@ export function ContactClient({ initialData }: Props) {
     opening_hours_sat: openingSat,
     opening_hours_sun: openingSun,
     inventory_dispatch_cutoff: dispatchCutoff,
+    contact_email_sales: emailSales,
+    contact_email_parts: emailParts,
+    contact_email_training: emailTraining,
+    contact_email_careers: emailCareers,
   } = useSettings()
 
   // wa.me deep-link wants digits only. Strip "+" and any spaces just in case.
@@ -122,18 +126,10 @@ export function ContactClient({ initialData }: Props) {
   }
 
   const directLines: Array<{ label: string; email: string; note: string }> = [
-    { label: c.directLineSalesLabel, email: 'sales@coolman.com.my', note: c.directLineSalesNote },
-    { label: c.directLinePartsLabel, email: 'parts@coolman.com.my', note: c.directLinePartsNote },
-    {
-      label: c.directLineTrainingLabel,
-      email: 'training@coolman.com.my',
-      note: c.directLineTrainingNote,
-    },
-    {
-      label: c.directLineCareersLabel,
-      email: 'careers@coolman.com.my',
-      note: c.directLineCareersNote,
-    },
+    { label: c.directLineSalesLabel, email: emailSales, note: c.directLineSalesNote },
+    { label: c.directLinePartsLabel, email: emailParts, note: c.directLinePartsNote },
+    { label: c.directLineTrainingLabel, email: emailTraining, note: c.directLineTrainingNote },
+    { label: c.directLineCareersLabel, email: emailCareers, note: c.directLineCareersNote },
   ]
 
   return (

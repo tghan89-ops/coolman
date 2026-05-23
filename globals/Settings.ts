@@ -160,6 +160,42 @@ export const Settings: GlobalConfig = {
       ],
     },
     {
+      name: 'contact_email_sales',
+      type: 'text',
+      defaultValue: 'sales@coolman.com.my',
+      admin: {
+        description:
+          'Direct email address for the Sales team. Shown on the Contact page as a mailto link.',
+      },
+    },
+    {
+      name: 'contact_email_parts',
+      type: 'text',
+      defaultValue: 'parts@coolman.com.my',
+      admin: {
+        description:
+          'Direct email address for the Parts & Technical team. Shown on the Contact page as a mailto link.',
+      },
+    },
+    {
+      name: 'contact_email_training',
+      type: 'text',
+      defaultValue: 'training@coolman.com.my',
+      admin: {
+        description:
+          'Direct email address for the Training team. Shown on the Contact page as a mailto link.',
+      },
+    },
+    {
+      name: 'contact_email_careers',
+      type: 'text',
+      defaultValue: 'careers@coolman.com.my',
+      admin: {
+        description:
+          'Direct email address for Careers / HR enquiries. Shown on the Contact page as a mailto link.',
+      },
+    },
+    {
       name: 'inventory_on_time_pct',
       type: 'number',
       defaultValue: 96,

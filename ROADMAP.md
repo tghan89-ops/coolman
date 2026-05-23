@@ -1,6 +1,6 @@
 # Coolman — Roadmap
 
-**Last updated:** May 2026
+**Last updated:** 2026-05-23
 
 ---
 
@@ -30,15 +30,15 @@
 
 **Phase B port — pages whose copy is in hand (Sessions 1 + 2)**
 
-- [ ] Home page port — 8-section flow from Session 1 (opening surface → fear grid → three myths → Brotherhood System → Field Notes preview → note from Alan → quiet door → conversation)
-- [ ] /heritage page (Session 1 heritage section + timeline with Alan-supplied TBC years)
-- [ ] /brotherhood dealer directory + DealerCard with WhatsApp + Google Maps deep-links
-- [ ] Field Notes index + article template; load Session 2 three drafts as unpublished
-- [ ] Shibuya page using ShibuyaMachines collection
-- [ ] Products catalogue + product detail port (with price gate)
-- [ ] Contact page port
-- [ ] /why-coolman placeholder (Engineering Folio — awaiting Session 3)
-- [ ] Bilingual copy extracted to copy.ts (EN + BM same commit); Chinese pull-quotes hardcoded inline
+- [x] Home page port — 8-section flow from Session 1 (opening surface → fear grid → three myths → Brotherhood System → Field Notes preview → note from Alan → quiet door → conversation)
+- [x] /heritage page (Session 1 heritage section + timeline with Alan-supplied TBC years)
+- [x] /brotherhood dealer directory + DealerCard with WhatsApp + Google Maps deep-links
+- [x] Field Notes index + article template; load Session 2 three drafts as unpublished
+- [x] Shibuya page using ShibuyaMachines collection
+- [x] Products catalogue + product detail port (with price gate)
+- [x] Contact page port
+- [x] /why-coolman placeholder (Engineering Folio — awaiting Session 3)
+- [x] Bilingual copy extracted to copy.ts (EN + BM same commit); Chinese pull-quotes hardcoded inline
 
 **Phase E — launch readiness**
 
@@ -46,14 +46,14 @@
 - [ ] WhatsApp number +6012-6363156 seeded in Settings, rendered everywhere
 - [ ] Legal entity name "Coolman Malaysia Sdn Bhd" seeded in Settings, surfaced in footer + contact + legal pages + order emails
 - [ ] Real numbers wired (247 SKUs, 100–900mm, 96% on-time, ~500 accounts, ≤14:00 cut-off)
-- [ ] Field Notes nav link gate (hidden until ≥3 published; Alan resolves TBCs)
+- [x] Field Notes nav link gate — *(Done 2026-05-23)* implemented in `header.tsx:53`; hides link until `fieldNotesCount >= 3` (threshold from Settings)
 
 **Deferred review findings (REVIEW.md 2026-05-17)** — outside the `88394e8` bundle; need GH decision or larger refactor before closing:
-- [ ] HI-01 — hardcoded WhatsApp number in `WhyCoolmanClient.tsx:200`; should read from `settings.whatsapp_number` like AboutClient/TradeClient
-- [ ] HI-02 — `ProductDetailClient.tsx:24` types its full payload as `any`; define `ProductDetailData` interface mirroring `ProductCardData` pattern
-- [ ] ME-02 — four staff direct emails (`sales@/parts@/training@/careers@coolman.com.my`) hardcoded in ContactClient; promote to Settings global (Payload migration + Alan input)
-- [ ] LO-01 — redundant per-request Settings fetches across 8 page wrappers; partially absorbed by ME-01, remaining wrappers to be consolidated
-- [ ] LO-02 — WhatsApp number format inconsistency (`+6012-6363156` vs `+60126363156`) across page-level fallbacks; unify on `+60126363156` per `SETTINGS_FALLBACK`
+- [x] HI-01 — *(Fixed 2026-05-23)* WhyCoolmanClient now reads `useSettings()` — no longer hardcoded
+- [x] HI-02 — *(Fixed 2026-05-23)* `ProductDetailData` interface fully defined in `ProductDetailClient.tsx:38`; no `any` on the main payload type
+- [x] ME-02 — *(Fixed 2026-05-23)* four staff direct emails promoted to Settings global; editable in CMS admin without code deploy
+- [ ] LO-01 — redundant per-request Settings fetches: `about/page.tsx` still calls `getGlobal('settings')` directly; other wrappers may too — audit and consolidate
+- [ ] LO-02 — WhatsApp fallback format inconsistency: `about/page.tsx:19` + `trade/page.tsx:19` use `+6012-6363156` (dashed); rest of site uses `+60126363156` — unify on `+60126363156`
 
 **Gated on inbound content:**
 - [ ] /why-coolman Engineering Folio — gated on Session 3 (three myths long-form, Brotherhood philosophy, technical thesis)

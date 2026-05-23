@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { IBM_Plex_Sans, JetBrains_Mono, Fraunces } from 'next/font/google'
+import { IBM_Plex_Sans, JetBrains_Mono, Cormorant_Garamond, Ma_Shan_Zheng } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/lib/i18n/context'
 import { AuthProvider } from '@/lib/auth/context'
@@ -20,9 +20,16 @@ const plexMono = JetBrains_Mono({
   variable: '--font-mono',
 })
 
-const fraunces = Fraunces({
+const maShanZheng = Ma_Shan_Zheng({
+  weight: '400',
+  subsets: ['chinese-simplified'],
+  variable: '--font-chinese',
+  display: 'swap',
+})
+
+const fraunces = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['400', '600'],
+  weight: ['300', '400', '500', '600'],
   style: ['normal', 'italic'],
   variable: '--font-fraunces',
   display: 'swap',
@@ -66,6 +73,10 @@ export default async function FrontendLayout({
             sat?: string | null
             sun?: string | null
           } | null
+          contact_email_sales?: string | null
+          contact_email_parts?: string | null
+          contact_email_training?: string | null
+          contact_email_careers?: string | null
         }
         return {
           legal_entity_name: s.legal_entity_name ?? undefined,
@@ -77,13 +88,17 @@ export default async function FrontendLayout({
           opening_hours_mon_fri: s.opening_hours?.mon_fri ?? undefined,
           opening_hours_sat: s.opening_hours?.sat ?? undefined,
           opening_hours_sun: s.opening_hours?.sun ?? undefined,
+          contact_email_sales: s.contact_email_sales ?? undefined,
+          contact_email_parts: s.contact_email_parts ?? undefined,
+          contact_email_training: s.contact_email_training ?? undefined,
+          contact_email_careers: s.contact_email_careers ?? undefined,
         }
       })()
     : null
 
   return (
     <html lang="en" className="bg-background" data-scroll-behavior="smooth">
-      <body className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} font-sans antialiased`}>
+      <body className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} ${maShanZheng.variable} font-sans antialiased`}>
         <SettingsProvider initialSettings={initialSettings}>
           <LanguageProvider>
             <AuthProvider>

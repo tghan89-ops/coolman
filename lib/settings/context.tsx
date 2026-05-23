@@ -16,6 +16,10 @@ export interface PublicSettings {
   opening_hours_mon_fri: string
   opening_hours_sat: string
   opening_hours_sun: string
+  contact_email_sales: string
+  contact_email_parts: string
+  contact_email_training: string
+  contact_email_careers: string
 }
 
 const SETTINGS_FALLBACK: PublicSettings = {
@@ -28,6 +32,10 @@ const SETTINGS_FALLBACK: PublicSettings = {
   opening_hours_mon_fri: '09:00–18:00',
   opening_hours_sat: '09:00–13:00',
   opening_hours_sun: 'Closed',
+  contact_email_sales: 'sales@coolman.com.my',
+  contact_email_parts: 'parts@coolman.com.my',
+  contact_email_training: 'training@coolman.com.my',
+  contact_email_careers: 'careers@coolman.com.my',
 }
 
 const SettingsContext = createContext<PublicSettings>(SETTINGS_FALLBACK)
