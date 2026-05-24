@@ -2,6 +2,32 @@ import type { CollectionConfig } from 'payload'
 
 export const AdminUsers: CollectionConfig = {
   slug: 'adminUsers',
+  hooks: {
+    afterLogin: [
+      async ({ user, req }) => {
+        const ip =
+          req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+          req.headers.get('x-real-ip') ??
+          ''
+        const userAgent = req.headers.get('user-agent') ?? ''
+        await req.payload
+          .create({
+            collection: 'loginAttempts',
+            data: {
+              user_email: (user as any).email ?? '',
+              attempted_at: new Date().toISOString(),
+              success: true,
+              ip_address: ip,
+              user_agent: userAgent,
+            },
+            overrideAccess: true,
+          })
+          .catch(() => {
+            // Non-fatal — never block login because the audit write failed.
+          })
+      },
+    ],
+  },
   auth: {
     tokenExpiration: 7200,
     maxLoginAttempts: 5,

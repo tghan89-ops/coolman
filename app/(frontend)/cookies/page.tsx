@@ -1,4 +1,4 @@
-import { getGlobal } from '@/lib/payload'
+import { getCachedSettings } from '@/lib/payload'
 import { COPY } from '@/lib/i18n/copy'
 import { LegalPageClient } from '@/components/pages/LegalPageClient'
 
@@ -13,7 +13,7 @@ export async function generateMetadata() {
 }
 
 export default async function CookiesPage() {
-  const settings = await getGlobal('settings', { overrideAccess: true })
+  const settings = await getCachedSettings()
   const legalEntityName =
     (settings as { legal_entity_name?: string | null } | null)?.legal_entity_name ||
     'Coolman Malaysia Sdn Bhd'

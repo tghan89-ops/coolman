@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
-import { getGlobal, getProductById } from '@/lib/payload'
+import { getCachedSettings, getProductById } from '@/lib/payload'
 import { ProductDetailClient } from '@/components/products/ProductDetailClient'
 import { getContractorSession } from '@/lib/auth/contractor-session'
 
@@ -21,7 +21,7 @@ export default async function ProductDetailPage({
   const [product, contractor, settings] = await Promise.all([
     getProductById(id),
     getContractorSession(h),
-    getGlobal('settings', { overrideAccess: true }),
+    getCachedSettings(),
   ])
   if (!product) notFound()
 

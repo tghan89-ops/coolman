@@ -20,6 +20,7 @@ import { Addresses } from './collections/Addresses'
 import { SearchLogs } from './collections/SearchLogs'
 import { EmailDeliveries } from './collections/EmailDeliveries'
 import { CronRuns } from './collections/CronRuns'
+import { LoginAttempts } from './collections/LoginAttempts'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
 import { ShibuyaMachines } from './collections/ShibuyaMachines'
@@ -82,6 +83,7 @@ export default buildConfig({
     SearchLogs,
     EmailDeliveries,
     CronRuns,
+    LoginAttempts,
     Media,
     Posts,
     ShibuyaMachines,

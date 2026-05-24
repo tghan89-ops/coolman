@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
@@ -81,6 +82,13 @@ export async function filterProducts(params: {
     return []
   }
 }
+
+// Deduplicated within a single render pass (layout + page) so settings is
+// only fetched from the DB once per request, regardless of how many server
+// components call it.
+export const getCachedSettings = cache(async () =>
+  getGlobal('settings', { overrideAccess: true }),
+)
 
 export async function getGlobal(
   slug: string,

@@ -5,7 +5,7 @@ import { LanguageProvider } from '@/lib/i18n/context'
 import { AuthProvider } from '@/lib/auth/context'
 import { CartProvider } from '@/lib/cart/context'
 import { SettingsProvider, type PublicSettings } from '@/lib/settings/context'
-import { getGlobal } from '@/lib/payload'
+import { getCachedSettings } from '@/lib/payload'
 import '../globals.css'
 
 const plexSans = IBM_Plex_Sans({
@@ -56,9 +56,7 @@ export default async function FrontendLayout({
   // (footer, WhatsApp buttons, kill-switch banners) reads the same source of
   // truth without each page re-fetching. `overrideAccess: true` because
   // Settings is admin-restricted by access control (see globals/Settings.ts).
-  const settingsRaw = await getGlobal('settings', { overrideAccess: true }).catch(
-    () => null,
-  )
+  const settingsRaw = await getCachedSettings().catch(() => null)
   const initialSettings: Partial<PublicSettings> | null = settingsRaw
     ? (() => {
         const s = settingsRaw as {

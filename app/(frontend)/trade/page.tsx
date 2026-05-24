@@ -1,4 +1,4 @@
-import { getGlobal } from '@/lib/payload'
+import { getCachedSettings } from '@/lib/payload'
 import { COPY } from '@/lib/i18n/copy'
 import { TradeClient } from '@/components/pages/TradeClient'
 
@@ -13,7 +13,7 @@ export async function generateMetadata() {
 }
 
 export default async function TradePage() {
-  const settings = await getGlobal('settings', { overrideAccess: true })
+  const settings = await getCachedSettings()
   const whatsappNumber =
     (settings as { whatsapp_number?: string | null } | null)?.whatsapp_number ||
     '+60126363156'

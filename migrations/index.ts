@@ -17,6 +17,9 @@ import * as migration_20260523_add_locked_docs_rels from './20260523_add_locked_
 import * as migration_20260523_rewire_home_and_why_coolman_globals from './20260523_rewire_home_and_why_coolman_globals';
 import * as migration_20260523_add_heritage_page_global from './20260523_add_heritage_page_global';
 import * as migration_20260523_fix_heritage_page_array_ids from './20260523_fix_heritage_page_array_ids';
+import * as migration_20260524_add_settings_new_fields from './20260524_add_settings_new_fields';
+import * as migration_20260524_add_settings_missing_columns from './20260524_add_settings_missing_columns';
+import * as migration_20260524_add_login_attempts from './20260524_add_login_attempts';
 
 export const migrations = [
   {
@@ -113,5 +116,20 @@ export const migrations = [
     up: migration_20260523_fix_heritage_page_array_ids.up,
     down: migration_20260523_fix_heritage_page_array_ids.down,
     name: '20260523_fix_heritage_page_array_ids',
+  },
+  {
+    up: migration_20260524_add_settings_new_fields.up,
+    down: migration_20260524_add_settings_new_fields.down,
+    name: '20260524_add_settings_new_fields',
+  },
+  {
+    up: migration_20260524_add_settings_missing_columns.up,
+    down: migration_20260524_add_settings_missing_columns.down,
+    name: '20260524_add_settings_missing_columns',
+  },
+  {
+    up: migration_20260524_add_login_attempts.up,
+    down: migration_20260524_add_login_attempts.down,
+    name: '20260524_add_login_attempts',
   },
 ];
