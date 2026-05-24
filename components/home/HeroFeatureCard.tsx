@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useLanguage } from '@/lib/i18n/context'
 
 export function HeroFeatureCard() {
@@ -7,8 +8,9 @@ export function HeroFeatureCard() {
   const card = t.homeNarrative.heroCard
 
   return (
-    <aside
-      className="w-full bg-navy-surface border border-[rgba(96,165,250,0.18)] p-8"
+    <Link
+      href="/field-notes"
+      className="block w-full bg-navy-surface border border-[rgba(96,165,250,0.18)] p-8 transition-[border-color,box-shadow] duration-150 ease-out hover:border-accent/50 hover:shadow-[0_4px_20px_rgba(59,130,246,0.15)]"
       aria-label="Featured field note"
     >
       {/* Bleed photo — placeholder until Alan supplies job-site photography */}
@@ -38,9 +40,9 @@ export function HeroFeatureCard() {
           <span className="text-paper">{row.value}</span>
         </div>
       ))}
-      <span className="inline-block mt-6 text-[14px] text-accent-light transition-colors duration-150 ease-out hover:text-paper cursor-default">
+      <span className="inline-block mt-6 text-[14px] text-accent-light transition-colors duration-150 ease-out hover:text-paper">
         {card.readLabel}
       </span>
-    </aside>
+    </Link>
   )
 }

@@ -150,7 +150,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
       {/* ── 1. OPENING SURFACE ───────────────────────────────────── */}
       <section className="bg-navy text-paper">
-        <div className="mx-auto max-w-[1280px] px-6 pt-32 pb-24 lg:px-8 lg:pt-40 lg:pb-32">
+        <div className="mx-auto max-w-[1280px] px-6 pt-28 pb-16 lg:px-8 lg:pt-36 lg:pb-24">
           <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
@@ -191,7 +191,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
       {/* ── 2. FEAR GRID ─────────────────────────────────────────── */}
       <section className="bg-paper">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
@@ -220,7 +220,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
       {/* ── 3. THREE MYTHS INTRO ─────────────────────────────────── */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-20 lg:items-start">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
@@ -248,7 +248,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
       {/* ── 4. BROTHERHOOD INTRO ─────────────────────────────────── */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-20 lg:items-start">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
@@ -276,7 +276,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
       {/* ── 5. CHINESE PULLQUOTE ─────────────────────────────────── */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-20 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-[1280px] px-6 py-12 lg:px-8 lg:py-16">
           <ChinesePullquote quote="home" />
         </div>
       </section>
@@ -284,7 +284,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
       {/* ── 6. FIELD NOTES PREVIEW (gated) ───────────────────────── */}
       {publishedPostsCount >= 3 && (
         <section className="bg-paper border-t border-rule">
-          <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+          <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
             <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
               <div>
                 <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
@@ -336,7 +336,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
       {/* ── 8. ALAN'S LETTER ─────────────────────────────────────── */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {pickL(data?.alansLetter?.eyebrow, data?.alansLetter?.eyebrowBM, n.alansLetter.eyebrow)}
           </p>
@@ -367,7 +367,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
       {/* ── 9. THE QUIET DOOR ────────────────────────────────────── */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <div className="grid gap-12 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
@@ -408,7 +408,7 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
       {/* ── 10. THE CONVERSATION ─────────────────────────────────── */}
       <section className="bg-navy text-paper">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <div className="grid gap-8 lg:grid-cols-[2fr_1fr] lg:gap-20 lg:items-end">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">

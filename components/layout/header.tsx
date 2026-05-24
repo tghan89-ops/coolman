@@ -53,6 +53,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
   const showFieldNotesLink = fieldNotesCount >= FIELD_NOTES_NAV_THRESHOLD
 
   const navItems = [
+    { label: t.nav.shibuyaCoreDrills, href: '/shibuya' },
     { label: t.nav.applications, href: '/applications' },
     { label: t.nav.heritage, href: '/heritage' },
     { label: t.nav.whyCoolman, href: '/why-coolman' },
@@ -65,7 +66,6 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
 
   const productDropdownItems = [
     { label: t.nav.diamondTools, href: '/products' },
-    { label: t.nav.shibuyaCoreDrills, href: '/shibuya' },
   ]
 
   useEffect(() => {

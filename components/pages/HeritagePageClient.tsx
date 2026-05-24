@@ -144,7 +144,7 @@ export function HeritagePageClient({ initialData }: Props) {
 
       {/* 1. HERO */}
       <section className="bg-navy text-paper">
-        <div className="mx-auto max-w-[1280px] px-6 pt-32 pb-24 lg:px-8 lg:pt-40 lg:pb-32">
+        <div className="mx-auto max-w-[1280px] px-6 pt-28 pb-16 lg:px-8 lg:pt-36 lg:pb-24">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
             {hero.eyebrow}
           </p>
@@ -159,7 +159,7 @@ export function HeritagePageClient({ initialData }: Props) {
 
       {/* 2. PJ, 2007 */}
       <section className="bg-paper">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {pj2007.eyebrow}
           </p>
@@ -184,7 +184,7 @@ export function HeritagePageClient({ initialData }: Props) {
 
       {/* 3. THE FOUNDING DECISION */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {founding.eyebrow}
           </p>
@@ -203,7 +203,7 @@ export function HeritagePageClient({ initialData }: Props) {
 
       {/* 4. THE DAY IT STOPPED BEING A WORKSHOP */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {workshopDay.eyebrow}
           </p>
@@ -227,7 +227,7 @@ export function HeritagePageClient({ initialData }: Props) {
 
       {/* 5. TWELVE YEARS WITH SHIBUYA */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {shibuyaYears.eyebrow}
           </p>
@@ -246,14 +246,14 @@ export function HeritagePageClient({ initialData }: Props) {
 
       {/* 6. CHINESE PULLQUOTE */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-20 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-[1280px] px-6 py-12 lg:px-8 lg:py-16">
           <ChinesePullquote quote="heritage" />
         </div>
       </section>
 
       {/* 7. THE HARDEST YEAR */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {hardestYear.eyebrow}
           </p>
@@ -272,7 +272,7 @@ export function HeritagePageClient({ initialData }: Props) {
 
       {/* 8. TWENTY YEARS FROM NOW */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {twentyYears.eyebrow}
           </p>
@@ -291,7 +291,7 @@ export function HeritagePageClient({ initialData }: Props) {
 
       {/* 9. THE TIMELINE */}
       <section className="bg-paper border-t border-rule">
-        <div className="mx-auto max-w-[1280px] px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">
             {timeline.eyebrow}
           </p>

@@ -196,8 +196,8 @@ export function WhyCoolmanClient({ initialData }: Props) {
                   'flex-1 py-4 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors duration-150 ease-out',
                   'border-b-2',
                   activeTab === idx
-                    ? 'border-accent text-accent'
-                    : 'border-transparent text-ink/40 hover:text-ink/70',
+                    ? 'border-accent text-accent cursor-default'
+                    : 'border-transparent text-ink/40 hover:text-ink hover:border-ink/20 cursor-pointer',
                 ].join(' ')}
               >
                 {folio.category}

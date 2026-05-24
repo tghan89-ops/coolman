@@ -195,6 +195,7 @@ export function ProductsClient({
                                 alt={product.name}
                                 width={400}
                                 height={400}
+                                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                                 className="h-full w-full object-cover"
                               />
                             ) : (
