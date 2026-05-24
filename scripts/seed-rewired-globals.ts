@@ -185,8 +185,8 @@ async function main() {
         titleBM: 'Ikatan yang dibina untuk tanah',
         titleEmphasis: 'under your feet.',
         titleEmphasisBM: 'di bawah kaki anda.',
-        lede: 'There is one reason this company exists. European bonds were not built for Malaysian aggregate. After twenty-seven years cutting it, we know what to change — and we change it in the matrix, not the marketing.',
-        ledeBM: 'Ada satu sebab syarikat ini wujud. Bon Eropah tidak dibina untuk agregat Malaysia. Selepas dua puluh tujuh tahun memotongnya, kami tahu apa yang perlu diubah — dan kami ubahnya dalam matriks, bukan pemasaran.',
+        lede: 'There is one reason this company exists. European bonds were not built for Malaysian aggregate. We have been cutting it since 1998 — we know what to change, and we change it in the matrix, not the marketing.',
+        ledeBM: 'Ada satu sebab syarikat ini wujud. Bon Eropah tidak dibina untuk agregat Malaysia. Kami telah memotongnya sejak 1998 — kami tahu apa yang perlu diubah, dan kami ubahnya dalam matriks, bukan pemasaran.',
       },
       folio01: {
         folioLabel: 'Engineering Folio · 01 of 03',
@@ -340,11 +340,11 @@ async function main() {
         ],
       },
       shibuyaYears: {
-        eyebrow: 'Twelve years with Shibuya', eyebrowBM: 'Dua belas tahun bersama Shibuya',
+        eyebrow: 'With Shibuya since 2014', eyebrowBM: 'Bersama Shibuya sejak 2014',
         headline: 'Signed 2014. Renewed every year since.',
         headlineBM: 'Ditandatangani 2014. Diperbaharui setiap tahun sejak itu.',
         paragraphs: [
-          { paragraph: 'In 2014 Coolman signed the exclusive Malaysian distribution agreement for Shibuya core drills. Twelve years on, it has been renewed every year. The same machines built in Japan since 1923, supported by a Malaysian engineering team that has seen the cuts they actually do.', paragraphBM: 'Pada 2014, Coolman menandatangani perjanjian pengedaran eksklusif Malaysia untuk penggerudi teras Shibuya. Dua belas tahun kemudian, ia diperbaharui setiap tahun. Mesin yang sama dibuat di Jepun sejak 1923, disokong oleh pasukan kejuruteraan Malaysia yang telah melihat potongan yang ia sebenarnya buat.' },
+          { paragraph: 'In 2014 Coolman signed the exclusive Malaysian distribution agreement for Shibuya core drills. It has been renewed every year since. The same machines, built in Japan, supported by a Malaysian engineering team that has seen the cuts they actually do.', paragraphBM: 'Pada 2014, Coolman menandatangani perjanjian pengedaran eksklusif Malaysia untuk penggerudi teras Shibuya. Ia diperbaharui setiap tahun sejak itu. Mesin yang sama, dibuat di Jepun, disokong oleh pasukan kejuruteraan Malaysia yang telah melihat potongan yang ia sebenarnya buat.' },
           { paragraph: 'Shibuya makes the drill. Coolman makes sure the drill is the right answer to the cut in front of you.', paragraphBM: 'Shibuya membuat penggerudi. Coolman memastikan penggerudi itu adalah jawapan yang tepat kepada potongan di hadapan anda.' },
         ],
       },

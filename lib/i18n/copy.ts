@@ -1251,7 +1251,7 @@ export const COPY: Record<Language, CopyStructure> = {
         channel1ResponseLabel: 'Response',
         channel1LanguagesLabel: 'Language',
         channel1NumberLabel: 'Number',
-        channel1Hours: 'Mon to Sat, 8:30am to 5:30pm',
+        channel1Hours: 'Mon to Fri, 9:00am to 6:00pm · Saturday 9:00am to 1:00pm',
         channel1Response: 'Usually within an hour',
         channel1Languages: 'EN · BM',
         channel1Cta: 'Open WhatsApp',
@@ -1261,7 +1261,7 @@ export const COPY: Record<Language, CopyStructure> = {
         channel2NumberLabel: 'Number',
         channel2HoursLabel: 'Hours',
         channel2ResponseLabel: 'Routes to',
-        channel2Hours: 'Mon to Sat, 8:30am to 5:30pm',
+        channel2Hours: 'Mon to Fri, 9:00am to 6:00pm · Saturday 9:00am to 1:00pm',
         channel2Response: 'Sales, accounts, or trade',
         channel2Cta: 'Call the office',
         channel3Badge: 'Channel 03 · Site visit',
@@ -1727,7 +1727,7 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       baseBar: {
         manufacturedIn: 'Manufactured in Selangor, Malaysia',
-        distributorLineTemplate: '{legalEntity} is the sole Malaysian distributor for Shibuya KK, Tokyo.',
+        distributorLineTemplate: '{legalEntity} is the sole Malaysian distributor for Shibuya KK, Hiroshima.',
         legalLinks: {
           privacy: 'Privacy',
           terms: 'Terms of sale',
@@ -1852,7 +1852,7 @@ export const COPY: Record<Language, CopyStructure> = {
         lede: "Most cuts begin with a phone call. We don't hide ours.",
         channels: [
           { tag: 'Primary', title: 'Engineering desk on WhatsApp', body: 'Send a photo of the cut, the aggregate, the blade. We will tell you what we think before we tell you what we sell.', ctaLabel: 'Open WhatsApp' },
-          { tag: 'Office', title: 'Selangor office line', body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.', ctaLabel: 'Call the office' },
+          { tag: 'Office', title: 'Selangor office line', body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Fri 9:00am–6:00pm · Saturday 9:00am–1:00pm.', ctaLabel: 'Call the office' },
           { tag: 'On site', title: 'Site visit form', body: "If the cut is unusual, we'd rather come and see it than guess. Tell us where and when.", ctaLabel: 'Request a site visit' },
         ],
       },
@@ -2223,7 +2223,7 @@ export const COPY: Record<Language, CopyStructure> = {
       ],
       hours: {
         heading: 'Office hours',
-        line1: 'Monday to Saturday, 8:30am to 5:30pm',
+        line1: 'Mon to Fri, 9:00am to 6:00pm · Saturday 9:00am to 1:00pm',
         line2: 'Same-day dispatch cut-off at 2:00pm',
       },
     },
@@ -2518,7 +2518,7 @@ export const COPY: Record<Language, CopyStructure> = {
         channel1ResponseLabel: 'Respons',
         channel1LanguagesLabel: 'Bahasa',
         channel1NumberLabel: 'Nombor',
-        channel1Hours: 'Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang',
+        channel1Hours: 'Isnin hingga Jumaat, 9:00 pagi hingga 6:00 petang · Sabtu 9:00 pagi hingga 1:00 tengah hari',
         channel1Response: 'Biasanya dalam masa satu jam',
         channel1Languages: 'EN · BM',
         channel1Cta: 'Buka WhatsApp',
@@ -2528,7 +2528,7 @@ export const COPY: Record<Language, CopyStructure> = {
         channel2NumberLabel: 'Nombor',
         channel2HoursLabel: 'Waktu',
         channel2ResponseLabel: 'Dihalakan ke',
-        channel2Hours: 'Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang',
+        channel2Hours: 'Isnin hingga Jumaat, 9:00 pagi hingga 6:00 petang · Sabtu 9:00 pagi hingga 1:00 tengah hari',
         channel2Response: 'Jualan, akaun, atau perdagangan',
         channel2Cta: 'Hubungi pejabat',
         channel3Badge: 'Saluran 03 · Lawatan tapak',
@@ -2994,7 +2994,7 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       baseBar: {
         manufacturedIn: 'Dibuat di Selangor, Malaysia',
-        distributorLineTemplate: '{legalEntity} ialah pengedar tunggal Malaysia bagi Shibuya KK, Tokyo.',
+        distributorLineTemplate: '{legalEntity} ialah pengedar tunggal Malaysia bagi Shibuya KK, Hiroshima.',
         legalLinks: {
           privacy: 'Privasi',
           terms: 'Terma jualan',
@@ -3119,7 +3119,7 @@ export const COPY: Record<Language, CopyStructure> = {
         lede: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tidak sembunyikan kami punya.',
         channels: [
           { tag: 'Utama', title: 'Meja kejuruteraan di WhatsApp', body: 'Hantar gambar potongan, agregat, bilah. Kami akan beritahu apa kami fikir sebelum kami beritahu apa kami jual.', ctaLabel: 'Buka WhatsApp' },
-          { tag: 'Pejabat', title: 'Talian pejabat Selangor', body: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.', ctaLabel: 'Telefon pejabat' },
+          { tag: 'Pejabat', title: 'Talian pejabat Selangor', body: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Jumaat 9:00 pagi–6:00 petang · Sabtu 9:00 pagi–1:00 tengah hari.', ctaLabel: 'Telefon pejabat' },
           { tag: 'Di tapak', title: 'Borang lawatan tapak', body: 'Jika potongan luar biasa, kami lebih rela datang melihat daripada meneka. Beritahu kami di mana dan bila.', ctaLabel: 'Minta lawatan tapak' },
         ],
       },
@@ -3490,7 +3490,7 @@ export const COPY: Record<Language, CopyStructure> = {
       ],
       hours: {
         heading: 'Waktu pejabat',
-        line1: 'Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang',
+        line1: 'Isnin hingga Jumaat, 9:00 pagi hingga 6:00 petang · Sabtu 9:00 pagi hingga 1:00 tengah hari',
         line2: 'Hadang penghantaran hari sama jam 2:00 petang',
       },
     },

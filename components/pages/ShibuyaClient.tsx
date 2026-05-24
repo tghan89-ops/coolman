@@ -139,7 +139,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
     pick(data.hero?.headlineEmphasis, data.hero?.headlineEmphasisBM) || 'The bond built for here.'
   const heroSub =
     pick(data.hero?.subheadline, data.hero?.subheadlineBM) ||
-    'Shibuya Tools, Hiroshima, has built precision core drilling machines since 1933. Coolman has built diamond segments calibrated for Malaysian aggregate since 1998. The partnership matches the machine to the ground — and the ground to the machine.'
+    'Shibuya Tools, Hiroshima, has built precision core drilling machines since 1952. Coolman has built diamond segments calibrated for Malaysian aggregate since 1998. The partnership matches the machine to the ground — and the ground to the machine.'
 
   // ── Trust Bar ─────────────────────────────────────────────────────────────
   const trustStats: Array<{ number: string; label: string; labelBM: string }> =
@@ -158,7 +158,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
     'The machine is Japanese. The bond is Malaysian.'
   const storyIntro = pick(data.machineStory?.intro, data.machineStory?.introBM) || ''
   const col1Tag =
-    pick(data.machineStory?.col1Tag, data.machineStory?.col1TagBM) || 'Shibuya · Since 1933'
+    pick(data.machineStory?.col1Tag, data.machineStory?.col1TagBM) || 'Shibuya · Since 1952'
   const col1Title =
     pick(data.machineStory?.col1Title, data.machineStory?.col1TitleBM) || 'The machine.'
   const col1Body = pick(data.machineStory?.col1Body, data.machineStory?.col1BodyBM) || ''

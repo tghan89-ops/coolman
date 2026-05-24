@@ -81,8 +81,8 @@ describe('getActiveShibuyaMachines', () => {
 
   it('returns active machines sorted by display_order', async () => {
     const mockMachines = [
-      { id: 1, model_id: 'ts-403', model_name: 'TS-403', display_order: 10 },
-      { id: 2, model_id: 'ts-602', model_name: 'TS-602', display_order: 20 },
+      { id: 1, model_id: 'ts-405', model_name: 'TS-405', display_order: 10 },
+      { id: 2, model_id: 'ts-605', model_name: 'TS-605', display_order: 20 },
     ]
     const findMock = vi.fn().mockResolvedValue({ docs: mockMachines })
     const { getPayload } = await import('payload')

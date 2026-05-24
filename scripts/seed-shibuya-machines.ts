@@ -1,9 +1,9 @@
 /**
  * Idempotent seed for the `shibuya-machines` collection.
  *
- * Source of truth: project-root `shibuya.html` (TS-403 / TS-602 / TS-1000).
- * The legacy global had the wrong roster (TS-132/162/252/402) — that array
- * has been dropped. This seed lands the three real Coolman-stocked machines
+ * Coolman-stocked machines: TS-405, TS-605. TS-1000 seeded but is_active=false
+ * (model unconfirmed per fact-check; Alan to verify before activating).
+ * This seed lands the three records
  * with EN + BM copy, leaving spec values that shibuya.html does not supply
  * (motor_power, rpm_range, price, bond_match) blank for Alan to fill in
  * later via the admin UI. Hero images stay unset for now — Alan supplies
@@ -35,8 +35,8 @@ type SeedMachine = {
 
 const machines: SeedMachine[] = [
   {
-    model_id: 'ts-403',
-    model_name: 'TS-403',
+    model_id: 'ts-405',
+    model_name: 'TS-405',
     tagline: 'Compact rig · MEP cores.',
     taglineBM: 'Rig padat · teras MEP.',
     description:
@@ -51,8 +51,8 @@ const machines: SeedMachine[] = [
     is_active: true,
   },
   {
-    model_id: 'ts-602',
-    model_name: 'TS-602',
+    model_id: 'ts-605',
+    model_name: 'TS-605',
     tagline: 'Structural rig · podium cores.',
     taglineBM: 'Rig struktur · teras podium.',
     description:
@@ -80,7 +80,7 @@ const machines: SeedMachine[] = [
     anchorBM: 'Rel stud kembar',
     weight: '112 kg',
     display_order: 30,
-    is_active: true,
+    is_active: false,
   },
 ]
 

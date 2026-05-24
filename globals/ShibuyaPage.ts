@@ -28,13 +28,13 @@ export const ShibuyaPage: GlobalConfig = {
           name: 'subheadline',
           type: 'textarea',
           defaultValue:
-            'Shibuya Tools, Hiroshima, has built precision core drilling machines since 1933. Coolman has built diamond segments calibrated for Malaysian aggregate since 1998. The partnership matches the machine to the ground — and the ground to the machine.',
+            'Shibuya Tools, Hiroshima, has built precision core drilling machines since 1952. Coolman has built diamond segments calibrated for Malaysian aggregate since 1998. The partnership matches the machine to the ground — and the ground to the machine.',
         },
         {
           name: 'subheadlineBM',
           type: 'textarea',
           defaultValue:
-            'Shibuya Tools, Hiroshima, telah membina mesin penggerudi teras berketepatan sejak 1933. Coolman telah membina segmen berlian yang dikalibrasi untuk agregat Malaysia sejak 1998.',
+            'Shibuya Tools, Hiroshima, telah membina mesin penggerudi teras berketepatan sejak 1952. Coolman telah membina segmen berlian yang dikalibrasi untuk agregat Malaysia sejak 1998.',
         },
       ]),
     },
@@ -86,15 +86,15 @@ export const ShibuyaPage: GlobalConfig = {
           defaultValue: 'Setiap pihak melakukan apa yang pihak lain tidak akan lakukan. Hasilnya adalah pasangan mesin dan mata yang mana tidak ada separuh yang perlu berkompromi.',
         },
         // Column 1: Shibuya / The machine
-        { name: 'col1Tag', type: 'text', defaultValue: 'Shibuya · Since 1933' },
-        { name: 'col1TagBM', type: 'text', defaultValue: 'Shibuya · Sejak 1933' },
+        { name: 'col1Tag', type: 'text', defaultValue: 'Shibuya · Since 1952' },
+        { name: 'col1TagBM', type: 'text', defaultValue: 'Shibuya · Sejak 1952' },
         { name: 'col1Title', type: 'text', defaultValue: 'The machine.' },
         { name: 'col1TitleBM', type: 'text', defaultValue: 'Mesin itu.' },
         {
           name: 'col1Body',
           type: 'textarea',
           defaultValue:
-            'Shibuya core drilling machines are precision instruments. Hand-built in Hiroshima. Servo-controlled feed rate, hydraulic counterbalance, magnetic-anchor and vacuum-anchor base systems, hole-runout tolerances measured in the tens of microns.\n\nWhat does not change in 92 years of Shibuya engineering: the machine is not the wear part. The blade is.',
+            'Shibuya core drilling machines are precision instruments. Hand-built in Hiroshima. Servo-controlled feed rate, hydraulic counterbalance, magnetic-anchor and vacuum-anchor base systems, hole-runout tolerances measured in the tens of microns.\n\nWhat has not changed across decades of Shibuya engineering: the machine is not the wear part. The blade is.',
         },
         { name: 'col1BodyBM', type: 'textarea' },
         { name: 'col1Country', type: 'text', defaultValue: 'Hiroshima, Japan', admin: notTranslated },
@@ -191,8 +191,8 @@ export const ShibuyaPage: GlobalConfig = {
               labelBM: 'Alat Ganti',
               title: 'Replacement parts in 48 hours.',
               titleBM: 'Alat ganti dalam 48 jam.',
-              body: 'The Selangor workshop stocks every replacement part for the TS-403, TS-602, and TS-1000 lines. Air freight from Hiroshima for non-stocked parts: seven working days maximum.',
-              bodyBM: 'Bengkel Selangor menyimpan setiap alat ganti untuk barisan TS-403, TS-602, dan TS-1000. Kargo udara dari Hiroshima untuk alat ganti yang tidak disimpan: maksimum tujuh hari bekerja.',
+              body: 'The Selangor workshop stocks replacement parts for the TS-405 and TS-605 lines. Contact us for availability on other models. Air freight from Hiroshima for non-stocked parts: seven working days maximum.',
+              bodyBM: 'Bengkel Selangor menyimpan alat ganti untuk barisan TS-405 dan TS-605. Hubungi kami untuk ketersediaan model lain. Kargo udara dari Hiroshima untuk alat ganti yang tidak disimpan: maksimum tujuh hari bekerja.',
             },
             {
               number: '04',
@@ -230,7 +230,7 @@ export const ShibuyaPage: GlobalConfig = {
           name: 'body',
           type: 'textarea',
           defaultValue:
-            'Whether you are buying a new Shibuya rig, sending one in for annual calibration, or wondering which line fits a job — the engineering desk handles all of it. Same number since 1998.',
+            'Whether you are buying a new Shibuya rig, sending one in for annual calibration, or wondering which line fits a job — the engineering desk handles all of it. Same number.',
         },
         { name: 'bodyBM', type: 'textarea' },
         { name: 'primaryCtaLabel', type: 'text', defaultValue: 'Open WhatsApp →' },
