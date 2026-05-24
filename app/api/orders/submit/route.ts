@@ -199,11 +199,13 @@ export async function POST(req: NextRequest) {
 
   const transactionID = await payload.db.beginTransaction()
   if (!transactionID) {
-    return NextResponse.json({ error: 'Order submission failed. Please try again.' }, { status: 500 })
+    return NextResponse.json({ error: '[DIAG-0] Transaction could not start. Contact support.' }, { status: 500 })
   }
 
+  let _step = 0
   try {
     // 5. Read settings (inside transaction)
+    _step = 5
     const settings = await payload.findGlobal({
       slug: 'settings',
       req: { transactionID } as any,
@@ -212,6 +214,7 @@ export async function POST(req: NextRequest) {
     const s = settings as any
 
     // 6. Kill switch
+    _step = 6
     if (s.orders_paused) {
       await payload.db.rollbackTransaction(transactionID)
       return NextResponse.json(
@@ -221,6 +224,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 7. Rate limit — count contractor's orders in the last hour
+    _step = 7
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
     const recentOrders = await payload.find({
       collection: 'orders',
@@ -244,6 +248,7 @@ export async function POST(req: NextRequest) {
     // 8. Idempotency precheck — if any order row already has this submission_id, return
     //    the existing order IDs (idempotent 200). Uses submission_id so all lines of a
     //    prior submission are caught, not just the first.
+    _step = 8
     const existingSubmission = await payload.find({
       collection: 'orders',
       where: {
@@ -269,6 +274,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 9. Fetch fresh contractor data (for fresh tier_discount_pct + deactivation check)
+    _step = 9
     const freshContractor = await payload.findByID({
       collection: 'contractors',
       id: contractorRelId,
@@ -320,6 +326,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 12. Snapshot prices for every line and compute server grand total
+    _step = 12
     const perLine: PerLine[] = []
     let serverGrandTotal = 0
 
@@ -377,9 +384,8 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 14. Duplicate detection (conservative: per-line FOR UPDATE check; if ANY line has a
-    //     duplicate within the window, ALL lines in this submission get duplicate_flag=true).
-    //     This is the more conservative interpretation — a partial duplicate signals a retry.
+    // 14. Duplicate detection
+    _step = 14
     const duplicateWindowMs = (s.duplicate_window_minutes ?? 10) * 60 * 1000
     const windowStart = new Date(Date.now() - duplicateWindowMs).toISOString()
 
@@ -403,6 +409,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 15. Fan out: create one order row per line, all sharing submission_id
+    _step = 15
     const createdIds: (number | string)[] = []
     for (let i = 0; i < perLine.length; i++) {
       const ln = perLine[i]
@@ -431,7 +438,8 @@ export async function POST(req: NextRequest) {
       createdIds.push(order.id)
     }
 
-    // 16. Increment promo usage_count atomically (once per submission, not per line)
+    // 16. Increment promo usage_count
+    _step = 16
     if (validatedPromoId) {
       try {
         const currentPromo = await payload.findByID({
@@ -573,14 +581,15 @@ export async function POST(req: NextRequest) {
     )
   } catch (err) {
     await payload.db.rollbackTransaction(transactionID).catch(() => {})
-    console.error('[orders/submit]', err)
+    const anyErr = err as any
+    const errMsg = anyErr?.message ?? String(err)
+    console.error(`[orders/submit] step=${_step}`, err)
     try {
-      const anyErr = err as any
       const inner = anyErr?.data?.errors ?? anyErr?.cause?.errors
       if (inner) {
         console.error('[orders/submit] field errors:', JSON.stringify(inner, null, 2))
       }
     } catch {}
-    return NextResponse.json({ error: 'Order submission failed. Please try again.' }, { status: 500 })
+    return NextResponse.json({ error: `[DIAG-${_step}] ${errMsg}` }, { status: 500 })
   }
 }
