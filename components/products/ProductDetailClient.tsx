@@ -435,25 +435,6 @@ export function ProductDetailClient({
                 />
               </div>
 
-              {/* WhatsApp secondary */}
-              {whatsappNumber && (
-                <div className="mt-3 flex items-center gap-3">
-                  <div className="flex-1 border-t border-rule" />
-                  <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-ink-muted">{pd.orderForm.orLabel}</span>
-                  <div className="flex-1 border-t border-rule" />
-                </div>
-              )}
-              {whatsappNumber && (
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 flex h-11 w-full items-center justify-center gap-2 border border-rule bg-white font-sans text-sm font-semibold text-navy transition-colors duration-150 hover:border-navy"
-                >
-                  {pd.orderForm.whatsappLabel}
-                </a>
-              )}
-
               <p className="mt-4 text-[10px] leading-relaxed text-ink-muted">{pd.orderForm.footNote}</p>
             </div>
           </div>

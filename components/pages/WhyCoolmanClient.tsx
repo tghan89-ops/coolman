@@ -169,7 +169,7 @@ export function WhyCoolmanClient({ initialData }: Props) {
   return (
     <PublicLayout>
       <section className="bg-navy text-paper">
-        <div className="mx-auto max-w-7xl px-6 py-24 sm:px-12 sm:py-32 lg:py-40">
+        <div className="mx-auto max-w-7xl px-6 pt-28 pb-16 lg:px-8 lg:pt-36 lg:pb-24">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
             {hero.eyebrow}
           </p>
@@ -208,7 +208,7 @@ export function WhyCoolmanClient({ initialData }: Props) {
       </div>
 
       <article className="bg-paper text-ink" role="tabpanel">
-        <div className="mx-auto max-w-3xl px-6 py-24 sm:px-12 sm:py-32">
+        <div className="mx-auto max-w-3xl px-6 py-14 lg:px-8 lg:py-20">
           <FolioHeader folio={folios[activeTab]} />
           <FolioBody folio={folios[activeTab]} />
         </div>
@@ -221,7 +221,7 @@ export function WhyCoolmanClient({ initialData }: Props) {
       </section>
 
       <section className="bg-navy text-paper">
-        <div className="mx-auto max-w-3xl px-6 py-24 sm:px-12 sm:py-32">
+        <div className="mx-auto max-w-3xl px-6 py-14 lg:px-8 lg:py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent-light">
             {closingCta.eyebrow}
           </p>
