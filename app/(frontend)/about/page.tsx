@@ -16,6 +16,6 @@ export default async function AboutPage() {
   const settings = await getGlobal('settings', { overrideAccess: true })
   const whatsappNumber =
     (settings as { whatsapp_number?: string | null } | null)?.whatsapp_number ||
-    '+6012-6363156'
+    '+60126363156'
   return <AboutClient whatsappNumber={whatsappNumber} />
 }
