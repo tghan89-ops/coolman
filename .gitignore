@@ -29,3 +29,7 @@ next-env.d.ts
 # payload
 payload-types.ts
 .gstack/
+
+# logs and test artifacts
+dev.log
+/test-results/

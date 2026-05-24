@@ -26,18 +26,22 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   `)
   await db.execute(sql`
     DO $$ BEGIN
-      ALTER TABLE "payload_locked_documents_rels"
-        ADD CONSTRAINT "payload_locked_documents_rels_shibuya_machines_fk"
-        FOREIGN KEY ("shibuya_machines_id") REFERENCES "public"."shibuya_machines"("id")
-        ON DELETE cascade ON UPDATE no action;
+      IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'shibuya_machines') THEN
+        ALTER TABLE "payload_locked_documents_rels"
+          ADD CONSTRAINT "payload_locked_documents_rels_shibuya_machines_fk"
+          FOREIGN KEY ("shibuya_machines_id") REFERENCES "public"."shibuya_machines"("id")
+          ON DELETE cascade ON UPDATE no action;
+      END IF;
     EXCEPTION WHEN duplicate_object THEN NULL; END $$;
   `)
   await db.execute(sql`
     DO $$ BEGIN
-      ALTER TABLE "payload_locked_documents_rels"
-        ADD CONSTRAINT "payload_locked_documents_rels_dealers_fk"
-        FOREIGN KEY ("dealers_id") REFERENCES "public"."dealers"("id")
-        ON DELETE cascade ON UPDATE no action;
+      IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'dealers') THEN
+        ALTER TABLE "payload_locked_documents_rels"
+          ADD CONSTRAINT "payload_locked_documents_rels_dealers_fk"
+          FOREIGN KEY ("dealers_id") REFERENCES "public"."dealers"("id")
+          ON DELETE cascade ON UPDATE no action;
+      END IF;
     EXCEPTION WHEN duplicate_object THEN NULL; END $$;
   `)
 

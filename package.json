@@ -17,6 +17,7 @@
     "seed:bm": "tsx --env-file=.env.local scripts/seed-bm-defaults.ts",
     "seed:shibuya-machines": "tsx --env-file=.env.local scripts/seed-shibuya-machines.ts",
     "seed:field-notes": "tsx --env-file=.env.local scripts/migration/seed-field-notes.ts",
+    "seed:rewired-globals": "tsx --env-file=.env.local scripts/seed-rewired-globals.ts",
     "cleanup-empty-search-logs": "tsx scripts/cleanup-empty-search-logs.ts",
     "payload": "payload",
     "migrate": "payload migrate"

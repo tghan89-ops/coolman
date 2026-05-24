@@ -3,7 +3,9 @@
 // pricing to logged-out visitors and violates the auth/tier gate in CLAUDE.md. Every price
 // surface — catalogue card, product detail hero, order form — must mount this component.
 
-import Link from 'next/link'
+'use client'
+
+import { useRouter } from 'next/navigation'
 import { calculateEffectivePrice } from '@/lib/pricing/calculate'
 import { formatPrice } from '@/lib/utils/formatting'
 import { COPY, type Language } from '@/lib/i18n/copy'
@@ -72,19 +74,23 @@ export function PriceStackCard({
   tone = 'light',
   className,
 }: PriceStackCardProps) {
+  const router = useRouter()
   const branch = resolveBranch({ isLoggedIn, emailVerified, tierDiscountPct })
   const t = COPY[language].priceGate
   const isDark = tone === 'dark'
 
   if (branch === 'logged-out') {
     // No price visible anywhere in this branch. Sign-in CTA replaces the number.
+    // Uses <button> not <Link> so this component is safe to mount inside a card <Link>
+    // without producing nested <a> tags (invalid HTML). Burned 2026-05-23.
     return (
       <div className={cn('flex', className)}>
-        <Link
-          href={signInHref}
+        <button
+          type="button"
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push(signInHref) }}
           className={cn(
             'inline-flex items-center justify-center min-h-11 px-4 rounded-md',
-            'border text-sm font-semibold',
+            'border text-sm font-semibold cursor-pointer',
             'transition-colors duration-150 ease-out',
             isDark
               ? // text-sky-300 over white/5 on navy clears WCAG AA comfortably
@@ -96,7 +102,7 @@ export function PriceStackCard({
           style={{ transitionProperty: 'color, border-color, box-shadow' }}
         >
           {t.signInToSeePricing}
-        </Link>
+        </button>
       </div>
     )
   }
@@ -117,16 +123,17 @@ export function PriceStackCard({
         <span className="font-semibold text-warn">{t.verificationPending}</span>
         <span className={isDark ? 'text-white/70' : 'text-ink-muted'}>
           {t.contractPricingHint}{' '}
-          <Link
-            href={verifyEmailHref}
+          <button
+            type="button"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); router.push(verifyEmailHref) }}
             className={cn(
-              'underline underline-offset-2 font-semibold',
+              'underline underline-offset-2 font-semibold cursor-pointer bg-transparent border-0 p-0',
               // Dark tone uses sky-300 for AA contrast over warn/10 on navy.
               isDark ? 'text-sky-300 hover:text-white' : 'text-accent hover:opacity-80',
             )}
           >
             {t.resendVerification}
-          </Link>
+          </button>
         </span>
       </div>
     )

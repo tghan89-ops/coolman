@@ -54,6 +54,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
 
   const navItems = [
     { label: t.nav.applications, href: '/applications' },
+    { label: t.nav.heritage, href: '/heritage' },
     { label: t.nav.whyCoolman, href: '/why-coolman' },
     { label: t.nav.resources, href: '/resources' },
     ...(showFieldNotesLink

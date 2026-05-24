@@ -1,6 +1,7 @@
 import { headers } from 'next/headers'
 import { getProducts } from '@/lib/payload'
-import { ProductsClient, diameterBucket } from '@/components/products/ProductsClient'
+import { ProductsClient } from '@/components/products/ProductsClient'
+import { diameterBucket } from '@/lib/products/diameter'
 import { getContractorSession } from '@/lib/auth/contractor-session'
 import { COPY } from '@/lib/i18n/copy'
 import type { FilterGroup } from '@/components/catalogue/FilterSidebar'
