@@ -53,19 +53,11 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
   const showFieldNotesLink = fieldNotesCount >= FIELD_NOTES_NAV_THRESHOLD
 
   const navItems = [
-    { label: t.nav.shibuyaCoreDrills, href: '/shibuya' },
-    { label: t.nav.applications, href: '/applications' },
+    { label: t.nav.products, href: '/products' },
+    { label: 'Shibuya', href: '/shibuya' },
     { label: t.nav.heritage, href: '/heritage' },
     { label: t.nav.whyCoolman, href: '/why-coolman' },
-    { label: t.nav.resources, href: '/resources' },
-    ...(showFieldNotesLink
-      ? [{ label: t.nav.fieldNotes, href: '/field-notes' }]
-      : []),
     { label: t.nav.contact, href: '/contact' },
-  ]
-
-  const productDropdownItems = [
-    { label: t.nav.diamondTools, href: '/products' },
   ]
 
   useEffect(() => {
@@ -100,30 +92,11 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-1 lg:flex">
-          {/* Products Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="group relative flex items-center gap-1.5 px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white">
-                {t.nav.products}
-                <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180" />
-                <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-accent transition-transform group-hover:scale-x-100" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48 border-navy-surface bg-navy">
-              {productDropdownItems.map((item) => (
-                <DropdownMenuItem key={item.href} asChild className="text-white/80 hover:bg-white/10 hover:text-white focus:bg-white/10 focus:text-white">
-                  <Link href={item.href}>{item.label}</Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Regular nav items */}
+        <nav className="hidden items-center lg:flex">
           {navItems.map((item) => (
-            <Link 
+            <Link
               key={item.href}
-              href={item.href} 
+              href={item.href}
               className="group relative px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white"
             >
               {item.label}
@@ -214,30 +187,10 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
       }`}>
         <div className="border-t border-white/10 bg-navy">
           <nav className="flex flex-col px-6 py-4">
-            {/* Products Mobile */}
-            <details className="border-b border-white/5 py-4">
-              <summary className="cursor-pointer text-base font-medium text-white transition-colors hover:text-accent">
-                {t.nav.products}
-              </summary>
-              <div className="mt-3 flex flex-col gap-2 pl-4">
-                {productDropdownItems.map((item) => (
-                  <Link 
-                    key={item.href}
-                    href={item.href} 
-                    className="text-sm text-white/70 transition-colors hover:text-accent"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </details>
-
-            {/* Regular nav items */}
-            {navItems.map((item, index) => (
-              <Link 
+            {navItems.map((item) => (
+              <Link
                 key={item.href}
-                href={item.href} 
+                href={item.href}
                 className="border-b border-white/5 py-4 text-base font-medium text-white transition-colors hover:text-accent"
                 onClick={() => setMobileMenuOpen(false)}
               >
