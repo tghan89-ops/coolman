@@ -151,14 +151,17 @@ export function ProductsClient({
       <section className="overflow-x-hidden bg-paper py-12 lg:py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-            {/* Filter sidebar — handles its own debounced search-log fire. */}
-            <FilterSidebar
-              groups={filterGroups}
-              selected={selected}
-              onChange={setSelected}
-              onClear={handleClear}
-              className="min-w-0"
-            />
+            {/* Filter sidebar — sticky with its own scroll so the filter panel
+                doesn't require scrolling the whole page on long catalogues. */}
+            <div className="lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+              <FilterSidebar
+                groups={filterGroups}
+                selected={selected}
+                onChange={setSelected}
+                onClear={handleClear}
+                className="min-w-0"
+              />
+            </div>
 
             <div className="min-w-0">
               {/* Result count line */}

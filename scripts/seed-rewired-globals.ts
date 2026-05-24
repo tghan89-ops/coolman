@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Seed the rewired home-page and why-coolman-page globals with their default values.
  *
  * Why: The migration added new columns as NULL. Payload only applies `defaultValue`
@@ -22,8 +22,8 @@ async function main() {
     slug: 'home-page',
     data: {
       opening: {
-        eyebrow: 'Coolman · Manufacturer of cutting tools · Petaling Jaya, 2007',
-        eyebrowBM: 'Coolman · Pengeluar alat pemotong · Petaling Jaya, 2007',
+        eyebrow: 'Coolman · Manufacturer of cutting tools · Selangor, 2007',
+        eyebrowBM: 'Coolman · Pengeluar alat pemotong · Selangor, 2007',
         headlinePrefix: 'Right Job ',
         headlinePrefixBM: 'Kerja yang Betul ',
         headlineEmphasis: 'Matched with the Right Blade.',
@@ -119,8 +119,8 @@ async function main() {
       quietDoor: {
         eyebrow: 'The quiet door',
         eyebrowBM: 'Pintu yang senyap',
-        headline: 'The full range, in stock and ready to ship from Petaling Jaya.',
-        headlineBM: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',
+        headline: 'The full range, in stock and ready to ship from Selangor.',
+        headlineBM: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Selangor.',
         lede: 'No catalogue front. No PDF download chase. Just the inventory, the spec, and a phone call away if the blade you need is not the one we list.',
         ledeBM: 'Tiada muka katalog. Tiada perlu memburu PDF. Hanya inventori, spesifikasi, dan satu panggilan telefon jika bilah yang anda perlukan bukan yang kami senaraikan.',
         ctaPrimary: 'Open the catalogue',
@@ -149,8 +149,8 @@ async function main() {
           {
             tag: 'Office',
             tagBM: 'Pejabat',
-            title: 'Petaling Jaya office line',
-            titleBM: 'Talian pejabat Petaling Jaya',
+            title: 'Selangor office line',
+            titleBM: 'Talian pejabat Selangor',
             body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.',
             bodyBM: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.',
             ctaLabel: 'Call the office',
@@ -308,15 +308,15 @@ async function main() {
         eyebrowBM: 'Warisan',
         headline: 'Coolman, since 2007. Nineteen years of cuts that taught us how to build the blade.',
         headlineBM: 'Coolman, sejak 2007. Sembilan belas tahun potongan yang mengajar kami bagaimana membina bilah.',
-        lede: 'A short history of a Malaysian diamond tools company. Founded in Petaling Jaya by a tradesman who had been in the cutting trade since 1998.',
-        ledeBM: 'Sejarah ringkas sebuah syarikat alat berlian Malaysia. Diasaskan di Petaling Jaya oleh seorang tukang yang telah berada dalam bidang pemotongan sejak 1998.',
+        lede: 'A short history of a Malaysian diamond tools company. Founded in Selangor by a tradesman who had been in the cutting trade since 1998.',
+        ledeBM: 'Sejarah ringkas sebuah syarikat alat berlian Malaysia. Diasaskan di Selangor oleh seorang tukang yang telah berada dalam bidang pemotongan sejak 1998.',
       },
       pj2007: {
         eyebrow: 'PJ, 2007', eyebrowBM: 'PJ, 2007',
-        headline: 'A workshop on a side road in Petaling Jaya.',
-        headlineBM: 'Sebuah bengkel di jalan kecil di Petaling Jaya.',
+        headline: 'A workshop on a side road in Selangor.',
+        headlineBM: 'Sebuah bengkel di jalan kecil di Selangor.',
         paragraphs: [
-          { paragraph: 'Coolman started in a single rented unit in Petaling Jaya in 2007. Two segment presses, a bench, and a phone that rang too often. Alan, the founder, had spent nine years in the cutting trade and had finally heard one complaint too many about blades that did not fit the rock.', paragraphBM: 'Coolman bermula di satu unit sewa di Petaling Jaya pada 2007. Dua mesin penekan segmen, sebuah meja, dan satu telefon yang berdering terlalu kerap. Alan, pengasas, telah menghabiskan sembilan tahun dalam bidang pemotongan dan akhirnya mendengar satu aduan terlalu banyak tentang bilah yang tidak sesuai untuk batu kita.' },
+          { paragraph: 'Coolman started in a single rented unit in Selangor in 2007. Two segment presses, a bench, and a phone that rang too often. Alan, the founder, had spent nine years in the cutting trade and had finally heard one complaint too many about blades that did not fit the rock.', paragraphBM: 'Coolman bermula di satu unit sewa di Selangor pada 2007. Dua mesin penekan segmen, sebuah meja, dan satu telefon yang berdering terlalu kerap. Alan, pengasas, telah menghabiskan sembilan tahun dalam bidang pemotongan dan akhirnya mendengar satu aduan terlalu banyak tentang bilah yang tidak sesuai untuk batu kita.' },
           { paragraph: 'The first year was quiet. The second was not. By the end of 2008, the workshop was running two shifts.', paragraphBM: 'Tahun pertama senyap. Tahun kedua tidak. Menjelang akhir 2008, bengkel itu beroperasi dua syif.' },
         ],
       },
@@ -372,7 +372,7 @@ async function main() {
         headlineBM: 'Sembilan belas tahun pada satu halaman.',
         events: [
           { year: '1998', title: 'Alan enters the cutting trade',           titleBM: 'Alan memasuki bidang pemotongan',              body: "Nine years of selling other companies' blades begins.", bodyBM: 'Sembilan tahun menjual bilah syarikat lain bermula.' },
-          { year: '2007', title: 'Coolman founded in Petaling Jaya',        titleBM: 'Coolman diasaskan di Petaling Jaya',           body: 'Two segment presses, a bench, a phone.',              bodyBM: 'Dua mesin penekan segmen, sebuah meja, sebuah telefon.' },
+          { year: '2007', title: 'Coolman founded in Selangor',        titleBM: 'Coolman diasaskan di Selangor',           body: 'Two segment presses, a bench, a phone.',              bodyBM: 'Dua mesin penekan segmen, sebuah meja, sebuah telefon.' },
           { year: 'TBC',  title: 'Sandwich cobalt formulation developed',   titleBM: 'Formulasi sandwic kobalt dibangunkan',         body: 'After a piling job in Shah Alam taught us the spec sheet was wrong.', bodyBM: 'Selepas sebuah kerja pancang di Shah Alam mengajar kami spesifikasi adalah salah.', note: 'Alan to supply year', noteBM: 'Alan untuk sahkan tahun' },
           { year: '2014', title: 'Shibuya exclusive distribution signed',   titleBM: 'Pengedaran eksklusif Shibuya ditandatangani',  body: 'Renewed every year since.',                          bodyBM: 'Diperbaharui setiap tahun sejak itu.' },
           { year: 'TBC',  title: 'SIRIM certification awarded',             titleBM: 'Pensijilan SIRIM dianugerahkan',               body: 'Independent verification of the bonding spec.',       bodyBM: 'Pengesahan bebas spesifikasi ikatan kami.', note: 'Alan to supply year', noteBM: 'Alan untuk sahkan tahun' },

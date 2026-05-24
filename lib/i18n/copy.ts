@@ -1,4 +1,4 @@
-export type Language = 'EN' | 'BM'
+﻿export type Language = 'EN' | 'BM'
 
 export interface CopyStructure {
   nav: {
@@ -1274,10 +1274,10 @@ export const COPY: Record<Language, CopyStructure> = {
         channel3Response: 'Within 2 working days',
         channel3Output: 'Proposed visit slot · engineer assigned',
         channel3Cta: 'Request a visit',
-        locationEyebrow: 'The workshop · Petaling Jaya',
+        locationEyebrow: 'The workshop · Selangor',
         locationHeadline: 'The press, the kiln, the laser-weld.',
         locationLede: 'Visitors welcome by appointment. The technical team can walk you through the press, the segment kiln, and the laser-weld station. The three machines every blade we ship passes through.',
-        locationAddressFallback: 'Petaling Jaya, Selangor · Malaysia',
+        locationAddressFallback: 'Selangor · Malaysia',
         locationAddressNote: 'Full address available on request.',
         locationLabelMonFri: 'Mon to Fri',
         locationLabelSat: 'Saturday',
@@ -1288,7 +1288,7 @@ export const COPY: Record<Language, CopyStructure> = {
         locationOpenInMaps: 'Open in maps',
         locationMapWorkshop: 'COOLMAN',
         locationMapSince: 'NO. 14 · SINCE 2007',
-        locationMapCity: 'PETALING JAYA',
+        locationMapCity: 'Selangor',
         locationMapCoords: '3.0840° N · 101.6336° E',
         locationOverlayBrand: 'Coolman',
         directLinesEyebrow: 'Direct lines',
@@ -1445,7 +1445,7 @@ export const COPY: Record<Language, CopyStructure> = {
           footNote: 'By submitting, you agree we may contact you about this request. Dispatch within 2 business days · ex-PJ warehouse.',
         },
         priceCard: {
-          footNote: 'Per unit · excl. SST · ex-warehouse Petaling Jaya',
+          footNote: 'Per unit · excl. SST · ex-warehouse Selangor',
         },
         documentsEmpty: 'No documents have been uploaded for this product yet.',
         ctaStrip: {
@@ -1703,7 +1703,7 @@ export const COPY: Record<Language, CopyStructure> = {
             { primary: 'Engineering desk', secondary: 'WhatsApp', href: '/contact' },
             { primary: 'Office', secondary: 'Monday to Saturday', href: '/contact' },
             { primary: 'Site visit', secondary: 'Request a visit', href: '/contact' },
-            { primary: 'Petaling Jaya', secondary: 'Selangor', href: '/contact' },
+            { primary: 'Selangor', secondary: 'Selangor', href: '/contact' },
           ],
         },
         readAndLearn: {
@@ -1726,7 +1726,7 @@ export const COPY: Record<Language, CopyStructure> = {
         },
       },
       baseBar: {
-        manufacturedIn: 'Manufactured in Petaling Jaya, Malaysia',
+        manufacturedIn: 'Manufactured in Selangor, Malaysia',
         distributorLineTemplate: '{legalEntity} is the sole Malaysian distributor for Shibuya KK, Tokyo.',
         legalLinks: {
           privacy: 'Privacy',
@@ -1744,7 +1744,7 @@ export const COPY: Record<Language, CopyStructure> = {
     },
     homeNarrative: {
       opening: {
-        eyebrow: 'Coolman · Manufacturer of cutting tools · Petaling Jaya, 2007',
+        eyebrow: 'Coolman · Manufacturer of cutting tools · Selangor, 2007',
         headlinePrefix: 'Right Job ',
         headlineEmphasis: 'Matched with the Right Blade.',
         lede: 'Coolman has built diamond blades, core bits and cutting systems in Malaysia since 2007. Our founder, Alan, has been in the cutting trade since 1998. Every blade we make is engineered for the rock, the rebar and the schedule Malaysian contractors face.',
@@ -1819,7 +1819,7 @@ export const COPY: Record<Language, CopyStructure> = {
         },
         workshopPhoto: {
           heading: 'The workshop the bond is built in.',
-          body: 'Petaling Jaya, Section 14. Every segment we ship is pressed, sintered, and laser-welded in this single building. Every blade returned at end-of-life is sectioned here. The kilns are the same ones Coolman started with — the bond formulations are not.',
+          body: 'Selangor, Section 14. Every segment we ship is pressed, sintered, and laser-welded in this single building. Every blade returned at end-of-life is sectioned here. The kilns are the same ones Coolman started with — the bond formulations are not.',
         },
       },
       alansLetter: {
@@ -1835,7 +1835,7 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       quietDoor: {
         eyebrow: 'The quiet door',
-        headline: 'The full range, in stock and ready to ship from Petaling Jaya.',
+        headline: 'The full range, in stock and ready to ship from Selangor.',
         lede: 'No catalogue front. No PDF download chase. Just the inventory, the spec, and a phone call away if the blade you need is not the one we list.',
         stats: [
           { key: 'sku', value: '247', label: 'SKUs in stock' },
@@ -1852,7 +1852,7 @@ export const COPY: Record<Language, CopyStructure> = {
         lede: "Most cuts begin with a phone call. We don't hide ours.",
         channels: [
           { tag: 'Primary', title: 'Engineering desk on WhatsApp', body: 'Send a photo of the cut, the aggregate, the blade. We will tell you what we think before we tell you what we sell.', ctaLabel: 'Open WhatsApp' },
-          { tag: 'Office', title: 'Petaling Jaya office line', body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.', ctaLabel: 'Call the office' },
+          { tag: 'Office', title: 'Selangor office line', body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.', ctaLabel: 'Call the office' },
           { tag: 'On site', title: 'Site visit form', body: "If the cut is unusual, we'd rather come and see it than guess. Tell us where and when.", ctaLabel: 'Request a site visit' },
         ],
       },
@@ -1861,13 +1861,13 @@ export const COPY: Record<Language, CopyStructure> = {
       hero: {
         eyebrow: 'Heritage',
         headline: 'Coolman, since 2007. Nineteen years of cuts that taught us how to build the blade.',
-        lede: 'A short history of a Malaysian diamond tools company. Founded in Petaling Jaya by a tradesman who had been in the cutting trade since 1998.',
+        lede: 'A short history of a Malaysian diamond tools company. Founded in Selangor by a tradesman who had been in the cutting trade since 1998.',
       },
       pj2007: {
         eyebrow: 'PJ, 2007',
-        headline: 'A workshop on a side road in Petaling Jaya.',
+        headline: 'A workshop on a side road in Selangor.',
         body: [
-          'Coolman started in a single rented unit in Petaling Jaya in 2007. Two segment presses, a bench, and a phone that rang too often. Alan, the founder, had spent nine years in the cutting trade and had finally heard one complaint too many about blades that did not fit the rock.',
+          'Coolman started in a single rented unit in Selangor in 2007. Two segment presses, a bench, and a phone that rang too often. Alan, the founder, had spent nine years in the cutting trade and had finally heard one complaint too many about blades that did not fit the rock.',
           'The first year was quiet. The second was not. By the end of 2008, the workshop was running two shifts.',
         ],
       },
@@ -1917,7 +1917,7 @@ export const COPY: Record<Language, CopyStructure> = {
         headline: 'Nineteen years on one page.',
         events: [
           { year: '1998', title: 'Alan enters the cutting trade', body: 'Nine years of selling other companies\' blades begins.' },
-          { year: '2007', title: 'Coolman founded in Petaling Jaya', body: 'Two segment presses, a bench, a phone.' },
+          { year: '2007', title: 'Coolman founded in Selangor', body: 'Two segment presses, a bench, a phone.' },
           { year: 'TBC', title: 'Sandwich cobalt formulation developed', body: 'After a piling job in Shah Alam taught us the spec sheet was wrong.', note: 'Alan to supply year' },
           { year: '2014', title: 'Shibuya exclusive distribution signed', body: 'Renewed every year since.' },
           { year: 'TBC', title: 'SIRIM certification awarded', body: 'Independent verification of the bonding spec.', note: 'Alan to supply year' },
@@ -1962,7 +1962,7 @@ export const COPY: Record<Language, CopyStructure> = {
         missingBody: 'This Field Note is not currently available. It may be in draft, or the link is stale.',
       },
       byline: 'Coolman Engineering',
-      filedUnder: 'Filed under Coolman Malaysia Sdn Bhd · Petaling Jaya · Manufactured in Malaysia',
+      filedUnder: 'Filed under Coolman Malaysia Sdn Bhd · Selangor · Manufactured in Malaysia',
       pileCutting: {
         title: 'When the contractor stopped trying, and just called',
         meta: 'Reinforced concrete · piling · Klang Valley',
@@ -2002,7 +2002,7 @@ export const COPY: Record<Language, CopyStructure> = {
             "The foreman was not panicking on the phone. He was past panicking. He was calm in a way that told us he was about to lose the job.",
           ] },
           { heading: 'What we did', paragraphs: [
-            "We dispatched a CM-X Road 450 from the Petaling Jaya warehouse. An engineer met the crew on site at 12:10am. He inspected the saw, set the blade, watched the first cut.",
+            "We dispatched a CM-X Road 450 from the Selangor warehouse. An engineer met the crew on site at 12:10am. He inspected the saw, set the blade, watched the first cut.",
             "He stayed on site until 4am.",
           ] },
           { heading: 'What happened', paragraphs: [
@@ -2126,7 +2126,7 @@ export const COPY: Record<Language, CopyStructure> = {
     },
     catalogueIntro: {
       eyebrow: 'Catalogue',
-      headline: 'The full range, in stock and ready to ship from Petaling Jaya.',
+      headline: 'The full range, in stock and ready to ship from Selangor.',
       lede: "Two hundred and forty-seven SKUs across diamond blades, core drills, and segment systems. Use the filters to narrow by material, application, or diameter. If the cut you're planning isn't obvious from the range, the engineering desk is faster than the form.",
       tradeNote: 'Trade accounts get tier pricing and reorder history. Apply through the Trade page.',
       filters: {
@@ -2171,7 +2171,7 @@ export const COPY: Record<Language, CopyStructure> = {
           { key: 'Segment height', value: '10 mm' },
           { key: 'Flange', value: '25.4 mm' },
           { key: 'Rated cut life', value: 'Up to 240 m on reinforced concrete' },
-          { key: 'Manufactured in', value: 'Petaling Jaya, Malaysia' },
+          { key: 'Manufactured in', value: 'Selangor, Malaysia' },
         ],
       },
       unusualCuts: {
@@ -2189,7 +2189,7 @@ export const COPY: Record<Language, CopyStructure> = {
       tiers: {
         buyer: {
           title: 'Trade buyer',
-          body: 'Access to the full Coolman catalogue at trade pricing. Same-day dispatch from Petaling Jaya before 2pm.',
+          body: 'Access to the full Coolman catalogue at trade pricing. Same-day dispatch from Selangor before 2pm.',
           bullets: ['Full catalogue access', 'Trade pricing', 'Same-day dispatch'],
         },
         dealer: {
@@ -2218,7 +2218,7 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       channels: [
         { tag: 'Primary', title: 'Engineering desk on WhatsApp', body: 'Photos welcome. Replies in minutes during office hours.', ctaLabel: 'Open WhatsApp' },
-        { tag: 'Office', title: 'Petaling Jaya office line', body: 'For orders, dispatch and returns questions.', ctaLabel: 'Call the office' },
+        { tag: 'Office', title: 'Selangor office line', body: 'For orders, dispatch and returns questions.', ctaLabel: 'Call the office' },
         { tag: 'Site', title: 'Site visit request', body: 'If the cut is unusual, an engineer will come and see it.', ctaLabel: 'Request a site visit' },
       ],
       hours: {
@@ -2231,10 +2231,10 @@ export const COPY: Record<Language, CopyStructure> = {
       hero: {
         eyebrow: 'About',
         headline: 'Diamond cutting tools. Designed in Malaysia, for Malaysia.',
-        lede: 'Coolman has been built in Petaling Jaya since 2007. We make diamond blades, core bits and segment systems for Malaysian contractors. Around 500 active accounts. Same range, same direct line to engineering, for 19 years.',
+        lede: 'Coolman has been built in Selangor since 2007. We make diamond blades, core bits and segment systems for Malaysian contractors. Around 500 active accounts. Same range, same direct line to engineering, for 19 years.',
       },
-      founded: { value: '2007', label: 'Founded in Petaling Jaya' },
-      builtIn: { value: 'Petaling Jaya', label: 'Where the blade is made' },
+      founded: { value: '2007', label: 'Founded in Selangor' },
+      builtIn: { value: 'Selangor', label: 'Where the blade is made' },
       accounts: { value: '~500', label: 'Active accounts' },
     },
     legal: {
@@ -2245,15 +2245,15 @@ export const COPY: Record<Language, CopyStructure> = {
       cookies: { title: 'Cookie notice', lede: 'The cookies our site uses, what they do, and how to switch them off if you prefer.' },
     },
     seo: {
-      home: { title: 'Coolman · Diamond cutting tools built in Petaling Jaya since 2007', description: 'Malaysian-engineered diamond blades, core bits and segment systems. 247 SKUs in stock. Same-day dispatch from Petaling Jaya before 2pm.' },
-      heritage: { title: 'Heritage · Coolman, since 2007', description: 'A short history of Coolman: founded in Petaling Jaya in 2007 by a tradesman in the cutting trade since 1998.' },
+      home: { title: 'Coolman · Diamond cutting tools built in Selangor since 2007', description: 'Malaysian-engineered diamond blades, core bits and segment systems. 247 SKUs in stock. Same-day dispatch from Selangor before 2pm.' },
+      heritage: { title: 'Heritage · Coolman, since 2007', description: 'A short history of Coolman: founded in Selangor in 2007 by a tradesman in the cutting trade since 1998.' },
       whyCoolman: { title: 'Why Coolman · The engineering folio', description: 'Three pieces on why we make the blade the way we make it. Three myths, Malaysian aggregate, and the Brotherhood System.' },
       fieldNotes: { title: 'Field Notes · Coolman Engineering', description: 'Three jobs that taught us how to make a better blade. Written as they happened.' },
       catalogue: { title: 'Catalogue · 247 SKUs in stock', description: 'Diamond blades, core bits and segment systems. Filter by material, application, or diameter.' },
       productTemplate: { title: 'Coolman product page', description: 'Specification, application, and engineering notes for the Coolman range.' },
       trade: { title: 'Trade · Coolman for dealers and trade buyers', description: 'Trade buyer and Brotherhood dealer programmes. Application in four steps.' },
       contact: { title: 'Contact Coolman', description: 'WhatsApp engineering, office line, or site visit. Most cuts begin with a phone call.' },
-      about: { title: 'About Coolman · Designed in Malaysia, for Malaysia', description: 'Diamond cutting tools built in Petaling Jaya since 2007. Around 500 active accounts.' },
+      about: { title: 'About Coolman · Designed in Malaysia, for Malaysia', description: 'Diamond cutting tools built in Selangor since 2007. Around 500 active accounts.' },
       shibuya: { title: 'Shibuya core drills · Exclusive Malaysian distributor', description: 'Coolman has carried Shibuya core drills as exclusive Malaysian distributor since 2014.' },
       privacy: { title: 'Privacy · Coolman', description: 'How Coolman handles your personal information.' },
       terms: { title: 'Terms of sale · Coolman', description: 'The terms under which Coolman Malaysia Sdn Bhd sells in Malaysia.' },
@@ -2541,10 +2541,10 @@ export const COPY: Record<Language, CopyStructure> = {
         channel3Response: 'Dalam 2 hari bekerja',
         channel3Output: 'Slot lawatan dicadangkan · jurutera ditugaskan',
         channel3Cta: 'Minta lawatan',
-        locationEyebrow: 'Bengkel · Petaling Jaya',
+        locationEyebrow: 'Bengkel · Selangor',
         locationHeadline: 'Mesin tekan, relau, dan stesen kimpalan laser.',
         locationLede: 'Pelawat dialu-alukan dengan janji temu. Pasukan teknikal boleh memandu anda melalui mesin tekan, relau segmen, dan stesen kimpalan laser. Tiga mesin yang dilalui oleh setiap bilah yang kami hantar.',
-        locationAddressFallback: 'Petaling Jaya, Selangor · Malaysia',
+        locationAddressFallback: 'Selangor · Malaysia',
         locationAddressNote: 'Alamat penuh tersedia atas permintaan.',
         locationLabelMonFri: 'Isnin hingga Jumaat',
         locationLabelSat: 'Sabtu',
@@ -2555,7 +2555,7 @@ export const COPY: Record<Language, CopyStructure> = {
         locationOpenInMaps: 'Buka di peta',
         locationMapWorkshop: 'COOLMAN',
         locationMapSince: 'NO. 14 · SEJAK 2007',
-        locationMapCity: 'PETALING JAYA',
+        locationMapCity: 'Selangor',
         locationMapCoords: '3.0840° N · 101.6336° E',
         locationOverlayBrand: 'Coolman',
         directLinesEyebrow: 'Talian terus',
@@ -2712,7 +2712,7 @@ export const COPY: Record<Language, CopyStructure> = {
           footNote: 'Dengan menghantar, anda bersetuju kami boleh menghubungi anda mengenai permintaan ini. Penghantaran dalam 2 hari bekerja · ex-gudang PJ.',
         },
         priceCard: {
-          footNote: 'Seunit · excl. SST · ex-gudang Petaling Jaya',
+          footNote: 'Seunit · excl. SST · ex-gudang Selangor',
         },
         documentsEmpty: 'Tiada dokumen yang dimuat naik untuk produk ini lagi.',
         ctaStrip: {
@@ -2970,7 +2970,7 @@ export const COPY: Record<Language, CopyStructure> = {
             { primary: 'Meja kejuruteraan', secondary: 'WhatsApp', href: '/contact' },
             { primary: 'Pejabat', secondary: 'Isnin hingga Sabtu', href: '/contact' },
             { primary: 'Lawatan tapak', secondary: 'Minta lawatan', href: '/contact' },
-            { primary: 'Petaling Jaya', secondary: 'Selangor', href: '/contact' },
+            { primary: 'Selangor', secondary: 'Selangor', href: '/contact' },
           ],
         },
         readAndLearn: {
@@ -2993,7 +2993,7 @@ export const COPY: Record<Language, CopyStructure> = {
         },
       },
       baseBar: {
-        manufacturedIn: 'Dibuat di Petaling Jaya, Malaysia',
+        manufacturedIn: 'Dibuat di Selangor, Malaysia',
         distributorLineTemplate: '{legalEntity} ialah pengedar tunggal Malaysia bagi Shibuya KK, Tokyo.',
         legalLinks: {
           privacy: 'Privasi',
@@ -3011,7 +3011,7 @@ export const COPY: Record<Language, CopyStructure> = {
     },
     homeNarrative: {
       opening: {
-        eyebrow: 'Coolman · Pengeluar alat pemotong · Petaling Jaya, 2007',
+        eyebrow: 'Coolman · Pengeluar alat pemotong · Selangor, 2007',
         headlinePrefix: 'Kerja yang Betul ',
         headlineEmphasis: 'Dipadankan dengan Bilah yang Betul.',
         lede: 'Coolman telah membina bilah berlian, mata teras dan sistem pemotongan di Malaysia sejak 2007. Pengasas kami, Alan, telah berada dalam bidang pemotongan sejak 1998. Setiap bilah yang kami hasilkan direka untuk batu, besi tetulang dan jadual yang dihadapi kontraktor Malaysia.',
@@ -3086,7 +3086,7 @@ export const COPY: Record<Language, CopyStructure> = {
         },
         workshopPhoto: {
           heading: 'Bengkel tempat ikatan dibina.',
-          body: 'Petaling Jaya, Seksyen 14. Setiap segmen yang kami hantar ditekan, disinter dan dikimpal laser di bangunan tunggal ini. Setiap bilah yang dipulangkan pada akhir hayat dipotong di sini. Relau adalah relau yang sama sejak Coolman bermula — formulasi ikatan tidak.',
+          body: 'Selangor, Seksyen 14. Setiap segmen yang kami hantar ditekan, disinter dan dikimpal laser di bangunan tunggal ini. Setiap bilah yang dipulangkan pada akhir hayat dipotong di sini. Relau adalah relau yang sama sejak Coolman bermula — formulasi ikatan tidak.',
         },
       },
       alansLetter: {
@@ -3102,7 +3102,7 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       quietDoor: {
         eyebrow: 'Pintu yang senyap',
-        headline: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',
+        headline: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Selangor.',
         lede: 'Tiada muka katalog. Tiada perlu memburu PDF. Hanya inventori, spesifikasi, dan satu panggilan telefon jika bilah yang anda perlukan bukan yang kami senaraikan.',
         stats: [
           { key: 'sku', value: '247', label: 'SKU dalam stok' },
@@ -3119,7 +3119,7 @@ export const COPY: Record<Language, CopyStructure> = {
         lede: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tidak sembunyikan kami punya.',
         channels: [
           { tag: 'Utama', title: 'Meja kejuruteraan di WhatsApp', body: 'Hantar gambar potongan, agregat, bilah. Kami akan beritahu apa kami fikir sebelum kami beritahu apa kami jual.', ctaLabel: 'Buka WhatsApp' },
-          { tag: 'Pejabat', title: 'Talian pejabat Petaling Jaya', body: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.', ctaLabel: 'Telefon pejabat' },
+          { tag: 'Pejabat', title: 'Talian pejabat Selangor', body: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.', ctaLabel: 'Telefon pejabat' },
           { tag: 'Di tapak', title: 'Borang lawatan tapak', body: 'Jika potongan luar biasa, kami lebih rela datang melihat daripada meneka. Beritahu kami di mana dan bila.', ctaLabel: 'Minta lawatan tapak' },
         ],
       },
@@ -3128,13 +3128,13 @@ export const COPY: Record<Language, CopyStructure> = {
       hero: {
         eyebrow: 'Warisan',
         headline: 'Coolman, sejak 2007. Sembilan belas tahun potongan yang mengajar kami bagaimana membina bilah.',
-        lede: 'Sejarah ringkas sebuah syarikat alat berlian Malaysia. Diasaskan di Petaling Jaya oleh seorang tukang yang telah berada dalam bidang pemotongan sejak 1998.',
+        lede: 'Sejarah ringkas sebuah syarikat alat berlian Malaysia. Diasaskan di Selangor oleh seorang tukang yang telah berada dalam bidang pemotongan sejak 1998.',
       },
       pj2007: {
         eyebrow: 'PJ, 2007',
-        headline: 'Sebuah bengkel di jalan kecil di Petaling Jaya.',
+        headline: 'Sebuah bengkel di jalan kecil di Selangor.',
         body: [
-          'Coolman bermula di satu unit sewa di Petaling Jaya pada 2007. Dua mesin penekan segmen, sebuah meja, dan satu telefon yang berdering terlalu kerap. Alan, pengasas, telah menghabiskan sembilan tahun dalam bidang pemotongan dan akhirnya mendengar satu aduan terlalu banyak tentang bilah yang tidak sesuai untuk batu kita.',
+          'Coolman bermula di satu unit sewa di Selangor pada 2007. Dua mesin penekan segmen, sebuah meja, dan satu telefon yang berdering terlalu kerap. Alan, pengasas, telah menghabiskan sembilan tahun dalam bidang pemotongan dan akhirnya mendengar satu aduan terlalu banyak tentang bilah yang tidak sesuai untuk batu kita.',
           'Tahun pertama senyap. Tahun kedua tidak. Menjelang akhir 2008, bengkel itu beroperasi dua syif.',
         ],
       },
@@ -3184,7 +3184,7 @@ export const COPY: Record<Language, CopyStructure> = {
         headline: 'Sembilan belas tahun pada satu halaman.',
         events: [
           { year: '1998', title: 'Alan memasuki bidang pemotongan', body: 'Sembilan tahun menjual bilah syarikat lain bermula.' },
-          { year: '2007', title: 'Coolman diasaskan di Petaling Jaya', body: 'Dua mesin penekan segmen, sebuah meja, sebuah telefon.' },
+          { year: '2007', title: 'Coolman diasaskan di Selangor', body: 'Dua mesin penekan segmen, sebuah meja, sebuah telefon.' },
           { year: 'TBC', title: 'Formulasi sandwic kobalt dibangunkan', body: 'Selepas sebuah kerja pancang di Shah Alam mengajar kami spesifikasi adalah salah.', note: 'Alan untuk sahkan tahun' },
           { year: '2014', title: 'Pengedaran eksklusif Shibuya ditandatangani', body: 'Diperbaharui setiap tahun sejak itu.' },
           { year: 'TBC', title: 'Pensijilan SIRIM dianugerahkan', body: 'Pengesahan bebas spesifikasi ikatan kami.', note: 'Alan untuk sahkan tahun' },
@@ -3229,7 +3229,7 @@ export const COPY: Record<Language, CopyStructure> = {
         missingBody: 'Catatan Lapangan ini tidak tersedia buat masa ini. Mungkin ia masih draf, atau pautan sudah lapuk.',
       },
       byline: 'Coolman Engineering',
-      filedUnder: 'Difailkan di bawah Coolman Malaysia Sdn Bhd · Petaling Jaya · Dikilangkan di Malaysia',
+      filedUnder: 'Difailkan di bawah Coolman Malaysia Sdn Bhd · Selangor · Dikilangkan di Malaysia',
       pileCutting: {
         title: 'Apabila kontraktor berhenti mencuba, dan terus menelefon',
         meta: 'Konkrit bertetulang · pancang · Lembah Klang',
@@ -3269,7 +3269,7 @@ export const COPY: Record<Language, CopyStructure> = {
             'Mandor tidak panik pada telefon. Beliau sudah melepasi panik. Beliau tenang dengan cara yang memberitahu kami beliau hampir kehilangan kerja itu.',
           ] },
           { heading: 'Apa yang kami buat', paragraphs: [
-            'Kami menghantar CM-X Road 450 dari gudang Petaling Jaya. Seorang jurutera bertemu krew di tapak pada jam 12:10 pagi. Beliau memeriksa gergaji, memasang bilah, melihat potongan pertama.',
+            'Kami menghantar CM-X Road 450 dari gudang Selangor. Seorang jurutera bertemu krew di tapak pada jam 12:10 pagi. Beliau memeriksa gergaji, memasang bilah, melihat potongan pertama.',
             'Beliau tinggal di tapak sehingga jam 4 pagi.',
           ] },
           { heading: 'Apa yang berlaku', paragraphs: [
@@ -3393,7 +3393,7 @@ export const COPY: Record<Language, CopyStructure> = {
     },
     catalogueIntro: {
       eyebrow: 'Katalog',
-      headline: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',
+      headline: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Selangor.',
       lede: 'Dua ratus empat puluh tujuh SKU merangkumi bilah berlian, penggerudi teras, dan sistem segmen. Guna penapis untuk tapis mengikut bahan, aplikasi, atau diameter. Jika pemotongan yang anda rancang tidak jelas dari rangkaian ini, meja kejuruteraan lebih pantas daripada borang.',
       tradeNote: 'Akaun perdagangan mendapat harga peringkat dan sejarah pesanan semula. Mohon melalui halaman Perdagangan.',
       filters: {
@@ -3438,7 +3438,7 @@ export const COPY: Record<Language, CopyStructure> = {
           { key: 'Tinggi segmen', value: '10 mm' },
           { key: 'Flens', value: '25.4 mm' },
           { key: 'Hayat potongan dinilai', value: 'Sehingga 240 m pada konkrit bertetulang' },
-          { key: 'Dikilangkan di', value: 'Petaling Jaya, Malaysia' },
+          { key: 'Dikilangkan di', value: 'Selangor, Malaysia' },
         ],
       },
       unusualCuts: {
@@ -3456,7 +3456,7 @@ export const COPY: Record<Language, CopyStructure> = {
       tiers: {
         buyer: {
           title: 'Pembeli perdagangan',
-          body: 'Akses kepada katalog Coolman penuh pada harga perdagangan. Penghantaran hari sama dari Petaling Jaya sebelum jam 2 petang.',
+          body: 'Akses kepada katalog Coolman penuh pada harga perdagangan. Penghantaran hari sama dari Selangor sebelum jam 2 petang.',
           bullets: ['Akses katalog penuh', 'Harga perdagangan', 'Penghantaran hari sama'],
         },
         dealer: {
@@ -3485,7 +3485,7 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       channels: [
         { tag: 'Utama', title: 'Meja kejuruteraan di WhatsApp', body: 'Gambar dialu-alukan. Balasan dalam minit semasa waktu pejabat.', ctaLabel: 'Buka WhatsApp' },
-        { tag: 'Pejabat', title: 'Talian pejabat Petaling Jaya', body: 'Untuk pesanan, penghantaran dan soalan pemulangan.', ctaLabel: 'Telefon pejabat' },
+        { tag: 'Pejabat', title: 'Talian pejabat Selangor', body: 'Untuk pesanan, penghantaran dan soalan pemulangan.', ctaLabel: 'Telefon pejabat' },
         { tag: 'Tapak', title: 'Permintaan lawatan tapak', body: 'Jika potongan luar biasa, seorang jurutera akan datang melihatnya.', ctaLabel: 'Minta lawatan tapak' },
       ],
       hours: {
@@ -3498,10 +3498,10 @@ export const COPY: Record<Language, CopyStructure> = {
       hero: {
         eyebrow: 'Tentang',
         headline: 'Alat pemotong berlian. Direka di Malaysia, untuk Malaysia.',
-        lede: 'Coolman telah dibina di Petaling Jaya sejak 2007. Kami membuat bilah berlian, mata teras dan sistem segmen untuk kontraktor Malaysia. Sekitar 500 akaun aktif. Rangkaian yang sama, talian terus yang sama ke kejuruteraan, untuk 19 tahun.',
+        lede: 'Coolman telah dibina di Selangor sejak 2007. Kami membuat bilah berlian, mata teras dan sistem segmen untuk kontraktor Malaysia. Sekitar 500 akaun aktif. Rangkaian yang sama, talian terus yang sama ke kejuruteraan, untuk 19 tahun.',
       },
-      founded: { value: '2007', label: 'Diasaskan di Petaling Jaya' },
-      builtIn: { value: 'Petaling Jaya', label: 'Di mana bilah dibuat' },
+      founded: { value: '2007', label: 'Diasaskan di Selangor' },
+      builtIn: { value: 'Selangor', label: 'Di mana bilah dibuat' },
       accounts: { value: '~500', label: 'Akaun aktif' },
     },
     legal: {
@@ -3512,15 +3512,15 @@ export const COPY: Record<Language, CopyStructure> = {
       cookies: { title: 'Notis kuki', lede: 'Kuki yang digunakan tapak kami, apa yang mereka buat, dan bagaimana untuk mematikannya jika anda lebih suka.' },
     },
     seo: {
-      home: { title: 'Coolman · Alat pemotong berlian dibina di Petaling Jaya sejak 2007', description: 'Bilah berlian, mata teras dan sistem segmen direka Malaysia. 247 SKU dalam stok. Penghantaran hari sama dari Petaling Jaya sebelum jam 2 petang.' },
-      heritage: { title: 'Warisan · Coolman, sejak 2007', description: 'Sejarah ringkas Coolman: diasaskan di Petaling Jaya pada 2007 oleh seorang tukang dalam bidang pemotongan sejak 1998.' },
+      home: { title: 'Coolman · Alat pemotong berlian dibina di Selangor sejak 2007', description: 'Bilah berlian, mata teras dan sistem segmen direka Malaysia. 247 SKU dalam stok. Penghantaran hari sama dari Selangor sebelum jam 2 petang.' },
+      heritage: { title: 'Warisan · Coolman, sejak 2007', description: 'Sejarah ringkas Coolman: diasaskan di Selangor pada 2007 oleh seorang tukang dalam bidang pemotongan sejak 1998.' },
       whyCoolman: { title: 'Kenapa Coolman · Folio kejuruteraan', description: 'Tiga karya tentang mengapa kami membuat bilah dengan cara kami membuatnya. Tiga mitos, agregat Malaysia, dan Sistem Brotherhood.' },
       fieldNotes: { title: 'Field Notes · Coolman Engineering', description: 'Tiga kerja yang mengajar kami bagaimana membuat bilah yang lebih baik. Ditulis ketika berlaku.' },
       catalogue: { title: 'Katalog · 247 SKU dalam stok', description: 'Bilah berlian, mata teras dan sistem segmen. Tapis mengikut bahan, aplikasi, atau diameter.' },
       productTemplate: { title: 'Halaman produk Coolman', description: 'Spesifikasi, aplikasi, dan nota kejuruteraan untuk rangkaian Coolman.' },
       trade: { title: 'Perdagangan · Coolman untuk pengedar dan pembeli perdagangan', description: 'Program pembeli perdagangan dan pengedar Brotherhood. Permohonan dalam empat langkah.' },
       contact: { title: 'Hubungi Coolman', description: 'WhatsApp kejuruteraan, talian pejabat, atau lawatan tapak. Kebanyakan potongan bermula dengan satu panggilan telefon.' },
-      about: { title: 'Tentang Coolman · Direka di Malaysia, untuk Malaysia', description: 'Alat pemotong berlian dibina di Petaling Jaya sejak 2007. Sekitar 500 akaun aktif.' },
+      about: { title: 'Tentang Coolman · Direka di Malaysia, untuk Malaysia', description: 'Alat pemotong berlian dibina di Selangor sejak 2007. Sekitar 500 akaun aktif.' },
       shibuya: { title: 'Penggerudi teras Shibuya · Pengedar eksklusif Malaysia', description: 'Coolman telah membawa penggerudi teras Shibuya sebagai pengedar eksklusif Malaysia sejak 2014.' },
       privacy: { title: 'Privasi · Coolman', description: 'Bagaimana Coolman mengendalikan maklumat peribadi anda.' },
       terms: { title: 'Terma jualan · Coolman', description: 'Terma di bawah mana Coolman Malaysia Sdn Bhd menjual di Malaysia.' },

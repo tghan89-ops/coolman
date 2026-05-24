@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
@@ -168,7 +168,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
   const col2Title =
     pick(data.machineStory?.col2Title, data.machineStory?.col2TitleBM) || 'The bond.'
   const col2Body = pick(data.machineStory?.col2Body, data.machineStory?.col2BodyBM) || ''
-  const col2Country = data.machineStory?.col2Country || 'Petaling Jaya, Malaysia'
+  const col2Country = data.machineStory?.col2Country || 'Selangor, Malaysia'
   const sitePhotoUrl =
     typeof data.machineStory?.sitePhoto === 'object' &&
     data.machineStory?.sitePhoto !== null &&

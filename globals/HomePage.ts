@@ -1,4 +1,4 @@
-import type { GlobalConfig } from 'payload'
+﻿import type { GlobalConfig } from 'payload'
 import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 export const HomePage: GlobalConfig = {
@@ -14,8 +14,8 @@ export const HomePage: GlobalConfig = {
       name: 'opening',
       type: 'group',
       fields: bilingualTabs([
-        { name: 'eyebrow',           type: 'text',     defaultValue: 'Coolman · Manufacturer of cutting tools · Petaling Jaya, 2007' },
-        { name: 'eyebrowBM',         type: 'text',     defaultValue: 'Coolman · Pengeluar alat pemotong · Petaling Jaya, 2007',  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'eyebrow',           type: 'text',     defaultValue: 'Coolman · Manufacturer of cutting tools · Selangor, 2007' },
+        { name: 'eyebrowBM',         type: 'text',     defaultValue: 'Coolman · Pengeluar alat pemotong · Selangor, 2007',  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headlinePrefix',    type: 'text',     defaultValue: 'Right Job ' },
         { name: 'headlinePrefixBM',  type: 'text',     defaultValue: 'Kerja yang Betul ',                                        admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'headlineEmphasis',  type: 'text',     defaultValue: 'Matched with the Right Blade.' },
@@ -158,8 +158,8 @@ export const HomePage: GlobalConfig = {
       fields: bilingualTabs([
         { name: 'eyebrow',      type: 'text',     defaultValue: 'The quiet door' },
         { name: 'eyebrowBM',    type: 'text',     defaultValue: 'Pintu yang senyap',                                                             admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'headline',     type: 'text',     defaultValue: 'The full range, in stock and ready to ship from Petaling Jaya.' },
-        { name: 'headlineBM',   type: 'text',     defaultValue: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Petaling Jaya.',       admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'headline',     type: 'text',     defaultValue: 'The full range, in stock and ready to ship from Selangor.' },
+        { name: 'headlineBM',   type: 'text',     defaultValue: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Selangor.',       admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'lede',         type: 'textarea', defaultValue: 'No catalogue front. No PDF download chase. Just the inventory, the spec, and a phone call away if the blade you need is not the one we list.' },
         { name: 'ledeBM',       type: 'textarea', defaultValue: 'Tiada muka katalog. Tiada perlu memburu PDF. Hanya inventori, spesifikasi, dan satu panggilan telefon jika bilah yang anda perlukan bukan yang kami senaraikan.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         { name: 'ctaPrimary',   type: 'text',     defaultValue: 'Open the catalogue' },
@@ -184,7 +184,7 @@ export const HomePage: GlobalConfig = {
           type: 'array',
           defaultValue: [
             { tag: 'Primary',  tagBM: 'Utama',     title: 'Engineering desk on WhatsApp',    titleBM: 'Meja kejuruteraan di WhatsApp',    body: 'Send a photo of the cut, the aggregate, the blade. We will tell you what we think before we tell you what we sell.', bodyBM: 'Hantar gambar potongan, agregat, bilah. Kami akan beritahu apa kami fikir sebelum kami beritahu apa kami jual.', ctaLabel: 'Open WhatsApp',        ctaLabelBM: 'Buka WhatsApp' },
-            { tag: 'Office',   tagBM: 'Pejabat',   title: 'Petaling Jaya office line',       titleBM: 'Talian pejabat Petaling Jaya',    body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.',                    bodyBM: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.', ctaLabel: 'Call the office', ctaLabelBM: 'Telefon pejabat' },
+            { tag: 'Office',   tagBM: 'Pejabat',   title: 'Selangor office line',       titleBM: 'Talian pejabat Selangor',    body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.',                    bodyBM: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.', ctaLabel: 'Call the office', ctaLabelBM: 'Telefon pejabat' },
             { tag: 'On site',  tagBM: 'Di tapak',  title: 'Site visit form',                 titleBM: 'Borang lawatan tapak',            body: "If the cut is unusual, we'd rather come and see it than guess. Tell us where and when.",                               bodyBM: 'Jika potongan luar biasa, kami lebih rela datang melihat daripada meneka. Beritahu kami di mana dan bila.', ctaLabel: 'Request a site visit', ctaLabelBM: 'Minta lawatan tapak' },
           ],
           fields: bilingualTabs([

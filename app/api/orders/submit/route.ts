@@ -14,7 +14,6 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { calculateEffectivePrice, isWithinDiscountCap } from '@/lib/pricing/calculate'
 import { validatePromoCode } from '@/lib/pricing/validate-promo'
-import { sql } from '@payloadcms/db-vercel-postgres'
 import { sendEmail } from '@/lib/email/send'
 
 // ---------------------------------------------------------------------------
@@ -383,15 +382,21 @@ export async function POST(req: NextRequest) {
     //     This is the more conservative interpretation — a partial duplicate signals a retry.
     const duplicateWindowMs = (s.duplicate_window_minutes ?? 10) * 60 * 1000
     const windowStart = new Date(Date.now() - duplicateWindowMs).toISOString()
-    const drizzle = (payload.db as any).drizzle
 
     let anyDuplicate = false
     for (const ln of perLine) {
-      const coercedProductId = ln.product.id
-      const dupCheck = await drizzle.execute(
-        sql`SELECT id FROM orders WHERE contractor_id = ${contractorRelId} AND product_id = ${coercedProductId} AND submitted_at > ${windowStart} LIMIT 1 FOR UPDATE`,
-      )
-      if ((dupCheck?.rows?.length ?? dupCheck?.length ?? 0) > 0) {
+      const dupCheck = await payload.find({
+        collection: 'orders',
+        where: {
+          contractor: { equals: contractorRelId },
+          product: { equals: ln.product.id },
+          submitted_at: { greater_than: windowStart },
+        },
+        limit: 1,
+        req: { transactionID } as any,
+        overrideAccess: true,
+      })
+      if (dupCheck.totalDocs > 0) {
         anyDuplicate = true
         break
       }
@@ -429,9 +434,19 @@ export async function POST(req: NextRequest) {
     // 16. Increment promo usage_count atomically (once per submission, not per line)
     if (validatedPromoId) {
       try {
-        await drizzle.execute(
-          sql`UPDATE "promo_codes" SET usage_count = usage_count + 1 WHERE id = ${validatedPromoId}`,
-        )
+        const currentPromo = await payload.findByID({
+          collection: 'promoCodes',
+          id: validatedPromoId as string,
+          req: { transactionID } as any,
+          overrideAccess: true,
+        })
+        await payload.update({
+          collection: 'promoCodes',
+          id: validatedPromoId as string,
+          data: { usage_count: Number((currentPromo as any).usage_count ?? 0) + 1 },
+          req: { transactionID } as any,
+          overrideAccess: true,
+        })
       } catch (promoErr) {
         await payload.db.rollbackTransaction(transactionID).catch(() => {})
         console.error('[orders/submit] promo usage increment failed', promoErr)

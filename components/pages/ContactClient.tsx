@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { ArrowRight, Check } from 'lucide-react'
@@ -396,7 +396,7 @@ export function ContactClient({ initialData }: Props) {
                 viewBox="0 0 600 450"
                 xmlns="http://www.w3.org/2000/svg"
                 role="img"
-                aria-label="Schematic of the workshop location within Petaling Jaya"
+                aria-label="Schematic of the workshop location within Selangor"
                 className="block h-full w-full"
               >
                 <defs>

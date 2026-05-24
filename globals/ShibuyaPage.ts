@@ -1,4 +1,4 @@
-import type { GlobalConfig } from 'payload'
+﻿import type { GlobalConfig } from 'payload'
 import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
 const notTranslated = { description: 'Not translated — numeric/spec value shown in both languages.' }
@@ -110,7 +110,7 @@ export const ShibuyaPage: GlobalConfig = {
             'A Shibuya rig fitted with a European-bond core bit on a KL podium will run with mechanical precision and a glazed bit. The fault is not the machine. The fault is that the bond holding the diamond was not calibrated for the ground.\n\nCoolman builds the core bit the Shibuya rig deserves. Cobalt blend formulated against KL crushed granite, MRT3 segment work, Genting granite stocks, Pahang aggregate.',
         },
         { name: 'col2BodyBM', type: 'textarea' },
-        { name: 'col2Country', type: 'text', defaultValue: 'Petaling Jaya, Malaysia', admin: notTranslated },
+        { name: 'col2Country', type: 'text', defaultValue: 'Selangor, Malaysia', admin: notTranslated },
         // Optional site photo below the story pair
         { name: 'sitePhoto', type: 'upload', relationTo: 'media' },
         { name: 'sitePhotoAlt', type: 'text', admin: notTranslated },
@@ -131,7 +131,7 @@ export const ShibuyaPage: GlobalConfig = {
           name: 'body',
           type: 'textarea',
           defaultValue:
-            'The Shibuya service contract is not subcontracted. Every machine sold in Malaysia is serviced in the Petaling Jaya workshop by technicians factory-trained in Hiroshima. Replacement parts are stocked locally — not air-freighted on demand.',
+            'The Shibuya service contract is not subcontracted. Every machine sold in Malaysia is serviced in the Selangor workshop by technicians factory-trained in Hiroshima. Replacement parts are stocked locally — not air-freighted on demand.',
         },
         { name: 'bodyBM', type: 'textarea' },
         {
@@ -191,8 +191,8 @@ export const ShibuyaPage: GlobalConfig = {
               labelBM: 'Alat Ganti',
               title: 'Replacement parts in 48 hours.',
               titleBM: 'Alat ganti dalam 48 jam.',
-              body: 'The Petaling Jaya workshop stocks every replacement part for the TS-403, TS-602, and TS-1000 lines. Air freight from Hiroshima for non-stocked parts: seven working days maximum.',
-              bodyBM: 'Bengkel Petaling Jaya menyimpan setiap alat ganti untuk barisan TS-403, TS-602, dan TS-1000. Kargo udara dari Hiroshima untuk alat ganti yang tidak disimpan: maksimum tujuh hari bekerja.',
+              body: 'The Selangor workshop stocks every replacement part for the TS-403, TS-602, and TS-1000 lines. Air freight from Hiroshima for non-stocked parts: seven working days maximum.',
+              bodyBM: 'Bengkel Selangor menyimpan setiap alat ganti untuk barisan TS-403, TS-602, dan TS-1000. Kargo udara dari Hiroshima untuk alat ganti yang tidak disimpan: maksimum tujuh hari bekerja.',
             },
             {
               number: '04',
@@ -200,8 +200,8 @@ export const ShibuyaPage: GlobalConfig = {
               labelBM: 'Latihan',
               title: 'On-site operator training, no charge, up to two operators.',
               titleBM: 'Latihan pengendali di tapak, tiada caj, sehingga dua pengendali.',
-              body: 'Every new machine purchase includes a half-day operator training session. Conducted at the Petaling Jaya workshop or at your site — your choice. Covers rig setup, vacuum and stud anchoring, feed-rate selection, and water management.',
-              bodyBM: 'Setiap pembelian mesin baharu termasuk sesi latihan pengendali setengah hari. Dijalankan di bengkel Petaling Jaya atau di tapak anda — pilihan anda.',
+              body: 'Every new machine purchase includes a half-day operator training session. Conducted at the Selangor workshop or at your site — your choice. Covers rig setup, vacuum and stud anchoring, feed-rate selection, and water management.',
+              bodyBM: 'Setiap pembelian mesin baharu termasuk sesi latihan pengendali setengah hari. Dijalankan di bengkel Selangor atau di tapak anda — pilihan anda.',
             },
           ],
           fields: bilingualTabs([
