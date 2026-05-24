@@ -19,7 +19,7 @@ export const ShibuyaPage: GlobalConfig = {
       fields: bilingualTabs([
         { name: 'badge', type: 'text', defaultValue: 'Coolman × Shibuya Tools · Hiroshima' },
         { name: 'badgeBM', type: 'text', defaultValue: 'Coolman × Shibuya Tools · Hiroshima' },
-        { name: 'badgeSince', type: 'text', defaultValue: 'Sole MY Partner Since 2011', admin: notTranslated },
+        { name: 'badgeSince', type: 'text', defaultValue: 'Sole MY Partner Since 2014', admin: notTranslated },
         { name: 'headlineLine1', type: 'text', defaultValue: 'The best machine in the world.' },
         { name: 'headlineLine1BM', type: 'text', defaultValue: 'Mesin terbaik di dunia.' },
         { name: 'headlineEmphasis', type: 'text', defaultValue: 'The bond built for here.' },
@@ -52,7 +52,7 @@ export const ShibuyaPage: GlobalConfig = {
           maxRows: 4,
           defaultValue: [
             { number: '300+', label: 'Shibuya machines\nin Malaysia', labelBM: 'Mesin Shibuya\ndi Malaysia' },
-            { number: '2011', label: 'Sole authorised\nMalaysian partner', labelBM: 'Rakan kongsi Malaysia\nsah tunggal' },
+            { number: '2014', label: 'Sole authorised\nMalaysian partner', labelBM: 'Rakan kongsi Malaysia\nsah tunggal' },
             { number: '3 yr', label: 'Full mechanical\nwarranty', labelBM: 'Waranti mekanikal\npenuh' },
             { number: '48 h', label: 'Replacement parts\nfrom PJ workshop', labelBM: 'Alat ganti\ndari bengkel PJ' },
           ],
@@ -123,8 +123,8 @@ export const ShibuyaPage: GlobalConfig = {
       type: 'group',
       admin: { description: 'Service & warranty section with stats, photos, and numbered service points.' },
       fields: bilingualTabs([
-        { name: 'eyebrow', type: 'text', defaultValue: 'In-house service · Since 2011' },
-        { name: 'eyebrowBM', type: 'text', defaultValue: 'Servis dalaman · Sejak 2011' },
+        { name: 'eyebrow', type: 'text', defaultValue: 'In-house service · Since 2014' },
+        { name: 'eyebrowBM', type: 'text', defaultValue: 'Servis dalaman · Sejak 2014' },
         { name: 'headline', type: 'text', defaultValue: 'Two trained Shibuya technicians. Same workshop, same building.' },
         { name: 'headlineBM', type: 'text', defaultValue: 'Dua juruteknik Shibuya terlatih. Bengkel yang sama, bangunan yang sama.' },
         {
@@ -191,8 +191,8 @@ export const ShibuyaPage: GlobalConfig = {
               labelBM: 'Alat Ganti',
               title: 'Replacement parts in 48 hours.',
               titleBM: 'Alat ganti dalam 48 jam.',
-              body: 'The Selangor workshop stocks replacement parts for the TS-405 and TS-605 lines. Contact us for availability on other models. Air freight from Hiroshima for non-stocked parts: seven working days maximum.',
-              bodyBM: 'Bengkel Selangor menyimpan alat ganti untuk barisan TS-405 dan TS-605. Hubungi kami untuk ketersediaan model lain. Kargo udara dari Hiroshima untuk alat ganti yang tidak disimpan: maksimum tujuh hari bekerja.',
+              body: 'The Selangor workshop stocks replacement parts for the TS-255, TS-405, and TS-605 lines. Contact us for availability on other models. Air freight from Hiroshima for non-stocked parts: seven working days maximum.',
+              bodyBM: 'Bengkel Selangor menyimpan alat ganti untuk barisan TS-255, TS-405, dan TS-605. Hubungi kami untuk ketersediaan model lain. Kargo udara dari Hiroshima untuk alat ganti yang tidak disimpan: maksimum tujuh hari bekerja.',
             },
             {
               number: '04',

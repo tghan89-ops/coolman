@@ -132,7 +132,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
   // ── Hero ──────────────────────────────────────────────────────────────────
   const heroBadge =
     pick(data.hero?.badge, data.hero?.badgeBM) || 'Coolman × Shibuya Tools · Hiroshima'
-  const heroBadgeSince = data.hero?.badgeSince || 'Sole MY Partner Since 2011'
+  const heroBadgeSince = data.hero?.badgeSince || 'Sole MY Partner Since 2014'
   const heroLine1 =
     pick(data.hero?.headlineLine1, data.hero?.headlineLine1BM) || 'The best machine in the world.'
   const heroEmphasis =
@@ -145,7 +145,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
   const trustStats: Array<{ number: string; label: string; labelBM: string }> =
     data.trustBar?.stats ?? [
       { number: '300+', label: 'Shibuya machines\nin Malaysia', labelBM: 'Mesin Shibuya\ndi Malaysia' },
-      { number: '2011', label: 'Sole authorised\nMalaysian partner', labelBM: 'Rakan kongsi Malaysia\nsah tunggal' },
+      { number: '2014', label: 'Sole authorised\nMalaysian partner', labelBM: 'Rakan kongsi Malaysia\nsah tunggal' },
       { number: '3 yr', label: 'Full mechanical\nwarranty', labelBM: 'Waranti mekanikal\npenuh' },
       { number: '48 h', label: 'Replacement parts\nfrom PJ workshop', labelBM: 'Alat ganti\ndari bengkel PJ' },
     ]
@@ -180,7 +180,7 @@ export function ShibuyaClient({ initialData, machines }: ShibuyaClientProps) {
   // ── Service Section ───────────────────────────────────────────────────────
   const serviceEyebrow =
     pick(data.serviceSection?.eyebrow, data.serviceSection?.eyebrowBM) ||
-    'In-house service · Since 2011'
+    'In-house service · Since 2014'
   const serviceHeadline =
     pick(data.serviceSection?.headline, data.serviceSection?.headlineBM) ||
     'Two trained Shibuya technicians. Same workshop, same building.'

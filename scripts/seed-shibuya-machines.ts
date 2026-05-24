@@ -67,20 +67,20 @@ const machines: SeedMachine[] = [
     is_active: true,
   },
   {
-    model_id: 'ts-1000',
-    model_name: 'TS-1000',
-    tagline: 'Heavy rig · deep cores.',
-    taglineBM: 'Rig berat · teras dalam.',
+    model_id: 'ts-255',
+    model_name: 'TS-255',
+    tagline: 'Mid-range rig · general cores.',
+    taglineBM: 'Rig pertengahan · teras am.',
     description:
-      'The largest Shibuya. 600 mm cores through full-depth structural elements. Servo-controlled feed, dual hydraulic columns, sub-millimetre hole runout over 1.2 m of depth.',
+      'Mid-range core drill for cores up to 255 mm. Suitable for general construction penetrations, slab openings, and service cores. Versatile anchor options.',
     descriptionBM:
-      'Shibuya terbesar. Teras 600 mm menembusi elemen struktur sepenuh kedalaman. Suapan kawalan servo, dua tiang hidraulik, lariannya kurang daripada satu milimeter pada kedalaman 1.2 m.',
-    max_diameter: '300–600 mm',
-    anchor: 'Dual-stud rail',
-    anchorBM: 'Rel stud kembar',
-    weight: '112 kg',
+      'Penggerudi teras pertengahan untuk teras sehingga 255 mm. Sesuai untuk penembusan pembinaan am, bukaan papak, dan teras perkhidmatan. Pilihan sauh yang serba boleh.',
+    max_diameter: 'Up to 255 mm',
+    anchor: 'Vacuum or stud',
+    anchorBM: 'Vakum atau stud',
+    weight: '',
     display_order: 30,
-    is_active: false,
+    is_active: true,
   },
 ]
 
