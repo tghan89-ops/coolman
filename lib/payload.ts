@@ -25,31 +25,83 @@ export type RawDealerRow = {
   specialisations?: string | null
 }
 
+// Slim catalogue row — only the fields the grid + filters actually read.
+// Mapping to this shape (instead of caching raw depth-2 docs) is what keeps the
+// cached value small enough to store. Caching the full 200×depth-2 docs blew
+// past Vercel's ~2MB data-cache item limit, so the cache SET failed silently
+// ("Failed to set Next.js data cache") on every request — meaning the heavy
+// query re-ran every hit and /products stayed ~5s. Burned 2026-05-30.
+export type SlimProduct = {
+  id: string | number
+  name: string
+  sku: string | null
+  listPrice: number
+  diameter: string | null
+  diameterMm: number | null
+  bondType: string | null
+  materials: Array<{ name: string }>
+  applications: Array<{ name: string }>
+  image: { url: string } | null
+}
+
+// A populated relationship is an object with a `name`; an unpopulated one is a
+// bare id (string|number). We only ever cache the name.
+function relationName(r: unknown): string | null {
+  if (r && typeof r === 'object' && 'name' in r) {
+    const n = (r as { name?: unknown }).name
+    return typeof n === 'string' && n ? n : null
+  }
+  return null
+}
+
+function slimProduct(p: any): SlimProduct {
+  const mats = Array.isArray(p?.materials) ? p.materials : []
+  const apps = Array.isArray(p?.applications) ? p.applications : []
+  const imageUrl =
+    p?.image && typeof p.image === 'object' && typeof p.image.url === 'string'
+      ? p.image.url
+      : null
+  return {
+    id: p.id,
+    name: typeof p?.name === 'string' ? p.name : '',
+    sku: typeof p?.sku === 'string' ? p.sku : null,
+    listPrice: typeof p?.listPrice === 'number' ? p.listPrice : 0,
+    diameter: typeof p?.diameter === 'string' ? p.diameter : null,
+    diameterMm: typeof p?.diameterMm === 'number' ? p.diameterMm : null,
+    bondType: typeof p?.bondType === 'string' ? p.bondType : null,
+    materials: mats.map(relationName).filter((n: string | null): n is string => !!n).map((name: string) => ({ name })),
+    applications: apps.map(relationName).filter((n: string | null): n is string => !!n).map((name: string) => ({ name })),
+    image: imageUrl ? { url: imageUrl } : null,
+  }
+}
+
 // The full catalogue is identical for every visitor — only the per-contractor
 // discount math differs, and that runs client-side in the browser. So we cache
-// the (expensive, depth-2, 200-row) catalogue query for 60s instead of
-// re-querying Postgres on every Products page hit. The Products page itself is
-// `force-dynamic` (for per-contractor pricing), which disables the route cache,
-// but this data-cache layer still applies. Admin edits to a product/price/stock
-// surface within ~60s. Revalidate the 'products' tag to flush sooner.
-// Errors are NOT cached: the find throws out of the cached fn and we fall back
-// to [] below, so a transient DB blip doesn't pin an empty catalogue for 60s.
+// a slim catalogue for 60s instead of re-querying Postgres on every Products
+// page hit. The Products page itself is `force-dynamic` (for per-contractor
+// pricing), which disables the route cache, but this data-cache layer still
+// applies. `depth: 1` is enough to populate the material/application names and
+// the image URL (we don't need relations-of-relations). Admin edits to a
+// product/price/stock surface within ~60s; revalidate the 'products' tag to
+// flush sooner. Errors are NOT cached: the find throws out of the cached fn and
+// we fall back to [] below, so a transient DB blip doesn't pin an empty
+// catalogue for 60s.
 const getProductsCached = unstable_cache(
-  async () => {
+  async (): Promise<SlimProduct[]> => {
     const payload = await getPayloadClient()
     const result = await payload.find({
       collection: 'products',
       limit: 200,
       sort: 'name',
-      depth: 2,
+      depth: 1,
     })
-    return result.docs
+    return result.docs.map(slimProduct)
   },
   ['catalogue-products'],
   { revalidate: 60, tags: ['products'] },
 )
 
-export async function getProducts(): Promise<any[]> {
+export async function getProducts(): Promise<SlimProduct[]> {
   try {
     return await getProductsCached()
   } catch {
