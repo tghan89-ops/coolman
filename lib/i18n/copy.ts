@@ -407,6 +407,9 @@ export interface CopyStructure {
     productSingular: string
     productPlural: string
     clear: string
+    searchPlaceholder: string
+    searchLabel: string
+    searchClear: string
     category: string
     all: string
     showFilters: string
@@ -1475,6 +1478,9 @@ export const COPY: Record<Language, CopyStructure> = {
       productSingular: 'product',
       productPlural: 'products',
       clear: 'Clear',
+      searchPlaceholder: 'Search by product name or code…',
+      searchLabel: 'Search products',
+      searchClear: 'Clear search',
       category: 'Category',
       all: 'All',
       showFilters: 'Show filters',
@@ -2742,6 +2748,9 @@ export const COPY: Record<Language, CopyStructure> = {
       productSingular: 'produk',
       productPlural: 'produk',
       clear: 'Kosongkan',
+      searchPlaceholder: 'Cari mengikut nama atau kod produk…',
+      searchLabel: 'Cari produk',
+      searchClear: 'Kosongkan carian',
       category: 'Kategori',
       all: 'Semua',
       showFilters: 'Tunjuk tapisan',

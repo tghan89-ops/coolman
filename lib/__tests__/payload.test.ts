@@ -6,6 +6,14 @@ vi.mock('payload', () => ({
 
 vi.mock('@payload-config', () => ({ default: {} }))
 
+// getProducts wraps its catalogue query in next/cache `unstable_cache`, which
+// throws outside a Next.js request scope (i.e. under vitest). Mock it as a
+// pass-through so the cache layer is transparent to these unit tests — the
+// 60s data-cache behaviour itself is exercised in the real runtime, not here.
+vi.mock('next/cache', () => ({
+  unstable_cache: (fn: (...args: unknown[]) => unknown) => fn,
+}))
+
 describe('getProducts', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -92,7 +100,11 @@ describe('getActiveShibuyaMachines', () => {
     const result = await getActiveShibuyaMachines()
 
     expect(result).toHaveLength(2)
-    expect(result[0].model_id).toBe('ts-403')
+    // First doc as returned by the (mocked) query. The mock supplies ts-405
+    // then ts-605; getActiveShibuyaMachines passes docs straight through, so
+    // result[0] is ts-405. (Was 'ts-403' — a value absent from the mock, so
+    // this assertion could never have passed. Corrected 2026-05-30.)
+    expect(result[0].model_id).toBe('ts-405')
     // Sanity: filters by is_active and sorts by display_order.
     expect(findMock).toHaveBeenCalledWith(
       expect.objectContaining({

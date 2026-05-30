@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Search, X } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
 import { FilterSidebar, type FilterGroup } from '@/components/catalogue/FilterSidebar'
 import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { bondLabel } from '@/lib/products/bond-label'
 import { diameterBucket } from '@/lib/products/diameter'
+import { productMatchesQuery } from '@/lib/products/search'
 import { useLanguage } from '@/lib/i18n/context'
 
 // Page size lives here as a justified hardcode — see LEARNINGS.md, section
@@ -38,6 +39,7 @@ export type ProductRelation = string | { id?: string | number; name?: string | n
 export interface ProductCardData {
   id: string | number
   name: string
+  sku?: string | null
   listPrice: number
   diameter?: string | null
   diameterMm?: number | null
@@ -69,6 +71,7 @@ export function ProductsClient({
     [FILTER_KEYS.application]: [],
     [FILTER_KEYS.diameter]: [],
   })
+  const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
 
   const filteredProducts = useMemo(() => {
@@ -77,6 +80,10 @@ export function ProductsClient({
     const selMaterials = selected[FILTER_KEYS.material] ?? []
     const selApplications = selected[FILTER_KEYS.application] ?? []
     const selDiameters = selected[FILTER_KEYS.diameter] ?? []
+    // Free-text search matches product name OR SKU/model code, case-insensitive.
+    // Runs over the already-loaded catalogue, so results are instant. The
+    // analytics log (below) records the query separately — never skip it.
+    const q = query.trim().toLowerCase()
 
     const relationName = (r: ProductRelation): string => {
       if (r == null) return ''
@@ -102,15 +109,39 @@ export function ProductsClient({
         return selDiameters.includes(bucket)
       })
     }
+    if (q) {
+      result = result.filter((p) => productMatchesQuery(p, q))
+    }
 
     return result
-  }, [products, selected])
+  }, [products, selected, query])
 
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE))
-  // Snap back to page 1 whenever the filter set changes.
+  // Snap back to page 1 whenever the filter set or search text changes.
   useEffect(() => {
     setPage(1)
-  }, [selected])
+  }, [selected, query])
+
+  // Catalogue search logging (hard rule: every catalogue search is logged).
+  // We debounce 600ms so a settled query logs once, not on every keystroke, and
+  // read the current result count from a ref so changing filters alone doesn't
+  // re-fire a search event. Fire-and-forget: analytics must never break or slow
+  // the catalogue, so failures are swallowed.
+  const resultCountRef = useRef(0)
+  resultCountRef.current = filteredProducts.length
+  useEffect(() => {
+    const q = query.trim()
+    if (q.length < 2) return
+    const handle = setTimeout(() => {
+      void fetch('/api/search-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, resultCount: resultCountRef.current }),
+        keepalive: true,
+      }).catch(() => {})
+    }, 600)
+    return () => clearTimeout(handle)
+  }, [query])
   const safePage = Math.min(page, totalPages)
   const pagedProducts = useMemo(
     () => filteredProducts.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
@@ -123,6 +154,7 @@ export function ProductsClient({
       [FILTER_KEYS.application]: [],
       [FILTER_KEYS.diameter]: [],
     })
+    setQuery('')
   }
 
   return (
@@ -164,6 +196,39 @@ export function ProductsClient({
             </div>
 
             <div className="min-w-0">
+              {/* Search box — instant filter by product name or code. */}
+              <div className="mb-5">
+                <label htmlFor="product-search" className="sr-only">
+                  {t.products.searchLabel}
+                </label>
+                <div className="relative">
+                  <Search
+                    className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint"
+                    aria-hidden="true"
+                  />
+                  <input
+                    id="product-search"
+                    type="search"
+                    inputMode="search"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder={t.products.searchPlaceholder}
+                    aria-label={t.products.searchLabel}
+                    className="h-12 w-full rounded-sm border border-rule bg-white pl-10 pr-10 text-sm text-navy placeholder:text-ink-faint transition-[border-color,box-shadow] duration-150 ease-out focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+                  />
+                  {query && (
+                    <button
+                      type="button"
+                      onClick={() => setQuery('')}
+                      aria-label={t.products.searchClear}
+                      className="absolute right-2.5 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-sm text-ink-muted transition-colors duration-150 ease-out hover:bg-paper hover:text-navy"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
               {/* Result count line */}
               <div className="mb-6 flex items-baseline justify-between">
                 <p className="text-sm text-ink-muted">

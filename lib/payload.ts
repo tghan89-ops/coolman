@@ -1,4 +1,5 @@
 import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
@@ -24,8 +25,17 @@ export type RawDealerRow = {
   specialisations?: string | null
 }
 
-export async function getProducts(): Promise<any[]> {
-  try {
+// The full catalogue is identical for every visitor — only the per-contractor
+// discount math differs, and that runs client-side in the browser. So we cache
+// the (expensive, depth-2, 200-row) catalogue query for 60s instead of
+// re-querying Postgres on every Products page hit. The Products page itself is
+// `force-dynamic` (for per-contractor pricing), which disables the route cache,
+// but this data-cache layer still applies. Admin edits to a product/price/stock
+// surface within ~60s. Revalidate the 'products' tag to flush sooner.
+// Errors are NOT cached: the find throws out of the cached fn and we fall back
+// to [] below, so a transient DB blip doesn't pin an empty catalogue for 60s.
+const getProductsCached = unstable_cache(
+  async () => {
     const payload = await getPayloadClient()
     const result = await payload.find({
       collection: 'products',
@@ -34,6 +44,14 @@ export async function getProducts(): Promise<any[]> {
       depth: 2,
     })
     return result.docs
+  },
+  ['catalogue-products'],
+  { revalidate: 60, tags: ['products'] },
+)
+
+export async function getProducts(): Promise<any[]> {
+  try {
+    return await getProductsCached()
   } catch {
     return []
   }

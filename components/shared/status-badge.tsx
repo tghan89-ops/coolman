@@ -21,14 +21,23 @@ export function OrderStatusBadge({ status }: OrderStatusBadgeProps) {
 
   const config = statusConfig[status]
 
+  // These badges render on the dark navy account page. The shadcn `secondary`
+  // and `outline` variants resolve to dark foreground text, which is invisible
+  // on navy — so Pending/Acknowledged get explicit high-contrast tinted styles
+  // using the project's own tokens (--warn amber, --accent blue). Fulfilled and
+  // Cancelled already carry readable solid colours. Burned 2026-05-30: the old
+  // Pending classes referenced a non-existent `warning` token and vanished.
+  const className =
+    status === 'Fulfilled'
+      ? 'bg-success text-white hover:bg-success/90'
+      : status === 'Pending'
+      ? 'bg-warn/15 text-warn border-warn/40'
+      : status === 'Acknowledged'
+      ? 'bg-accent/15 text-accent-light border-accent/40'
+      : ''
+
   return (
-    <Badge variant={config.variant} className={
-      status === 'Fulfilled' 
-        ? 'bg-success text-white hover:bg-success/90' 
-        : status === 'Pending'
-        ? 'bg-warning/20 text-warning-foreground border-warning'
-        : ''
-    }>
+    <Badge variant={config.variant} className={className}>
       {config.label}
     </Badge>
   )
