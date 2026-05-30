@@ -54,13 +54,25 @@ function relationName(r: unknown): string | null {
   return null
 }
 
+// Grid cards display at ~175–290px, so they should pull the small pre-baked
+// variant Payload already generates at upload — NOT the up-to-2000px master.
+// Using the master made the catalogue download megabytes of images per visit
+// (a 1.26MB PNG master vs its 244KB/333px thumbnail; a 73KB webp master vs its
+// 21KB/400px thumbnail). Prefer thumbnail → card → master. Burned 2026-05-30.
+function gridImageUrl(img: any): string | null {
+  if (!img || typeof img !== 'object') return null
+  const sizes = img.sizes ?? {}
+  const thumb = sizes.thumbnail?.url
+  const card = sizes.card?.url
+  if (typeof thumb === 'string' && thumb) return thumb
+  if (typeof card === 'string' && card) return card
+  return typeof img.url === 'string' ? img.url : null
+}
+
 function slimProduct(p: any): SlimProduct {
   const mats = Array.isArray(p?.materials) ? p.materials : []
   const apps = Array.isArray(p?.applications) ? p.applications : []
-  const imageUrl =
-    p?.image && typeof p.image === 'object' && typeof p.image.url === 'string'
-      ? p.image.url
-      : null
+  const imageUrl = gridImageUrl(p?.image)
   return {
     id: p.id,
     name: typeof p?.name === 'string' ? p.name : '',
