@@ -113,7 +113,15 @@ export default buildConfig({
     ...(process.env.BLOB_READ_WRITE_TOKEN
       ? [
           vercelBlobStorage({
-            collections: { media: true },
+            // `disablePayloadAccessControl` makes image URLs point straight at
+            // the Vercel Blob CDN (e.g. *.public.blob.vercel-storage.com)
+            // instead of being proxied through Payload's `/api/media/file/`
+            // route. That route runs as a serverless function in iad1 (US
+            // East); the Blob CDN is globally edge-distributed (sin1/Singapore
+            // for our Malaysian users), so photos load far faster and skip the
+            // serverless hop entirely. Media is public-read, so there is no
+            // access control to lose. Burned 2026-05-30 (slow catalogue photos).
+            collections: { media: { disablePayloadAccessControl: true } },
             token: process.env.BLOB_READ_WRITE_TOKEN,
           }),
         ]

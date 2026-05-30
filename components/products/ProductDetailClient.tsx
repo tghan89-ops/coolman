@@ -24,7 +24,26 @@ type RelationOrScalar =
   | null
   | undefined
 
-type ProductMedia = { url?: string | null } | string | null | undefined
+type MediaSize = { url?: string | null }
+type ProductMedia =
+  | { url?: string | null; sizes?: { thumbnail?: MediaSize; card?: MediaSize; hero?: MediaSize } | null }
+  | string
+  | null
+  | undefined
+
+// Prefer a small pre-baked WebP variant over the full-size master. The master
+// keeps its original format (a PNG product photo can be >1MB); the `card`
+// variant is an 800px WebP (~30KB). Falls back to the master if a variant is
+// missing (e.g. images uploaded before the variants existed).
+function mediaUrl(m: ProductMedia, prefer: 'card' | 'thumbnail' = 'card'): string | null {
+  if (!m || typeof m !== 'object') return null
+  const sizes = m.sizes ?? {}
+  const preferred = sizes[prefer]?.url
+  const card = sizes.card?.url
+  if (typeof preferred === 'string' && preferred) return preferred
+  if (typeof card === 'string' && card) return card
+  return typeof m.url === 'string' ? m.url : null
+}
 
 interface RelatedProductData {
   id: string | number
@@ -123,14 +142,11 @@ export function ProductDetailClient({
   const primaryMaterial = labelOf(materials[0])
   const machineTierLabel = labelOf(data.machineTier)
 
-  const heroImageUrl: string | null =
-    typeof data.image === 'object' && data.image?.url ? data.image.url : null
+  const heroImageUrl: string | null = mediaUrl(data.image, 'card')
 
   const galleryUrls: string[] = Array.isArray(data.photos)
     ? data.photos
-        .map((row) =>
-          typeof row?.photo === 'object' && row.photo?.url ? row.photo.url : null,
-        )
+        .map((row) => mediaUrl(row?.photo, 'card'))
         .filter((u): u is string => !!u)
     : []
 
@@ -592,8 +608,7 @@ export function ProductDetailClient({
             {/* gap-px with bg-rule produces 1px hairline separators between cells */}
             <div className="grid grid-cols-2 gap-px bg-rule lg:grid-cols-4">
               {relatedProducts.map((p) => {
-                const relatedImageUrl: string | null =
-                  typeof p.image === 'object' && p.image?.url ? p.image.url : null
+                const relatedImageUrl: string | null = mediaUrl(p.image, 'thumbnail')
                 return (
                   <Link
                     key={p.id}
