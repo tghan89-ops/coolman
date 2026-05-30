@@ -35,14 +35,42 @@ export const Media: CollectionConfig = {
     },
     // Pre-baked responsive variants so the front-end can pick a small thumb
     // for cards instead of always downloading the master.
+    //
+    // Every variant is re-encoded to WebP regardless of the source format. This
+    // matters because product photos uploaded as PNG stay huge even when
+    // resized (a 400px PNG photo is ~250KB; the same as WebP is ~20KB — PNG is
+    // lossless, built for graphics not photographs). The master keeps its
+    // original format (we don't touch the upload); only the derived variants
+    // the front-end actually serves are converted. Quality 80 is the usual
+    // sweet spot for photographic WebP. Burned 2026-05-30 (catalogue load).
     imageSizes: [
-      { name: 'thumbnail', width: 400, height: 400, fit: 'inside', withoutEnlargement: true },
-      { name: 'card', width: 800, height: 800, fit: 'inside', withoutEnlargement: true },
+      {
+        name: 'thumbnail',
+        width: 400,
+        height: 400,
+        fit: 'inside',
+        withoutEnlargement: true,
+        formatOptions: { format: 'webp', options: { quality: 80 } },
+      },
+      {
+        name: 'card',
+        width: 800,
+        height: 800,
+        fit: 'inside',
+        withoutEnlargement: true,
+        formatOptions: { format: 'webp', options: { quality: 80 } },
+      },
       // Hero portrait crop. `fit: 'cover'` + explicit width AND height tells sharp to
       // crop to the exact aspect ratio, honouring the focal point + crop region set
       // in Payload's admin image editor. The homepage hero loads this size, so
       // editor crops actually take effect on the public page.
-      { name: 'hero', width: 1200, height: 1600, fit: 'cover' },
+      {
+        name: 'hero',
+        width: 1200,
+        height: 1600,
+        fit: 'cover',
+        formatOptions: { format: 'webp', options: { quality: 82 } },
+      },
     ],
   },
   fields: [
