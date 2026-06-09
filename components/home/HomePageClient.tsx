@@ -96,10 +96,6 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
 
   const whatsappNumber = settings?.whatsapp_number || '+60126363156'
   const whatsappDigits = whatsappNumber.replace(/\D/g, '')
-  const onTimePct = typeof settings?.inventory_on_time_pct === 'number'
-    ? settings.inventory_on_time_pct
-    : 96
-  const dispatchCutoff = settings?.inventory_dispatch_cutoff || '14:00'
 
   const whatsappHref =
     whatsappDigits.length >= 8 ? `https://wa.me/${whatsappDigits}` : '#'
@@ -139,11 +135,10 @@ export function HomePageClient({ settings, publishedPostsCount, initialData }: H
       }))
     : n.conversation.channels
 
-  const quietDoorStats = n.quietDoor.stats.map((s) => {
-    if (s.key === 'onTimePct') return { ...s, value: `${onTimePct}%` }
-    if (s.key === 'dispatchCutoff') return { ...s, value: dispatchCutoff }
-    return s
-  })
+  // Stat values come straight from copy.ts. We no longer surface a live on-time %
+  // (GH: drop the percentage) or a same-day cutoff; the dispatch promise is now a
+  // flat "within 2 business days", so these are static facts, not Settings-driven.
+  const quietDoorStats = n.quietDoor.stats
 
   return (
     <PublicLayout headerVariant="transparent">
