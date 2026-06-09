@@ -1286,8 +1286,8 @@ export const COPY: Record<Language, CopyStructure> = {
         locationLabelSat: 'Saturday',
         locationLabelSun: 'Sunday',
         locationRegPrefix: 'Reg.',
-        locationDispatchLabel: 'Site dispatch cut-off',
-        locationDispatchSuffix: 'for same-day dispatch from PJ stock',
+        locationDispatchLabel: 'Dispatch',
+        locationDispatchSuffix: 'within 2 business days from PJ stock',
         locationOpenInMaps: 'Open in maps',
         locationMapWorkshop: 'COOLMAN',
         locationMapSince: 'NO. 14 · SINCE 2007',
@@ -2195,8 +2195,8 @@ export const COPY: Record<Language, CopyStructure> = {
       tiers: {
         buyer: {
           title: 'Trade buyer',
-          body: 'Access to the full Coolman catalogue at trade pricing. Same-day dispatch from Selangor before 2pm.',
-          bullets: ['Full catalogue access', 'Trade pricing', 'Same-day dispatch'],
+          body: 'Access to the full Coolman catalogue at trade pricing. Dispatch from Selangor within 2 business days.',
+          bullets: ['Full catalogue access', 'Trade pricing', 'Dispatch within 2 business days'],
         },
         dealer: {
           title: 'Brotherhood dealer',
@@ -2230,7 +2230,7 @@ export const COPY: Record<Language, CopyStructure> = {
       hours: {
         heading: 'Office hours',
         line1: 'Mon to Fri, 9:00am to 6:00pm · Saturday 9:00am to 1:00pm',
-        line2: 'Same-day dispatch cut-off at 2:00pm',
+        line2: 'Dispatch within 2 business days',
       },
     },
     aboutPage: {
@@ -2406,7 +2406,7 @@ export const COPY: Record<Language, CopyStructure> = {
     pages: {
       applications: {
         heroEyebrow: 'Aplikasi',
-        fallbackHeroTitle: 'Penyelesaian untuk Setiap Bahan',
+        fallbackHeroTitle: 'Bilah berlian untuk setiap bahan',
         fallbackHeroSubtitle: 'Rangkaian alat pemotong berlian kami direka untuk memberikan prestasi optimum merentas semua bahan binaan biasa.',
         viewBladesPrefix: 'Lihat',
         viewBladesSuffix: 'Bilah',
@@ -2539,13 +2539,13 @@ export const COPY: Record<Language, CopyStructure> = {
         channel2Cta: 'Hubungi pejabat',
         channel3Badge: 'Saluran 03 · Lawatan tapak',
         channel3Title: 'Minta lawatan tapak.',
-        channel3Body: 'Untuk perundingan khusus projek. Beritahu kami tentang projek, keadaan tapak, dan jangka masa anda. Jurutera membalas dengan slot lawatan yang dicadangkan.',
+        channel3Body: 'Untuk perundingan khusus projek. Beritahu kami tentang projek, keadaan tapak, dan jangka masa anda. Jurutera akan balas dengan masa lawatan yang dicadangkan.',
         channel3FormatLabel: 'Sesuai untuk',
         channel3ResponseLabel: 'Balasan',
         channel3OutputLabel: 'Hasil',
         channel3Format: 'Projek baharu, agregat luar biasa, persiapan tender',
         channel3Response: 'Dalam 2 hari bekerja',
-        channel3Output: 'Slot lawatan dicadangkan · jurutera ditugaskan',
+        channel3Output: 'Masa lawatan dicadangkan · kami hantar seorang jurutera',
         channel3Cta: 'Minta lawatan',
         locationEyebrow: 'Bengkel · Selangor',
         locationHeadline: 'Mesin tekan, relau, dan stesen kimpalan laser.',
@@ -2556,8 +2556,8 @@ export const COPY: Record<Language, CopyStructure> = {
         locationLabelSat: 'Sabtu',
         locationLabelSun: 'Ahad',
         locationRegPrefix: 'Pendaftaran',
-        locationDispatchLabel: 'Tarikh akhir penghantaran tapak',
-        locationDispatchSuffix: 'untuk penghantaran hari yang sama dari stok PJ',
+        locationDispatchLabel: 'Penghantaran',
+        locationDispatchSuffix: 'dalam 2 hari bekerja dari stok PJ',
         locationOpenInMaps: 'Buka di peta',
         locationMapWorkshop: 'COOLMAN',
         locationMapSince: 'NO. 14 · SEJAK 2007',
@@ -2577,7 +2577,7 @@ export const COPY: Record<Language, CopyStructure> = {
         directLineCareersNote: 'Permohonan kerja. Terus kepada Alan.',
         formEyebrow: 'Borang lawatan tapak',
         formTitle: 'Beritahu kami tentang projek.',
-        formSubtitle: 'Jenis projek, keadaan tapak, jangka masa. Jurutera membalas dengan slot lawatan yang dicadangkan.',
+        formSubtitle: 'Jenis projek, keadaan tapak, jangka masa. Jurutera akan balas dengan masa lawatan yang dicadangkan.',
         formNameLabel: 'Nama *',
         formNamePlaceholder: 'Nama anda',
         formCompanyLabel: 'Syarikat',
@@ -2594,7 +2594,7 @@ export const COPY: Record<Language, CopyStructure> = {
         formError: 'Terdapat ralat. Sila cuba lagi.',
         networkError: 'Ralat rangkaian. Sila semak sambungan anda dan cuba lagi.',
         successTitle: 'Permintaan diterima.',
-        successMessage: 'Seorang jurutera akan membalas dengan slot lawatan yang dicadangkan dalam masa dua hari bekerja.',
+        successMessage: 'Seorang jurutera akan balas dengan masa lawatan yang dicadangkan dalam masa dua hari bekerja.',
         sendAnother: 'Hantar permintaan lain',
         infoHeading: 'Hubungi kami',
         phoneTitle: 'Telefon',
@@ -2695,7 +2695,7 @@ export const COPY: Record<Language, CopyStructure> = {
             },
             {
               title: 'Pemasangan Yang Betul',
-              body: 'Pastikan saiz arbor sepadan dengan mesin anda. Ketatkan dengan kuat menggunakan flange yang betul.',
+              body: 'Pastikan saiz arbor sepadan dengan mesin anda. Ketatkan dengan kuat menggunakan flens yang betul.',
             },
             {
               title: 'Tetapkan RPM Yang Betul',
@@ -2765,7 +2765,7 @@ export const COPY: Record<Language, CopyStructure> = {
         openProduct: 'Buka produk',
         noImage: 'Tiada gambar',
         universal: 'Universal',
-        standardBond: 'Standard',
+        standardBond: 'Biasa',
         bondSuffix: 'Ikatan',
       },
       pagination: {
@@ -3016,7 +3016,7 @@ export const COPY: Record<Language, CopyStructure> = {
     manifesto: {
       line1: 'Bilah adalah jawapan kepada soalan yang belum sepenuhnya ditanya oleh kontraktor.',
       line2: 'Jangan jual produk sahaja. Selesaikan masalah.',
-      line3: 'Tapak kerja yang akan beritahu anda kebenaran.',
+      line3: 'Tapak kerja tak pernah tipu.',
     },
     homeNarrative: {
       opening: {
@@ -3465,8 +3465,8 @@ export const COPY: Record<Language, CopyStructure> = {
       tiers: {
         buyer: {
           title: 'Pembeli perdagangan',
-          body: 'Akses kepada katalog Coolman penuh pada harga perdagangan. Penghantaran hari sama dari Selangor sebelum jam 2 petang.',
-          bullets: ['Akses katalog penuh', 'Harga perdagangan', 'Penghantaran hari sama'],
+          body: 'Akses kepada katalog Coolman penuh pada harga perdagangan. Penghantaran dari Selangor dalam 2 hari bekerja.',
+          bullets: ['Akses katalog penuh', 'Harga perdagangan', 'Penghantaran dalam 2 hari bekerja'],
         },
         dealer: {
           title: 'Pengedar Brotherhood',
@@ -3489,7 +3489,7 @@ export const COPY: Record<Language, CopyStructure> = {
     contactPage: {
       hero: {
         eyebrow: 'Hubungi',
-        headline: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tidak sembunyikan kami punya.',
+        headline: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tak sembunyikan nombor kami.',
         lede: 'Tiga cara untuk menghubungi Coolman. Meja kejuruteraan di WhatsApp adalah paling cepat.',
       },
       channels: [
@@ -3500,7 +3500,7 @@ export const COPY: Record<Language, CopyStructure> = {
       hours: {
         heading: 'Waktu pejabat',
         line1: 'Isnin hingga Jumaat, 9:00 pagi hingga 6:00 petang · Sabtu 9:00 pagi hingga 1:00 tengah hari',
-        line2: 'Hadang penghantaran hari sama jam 2:00 petang',
+        line2: 'Penghantaran dalam 2 hari bekerja',
       },
     },
     aboutPage: {
