@@ -3,9 +3,43 @@ import { headers } from 'next/headers'
 import { getCachedSettings, getProductById } from '@/lib/payload'
 import { ProductDetailClient } from '@/components/products/ProductDetailClient'
 import { getContractorSession } from '@/lib/auth/contractor-session'
+import { COPY } from '@/lib/i18n/copy'
 
 // Per-request render so we can show each contractor their own contract price.
 export const dynamic = 'force-dynamic'
+
+// Per-product SEO: build a unique, keyworded title/description from the product's
+// real fields (name + material + diameter) so every SKU is independently findable,
+// instead of every product page sharing one generic title. Falls back to the
+// generic productTemplate meta when the product can't be loaded.
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const product = await getProductById(id)
+  if (!product) {
+    const meta = COPY.EN.seo.productTemplate
+    return { title: meta.title, description: meta.description }
+  }
+
+  const name: string = typeof product.name === 'string' && product.name ? product.name : 'Coolman product'
+  const diameter: string | undefined =
+    typeof product.diameter === 'string' && product.diameter ? product.diameter : undefined
+  const materials: string[] = Array.isArray(product.materials)
+    ? product.materials
+        .map((m: unknown) => (m && typeof m === 'object' && 'name' in m ? String((m as { name: unknown }).name) : null))
+        .filter((s): s is string => !!s)
+    : []
+  const material = materials[0]
+  const has = (s?: string) => !!s && name.toLowerCase().includes(s.toLowerCase())
+
+  const titleCore = material && !has(material) ? `${name} for ${material}` : name
+  const title = `${titleCore} · Coolman Malaysia`
+
+  const description =
+    `${name}${diameter && !has(diameter) ? `, ${diameter}` : ''}${material && !has(material) ? ` for ${material}` : ''}. ` +
+    'Specs, application notes and dispatch from Selangor within 2 business days.'
+
+  return { title, description }
+}
 
 export default async function ProductDetailPage({
   params,
