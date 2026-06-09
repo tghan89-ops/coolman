@@ -23,11 +23,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const name: string = typeof product.name === 'string' && product.name ? product.name : 'Coolman product'
   const diameter: string | undefined =
     typeof product.diameter === 'string' && product.diameter ? product.diameter : undefined
-  const materials: string[] = Array.isArray(product.materials)
-    ? product.materials
-        .map((m: unknown) => (m && typeof m === 'object' && 'name' in m ? String((m as { name: unknown }).name) : null))
-        .filter((s): s is string => !!s)
-    : []
+  const materials: string[] = []
+  if (Array.isArray(product.materials)) {
+    for (const m of product.materials) {
+      if (m && typeof m === 'object' && 'name' in m && (m as { name?: unknown }).name) {
+        materials.push(String((m as { name: unknown }).name))
+      }
+    }
+  }
   const material = materials[0]
   const has = (s?: string) => !!s && name.toLowerCase().includes(s.toLowerCase())
 
