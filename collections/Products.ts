@@ -118,6 +118,35 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      name: 'variantValue',
+      type: 'number',
+      index: true,
+      admin: {
+        position: 'sidebar',
+        description:
+          'OPTIONAL second switcher axis (numeric, for sorting). Use ONLY for families that vary by something other than size — tooth count (e.g. 40, 60, 80), grit (60, 80, 120) or segment width in mm (6.5, 9.5). Leave blank for plain size families. Which axis it means is set per family in code (lib/products/family.ts).',
+      },
+    },
+    {
+      name: 'variantLabel',
+      type: 'text',
+      hooks: {
+        // Trim -> null so a blank/space can't render an empty pill.
+        beforeChange: [
+          ({ value }) => {
+            if (typeof value !== 'string') return value
+            const v = value.trim()
+            return v.length > 0 ? v : null
+          },
+        ],
+      },
+      admin: {
+        position: 'sidebar',
+        description:
+          'OPTIONAL pill text for the second switcher axis (e.g. "60T", "80#", "6.5mm"). Shown on the product page when Variant value is set.',
+      },
+    },
+    {
       name: 'arborSize',
       type: 'text',
       admin: { description: 'e.g. 22.23mm or M14' },

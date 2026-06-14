@@ -9,6 +9,7 @@ import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
 import { KillSwitchBanner } from '@/components/catalogue/KillSwitchBanner'
 import { bondLabel } from '@/lib/products/bond-label'
+import { familyAxisConfig, type SwitcherAxis } from '@/lib/products/family'
 import { extractYouTubeId, youTubeEmbedUrl } from '@/lib/products/youtube'
 import { calculateEffectivePrice } from '@/lib/pricing/calculate'
 import { formatPrice } from '@/lib/utils/formatting'
@@ -73,6 +74,10 @@ export interface ProductDetailData {
   diameterMm?: number | null
   arborSize?: RelationOrScalar
   segmentHeight?: RelationOrScalar
+  /** Numeric value on the family's second axis (tooth/grit/segment). */
+  variantValue?: number | null
+  /** Pill text for the second axis (e.g. "60T", "80#", "6.5mm"). */
+  variantLabel?: string | null
   bondType?: string | null
   maxRPM?: number | null
   machineTier?: RelationOrScalar
@@ -90,6 +95,7 @@ export function ProductDetailClient({
   initialData,
   familyMembers = null,
   initialSize = null,
+  initialVariant = null,
   isLoggedIn = false,
   emailVerified = false,
   tierDiscountPct = 0,
@@ -106,6 +112,8 @@ export function ProductDetailClient({
   familyMembers?: ProductDetailData[] | null
   /** Diameter (mm) to pre-select from `?size=` — falls back to initialData. */
   initialSize?: number | null
+  /** Second-axis value to pre-select from `?v=` (tooth/grit/segment). */
+  initialVariant?: number | null
   isLoggedIn?: boolean
   emailVerified?: boolean
   tierDiscountPct?: number
@@ -123,16 +131,44 @@ export function ProductDetailClient({
 
   // A family always includes the loaded product; if the list is missing or
   // singular we treat this as a standalone product (no switcher).
-  const members: ProductDetailData[] | null =
-    Array.isArray(familyMembers) && familyMembers.length > 1 ? familyMembers : null
+  //
+  // Coerce diameterMm/variantValue to real numbers up front: Postgres `numeric`
+  // columns come back from the driver as STRINGS ("180", "6.5"), and the switcher
+  // matches members with strict `===`. Normalising here (rather than at every
+  // comparison) means a 6.5mm TUCKPOINT segment can never silently fail to match.
+  const members: ProductDetailData[] | null = (() => {
+    if (!(Array.isArray(familyMembers) && familyMembers.length > 1)) return null
+    const toNum = (x: unknown): number | null => {
+      if (x == null || x === '') return null
+      const n = Number(x)
+      return Number.isFinite(n) ? n : null
+    }
+    return familyMembers.map((m) => ({
+      ...m,
+      diameterMm: toNum(m.diameterMm),
+      variantValue: toNum(m.variantValue),
+    }))
+  })()
 
-  // Initial selected size: honour ?size= (diameter mm), else the product the
-  // URL actually loaded, else the smallest (first) member.
+  // Initial selection: honour ?size= (diameter mm) and ?v= (second axis) — the
+  // exact member when both are given and present, else size-only, else v-only,
+  // else the product the URL actually loaded, else the smallest (first) member.
   const initialActiveIdx = (() => {
     if (!members) return 0
+    const eq = (a: unknown, b: number) => Number(a) === Number(b)
+    if (initialSize != null && initialVariant != null) {
+      const both = members.findIndex(
+        (m) => eq(m.diameterMm, initialSize) && eq(m.variantValue, initialVariant),
+      )
+      if (both >= 0) return both
+    }
     if (initialSize != null) {
-      const bySize = members.findIndex((m) => Number(m.diameterMm) === Number(initialSize))
+      const bySize = members.findIndex((m) => eq(m.diameterMm, initialSize))
       if (bySize >= 0) return bySize
+    }
+    if (initialVariant != null) {
+      const byVar = members.findIndex((m) => eq(m.variantValue, initialVariant))
+      if (byVar >= 0) return byVar
     }
     const byId = members.findIndex((m) => String(m.id) === String(initialData.id))
     return byId >= 0 ? byId : 0
@@ -204,20 +240,95 @@ export function ProductDetailClient({
   const [activeImageIdx, setActiveImageIdx] = useState(0)
   const activeMedia: MediaItem | undefined = mediaItems[activeImageIdx]
 
-  // Switch the selected size in-place: swap the active member (which re-derives
-  // image/price/specs/SKU/order target), reset the gallery to the first photo,
-  // and reflect the size in the URL (?size=mm) so it's shareable — all without a
-  // page reload. replaceState avoids piling history entries on every pill tap.
-  const handleSelectSize = (idx: number) => {
-    if (!members) return
+  // ── Size/variant switcher ────────────────────────────────────────────────
+  // A family declares 1–2 pill rows (lib/products/family.ts FAMILY_AXES): a size
+  // ladder, a single non-size axis (grit), or size + a second axis (tooth /
+  // segment). The grid is SPARSE — not every (size × variant) combo exists — so
+  // the second-axis pills depend on the currently-selected size, and changing
+  // size snaps the variant to the first one available at that size.
+  // Resolve the axis config from the family code, which is constant across all
+  // members — NOT from data.family (the active member), so the switcher shape
+  // can't flip mid-session if one member row has a stray/blank family value.
+  const axisCfg = familyAxisConfig(members?.[0]?.family ?? initialData.family)
+  const isTwoAxis = members != null && axisCfg.axes.length > 1
+  const curDia = data.diameterMm ?? null
+  const curVar = data.variantValue ?? null
+
+  // Swap the active member in-place (re-derives image/price/specs/SKU/order
+  // target), reset the gallery, and reflect the selection in the URL (?size,
+  // ?v) so it's shareable. replaceState avoids piling history on every tap.
+  const applySelect = (idx: number) => {
+    if (!members || idx < 0) return
     setActiveIdx(idx)
     setActiveImageIdx(0)
     const m = members[idx]
-    if (m && m.diameterMm != null && typeof window !== 'undefined') {
+    if (m && typeof window !== 'undefined') {
       const url = new URL(window.location.href)
-      url.searchParams.set('size', String(m.diameterMm))
+      if (m.diameterMm != null) url.searchParams.set('size', String(m.diameterMm))
+      else url.searchParams.delete('size')
+      if (m.variantValue != null) url.searchParams.set('v', String(m.variantValue))
+      else url.searchParams.delete('v')
       window.history.replaceState(window.history.state, '', url.toString())
     }
+  }
+
+  // Pick the member matching (dia, variant); if that exact pair is absent (the
+  // chosen variant doesn't exist at the new size), fall back to the first member
+  // at that size — keeping a valid selection on every tap.
+  const selectByDiaVar = (dia: number | null, variant: number | null) => {
+    if (!members) return
+    let idx = members.findIndex((m) => m.diameterMm === dia && m.variantValue === variant)
+    if (idx < 0) idx = members.findIndex((m) => m.diameterMm === dia)
+    applySelect(idx)
+  }
+  const selectByVar = (variant: number | null) => {
+    if (!members) return
+    applySelect(members.findIndex((m) => m.variantValue === variant))
+  }
+
+  const axisRowLabel = (axis: SwitcherAxis): string =>
+    axis === 'tooth'
+      ? pd.sizeSwitcher.tooth
+      : axis === 'grit'
+        ? pd.sizeSwitcher.grit
+        : axis === 'segment'
+          ? pd.sizeSwitcher.segment
+          : pd.sizeSwitcher.label
+
+  // Pills for one axis row. Size: distinct diameters in member order. Variant:
+  // distinct variant values — narrowed to the current size when two-axis.
+  type Pill = { key: string; label: string; active: boolean; onClick: () => void }
+  const pillsFor = (axis: SwitcherAxis): Pill[] => {
+    if (!members) return []
+    const out: Pill[] = []
+    const seen = new Set<number>()
+    if (axis === 'size') {
+      for (const m of members) {
+        const d = m.diameterMm
+        if (d == null || seen.has(d)) continue
+        seen.add(d)
+        out.push({
+          key: `size-${d}`,
+          label: labelOf(m.diameter) || `${d}mm`,
+          active: d === curDia,
+          onClick: () => selectByDiaVar(d, curVar),
+        })
+      }
+      return out
+    }
+    const pool = isTwoAxis ? members.filter((m) => m.diameterMm === curDia) : members
+    for (const m of pool) {
+      const v = m.variantValue
+      if (v == null || seen.has(v)) continue
+      seen.add(v)
+      out.push({
+        key: `var-${v}`,
+        label: m.variantLabel || String(v),
+        active: v === curVar,
+        onClick: () => (isTwoAxis ? selectByDiaVar(curDia, v) : selectByVar(v)),
+      })
+    }
+    return out
   }
 
   // Full spec rows for the specification tab table
@@ -434,36 +545,42 @@ export function ProductDetailClient({
               ))}
             </div>
 
-            {/* Size switcher — only for products in a size family. Tapping a
-                pill swaps the active size: image, price, specs and the order
-                SKU all follow, with no page reload. */}
+            {/* Size/variant switcher — one pill row per axis the family declares.
+                Tapping a pill swaps the active member: image, price, specs and the
+                order SKU all follow, no page reload. A second axis (tooth/grit/
+                segment) shows only the values available at the chosen size. */}
             {members && (
-              <div className="mt-6">
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
-                  {pd.sizeSwitcher.label}
-                </p>
-                <div className="mt-2.5 flex flex-wrap gap-2.5">
-                  {members.map((m, i) => {
-                    const active = i === activeIdx
-                    const sizeLabel = labelOf(m.diameter) || (m.diameterMm != null ? `${m.diameterMm}mm` : m.sku)
-                    return (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => handleSelectSize(i)}
-                        aria-pressed={active}
-                        aria-label={`${pd.sizeSwitcher.label}: ${sizeLabel}`}
-                        className={`flex min-h-11 min-w-[84px] items-center justify-center rounded-md border px-4 py-2 font-mono text-sm font-bold leading-none transition-[border-color,background-color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 ${
-                          active
-                            ? 'border-accent bg-accent/5 text-navy shadow-[0_0_0_3px_rgba(59,130,246,0.12)]'
-                            : 'border-rule bg-white text-ink hover:border-accent/50'
-                        }`}
-                      >
-                        {sizeLabel}
-                      </button>
-                    )
-                  })}
-                </div>
+              <div className="mt-6 space-y-5">
+                {axisCfg.axes.map((axis) => {
+                  const pills = pillsFor(axis)
+                  if (pills.length === 0) return null
+                  const rowLabel = axisRowLabel(axis)
+                  return (
+                    <div key={axis}>
+                      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
+                        {rowLabel}
+                      </p>
+                      <div className="mt-2.5 flex flex-wrap gap-2.5">
+                        {pills.map((pill) => (
+                          <button
+                            key={pill.key}
+                            type="button"
+                            onClick={pill.onClick}
+                            aria-pressed={pill.active}
+                            aria-label={`${rowLabel}: ${pill.label}`}
+                            className={`flex min-h-11 min-w-[84px] items-center justify-center rounded-md border px-4 py-2 font-mono text-sm font-bold leading-none transition-[border-color,background-color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 ${
+                              pill.active
+                                ? 'border-accent bg-accent/5 text-navy shadow-[0_0_0_3px_rgba(59,130,246,0.12)]'
+                                : 'border-rule bg-white text-ink hover:border-accent/50'
+                            }`}
+                          >
+                            {pill.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             )}
 

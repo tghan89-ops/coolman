@@ -5,6 +5,7 @@ import {
   familyDisplayName,
   primaryMember,
   groupByFamily,
+  familyAxisConfig,
   type FamilyMember,
 } from '../family'
 
@@ -96,5 +97,52 @@ describe('groupByFamily', () => {
     expect(groups[0].isFamily).toBe(false)
     // primary is that lone member, so the card links straight to it
     expect(groups[0].primary.id).toBe(127)
+  })
+
+  it('a size family badge counts distinct diameters (= members for a pure ladder)', () => {
+    const g = groupByFamily([eco400, eco300, eco350])[0]
+    expect(g.primaryAxisIsSize).toBe(true)
+    expect(g.optionCount).toBe(3)
+  })
+
+  it('a two-axis family (TCT) counts DISTINCT sizes, not total SKUs, for the badge', () => {
+    // 180mm has 40/60/80T, 230mm has 40/60T → 4 SKUs but only 2 distinct sizes
+    const wood: FamilyMember[] = [
+      { id: 1, name: '7″ 40-Tooth Wood Blade', listPrice: 70, diameter: '180mm', diameterMm: 180, family: 'TCT-WOOD', variantValue: 40, variantLabel: '40T' },
+      { id: 2, name: '7″ 60-Tooth Wood Blade', listPrice: 80, diameter: '180mm', diameterMm: 180, family: 'TCT-WOOD', variantValue: 60, variantLabel: '60T' },
+      { id: 3, name: '9″ 40-Tooth Wood Blade', listPrice: 105, diameter: '230mm', diameterMm: 230, family: 'TCT-WOOD', variantValue: 40, variantLabel: '40T' },
+      { id: 4, name: '9″ 60-Tooth Wood Blade', listPrice: 125, diameter: '230mm', diameterMm: 230, family: 'TCT-WOOD', variantValue: 60, variantLabel: '60T' },
+    ]
+    const g = groupByFamily(wood)[0]
+    expect(g.isFamily).toBe(true)
+    expect(g.primaryAxisIsSize).toBe(true)
+    expect(g.optionCount).toBe(2) // two distinct sizes, not 4 SKUs
+    expect(g.displayName).toBe('Wood Cutting Blade (TCT)') // explicit config name
+  })
+
+  it('a non-size (grit) family badge counts distinct variant values, noun = options', () => {
+    const grit: FamilyMember[] = [
+      { id: 1, name: 'GC100-60#', listPrice: 50, diameter: '100mm', diameterMm: 100, family: 'GC100', variantValue: 60, variantLabel: '60#' },
+      { id: 2, name: 'GC100-80#', listPrice: 50, diameter: '100mm', diameterMm: 100, family: 'GC100', variantValue: 80, variantLabel: '80#' },
+      { id: 3, name: 'GC100-120#', listPrice: 50, diameter: '100mm', diameterMm: 100, family: 'GC100', variantValue: 120, variantLabel: '120#' },
+    ]
+    const g = groupByFamily(grit)[0]
+    expect(g.isFamily).toBe(true)
+    expect(g.primaryAxisIsSize).toBe(false) // grit is the primary axis here
+    expect(g.optionCount).toBe(3)
+    expect(g.displayName).toBe('GC100 Grinding Cup')
+  })
+})
+
+describe('familyAxisConfig', () => {
+  it('defaults unknown/untagged codes to a single size axis', () => {
+    expect(familyAxisConfig('ECOSMART').axes).toEqual(['size'])
+    expect(familyAxisConfig(null).axes).toEqual(['size'])
+    expect(familyAxisConfig('  ').axes).toEqual(['size'])
+  })
+  it('resolves configured variant families case-insensitively', () => {
+    expect(familyAxisConfig('GC100').axes).toEqual(['grit'])
+    expect(familyAxisConfig('tct-wood').axes).toEqual(['size', 'tooth'])
+    expect(familyAxisConfig('TuckPoint').axes).toEqual(['size', 'segment'])
   })
 })

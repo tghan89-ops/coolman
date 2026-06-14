@@ -390,6 +390,9 @@ export interface CopyStructure {
       skuLabel: string
       sizeSwitcher: {
         label: string
+        tooth: string
+        grit: string
+        segment: string
       }
       bondLabel: string
       whatsappEnquiry: string
@@ -430,6 +433,7 @@ export interface CopyStructure {
       standardBond: string
       bondSuffix: string
       sizeCount: string
+      optionCount: string
       fromPrice: string
     }
     pagination: {
@@ -1466,6 +1470,9 @@ export const COPY: Record<Language, CopyStructure> = {
         skuLabel: 'SKU',
         sizeSwitcher: {
           label: 'Size',
+          tooth: 'Tooth Count',
+          grit: 'Grit',
+          segment: 'Segment Width',
         },
         bondLabel: 'Bond',
         whatsappEnquiry: 'Hi, I\'d like to enquire about {name} (SKU: {sku})',
@@ -1506,6 +1513,7 @@ export const COPY: Record<Language, CopyStructure> = {
         standardBond: 'Standard',
         bondSuffix: 'Bond',
         sizeCount: '{count} sizes',
+        optionCount: '{count} options',
         fromPrice: 'from',
       },
       pagination: {
@@ -2741,6 +2749,9 @@ export const COPY: Record<Language, CopyStructure> = {
         skuLabel: 'SKU',
         sizeSwitcher: {
           label: 'Saiz',
+          tooth: 'Bilangan Gigi',
+          grit: 'Grit',
+          segment: 'Lebar Segmen',
         },
         bondLabel: 'Ikatan',
         whatsappEnquiry: 'Hai, saya ingin bertanya tentang {name} (SKU: {sku})',
@@ -2781,6 +2792,7 @@ export const COPY: Record<Language, CopyStructure> = {
         standardBond: 'Biasa',
         bondSuffix: 'Ikatan',
         sizeCount: '{count} saiz',
+        optionCount: '{count} pilihan',
         fromPrice: 'dari',
       },
       pagination: {

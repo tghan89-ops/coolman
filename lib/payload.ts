@@ -40,6 +40,9 @@ export type SlimProduct = {
   diameterMm: number | null
   bondType: string | null
   family: string | null
+  // Second switcher axis (tooth/grit/segment). Carried on the slim catalogue row
+  // so groupByFamily can count distinct primary-axis values for variant families.
+  variantValue: number | null
   materials: Array<{ name: string }>
   applications: Array<{ name: string }>
   image: { url: string } | null
@@ -83,6 +86,7 @@ function slimProduct(p: any): SlimProduct {
     diameterMm: typeof p?.diameterMm === 'number' ? p.diameterMm : null,
     bondType: typeof p?.bondType === 'string' ? p.bondType : null,
     family: typeof p?.family === 'string' && p.family.trim() ? p.family.trim() : null,
+    variantValue: typeof p?.variantValue === 'number' ? p.variantValue : null,
     materials: mats.map(relationName).filter((n: string | null): n is string => !!n).map((name: string) => ({ name })),
     applications: apps.map(relationName).filter((n: string | null): n is string => !!n).map((name: string) => ({ name })),
     image: imageUrl ? { url: imageUrl } : null,
@@ -150,7 +154,10 @@ export async function getFamilyMembers(family: string): Promise<any[]> {
     const result = await payload.find({
       collection: 'products',
       where: { family: { equals: fam } },
-      sort: 'diameterMm',
+      // Sort by size first, then the second axis (tooth/grit/segment) so pills
+      // read smallest→largest on both rows. For pure size families diameterMm is
+      // unique, so the variantValue tiebreak is a harmless no-op.
+      sort: ['diameterMm', 'variantValue'],
       depth: 2,
       limit: 50,
     })

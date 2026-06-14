@@ -21,6 +21,7 @@ import * as migration_20260524_add_settings_new_fields from './20260524_add_sett
 import * as migration_20260524_add_settings_missing_columns from './20260524_add_settings_missing_columns';
 import * as migration_20260524_add_login_attempts from './20260524_add_login_attempts';
 import * as migration_20260614_add_product_family from './20260614_add_product_family';
+import * as migration_20260615_add_product_variant_axis from './20260615_add_product_variant_axis';
 
 export const migrations = [
   {
@@ -137,5 +138,10 @@ export const migrations = [
     up: migration_20260614_add_product_family.up,
     down: migration_20260614_add_product_family.down,
     name: '20260614_add_product_family',
+  },
+  {
+    up: migration_20260615_add_product_variant_axis.up,
+    down: migration_20260615_add_product_variant_axis.down,
+    name: '20260615_add_product_variant_axis',
   },
 ];

@@ -49,10 +49,10 @@ export default async function ProductDetailPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ size?: string }>
+  searchParams: Promise<{ size?: string; v?: string }>
 }) {
   const { id } = await params
-  const { size } = await searchParams
+  const { size, v } = await searchParams
   const h = await headers()
   // `settings` is admin-restricted (see globals/Settings.ts). The public product
   // detail page needs to read `orders_paused` (kill switch — CLAUDE.md hard rule)
@@ -76,6 +76,8 @@ export default async function ProductDetailPage({
   const familyMembers = members.length > 1 ? members : null
   const initialSize: number | null =
     size != null && size !== '' && Number.isFinite(Number(size)) ? Number(size) : null
+  const initialVariant: number | null =
+    v != null && v !== '' && Number.isFinite(Number(v)) ? Number(v) : null
 
   const isLoggedIn = contractor !== null
   const emailVerified =
@@ -93,6 +95,7 @@ export default async function ProductDetailPage({
       initialData={product}
       familyMembers={familyMembers}
       initialSize={initialSize}
+      initialVariant={initialVariant}
       isLoggedIn={isLoggedIn}
       emailVerified={emailVerified}
       tierDiscountPct={tierDiscountPct}

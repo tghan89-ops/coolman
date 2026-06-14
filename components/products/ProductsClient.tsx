@@ -46,6 +46,7 @@ export interface ProductCardData {
   diameterMm?: number | null
   bondType?: string | null
   family?: string | null
+  variantValue?: number | null
   materials?: ProductRelation[]
   applications?: ProductRelation[]
   image?: { url?: string | null } | string | null
@@ -271,7 +272,10 @@ export function ProductsClient({
                             {/* Size-count badge — only for grouped families. */}
                             {group.isFamily && (
                               <span className="absolute left-3 top-3 z-10 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-white">
-                                {t.products.card.sizeCount.replace('{count}', String(group.members.length))}
+                                {(group.primaryAxisIsSize
+                                  ? t.products.card.sizeCount
+                                  : t.products.card.optionCount
+                                ).replace('{count}', String(group.optionCount))}
                               </span>
                             )}
                             {cardImageUrl ? (
