@@ -97,6 +97,27 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      name: 'family',
+      type: 'text',
+      index: true,
+      hooks: {
+        // Trim and collapse to null so a stray space ("ECOSMART " vs "ECOSMART")
+        // can't split a family into two silent groups. Empty -> null (standalone).
+        beforeChange: [
+          ({ value }) => {
+            if (typeof value !== 'string') return value
+            const v = value.trim()
+            return v.length > 0 ? v : null
+          },
+        ],
+      },
+      admin: {
+        position: 'sidebar',
+        description:
+          'OPTIONAL. Same short code on every size of one blade (e.g. "ECOSMART") groups them into ONE catalogue card with a size switcher. Leave blank for a standalone product. Sizes are ordered smallest-first by Diameter (mm). Shared copy (description, materials, video) is read from the smallest size.',
+      },
+    },
+    {
       name: 'arborSize',
       type: 'text',
       admin: { description: 'e.g. 22.23mm or M14' },

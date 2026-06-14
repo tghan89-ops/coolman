@@ -388,6 +388,9 @@ export interface CopyStructure {
       }
       requestQuote: string
       skuLabel: string
+      sizeSwitcher: {
+        label: string
+      }
       bondLabel: string
       whatsappEnquiry: string
       documentDownload: string
@@ -426,6 +429,8 @@ export interface CopyStructure {
       universal: string
       standardBond: string
       bondSuffix: string
+      sizeCount: string
+      fromPrice: string
     }
     pagination: {
       previous: string
@@ -1459,6 +1464,9 @@ export const COPY: Record<Language, CopyStructure> = {
         },
         requestQuote: 'Request a quote',
         skuLabel: 'SKU',
+        sizeSwitcher: {
+          label: 'Size',
+        },
         bondLabel: 'Bond',
         whatsappEnquiry: 'Hi, I\'d like to enquire about {name} (SKU: {sku})',
         documentDownload: 'Download',
@@ -1497,6 +1505,8 @@ export const COPY: Record<Language, CopyStructure> = {
         universal: 'Universal',
         standardBond: 'Standard',
         bondSuffix: 'Bond',
+        sizeCount: '{count} sizes',
+        fromPrice: 'from',
       },
       pagination: {
         previous: 'Previous',
@@ -2729,6 +2739,9 @@ export const COPY: Record<Language, CopyStructure> = {
         },
         requestQuote: 'Minta sebut harga',
         skuLabel: 'SKU',
+        sizeSwitcher: {
+          label: 'Saiz',
+        },
         bondLabel: 'Ikatan',
         whatsappEnquiry: 'Hai, saya ingin bertanya tentang {name} (SKU: {sku})',
         documentDownload: 'Muat turun',
@@ -2767,6 +2780,8 @@ export const COPY: Record<Language, CopyStructure> = {
         universal: 'Universal',
         standardBond: 'Biasa',
         bondSuffix: 'Ikatan',
+        sizeCount: '{count} saiz',
+        fromPrice: 'dari',
       },
       pagination: {
         previous: 'Sebelumnya',

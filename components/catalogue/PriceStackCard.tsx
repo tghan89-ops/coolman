@@ -22,6 +22,14 @@ export interface PriceStackCardProps {
   promoDiscountPct?: number
   size?: 'sm' | 'md' | 'lg'
   showStackUp?: boolean
+  /**
+   * Optional prefix word (e.g. "from") shown immediately before the price
+   * number — used by family cards where the price is the lowest of several
+   * sizes. Only renders in the branches that actually show a number
+   * (list-only and the collapsed stack-up); logged-out / unverified visitors
+   * still see no price and no prefix, preserving the auth gate.
+   */
+  pricePrefix?: string
   signInHref?: string
   verifyEmailHref?: string
   language?: Language
@@ -68,6 +76,7 @@ export function PriceStackCard({
   promoDiscountPct = 0,
   size = 'md',
   showStackUp = true,
+  pricePrefix,
   signInHref = '/auth/login',
   verifyEmailHref = '/auth/verify-email',
   language = 'EN',
@@ -139,6 +148,18 @@ export function PriceStackCard({
     )
   }
 
+  // "from" (or any caller-supplied) prefix, shown only where a number renders.
+  const prefixNode = pricePrefix ? (
+    <span
+      className={cn(
+        'mr-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.08em]',
+        isDark ? 'text-white/60' : 'text-ink-muted',
+      )}
+    >
+      {pricePrefix}
+    </span>
+  ) : null
+
   if (branch === 'list-only') {
     // Logged-in contractor with no tier discount — show list price only, no labels.
     return (
@@ -150,6 +171,7 @@ export function PriceStackCard({
             isDark ? 'text-white' : 'text-ink',
           )}
         >
+          {prefixNode}
           {formatPrice(listPrice)}
         </span>
       </div>
@@ -178,6 +200,7 @@ export function PriceStackCard({
             isDark ? 'text-accent' : 'text-navy',
           )}
         >
+          {prefixNode}
           {formatPrice(breakdown.effectivePrice)}
         </span>
       </div>

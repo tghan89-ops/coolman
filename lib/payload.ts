@@ -39,6 +39,7 @@ export type SlimProduct = {
   diameter: string | null
   diameterMm: number | null
   bondType: string | null
+  family: string | null
   materials: Array<{ name: string }>
   applications: Array<{ name: string }>
   image: { url: string } | null
@@ -81,6 +82,7 @@ function slimProduct(p: any): SlimProduct {
     diameter: typeof p?.diameter === 'string' ? p.diameter : null,
     diameterMm: typeof p?.diameterMm === 'number' ? p.diameterMm : null,
     bondType: typeof p?.bondType === 'string' ? p.bondType : null,
+    family: typeof p?.family === 'string' && p.family.trim() ? p.family.trim() : null,
     materials: mats.map(relationName).filter((n: string | null): n is string => !!n).map((name: string) => ({ name })),
     applications: apps.map(relationName).filter((n: string | null): n is string => !!n).map((name: string) => ({ name })),
     image: imageUrl ? { url: imageUrl } : null,
@@ -128,6 +130,32 @@ export async function getProductById(id: string): Promise<any | null> {
     return product
   } catch {
     return null
+  }
+}
+
+// All sizes that share a family code, smallest diameter first. Returned at the
+// same depth (2) as getProductById so the size switcher can render any sibling's
+// full specs, price, and image without a second fetch. Returns [] on error or
+// when `family` is blank, so callers can treat "no family" and "lookup failed"
+// identically (the product page falls back to the single product either way).
+export async function getFamilyMembers(family: string): Promise<any[]> {
+  const fam = typeof family === 'string' ? family.trim() : ''
+  if (!fam) return []
+  try {
+    const payload = await getPayloadClient()
+    const result = await payload.find({
+      collection: 'products',
+      where: { family: { equals: fam } },
+      sort: 'diameterMm',
+      depth: 2,
+      limit: 50,
+    })
+    return result.docs
+  } catch (e) {
+    // A failure here silently degrades to a standalone product (no switcher),
+    // which is the safe fallback — but log it so the cause is visible in prod.
+    console.error('[getFamilyMembers] failed for family:', fam, e)
+    return []
   }
 }
 

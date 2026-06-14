@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
-import { getCachedSettings, getProductById } from '@/lib/payload'
+import { getCachedSettings, getProductById, getFamilyMembers } from '@/lib/payload'
 import { ProductDetailClient } from '@/components/products/ProductDetailClient'
 import { getContractorSession } from '@/lib/auth/contractor-session'
 import { COPY } from '@/lib/i18n/copy'
@@ -46,10 +46,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProductDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ size?: string }>
 }) {
   const { id } = await params
+  const { size } = await searchParams
   const h = await headers()
   // `settings` is admin-restricted (see globals/Settings.ts). The public product
   // detail page needs to read `orders_paused` (kill switch — CLAUDE.md hard rule)
@@ -61,6 +64,18 @@ export default async function ProductDetailPage({
     getCachedSettings(),
   ])
   if (!product) notFound()
+
+  // If this product is part of a size family, load all siblings (smallest
+  // diameter first) so the page can render a size switcher. getFamilyMembers
+  // returns [] when there's no family code, so familyMembers stays null and the
+  // page behaves exactly as a standalone product. A blank initial-size means
+  // the client defaults to this product's own size.
+  const familyCode: string | null =
+    typeof product.family === 'string' && product.family.trim() ? product.family.trim() : null
+  const members = familyCode ? await getFamilyMembers(familyCode) : []
+  const familyMembers = members.length > 1 ? members : null
+  const initialSize: number | null =
+    size != null && size !== '' && Number.isFinite(Number(size)) ? Number(size) : null
 
   const isLoggedIn = contractor !== null
   const emailVerified =
@@ -76,6 +91,8 @@ export default async function ProductDetailPage({
   return (
     <ProductDetailClient
       initialData={product}
+      familyMembers={familyMembers}
+      initialSize={initialSize}
       isLoggedIn={isLoggedIn}
       emailVerified={emailVerified}
       tierDiscountPct={tierDiscountPct}

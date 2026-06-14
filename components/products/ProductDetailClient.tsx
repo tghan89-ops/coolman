@@ -53,6 +53,7 @@ interface RelatedProductData {
   image?: ProductMedia
   listPrice?: number | null
   materials?: RelationOrScalar[] | null
+  family?: string | null
 }
 
 export interface ProductDetailData {
@@ -60,6 +61,7 @@ export interface ProductDetailData {
   name: string
   nameBM?: string | null
   sku: string
+  family?: string | null
   description?: string | null
   descriptionBM?: string | null
   image?: ProductMedia
@@ -68,6 +70,7 @@ export interface ProductDetailData {
   materials?: RelationOrScalar[] | null
   applications?: RelationOrScalar[] | null
   diameter?: RelationOrScalar
+  diameterMm?: number | null
   arborSize?: RelationOrScalar
   segmentHeight?: RelationOrScalar
   bondType?: string | null
@@ -85,6 +88,8 @@ export interface ProductDetailData {
 
 export function ProductDetailClient({
   initialData,
+  familyMembers = null,
+  initialSize = null,
   isLoggedIn = false,
   emailVerified = false,
   tierDiscountPct = 0,
@@ -92,6 +97,15 @@ export function ProductDetailClient({
   whatsappNumber = '',
 }: {
   initialData: ProductDetailData
+  /**
+   * All sizes in this product's family, smallest diameter first. Null/absent
+   * for a standalone product (no size switcher renders). When present, the
+   * displayed `data` is driven by the selected member, so the gallery, specs,
+   * price card and order button all follow the chosen size automatically.
+   */
+  familyMembers?: ProductDetailData[] | null
+  /** Diameter (mm) to pre-select from `?size=` — falls back to initialData. */
+  initialSize?: number | null
   isLoggedIn?: boolean
   emailVerified?: boolean
   tierDiscountPct?: number
@@ -106,7 +120,26 @@ export function ProductDetailClient({
 }) {
   const { language, t } = useLanguage()
   const pd = t.pages.productDetail
-  const data = initialData
+
+  // A family always includes the loaded product; if the list is missing or
+  // singular we treat this as a standalone product (no switcher).
+  const members: ProductDetailData[] | null =
+    Array.isArray(familyMembers) && familyMembers.length > 1 ? familyMembers : null
+
+  // Initial selected size: honour ?size= (diameter mm), else the product the
+  // URL actually loaded, else the smallest (first) member.
+  const initialActiveIdx = (() => {
+    if (!members) return 0
+    if (initialSize != null) {
+      const bySize = members.findIndex((m) => Number(m.diameterMm) === Number(initialSize))
+      if (bySize >= 0) return bySize
+    }
+    const byId = members.findIndex((m) => String(m.id) === String(initialData.id))
+    return byId >= 0 ? byId : 0
+  })()
+
+  const [activeIdx, setActiveIdx] = useState(initialActiveIdx)
+  const data: ProductDetailData = members ? (members[activeIdx] ?? initialData) : initialData
 
   const isBM = language === 'BM'
   const displayName = isBM && data.nameBM ? data.nameBM : data.name
@@ -171,6 +204,22 @@ export function ProductDetailClient({
   const [activeImageIdx, setActiveImageIdx] = useState(0)
   const activeMedia: MediaItem | undefined = mediaItems[activeImageIdx]
 
+  // Switch the selected size in-place: swap the active member (which re-derives
+  // image/price/specs/SKU/order target), reset the gallery to the first photo,
+  // and reflect the size in the URL (?size=mm) so it's shareable — all without a
+  // page reload. replaceState avoids piling history entries on every pill tap.
+  const handleSelectSize = (idx: number) => {
+    if (!members) return
+    setActiveIdx(idx)
+    setActiveImageIdx(0)
+    const m = members[idx]
+    if (m && m.diameterMm != null && typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      url.searchParams.set('size', String(m.diameterMm))
+      window.history.replaceState(window.history.state, '', url.toString())
+    }
+  }
+
   // Full spec rows for the specification tab table
   const specRows = [
     { label: pd.specs.diameter, value: labelOf(data.diameter) },
@@ -191,10 +240,16 @@ export function ProductDetailClient({
 
   const documents = Array.isArray(data.documents) ? data.documents : []
 
-  // Related products from Payload (depth:2 resolves these to full objects)
+  // Related products from Payload (depth:2 resolves these to full objects).
+  // Exclude any sibling that shares this product's family — those already live
+  // in the size switcher above, so showing them again as "related" duplicates
+  // the same blade.
   const relatedProducts: RelatedProductData[] = Array.isArray(data.relatedProducts)
     ? data.relatedProducts.filter(
-        (p): p is RelatedProductData => typeof p === 'object' && p !== null,
+        (p): p is RelatedProductData =>
+          typeof p === 'object' &&
+          p !== null &&
+          !(members != null && data.family != null && (p as RelatedProductData).family === data.family),
       )
     : []
 
@@ -248,7 +303,7 @@ export function ProductDetailClient({
               {pd.breadcrumbProducts}
             </Link>
             <ChevronRight className="h-3.5 w-3.5 text-rule flex-shrink-0" />
-            <span className="text-ink truncate">{data.name}</span>
+            <span className="text-ink truncate">{displayName}</span>
           </nav>
         </div>
       </div>
@@ -378,6 +433,39 @@ export function ProductDetailClient({
                 </div>
               ))}
             </div>
+
+            {/* Size switcher — only for products in a size family. Tapping a
+                pill swaps the active size: image, price, specs and the order
+                SKU all follow, with no page reload. */}
+            {members && (
+              <div className="mt-6">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">
+                  {pd.sizeSwitcher.label}
+                </p>
+                <div className="mt-2.5 flex flex-wrap gap-2.5">
+                  {members.map((m, i) => {
+                    const active = i === activeIdx
+                    const sizeLabel = labelOf(m.diameter) || (m.diameterMm != null ? `${m.diameterMm}mm` : m.sku)
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => handleSelectSize(i)}
+                        aria-pressed={active}
+                        aria-label={`${pd.sizeSwitcher.label}: ${sizeLabel}`}
+                        className={`flex min-h-11 min-w-[84px] items-center justify-center rounded-md border px-4 py-2 font-mono text-sm font-bold leading-none transition-[border-color,background-color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-1 ${
+                          active
+                            ? 'border-accent bg-accent/5 text-navy shadow-[0_0_0_3px_rgba(59,130,246,0.12)]'
+                            : 'border-rule bg-white text-ink hover:border-accent/50'
+                        }`}
+                      >
+                        {sizeLabel}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Price card */}
             <div className="mt-6 border border-rule bg-paper p-5">

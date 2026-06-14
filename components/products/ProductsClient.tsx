@@ -11,6 +11,7 @@ import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { bondLabel } from '@/lib/products/bond-label'
 import { diameterBucket } from '@/lib/products/diameter'
 import { productMatchesQuery } from '@/lib/products/search'
+import { groupByFamily } from '@/lib/products/family'
 import { useLanguage } from '@/lib/i18n/context'
 
 // Page size lives here as a justified hardcode — see LEARNINGS.md, section
@@ -44,6 +45,7 @@ export interface ProductCardData {
   diameter?: string | null
   diameterMm?: number | null
   bondType?: string | null
+  family?: string | null
   materials?: ProductRelation[]
   applications?: ProductRelation[]
   image?: { url?: string | null } | string | null
@@ -116,7 +118,13 @@ export function ProductsClient({
     return result
   }, [products, selected, query])
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE))
+  // Collapse same-family sizes into one card. A diameter filter narrows the
+  // members first (above), so a family shows only if at least one of its sizes
+  // matched, and the card links to the smallest matching size. Untagged
+  // products each form their own single-member group — identical to before.
+  const groups = useMemo(() => groupByFamily(filteredProducts), [filteredProducts])
+
+  const totalPages = Math.max(1, Math.ceil(groups.length / PAGE_SIZE))
   // Snap back to page 1 whenever the filter set or search text changes.
   useEffect(() => {
     setPage(1)
@@ -128,7 +136,9 @@ export function ProductsClient({
   // re-fire a search event. Fire-and-forget: analytics must never break or slow
   // the catalogue, so failures are swallowed.
   const resultCountRef = useRef(0)
-  resultCountRef.current = filteredProducts.length
+  // Log the number of cards the user actually sees (families collapsed), not the
+  // raw SKU count, so search analytics match the displayed result count.
+  resultCountRef.current = groups.length
   useEffect(() => {
     const q = query.trim()
     if (q.length < 2) return
@@ -143,9 +153,9 @@ export function ProductsClient({
     return () => clearTimeout(handle)
   }, [query])
   const safePage = Math.min(page, totalPages)
-  const pagedProducts = useMemo(
-    () => filteredProducts.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
-    [filteredProducts, safePage],
+  const pagedGroups = useMemo(
+    () => groups.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [groups, safePage],
   )
 
   const handleClear = () => {
@@ -232,35 +242,42 @@ export function ProductsClient({
               {/* Result count line */}
               <div className="mb-6 flex items-baseline justify-between">
                 <p className="text-sm text-ink-muted">
-                  <span className="font-mono font-semibold text-navy">{filteredProducts.length}</span>{' '}
-                  {filteredProducts.length === 1 ? t.products.productSingular : t.products.productPlural}
+                  <span className="font-mono font-semibold text-navy">{groups.length}</span>{' '}
+                  {groups.length === 1 ? t.products.productSingular : t.products.productPlural}
                 </p>
               </div>
 
-              {filteredProducts.length > 0 ? (
+              {groups.length > 0 ? (
                 <>
                   <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                    {pagedProducts.map((product) => {
+                    {pagedGroups.map((group) => {
+                      const rep = group.primary
                       const cardImageUrl: string | null =
-                        typeof product.image === 'object' && product.image?.url
-                          ? product.image.url
+                        typeof rep.image === 'object' && rep.image?.url
+                          ? rep.image.url
                           : null
                       const primaryMaterialLabel = (() => {
-                        const m = product.materials?.[0]
+                        const m = rep.materials?.[0]
                         const name = typeof m === 'object' && m !== null ? m.name : m
                         return (name || t.products.card.universal) as string
                       })()
                       return (
                         <Link
-                          key={product.id}
-                          href={`/products/${product.id}`}
+                          key={group.key}
+                          href={`/products/${rep.id}`}
                           className="group relative flex flex-col overflow-hidden rounded-md border border-rule bg-white transition-[border-color,box-shadow] duration-150 ease-out hover:border-accent/40 hover:shadow-md"
                         >
                           <div className="relative aspect-square overflow-hidden bg-paper">
+                            {/* Size-count badge — only for grouped families. */}
+                            {group.isFamily && (
+                              <span className="absolute left-3 top-3 z-10 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-white">
+                                {t.products.card.sizeCount.replace('{count}', String(group.members.length))}
+                              </span>
+                            )}
                             {cardImageUrl ? (
                               <Image
                                 src={cardImageUrl}
-                                alt={product.name}
+                                alt={group.displayName}
                                 width={400}
                                 height={400}
                                 sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
@@ -277,21 +294,24 @@ export function ProductsClient({
                               {primaryMaterialLabel}
                             </p>
                             <h3 className="mt-2 text-lg font-semibold text-navy transition-colors group-hover:text-accent">
-                              {product.name}
+                              {group.displayName}
                             </h3>
                             <p className="mt-1 text-sm text-ink-muted">
-                              <span className="font-mono">{product.diameter}</span>
-                              {product.diameter ? ' | ' : ''}
-                              {bondLabel(product.bondType) || t.products.card.standardBond} {t.products.card.bondSuffix}
+                              <span className="font-mono">{group.diameterRange}</span>
+                              {group.isFamily
+                                ? ''
+                                : (group.diameterRange ? ' | ' : '') +
+                                  `${bondLabel(rep.bondType) || t.products.card.standardBond} ${t.products.card.bondSuffix}`}
                             </p>
                             <div className="mt-4 flex items-center justify-between border-t border-rule pt-4">
                               <PriceStackCard
-                                listPrice={product.listPrice}
+                                listPrice={group.fromPrice}
                                 isLoggedIn={isLoggedIn}
                                 emailVerified={emailVerified}
                                 tierDiscountPct={tierDiscountPct}
                                 size="sm"
                                 showStackUp={false}
+                                pricePrefix={group.isFamily ? t.products.card.fromPrice : undefined}
                                 language={language}
                               />
                               <ArrowRight className="h-5 w-5 text-ink-faint transition-colors group-hover:text-accent" />

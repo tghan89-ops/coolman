@@ -20,6 +20,7 @@ import * as migration_20260523_fix_heritage_page_array_ids from './20260523_fix_
 import * as migration_20260524_add_settings_new_fields from './20260524_add_settings_new_fields';
 import * as migration_20260524_add_settings_missing_columns from './20260524_add_settings_missing_columns';
 import * as migration_20260524_add_login_attempts from './20260524_add_login_attempts';
+import * as migration_20260614_add_product_family from './20260614_add_product_family';
 
 export const migrations = [
   {
@@ -131,5 +132,10 @@ export const migrations = [
     up: migration_20260524_add_login_attempts.up,
     down: migration_20260524_add_login_attempts.down,
     name: '20260524_add_login_attempts',
+  },
+  {
+    up: migration_20260614_add_product_family.up,
+    down: migration_20260614_add_product_family.down,
+    name: '20260614_add_product_family',
   },
 ];

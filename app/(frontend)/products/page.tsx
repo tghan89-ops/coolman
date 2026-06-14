@@ -2,6 +2,7 @@ import { headers } from 'next/headers'
 import { getProducts } from '@/lib/payload'
 import { ProductsClient } from '@/components/products/ProductsClient'
 import { diameterBucket } from '@/lib/products/diameter'
+import { familyKey } from '@/lib/products/family'
 import { getContractorSession } from '@/lib/auth/contractor-session'
 import { COPY } from '@/lib/i18n/copy'
 import type { FilterGroup } from '@/components/catalogue/FilterSidebar'
@@ -11,6 +12,8 @@ import type { FilterGroup } from '@/components/catalogue/FilterSidebar'
 // (which is shaped roughly like { name: string }). Both shapes survive the
 // `typeof m === 'object'` guard below.
 type ProductFilterRow = {
+  id: string | number
+  family?: string | null
   materials?: Array<{ name?: string | null } | string | number | null> | null
   applications?: Array<{ name?: string | null } | string | number | null> | null
   diameterMm?: number | null
@@ -46,16 +49,6 @@ const DIAMETER_BUCKETS = [
   '800-900',
 ] as const
 
-function countBy<T>(list: T[], pick: (item: T) => string | null | undefined): Map<string, number> {
-  const out = new Map<string, number>()
-  for (const item of list) {
-    const key = pick(item)
-    if (!key) continue
-    out.set(key, (out.get(key) ?? 0) + 1)
-  }
-  return out
-}
-
 export default async function ProductsPage() {
   const h = await headers()
   const [products, contractor] = await Promise.all([
@@ -76,38 +69,56 @@ export default async function ProductsPage() {
 
   const filterRows = products as unknown as ProductFilterRow[]
 
-  // Material counts. Each product can have multiple materials; count each
-  // distinct material name once per product.
+  // Filter chips count FAMILIES, not raw SKUs, so the numbers match the
+  // collapsed grid (a 3-size family is one card and counts once). Group the
+  // rows by family first, then aggregate each family's attributes once.
+  const familyMap = new Map<string, ProductFilterRow[]>()
+  for (const p of filterRows) {
+    const k = familyKey({ id: p.id, family: p.family })
+    if (!familyMap.has(k)) familyMap.set(k, [])
+    familyMap.get(k)!.push(p)
+  }
+  const familyRows = Array.from(familyMap.values())
+
+  // Material counts. A family contributes each distinct material once across
+  // all of its sizes (materials are shared, but we union defensively).
   const materialCounts = new Map<string, number>()
-  for (const p of filterRows) {
-    const mats = Array.isArray(p.materials) ? p.materials : []
+  for (const members of familyRows) {
     const seen = new Set<string>()
-    for (const m of mats) {
-      const name = typeof m === 'object' && m !== null ? m.name : m
-      if (typeof name === 'string' && name && !seen.has(name)) {
-        seen.add(name)
-        materialCounts.set(name, (materialCounts.get(name) ?? 0) + 1)
+    for (const p of members) {
+      for (const m of Array.isArray(p.materials) ? p.materials : []) {
+        const name = typeof m === 'object' && m !== null ? m.name : m
+        if (typeof name === 'string' && name && !seen.has(name)) {
+          seen.add(name)
+          materialCounts.set(name, (materialCounts.get(name) ?? 0) + 1)
+        }
       }
     }
   }
 
-  // Application counts — same shape as materials.
+  // Application counts — same family-dedup shape as materials.
   const applicationCounts = new Map<string, number>()
-  for (const p of filterRows) {
-    const apps = Array.isArray(p.applications) ? p.applications : []
+  for (const members of familyRows) {
     const seen = new Set<string>()
-    for (const a of apps) {
-      const name = typeof a === 'object' && a !== null ? a.name : a
-      if (typeof name === 'string' && name && !seen.has(name)) {
-        seen.add(name)
-        applicationCounts.set(name, (applicationCounts.get(name) ?? 0) + 1)
+    for (const p of members) {
+      for (const a of Array.isArray(p.applications) ? p.applications : []) {
+        const name = typeof a === 'object' && a !== null ? a.name : a
+        if (typeof name === 'string' && name && !seen.has(name)) {
+          seen.add(name)
+          applicationCounts.set(name, (applicationCounts.get(name) ?? 0) + 1)
+        }
       }
     }
   }
 
-  // Diameter counts — each product has exactly one diameterMm, so this is a
-  // straight count-by-bucket.
-  const diameterCounts = countBy(filterRows, (p) => diameterBucket(p.diameterMm ?? null))
+  // Diameter counts — a family spans diameters, so it counts once per distinct
+  // bucket any of its sizes falls in (matches "show family if any size matches").
+  const diameterCounts = new Map<string, number>()
+  for (const members of familyRows) {
+    const buckets = new Set<string>()
+    for (const p of members) buckets.add(diameterBucket(p.diameterMm ?? null))
+    for (const b of buckets) diameterCounts.set(b, (diameterCounts.get(b) ?? 0) + 1)
+  }
 
   // We render the catalogue in the user's locale, but the URL doesn't carry
   // language — i18n is cookie-driven. For SSR we render the EN labels by
