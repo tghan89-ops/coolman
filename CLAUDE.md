@@ -26,14 +26,17 @@ B2B diamond tool platform for Coolman (Alan's business). Malaysian construction 
 
 **Full detail:** `BRIEF.md` — read it. It contains the V1 scope, auth model, pricing logic, data questions, open questions, and deployment notes. Do not rely on memory for any of these.
 
-**Stack:** Next.js + Payload CMS + Vercel. Email via Resend. Analytics via Google Analytics. No payment gateway in V1.
+**Stack:** Next.js + Payload CMS, self-hosted on a **DigitalOcean droplet**. Email via Resend. Analytics via Google Analytics. No payment gateway in V1.
 
-**Hosting (Vercel):**
-- Team: `tghan89-ops-projects` (id `team_mQX74Ji59OSePGVtMjTlli8k`)
-- Project: `coolman` (id `prj_95lOYALs6bkKaIlKoguApF4DeFcK`), framework Next.js, Node 24.x
-- Production URL: https://coolman-tghan89-ops-projects.vercel.app
-- Alt domain: https://coolman-tghan89-ops-tghan89-ops-projects.vercel.app
-- Deploys are triggered by `git push` to `origin main` — Vercel builds and promotes to production automatically. The pm2/ssh "Deploy — copy paste" block lower in this file is legacy; ignore it for this project.
+**Hosting — DigitalOcean droplet (NOT Vercel anymore; migrated off Vercel 2026-06-14):**
+- Droplet "coolman": DigitalOcean, **Singapore (SGP1)**, Ubuntu 24.04, 2GB/1CPU, $12/mo. Public IP `167.71.204.168`.
+- SSH: `ssh -i ~/.ssh/coolman_do root@167.71.204.168`. App dir `/opt/coolman`, prod env `/opt/coolman/.env`.
+- Process: pm2 app `coolman` runs `node node_modules/next/dist/bin/next start -p 3000` (NEVER point pm2 at `.bin/next` — pnpm shell shim crashes under node). nginx `:80/:443` → `127.0.0.1:3000`.
+- **Database:** local Postgres 16 on the droplet (db `coolman`, pw in `/root/.coolman_dbpass`). Adapter is `postgresAdapter` (`@payloadcms/db-postgres`), NOT the vercel one.
+- **Files/photos:** local disk `/opt/coolman/media` (Vercel Blob disabled — no `BLOB_READ_WRITE_TOKEN`).
+- **Live URL:** https://demo.coolman.com.my (Let's Encrypt SSL, auto-renew). Production domain `coolman.com.my` cuts over ~July 2026 on GH's say-so (DNS is in Exabytes cPanel Zone Editor).
+- **Cron:** root crontab hits `/api/cron/unresponded-alert` hourly (replaced Vercel Cron).
+- The old Vercel project + Neon DB still exist as a frozen fallback until cutover — do NOT edit content there; all CMS edits go to the droplet.
 
 ---
 
@@ -133,14 +136,22 @@ git push
 ```
 
 ---
-**Deploy — copy paste:**
+**Deploy to the droplet — copy paste** (repo may be private, so ship a git-archive snapshot rather than `git pull` on the box):
 ```bash
-cd ~/projects/coolman-pro
-git pull
-npm run build
-pm2 restart coolman-pro
-pm2 logs coolman-pro --lines 20
+# 1. From local repo (b_hEdh3FcwxmZ) after committing + pushing:
+git archive --format=tar.gz -o /tmp/coolman.tgz HEAD
+scp -i ~/.ssh/coolman_do /tmp/coolman.tgz root@167.71.204.168:/root/coolman.tgz
+
+# 2. On the droplet (.env + node_modules survive the extract):
+ssh -i ~/.ssh/coolman_do root@167.71.204.168
+cd /opt/coolman
+tar -xzf /root/coolman.tgz -C /opt/coolman
+pnpm install --no-frozen-lockfile        # only if deps changed
+NODE_OPTIONS="--max-old-space-size=2048" ./node_modules/.bin/next build
+pm2 restart coolman
+pm2 logs coolman --lines 20
 ```
+Notes: pnpm v11 needs the native-build allowlist in `pnpm-workspace.yaml` (sharp/esbuild/swc) and `.npmrc` has `verify-deps-before-run=false` — both committed. Run the build via the `next` binary directly (not `pnpm build`) to dodge pnpm's pre-run deps check.
 ---
 
 ## Open questions — resolve before building the relevant feature
@@ -185,4 +196,4 @@ When you change a token in `globals.css`, update DESIGN.md the same commit. When
 
 Copy authority: `b_hEdh3FcwxmZ/BRAND-VOICE.md`. Four principles, vocabulary use/avoid list, sentence rhythm rules, three-question pre-publish test. When BRAND-VOICE.md and any copy file disagree, BRAND-VOICE.md wins — fix the copy. DESIGN.md governs tokens; BRAND-VOICE.md governs words.
 
-Preview deployments use the preview Postgres branch. Never point preview env to the production connection string."
+Database note (post-Vercel): production data lives in the droplet's local Postgres only. There are no Vercel preview deployments anymore. If a staging/test DB is ever needed, stand up a separate Postgres database on the droplet — never point a test environment at the production database.
