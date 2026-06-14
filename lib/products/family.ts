@@ -45,10 +45,11 @@ const FAMILY_AXES: Record<string, FamilyAxisConfig> = {
   'tct-wood': { axes: ['size', 'tooth'], displayName: 'Wood Cutting Blade (TCT)' },
   'tct-alum': { axes: ['size', 'tooth'], displayName: 'Aluminium Cutting Blade (TCT)' },
   tuckpoint: { axes: ['size', 'segment'], displayName: 'Tuck Point Blade' },
-  // Pure size ladder, but listed here only to give the card a clean name (the
-  // member names start with the SKU "WSL600P ..." which the auto-stripper can't
-  // reduce). One real blade per diameter; the PCS/PDA SKUs stay standalone.
+  // Pure size ladders, listed here only to give the card a clean name (member
+  // names start with the SKU "WSL600P ..." which the auto-stripper can't reduce).
+  // One real blade per diameter; the PCS/PDA/SE/PE one-offs stay standalone.
   wallsawp: { axes: ['size'], displayName: 'Wall Saw Blade (P Series)' },
+  wallsaws: { axes: ['size'], displayName: 'Wall Saw Blade (S Series)' },
 }
 
 /**
