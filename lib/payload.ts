@@ -105,7 +105,11 @@ const getProductsCached = unstable_cache(
     const payload = await getPayloadClient()
     const result = await payload.find({
       collection: 'products',
-      limit: 200,
+      // 274 products today; 400 gives headroom so the whole catalogue loads and
+      // families collapse correctly regardless of name-sort position. The cached
+      // value is the slim shape (~150 bytes/row), so 400 rows is well under
+      // Vercel's ~2MB data-cache item limit.
+      limit: 400,
       sort: 'name',
       depth: 1,
     })
