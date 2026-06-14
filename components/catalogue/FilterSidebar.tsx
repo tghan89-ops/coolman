@@ -139,18 +139,27 @@ export function FilterSidebar({
                 {group.options.map((option) => {
                   const isChecked = (selected[group.key] ?? []).includes(option.value)
                   const id = `${group.key}-${option.value}`
+                  // Faceting: an option with 0 matches under the current other
+                  // selections is greyed and non-interactive — but only if it
+                  // isn't already checked, so the user can always untick it.
+                  const isDisabled = option.count === 0 && !isChecked
                   return (
                     <li key={option.value}>
                       <label
                         htmlFor={id}
+                        aria-disabled={isDisabled}
                         className={cn(
-                          'flex min-h-11 cursor-pointer items-center gap-3 rounded-sm px-1',
-                          'hover:bg-paper transition-colors duration-150 ease-out',
+                          'flex min-h-11 items-center gap-3 rounded-sm px-1',
+                          'transition-colors duration-150 ease-out',
+                          isDisabled
+                            ? 'cursor-not-allowed opacity-40'
+                            : 'cursor-pointer hover:bg-paper',
                         )}
                       >
                         <Checkbox
                           id={id}
                           checked={isChecked}
+                          disabled={isDisabled}
                           onCheckedChange={() => handleToggle(group.key, option.value)}
                           className="border-rule data-[state=checked]:bg-accent data-[state=checked]:border-accent"
                         />

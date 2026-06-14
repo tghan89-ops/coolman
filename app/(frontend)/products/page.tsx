@@ -3,6 +3,11 @@ import { getProducts } from '@/lib/payload'
 import { ProductsClient } from '@/components/products/ProductsClient'
 import { diameterBucket } from '@/lib/products/diameter'
 import { familyKey } from '@/lib/products/family'
+import {
+  MATERIAL_BUCKETS,
+  materialBucketKey,
+  type MaterialBucketKey,
+} from '@/lib/products/material-group'
 import { getContractorSession } from '@/lib/auth/contractor-session'
 import { COPY } from '@/lib/i18n/copy'
 import type { FilterGroup } from '@/components/catalogue/FilterSidebar'
@@ -97,17 +102,23 @@ export default async function ProductsPage() {
     }
   }
 
-  // Material counts. A family contributes each distinct material once across
-  // all of its sizes (materials are shared, but we union defensively).
-  const materialCounts = new Map<string, number>()
+  // Material counts — rolled up into ~8 coarse BUCKETS (Concrete, Masonry &
+  // Brick, …) via the shared material-group map, instead of the 70+ fine tags
+  // that made the old filter a wall. The fine tags stay in the DB for the
+  // product-page spec sheet; only the FILTER is coarsened. A family contributes
+  // each distinct bucket once across all of its sizes/materials.
+  const materialBucketCounts = new Map<MaterialBucketKey, number>()
   for (const members of familyRows) {
-    const seen = new Set<string>()
+    const seen = new Set<MaterialBucketKey>()
     for (const p of members) {
       for (const m of Array.isArray(p.materials) ? p.materials : []) {
         const name = typeof m === 'object' && m !== null ? m.name : m
-        if (typeof name === 'string' && name && !seen.has(name)) {
-          seen.add(name)
-          materialCounts.set(name, (materialCounts.get(name) ?? 0) + 1)
+        if (typeof name === 'string' && name) {
+          const bucket = materialBucketKey(name)
+          if (!seen.has(bucket)) {
+            seen.add(bucket)
+            materialBucketCounts.set(bucket, (materialBucketCounts.get(bucket) ?? 0) + 1)
+          }
         }
       }
     }
@@ -156,12 +167,18 @@ export default async function ProductsPage() {
       .map(([value, count]) => ({ value, label: value, count })),
   }
 
+  // Buckets render in the curated MATERIAL_BUCKETS order (Concrete first), not
+  // alphabetically. Only buckets with at least one card are shown (so empty
+  // 'Other'/'Wood' don't clutter). Labels are EN here for SSR; the client
+  // re-labels per the active language via materialBucketLabel.
   const materialGroup: FilterGroup = {
     key: 'material',
     label: t.materialLabel,
-    options: Array.from(materialCounts.entries())
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([value, count]) => ({ value, label: value, count })),
+    options: MATERIAL_BUCKETS.flatMap((b) => {
+      const count = materialBucketCounts.get(b.key) ?? 0
+      if (count === 0) return []
+      return [{ value: b.key, label: b.en, count }]
+    }),
   }
 
   const applicationGroup: FilterGroup = {

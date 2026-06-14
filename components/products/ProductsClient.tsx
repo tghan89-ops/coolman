@@ -11,7 +11,12 @@ import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { bondLabel } from '@/lib/products/bond-label'
 import { diameterBucket } from '@/lib/products/diameter'
 import { productMatchesQuery } from '@/lib/products/search'
-import { groupByFamily } from '@/lib/products/family'
+import { groupByFamily, familyKey } from '@/lib/products/family'
+import {
+  materialBucketKey,
+  materialBucketLabel,
+  type MaterialBucketKey,
+} from '@/lib/products/material-group'
 import { useLanguage } from '@/lib/i18n/context'
 
 // Page size lives here as a justified hardcode — see LEARNINGS.md, section
@@ -80,51 +85,141 @@ export function ProductsClient({
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
 
-  const filteredProducts = useMemo(() => {
-    let result = products
+  const relationName = (r: ProductRelation): string => {
+    if (r == null) return ''
+    if (typeof r === 'object') return r.name ?? ''
+    return String(r)
+  }
 
+  // Filtering + faceting in one pass. Material is matched by its COARSE BUCKET
+  // (materialBucketKey), not the fine DB tag, so the rolled-up filter works.
+  // Free-text search matches name/SKU/category/materials/applications (see
+  // productMatchesQuery) over the already-loaded catalogue, so it's instant.
+  // The analytics log (below) records the query separately — never skip it.
+  const { filteredProducts, facetedGroups, activeChips } = useMemo(() => {
     const selCategories = selected[FILTER_KEYS.category] ?? []
     const selMaterials = selected[FILTER_KEYS.material] ?? []
     const selApplications = selected[FILTER_KEYS.application] ?? []
     const selDiameters = selected[FILTER_KEYS.diameter] ?? []
-    // Free-text search matches product name OR SKU/model code, case-insensitive.
-    // Runs over the already-loaded catalogue, so results are instant. The
-    // analytics log (below) records the query separately — never skip it.
     const q = query.trim().toLowerCase()
 
-    const relationName = (r: ProductRelation): string => {
-      if (r == null) return ''
-      if (typeof r === 'object') return r.name ?? ''
-      return String(r)
+    const matchCat = (p: ProductCardData) =>
+      selCategories.length === 0 || selCategories.includes(p.category ?? '')
+    const matchMat = (p: ProductCardData) => {
+      if (selMaterials.length === 0) return true
+      const mats = Array.isArray(p.materials) ? p.materials : []
+      return mats.some((m) => {
+        const n = relationName(m)
+        return !!n && selMaterials.includes(materialBucketKey(n))
+      })
+    }
+    const matchApp = (p: ProductCardData) => {
+      if (selApplications.length === 0) return true
+      const apps = Array.isArray(p.applications) ? p.applications : []
+      return apps.some((a) => selApplications.includes(relationName(a)))
+    }
+    const matchDia = (p: ProductCardData) =>
+      selDiameters.length === 0 || selDiameters.includes(diameterBucket(p.diameterMm))
+    const matchSearch = (p: ProductCardData) => !q || productMatchesQuery(p, q)
+
+    const filtered = products.filter(
+      (p) => matchCat(p) && matchMat(p) && matchApp(p) && matchDia(p) && matchSearch(p),
+    )
+
+    // Family-aware faceting: count how many CARDS (families collapsed), not raw
+    // SKUs, carry each option value — mirrors the server's family-dedup so the
+    // sidebar numbers match the collapsed grid. Trivial cost on ~274 items.
+    const familyAwareCounts = (
+      prods: ProductCardData[],
+      getValues: (p: ProductCardData) => string[],
+    ): Map<string, number> => {
+      const fam = new Map<string, ProductCardData[]>()
+      for (const p of prods) {
+        const k = familyKey(p)
+        const arr = fam.get(k)
+        if (arr) arr.push(p)
+        else fam.set(k, [p])
+      }
+      const counts = new Map<string, number>()
+      for (const members of fam.values()) {
+        const seen = new Set<string>()
+        for (const p of members)
+          for (const v of getValues(p)) {
+            if (v && !seen.has(v)) {
+              seen.add(v)
+              counts.set(v, (counts.get(v) ?? 0) + 1)
+            }
+          }
+      }
+      return counts
     }
 
-    if (selCategories.length > 0) {
-      result = result.filter((p) => selCategories.includes(p.category ?? ''))
+    const catVals = (p: ProductCardData) => (p.category ? [p.category] : [])
+    const matVals = (p: ProductCardData) => {
+      const out: string[] = []
+      for (const m of Array.isArray(p.materials) ? p.materials : []) {
+        const n = relationName(m)
+        if (n) out.push(materialBucketKey(n))
+      }
+      return out
     }
-    if (selMaterials.length > 0) {
-      result = result.filter((p) => {
-        const mats = Array.isArray(p.materials) ? p.materials : []
-        return mats.some((m) => selMaterials.includes(relationName(m)))
-      })
-    }
-    if (selApplications.length > 0) {
-      result = result.filter((p) => {
-        const apps = Array.isArray(p.applications) ? p.applications : []
-        return apps.some((a) => selApplications.includes(relationName(a)))
-      })
-    }
-    if (selDiameters.length > 0) {
-      result = result.filter((p) => {
-        const bucket = diameterBucket(p.diameterMm)
-        return selDiameters.includes(bucket)
-      })
-    }
-    if (q) {
-      result = result.filter((p) => productMatchesQuery(p, q))
+    const appVals = (p: ProductCardData) =>
+      (Array.isArray(p.applications) ? p.applications : []).map(relationName).filter(Boolean)
+    const diaVals = (p: ProductCardData) => [diameterBucket(p.diameterMm)]
+
+    // Each group's faceted counts come from the set filtered by all OTHER groups
+    // (plus search), so its own options stay live during multi-select.
+    const facetCat = familyAwareCounts(
+      products.filter((p) => matchMat(p) && matchApp(p) && matchDia(p) && matchSearch(p)),
+      catVals,
+    )
+    const facetMat = familyAwareCounts(
+      products.filter((p) => matchCat(p) && matchApp(p) && matchDia(p) && matchSearch(p)),
+      matVals,
+    )
+    const facetApp = familyAwareCounts(
+      products.filter((p) => matchCat(p) && matchMat(p) && matchDia(p) && matchSearch(p)),
+      appVals,
+    )
+    const facetDia = familyAwareCounts(
+      products.filter((p) => matchCat(p) && matchMat(p) && matchApp(p) && matchSearch(p)),
+      diaVals,
+    )
+    const countsByKey: Record<string, Map<string, number>> = {
+      [FILTER_KEYS.category]: facetCat,
+      [FILTER_KEYS.material]: facetMat,
+      [FILTER_KEYS.application]: facetApp,
+      [FILTER_KEYS.diameter]: facetDia,
     }
 
-    return result
-  }, [products, selected, query])
+    const faceted: FilterGroup[] = filterGroups.map((g) => {
+      const counts = countsByKey[g.key]
+      return {
+        ...g,
+        options: g.options.map((o) => ({
+          ...o,
+          count: counts?.get(o.value) ?? 0,
+          // Material options are localized from the bucket key; others keep
+          // their canonical/server label.
+          label:
+            g.key === FILTER_KEYS.material
+              ? materialBucketLabel(o.value as MaterialBucketKey, language)
+              : o.label,
+        })),
+      }
+    })
+
+    const labelFor = (groupKey: string, value: string) => {
+      const g = faceted.find((fg) => fg.key === groupKey)
+      return g?.options.find((opt) => opt.value === value)?.label ?? value
+    }
+    const chips: Array<{ groupKey: string; value: string; label: string }> = []
+    for (const g of filterGroups)
+      for (const value of selected[g.key] ?? [])
+        chips.push({ groupKey: g.key, value, label: labelFor(g.key, value) })
+
+    return { filteredProducts: filtered, facetedGroups: faceted, activeChips: chips }
+  }, [products, selected, query, language, filterGroups])
 
   // Collapse same-family sizes into one card. A diameter filter narrows the
   // members first (above), so a family shows only if at least one of its sizes
@@ -176,6 +271,15 @@ export function ProductsClient({
     setQuery('')
   }
 
+  // Remove a single active filter value (from a chip ✕). Reuses the same
+  // selection state the sidebar drives.
+  const removeChip = (groupKey: string, value: string) => {
+    setSelected({
+      ...selected,
+      [groupKey]: (selected[groupKey] ?? []).filter((v) => v !== value),
+    })
+  }
+
   return (
     <PublicLayout>
       {/* Hero — Session 4 verbatim copy. Light surface, no navy banner. */}
@@ -206,7 +310,7 @@ export function ProductsClient({
                 doesn't require scrolling the whole page on long catalogues. */}
             <div className="lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
               <FilterSidebar
-                groups={filterGroups}
+                groups={facetedGroups}
                 selected={selected}
                 onChange={setSelected}
                 onClear={handleClear}
@@ -249,12 +353,39 @@ export function ProductsClient({
               </div>
 
               {/* Result count line */}
-              <div className="mb-6 flex items-baseline justify-between">
+              <div className="mb-4 flex items-baseline justify-between">
                 <p className="text-sm text-ink-muted">
                   <span className="font-mono font-semibold text-navy">{groups.length}</span>{' '}
                   {groups.length === 1 ? t.products.productSingular : t.products.productPlural}
                 </p>
               </div>
+
+              {/* Active-filter chips — one per selected value, ✕ removes just that
+                  one. The single best "what am I looking at" cue, especially on
+                  mobile once the filter sheet closes. */}
+              {activeChips.length > 0 && (
+                <div className="mb-6 flex flex-wrap items-center gap-2">
+                  {activeChips.map((chip) => (
+                    <button
+                      key={`${chip.groupKey}-${chip.value}`}
+                      type="button"
+                      onClick={() => removeChip(chip.groupKey, chip.value)}
+                      aria-label={t.products.removeFilter.replace('{label}', chip.label)}
+                      className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-rule bg-white py-1 pl-3 pr-2 text-xs font-semibold text-navy transition-colors duration-150 ease-out hover:border-accent/40 hover:bg-paper"
+                    >
+                      <span>{chip.label}</span>
+                      <X className="h-3.5 w-3.5 text-ink-muted" aria-hidden="true" />
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={handleClear}
+                    className="ml-1 text-xs font-semibold text-accent transition-opacity duration-150 ease-out hover:opacity-80"
+                  >
+                    {t.products.clearAll}
+                  </button>
+                </div>
+              )}
 
               {groups.length > 0 ? (
                 <>
