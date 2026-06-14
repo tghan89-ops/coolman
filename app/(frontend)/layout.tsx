@@ -1,6 +1,5 @@
 ﻿import type { Metadata, Viewport } from 'next'
 import { IBM_Plex_Sans, JetBrains_Mono, Cormorant_Garamond, Ma_Shan_Zheng } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/lib/i18n/context'
 import { AuthProvider } from '@/lib/auth/context'
 import { CartProvider } from '@/lib/cart/context'
@@ -106,7 +105,6 @@ export default async function FrontendLayout({
             </AuthProvider>
           </LanguageProvider>
         </SettingsProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )
