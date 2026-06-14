@@ -49,10 +49,17 @@ export default async function ProductDetailPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>
-  searchParams: Promise<{ size?: string; v?: string }>
+  searchParams: Promise<{ size?: string; v?: string; from?: string }>
 }) {
   const { id } = await params
-  const { size, v } = await searchParams
+  const { size, v, from } = await searchParams
+  // "from" carries the catalogue's filter/search/sort query string so the back
+  // button returns to the exact filtered results. Only accept a relative query
+  // (no scheme/host/path) to avoid an open-redirect via this param.
+  const backHref =
+    typeof from === 'string' && from && !/[:/\\]/.test(from)
+      ? `/products?${from}`
+      : '/products'
   const h = await headers()
   // `settings` is admin-restricted (see globals/Settings.ts). The public product
   // detail page needs to read `orders_paused` (kill switch — CLAUDE.md hard rule)
@@ -93,6 +100,7 @@ export default async function ProductDetailPage({
   return (
     <ProductDetailClient
       initialData={product}
+      backHref={backHref}
       familyMembers={familyMembers}
       initialSize={initialSize}
       initialVariant={initialVariant}

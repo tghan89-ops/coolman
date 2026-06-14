@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, ArrowUp, ChevronDown, Search, SlidersHorizontal, X } from 'lucide-react'
@@ -43,6 +44,64 @@ const FILTER_KEYS = {
   diameter: 'diameter',
 } as const
 
+type SortKey = 'name' | 'price-asc' | 'price-desc' | 'diameter'
+
+// Filter/search/sort/page state is mirrored into the URL query string so that
+// (a) the browser Back button from a product page restores the exact filtered
+// view, (b) the product page can offer a "Back to results" link, and (c) a
+// filtered catalogue URL is shareable. Multi-value groups are comma-joined.
+interface CatalogueUrlState {
+  selected: Record<string, string[]>
+  query: string
+  sort: SortKey
+  page: number
+}
+
+function parseCatalogueParams(sp: URLSearchParams): CatalogueUrlState {
+  const get = (k: string) => {
+    const v = sp.get(k)
+    return v ? v.split(',').filter(Boolean) : []
+  }
+  const sortRaw = sp.get('sort')
+  const sort: SortKey =
+    sortRaw === 'price-asc' || sortRaw === 'price-desc' || sortRaw === 'diameter'
+      ? sortRaw
+      : 'name'
+  return {
+    selected: {
+      [FILTER_KEYS.category]: get('category'),
+      [FILTER_KEYS.material]: get('material'),
+      [FILTER_KEYS.application]: get('application'),
+      [FILTER_KEYS.diameter]: get('diameter'),
+    },
+    query: sp.get('q') ?? '',
+    sort,
+    page: Math.max(1, Number(sp.get('page')) || 1),
+  }
+}
+
+function catalogueParamsString(state: {
+  selected: Record<string, string[]>
+  query: string
+  sort: SortKey
+  page: number
+}): string {
+  const p = new URLSearchParams()
+  for (const key of [
+    FILTER_KEYS.category,
+    FILTER_KEYS.material,
+    FILTER_KEYS.application,
+    FILTER_KEYS.diameter,
+  ]) {
+    const vals = state.selected[key] ?? []
+    if (vals.length) p.set(key, vals.join(','))
+  }
+  if (state.query.trim()) p.set('q', state.query.trim())
+  if (state.sort !== 'name') p.set('sort', state.sort)
+  if (state.page > 1) p.set('page', String(state.page))
+  return p.toString()
+}
+
 // Minimal shape of a Payload product as far as the catalogue grid card reads
 // it. Server passes raw Payload docs (page.tsx → ProductsClient) and we cast
 // at the boundary. Keep this in sync with the fields actually rendered below
@@ -84,18 +143,22 @@ export function ProductsClient({
 }: ProductsClientProps) {
   const { t, language } = useLanguage()
   const products = initialProducts
-  const [selected, setSelected] = useState<Record<string, string[]>>({
-    [FILTER_KEYS.category]: [],
-    [FILTER_KEYS.material]: [],
-    [FILTER_KEYS.application]: [],
-    [FILTER_KEYS.diameter]: [],
-  })
-  const [query, setQuery] = useState('')
-  const [page, setPage] = useState(1)
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  // Seed all filter/search/sort/page state from the URL once, so landing on a
+  // shared/bookmarked link — or returning via the browser Back button from a
+  // product page — restores the exact view. searchParams is available on both
+  // the server render and the client, so the lazy initializer is consistent
+  // (no hydration flash).
+  const [initialState] = useState(() => parseCatalogueParams(searchParams))
+
+  const [selected, setSelected] = useState<Record<string, string[]>>(initialState.selected)
+  const [query, setQuery] = useState(initialState.query)
+  const [page, setPage] = useState(initialState.page)
   // Mobile filter bottom-sheet open state. Desktop shows the sidebar inline and
   // never uses this.
   const [filterSheetOpen, setFilterSheetOpen] = useState(false)
-  const [sortBy, setSortBy] = useState<'name' | 'price-asc' | 'price-desc' | 'diameter'>('name')
+  const [sortBy, setSortBy] = useState<SortKey>(initialState.sort)
   const [showBackToTop, setShowBackToTop] = useState(false)
 
   const totalSelected = useMemo(
@@ -261,10 +324,28 @@ export function ProductsClient({
   }, [groups, sortBy])
 
   const totalPages = Math.max(1, Math.ceil(groups.length / PAGE_SIZE))
-  // Snap back to page 1 whenever the filter set, search text, or sort changes.
+  // Snap back to page 1 whenever the filter set, search text, or sort changes —
+  // but NOT on the initial mount, or we'd discard a page restored from the URL.
+  const didMountRef = useRef(false)
   useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true
+      return
+    }
     setPage(1)
   }, [selected, query, sortBy])
+
+  // Mirror state into the URL (no Next navigation — history.replaceState keeps
+  // filtering instant and client-side; we only READ searchParams on mount). The
+  // back-button + browser-back restore read this same URL.
+  const catalogueQs = useMemo(
+    () => catalogueParamsString({ selected, query, sort: sortBy, page }),
+    [selected, query, sortBy, page],
+  )
+  useEffect(() => {
+    const url = catalogueQs ? `${pathname}?${catalogueQs}` : pathname
+    window.history.replaceState(window.history.state, '', url)
+  }, [catalogueQs, pathname])
 
   // Back-to-top affordance (mobile): the page can run >10,000px tall, so once
   // the user has scrolled past a screen we offer a one-tap jump back to the
@@ -537,7 +618,7 @@ export function ProductsClient({
                       return (
                         <Link
                           key={group.key}
-                          href={`/products/${rep.id}`}
+                          href={`/products/${rep.id}${catalogueQs ? `?from=${encodeURIComponent(catalogueQs)}` : ''}`}
                           className="group relative flex flex-col overflow-hidden rounded-md border border-rule bg-white transition-[border-color,box-shadow] duration-150 ease-out hover:border-accent/40 hover:shadow-md"
                         >
                           <div className="relative aspect-square overflow-hidden bg-paper">

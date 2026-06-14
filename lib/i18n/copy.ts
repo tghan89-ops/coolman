@@ -334,6 +334,7 @@ export interface CopyStructure {
     }
     productDetail: {
       breadcrumbProducts: string
+      backToResults: string
       productTypeFallback: string
       machinePowerLabel: string
       quantityLabel: string
@@ -1411,6 +1412,7 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       productDetail: {
         breadcrumbProducts: 'Products',
+        backToResults: 'Back to results',
         productTypeFallback: 'Diamond Blade',
         machinePowerLabel: 'Machine power',
         quantityLabel: 'Quantity',
@@ -2705,6 +2707,7 @@ export const COPY: Record<Language, CopyStructure> = {
       },
       productDetail: {
         breadcrumbProducts: 'Produk',
+        backToResults: 'Kembali ke hasil',
         productTypeFallback: 'Bilah Berlian',
         machinePowerLabel: 'Kuasa mesin',
         quantityLabel: 'Kuantiti',

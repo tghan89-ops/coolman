@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ChevronRight, Minus, Plus, Play } from 'lucide-react'
+import { ArrowLeft, ChevronRight, Minus, Plus, Play } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
@@ -93,6 +93,7 @@ export interface ProductDetailData {
 
 export function ProductDetailClient({
   initialData,
+  backHref = '/products',
   familyMembers = null,
   initialSize = null,
   initialVariant = null,
@@ -103,6 +104,9 @@ export function ProductDetailClient({
   whatsappNumber = '',
 }: {
   initialData: ProductDetailData
+  /** Where the back link returns to — the catalogue with the user's filters/
+   *  search/sort preserved (built from the `from` param), or plain /products. */
+  backHref?: string
   /**
    * All sizes in this product's family, smallest diameter first. Null/absent
    * for a standalone product (no size switcher renders). When present, the
@@ -406,11 +410,20 @@ export function ProductDetailClient({
         language={language}
       />
 
-      {/* ── BREADCRUMB ───────────────────────────────────────────────── */}
+      {/* ── BACK BUTTON + BREADCRUMB ─────────────────────────────────────
+          backHref carries the catalogue's filters/search/sort so "Back to
+          results" returns to the exact view the user came from. */}
       <div className="border-b border-rule bg-paper">
-        <div className="mx-auto max-w-7xl px-6 py-3 lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-6 py-3 lg:px-8">
+          <Link
+            href={backHref}
+            className="inline-flex min-h-9 items-center gap-1.5 text-xs font-semibold text-navy transition-colors duration-150 ease-out hover:text-accent"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            {pd.backToResults}
+          </Link>
           <nav className="flex items-center gap-2 text-xs font-mono text-ink-muted">
-            <Link href="/products" className="transition-colors hover:text-ink">
+            <Link href={backHref} className="transition-colors hover:text-ink">
               {pd.breadcrumbProducts}
             </Link>
             <ChevronRight className="h-3.5 w-3.5 text-rule flex-shrink-0" />
