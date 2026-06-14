@@ -8,7 +8,9 @@ export const Contractors: CollectionConfig = {
     lockTime: 600 * 1000,
     cookies: {
       sameSite: 'Lax',
-      secure: process.env.NODE_ENV === 'production',
+      // Secure cookies require HTTPS. Set COOKIE_INSECURE=true to test over a
+      // plain-http IP before the domain + SSL is wired up; remove it once on HTTPS.
+      secure: process.env.NODE_ENV === 'production' && process.env.COOKIE_INSECURE !== 'true',
     },
   },
   admin: {
