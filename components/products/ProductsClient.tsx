@@ -3,9 +3,17 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Search, X } from 'lucide-react'
+import { ArrowRight, Search, SlidersHorizontal, X } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+} from '@/components/ui/sheet'
 import { FilterSidebar, type FilterGroup } from '@/components/catalogue/FilterSidebar'
 import { PriceStackCard } from '@/components/catalogue/PriceStackCard'
 import { bondLabel } from '@/lib/products/bond-label'
@@ -84,6 +92,14 @@ export function ProductsClient({
   })
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
+  // Mobile filter bottom-sheet open state. Desktop shows the sidebar inline and
+  // never uses this.
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false)
+
+  const totalSelected = useMemo(
+    () => Object.values(selected).reduce((sum, list) => sum + list.length, 0),
+    [selected],
+  )
 
   const relationName = (r: ProductRelation): string => {
     if (r == null) return ''
@@ -308,7 +324,10 @@ export function ProductsClient({
           <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
             {/* Filter sidebar — sticky with its own scroll so the filter panel
                 doesn't require scrolling the whole page on long catalogues. */}
-            <div className="lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+            {/* Desktop: inline sticky sidebar. Hidden below lg, where the
+                bottom-sheet (further down) takes over so phone users don't
+                scroll past ~100 filter rows to reach product #1. */}
+            <div className="hidden lg:block lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
               <FilterSidebar
                 groups={facetedGroups}
                 selected={selected}
@@ -350,6 +369,68 @@ export function ProductsClient({
                     </button>
                   )}
                 </div>
+              </div>
+
+              {/* Mobile filter trigger — sticky so it's reachable mid-scroll.
+                  Opens a bottom-sheet that reuses the same FilterSidebar, so all
+                  faceting/greying logic lives in one place. Desktop hides this. */}
+              <div className="sticky top-0 z-30 -mx-6 mb-4 border-b border-rule bg-paper/95 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-paper/80 lg:hidden">
+                <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
+                  <button
+                    type="button"
+                    onClick={() => setFilterSheetOpen(true)}
+                    className="flex w-full items-center justify-between rounded-sm border border-rule bg-white px-4 py-3 text-sm font-semibold text-navy transition-colors duration-150 ease-out hover:border-accent/40"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                      {totalSelected > 0
+                        ? t.products.filtersCount.replace('{count}', String(totalSelected))
+                        : t.products.filtersHeader}
+                    </span>
+                    <span className="font-mono text-xs text-ink-muted">
+                      {groups.length}{' '}
+                      {groups.length === 1
+                        ? t.products.productSingular
+                        : t.products.productPlural}
+                    </span>
+                  </button>
+                  <SheetContent
+                    side="bottom"
+                    className="flex max-h-[85vh] flex-col gap-0 rounded-t-xl p-0"
+                  >
+                    <SheetHeader className="border-b border-rule px-5 py-4">
+                      <SheetTitle className="text-sm font-semibold uppercase tracking-[0.08em] text-navy">
+                        {t.products.filtersHeader}
+                      </SheetTitle>
+                    </SheetHeader>
+                    <div className="flex-1 overflow-y-auto px-5 py-4">
+                      <FilterSidebar
+                        groups={facetedGroups}
+                        selected={selected}
+                        onChange={setSelected}
+                        onClear={handleClear}
+                        className="border-0 bg-transparent p-0"
+                      />
+                    </div>
+                    <SheetFooter className="flex-row gap-3 border-t border-rule px-5 py-4">
+                      <button
+                        type="button"
+                        onClick={handleClear}
+                        className="min-h-11 flex-1 rounded-sm border border-rule bg-white text-sm font-semibold text-navy transition-colors duration-150 ease-out hover:bg-paper"
+                      >
+                        {t.products.clear}
+                      </button>
+                      <SheetClose asChild>
+                        <button
+                          type="button"
+                          className="min-h-11 flex-1 rounded-sm bg-navy text-sm font-semibold text-white transition-colors duration-150 ease-out hover:bg-navy-light"
+                        >
+                          {t.products.showResults.replace('{count}', String(groups.length))}
+                        </button>
+                      </SheetClose>
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
               </div>
 
               {/* Result count line */}
@@ -501,9 +582,18 @@ export function ProductsClient({
                   )}
                 </>
               ) : (
-                <div className="flex flex-col items-center justify-center rounded-md border border-rule bg-white py-20">
-                  <p className="text-lg font-semibold text-navy">{t.products.empty.title}</p>
-                  <p className="mt-2 text-sm text-ink-muted">{t.products.empty.message}</p>
+                <div className="flex flex-col items-center justify-center rounded-md border border-rule bg-white px-6 py-20 text-center">
+                  {/* Recoverable empty state: a search miss gets search-specific
+                      copy (the query echoed back), a filter-only miss keeps the
+                      filter wording. Clear resets both. */}
+                  <p className="text-lg font-semibold text-navy">
+                    {query.trim()
+                      ? t.products.empty.searchTitle.replace('{query}', query.trim())
+                      : t.products.empty.title}
+                  </p>
+                  <p className="mt-2 max-w-md text-sm text-ink-muted">
+                    {query.trim() ? t.products.empty.searchHint : t.products.empty.message}
+                  </p>
                   <Button
                     onClick={handleClear}
                     className="mt-6 bg-navy font-semibold text-white hover:bg-navy-light"

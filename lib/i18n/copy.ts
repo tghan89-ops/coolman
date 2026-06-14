@@ -448,6 +448,8 @@ export interface CopyStructure {
       title: string
       message: string
       clearButton: string
+      searchTitle: string
+      searchHint: string
     }
     bottomCta: {
       title: string
@@ -1533,6 +1535,8 @@ export const COPY: Record<Language, CopyStructure> = {
         title: 'No Products Found',
         message: 'Try adjusting your filters',
         clearButton: 'Clear Filters',
+        searchTitle: 'No products match "{query}".',
+        searchHint: 'Check the spelling, try a tool type or material, or clear the search.',
       },
       bottomCta: {
         title: "Can't Find What You Need?",
@@ -2817,6 +2821,8 @@ export const COPY: Record<Language, CopyStructure> = {
         title: 'Tiada Produk Ditemui',
         message: 'Cuba laraskan tapisan anda',
         clearButton: 'Kosongkan Tapisan',
+        searchTitle: 'Tiada produk sepadan dengan "{query}".',
+        searchHint: 'Semak ejaan, cuba jenis alat atau bahan, atau kosongkan carian.',
       },
       bottomCta: {
         title: 'Tidak Jumpa Yang Anda Cari?',
