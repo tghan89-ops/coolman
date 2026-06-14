@@ -3,14 +3,14 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Search, SlidersHorizontal, X } from 'lucide-react'
+import { ArrowRight, ArrowUp, ChevronDown, Search, SlidersHorizontal, X } from 'lucide-react'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import {
   Sheet,
   SheetContent,
   SheetFooter,
-  SheetHeader,
   SheetTitle,
   SheetClose,
 } from '@/components/ui/sheet'
@@ -95,6 +95,8 @@ export function ProductsClient({
   // Mobile filter bottom-sheet open state. Desktop shows the sidebar inline and
   // never uses this.
   const [filterSheetOpen, setFilterSheetOpen] = useState(false)
+  const [sortBy, setSortBy] = useState<'name' | 'price-asc' | 'price-desc' | 'diameter'>('name')
+  const [showBackToTop, setShowBackToTop] = useState(false)
 
   const totalSelected = useMemo(
     () => Object.values(selected).reduce((sum, list) => sum + list.length, 0),
@@ -243,11 +245,36 @@ export function ProductsClient({
   // products each form their own single-member group — identical to before.
   const groups = useMemo(() => groupByFamily(filteredProducts), [filteredProducts])
 
+  // Sort the collapsed cards. Default 'name' keeps the server's A–Z order.
+  // Price sorts are offered to logged-in users only — logged-out visitors see
+  // no price and get no price-order signal (CLAUDE.md price gate).
+  const sortedGroups = useMemo(() => {
+    if (sortBy === 'name') return groups
+    const arr = [...groups]
+    if (sortBy === 'price-asc') arr.sort((a, b) => a.fromPrice - b.fromPrice)
+    else if (sortBy === 'price-desc') arr.sort((a, b) => b.fromPrice - a.fromPrice)
+    else if (sortBy === 'diameter')
+      arr.sort(
+        (a, b) => (a.primary.diameterMm ?? Infinity) - (b.primary.diameterMm ?? Infinity),
+      )
+    return arr
+  }, [groups, sortBy])
+
   const totalPages = Math.max(1, Math.ceil(groups.length / PAGE_SIZE))
-  // Snap back to page 1 whenever the filter set or search text changes.
+  // Snap back to page 1 whenever the filter set, search text, or sort changes.
   useEffect(() => {
     setPage(1)
-  }, [selected, query])
+  }, [selected, query, sortBy])
+
+  // Back-to-top affordance (mobile): the page can run >10,000px tall, so once
+  // the user has scrolled past a screen we offer a one-tap jump back to the
+  // search + filter controls.
+  useEffect(() => {
+    const onScroll = () => setShowBackToTop(window.scrollY > 800)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   // Catalogue search logging (hard rule: every catalogue search is logged).
   // We debounce 600ms so a settled query logs once, not on every keystroke, and
@@ -273,8 +300,8 @@ export function ProductsClient({
   }, [query])
   const safePage = Math.min(page, totalPages)
   const pagedGroups = useMemo(
-    () => groups.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
-    [groups, safePage],
+    () => sortedGroups.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [sortedGroups, safePage],
   )
 
   const handleClear = () => {
@@ -296,43 +323,65 @@ export function ProductsClient({
     })
   }
 
+  // Reusable Sort control (used in the desktop toolbar and the mobile bar).
+  // Price options are logged-in only so logged-out visitors get no price signal.
+  const sortControl = (extraClass?: string) => (
+    <div className={cn('relative', extraClass)}>
+      <select
+        value={sortBy}
+        onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+        aria-label={t.products.sortLabel}
+        className="h-11 w-full cursor-pointer appearance-none rounded-sm border border-rule bg-white pl-3 pr-8 text-sm font-semibold text-navy transition-colors duration-150 ease-out focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30"
+      >
+        <option value="name">{t.products.sortNameAsc}</option>
+        {isLoggedIn && <option value="price-asc">{t.products.sortPriceAsc}</option>}
+        {isLoggedIn && <option value="price-desc">{t.products.sortPriceDesc}</option>}
+        <option value="diameter">{t.products.sortDiameter}</option>
+      </select>
+      <ChevronDown
+        className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted"
+        aria-hidden="true"
+      />
+    </div>
+  )
+
   return (
     <PublicLayout>
-      {/* Hero — Session 4 verbatim copy. Light surface, no navy banner. */}
+      {/* Compact catalogue masthead — a working tool surface, not a magazine
+          cover, so products sit near the top instead of below the fold. The
+          full lede/trade copy lived here before and pushed the grid down; the
+          live result count below carries the real product number. */}
       <section className="border-b border-rule bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
+        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
           <div className="max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
               {t.catalogueIntro.eyebrow}
             </p>
-            <h1 className="mt-4 font-fraunces text-4xl font-normal leading-[1.08] tracking-[-0.01em] text-navy sm:text-5xl">
+            <h1 className="mt-2 font-fraunces text-2xl font-normal leading-[1.1] tracking-[-0.01em] text-navy sm:text-3xl">
               {t.catalogueIntro.headline}
             </h1>
-            <p className="mt-6 text-base leading-relaxed text-ink-muted sm:text-lg">
-              {t.catalogueIntro.lede}
-            </p>
-            <p className="mt-4 text-sm leading-relaxed text-ink-muted">
-              {t.catalogueIntro.tradeNote}
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Catalogue body — sidebar filters + product grid */}
-      <section className="overflow-x-hidden bg-paper py-12 lg:py-16">
+      {/* Catalogue body — sidebar filters + product grid.
+          overflow-x-CLIP (not hidden): clip stops horizontal overflow WITHOUT
+          turning this section into a scroll container, which `hidden` does and
+          which silently broke the mobile sticky filter bar. */}
+      <section className="overflow-x-clip bg-paper py-8 lg:py-12">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-            {/* Filter sidebar — sticky with its own scroll so the filter panel
-                doesn't require scrolling the whole page on long catalogues. */}
-            {/* Desktop: inline sticky sidebar. Hidden below lg, where the
-                bottom-sheet (further down) takes over so phone users don't
-                scroll past ~100 filter rows to reach product #1. */}
-            <div className="hidden lg:block lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto">
+            {/* Desktop: inline sticky sidebar, now accordion-collapsed so it
+                fits the viewport and pins cleanly (no nested inner scrollbar).
+                Hidden below lg, where the bottom-sheet takes over. */}
+            <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start">
               <FilterSidebar
                 groups={facetedGroups}
                 selected={selected}
                 onChange={setSelected}
                 onClear={handleClear}
+                showAllLabel={t.products.showAll}
+                showLessLabel={t.products.showLess}
                 className="min-w-0"
               />
             </div>
@@ -371,46 +420,42 @@ export function ProductsClient({
                 </div>
               </div>
 
-              {/* Mobile filter trigger — sticky so it's reachable mid-scroll.
-                  Opens a bottom-sheet that reuses the same FilterSidebar, so all
-                  faceting/greying logic lives in one place. Desktop hides this. */}
-              <div className="sticky top-0 z-30 -mx-6 mb-4 border-b border-rule bg-paper/95 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-paper/80 lg:hidden">
-                <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
-                  <button
-                    type="button"
-                    onClick={() => setFilterSheetOpen(true)}
-                    className="flex w-full items-center justify-between rounded-sm border border-rule bg-white px-4 py-3 text-sm font-semibold text-navy transition-colors duration-150 ease-out hover:border-accent/40"
-                  >
-                    <span className="inline-flex items-center gap-2">
-                      <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
-                      {totalSelected > 0
-                        ? t.products.filtersCount.replace('{count}', String(totalSelected))
-                        : t.products.filtersHeader}
-                    </span>
-                    <span className="font-mono text-xs text-ink-muted">
-                      {groups.length}{' '}
-                      {groups.length === 1
-                        ? t.products.productSingular
-                        : t.products.productPlural}
-                    </span>
-                  </button>
-                  <SheetContent
-                    side="bottom"
-                    className="flex max-h-[85vh] flex-col gap-0 rounded-t-xl p-0"
-                  >
-                    <SheetHeader className="border-b border-rule px-5 py-4">
-                      <SheetTitle className="text-sm font-semibold uppercase tracking-[0.08em] text-navy">
-                        {t.products.filtersHeader}
-                      </SheetTitle>
-                    </SheetHeader>
-                    <div className="flex-1 overflow-y-auto px-5 py-4">
-                      <FilterSidebar
-                        groups={facetedGroups}
-                        selected={selected}
-                        onChange={setSelected}
-                        onClear={handleClear}
-                        className="border-0 bg-transparent p-0"
-                      />
+              {/* Mobile filter + sort bar — sticky BELOW the 80px fixed header
+                  (top-24) so it stays reachable as the grid scrolls. Holds the
+                  Filters drawer trigger, the live result count, and Sort. */}
+              <div className="sticky top-24 z-30 -mx-6 mb-4 border-y border-rule bg-paper/95 px-6 py-3 backdrop-blur supports-[backdrop-filter]:bg-paper/80 lg:hidden">
+                <div className="flex items-center gap-2">
+                  <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
+                    <button
+                      type="button"
+                      onClick={() => setFilterSheetOpen(true)}
+                      className="flex flex-1 items-center justify-between gap-2 rounded-sm border border-rule bg-white px-4 py-3 text-sm font-semibold text-navy transition-colors duration-150 ease-out hover:border-accent/40"
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+                        {totalSelected > 0
+                          ? t.products.filtersCount.replace('{count}', String(totalSelected))
+                          : t.products.filtersHeader}
+                      </span>
+                      <span className="font-mono text-xs text-ink-muted">
+                        {groups.length}
+                      </span>
+                    </button>
+                    <SheetContent
+                      side="bottom"
+                      className="flex max-h-[85vh] flex-col gap-0 rounded-t-xl p-0 data-[state=open]:duration-150 data-[state=closed]:duration-150"
+                    >
+                      <SheetTitle className="sr-only">{t.products.filtersHeader}</SheetTitle>
+                      <div className="flex-1 overflow-y-auto px-5 py-4">
+                        <FilterSidebar
+                          groups={facetedGroups}
+                          selected={selected}
+                          onChange={setSelected}
+                          onClear={handleClear}
+                          showAllLabel={t.products.showAll}
+                          showLessLabel={t.products.showLess}
+                          className="border-0 bg-transparent p-0"
+                        />
                     </div>
                     <SheetFooter className="flex-row gap-3 border-t border-rule px-5 py-4">
                       <button
@@ -430,15 +475,20 @@ export function ProductsClient({
                       </SheetClose>
                     </SheetFooter>
                   </SheetContent>
-                </Sheet>
+                  </Sheet>
+                  {sortControl('w-[44%] shrink-0')}
+                </div>
               </div>
 
-              {/* Result count line */}
-              <div className="mb-4 flex items-baseline justify-between">
+              {/* Result count + sort toolbar. On mobile, sort lives in the
+                  sticky bar above; here it shows only the count. On desktop the
+                  sort control sits to the right of the count. */}
+              <div className="mb-4 flex items-center justify-between gap-3">
                 <p className="text-sm text-ink-muted">
                   <span className="font-mono font-semibold text-navy">{groups.length}</span>{' '}
                   {groups.length === 1 ? t.products.productSingular : t.products.productPlural}
                 </p>
+                <div className="hidden lg:block lg:w-56">{sortControl()}</div>
               </div>
 
               {/* Active-filter chips — one per selected value, ✕ removes just that
@@ -470,7 +520,7 @@ export function ProductsClient({
 
               {groups.length > 0 ? (
                 <>
-                  <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  <div className="grid grid-cols-2 gap-4 sm:gap-6 xl:grid-cols-3">
                     {pagedGroups.map((group) => {
                       const rep = group.primary
                       const cardImageUrl: string | null =
@@ -488,7 +538,7 @@ export function ProductsClient({
                           href={`/products/${rep.id}`}
                           className="group relative flex flex-col overflow-hidden rounded-md border border-rule bg-white transition-[border-color,box-shadow] duration-150 ease-out hover:border-accent/40 hover:shadow-md"
                         >
-                          <div className="relative aspect-square overflow-hidden bg-paper">
+                          <div className="relative aspect-[16/9] overflow-hidden bg-paper">
                             {/* Size-count badge — only for grouped families. */}
                             {group.isFamily && (
                               <span className="absolute left-3 top-3 z-10 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-white">
@@ -503,8 +553,8 @@ export function ProductsClient({
                                 src={cardImageUrl}
                                 alt={group.displayName}
                                 width={400}
-                                height={400}
-                                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                                height={225}
+                                sizes="(max-width: 640px) 50vw, (max-width: 1280px) 50vw, 33vw"
                                 className="h-full w-full object-cover"
                               />
                             ) : (
@@ -513,11 +563,11 @@ export function ProductsClient({
                               </div>
                             )}
                           </div>
-                          <div className="flex flex-1 flex-col p-5">
-                            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">
+                          <div className="flex flex-1 flex-col p-3 sm:p-5">
+                            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-accent sm:text-xs">
                               {primaryMaterialLabel}
                             </p>
-                            <h3 className="mt-2 text-lg font-semibold text-navy transition-colors group-hover:text-accent">
+                            <h3 className="mt-1.5 text-base font-semibold leading-snug text-navy transition-colors group-hover:text-accent sm:mt-2 sm:text-lg">
                               {group.displayName}
                             </h3>
                             <p className="mt-1 text-sm text-ink-muted">
@@ -527,7 +577,7 @@ export function ProductsClient({
                                 : (group.diameterRange ? ' | ' : '') +
                                   `${bondLabel(rep.bondType) || t.products.card.standardBond} ${t.products.card.bondSuffix}`}
                             </p>
-                            <div className="mt-4 flex items-center justify-between border-t border-rule pt-4">
+                            <div className="mt-3 flex items-center justify-between gap-2 border-t border-rule pt-3 sm:mt-4 sm:pt-4">
                               <PriceStackCard
                                 listPrice={group.fromPrice}
                                 isLoggedIn={isLoggedIn}
@@ -537,6 +587,7 @@ export function ProductsClient({
                                 showStackUp={false}
                                 pricePrefix={group.isFamily ? t.products.card.fromPrice : undefined}
                                 language={language}
+                                gateTone="muted"
                               />
                               <ArrowRight className="h-5 w-5 text-ink-faint transition-colors group-hover:text-accent" />
                             </div>
@@ -606,6 +657,20 @@ export function ProductsClient({
           </div>
         </div>
       </section>
+
+      {/* Back-to-top — mobile only; the grid can run very tall, so once past a
+          screen we offer a one-tap jump to the search + filter controls. */}
+      <button
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label={t.products.backToTop}
+        className={cn(
+          'fixed bottom-5 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full border border-rule bg-navy text-white shadow-md transition-opacity duration-150 ease-out lg:hidden',
+          showBackToTop ? 'opacity-100' : 'pointer-events-none opacity-0',
+        )}
+      >
+        <ArrowUp className="h-5 w-5" aria-hidden="true" />
+      </button>
     </PublicLayout>
   )
 }

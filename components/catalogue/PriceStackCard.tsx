@@ -34,6 +34,13 @@ export interface PriceStackCardProps {
   verifyEmailHref?: string
   language?: Language
   tone?: PriceStackTone
+  /**
+   * Visual weight of the logged-out "Sign in to see pricing" affordance.
+   * 'accent' (default) on focused surfaces like the product page; 'muted' in
+   * the catalogue grid, where ~24 tiled accent buttons would otherwise break
+   * the single-accent rule and read as noise. Logged-out still sees no price.
+   */
+  gateTone?: 'accent' | 'muted'
   className?: string
 }
 
@@ -81,6 +88,7 @@ export function PriceStackCard({
   verifyEmailHref = '/auth/verify-email',
   language = 'EN',
   tone = 'light',
+  gateTone = 'accent',
   className,
 }: PriceStackCardProps) {
   const router = useRouter()
@@ -106,7 +114,11 @@ export function PriceStackCard({
                 // (~7:1) where text-accent (#3B82F6) sat at ~4.4:1 borderline.
                 // Light tone unchanged. Burned 2026-05-17 — code-quality review.
                 'border-white/20 bg-white/5 text-sky-300 hover:text-white hover:border-white/40'
-              : 'border-rule bg-white text-accent hover:opacity-80 hover:border-accent',
+              : gateTone === 'muted'
+                ? // Catalogue grid: muted so a wall of tiled cards doesn't break
+                  // the single-accent rule. Still a clear, tappable affordance.
+                  'border-rule bg-white text-ink-muted hover:text-navy hover:border-navy/30'
+                : 'border-rule bg-white text-accent hover:opacity-80 hover:border-accent',
           )}
           style={{ transitionProperty: 'color, border-color, box-shadow' }}
         >

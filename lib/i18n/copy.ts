@@ -417,6 +417,14 @@ export interface CopyStructure {
     removeFilter: string
     filtersCount: string
     showResults: string
+    showAll: string
+    showLess: string
+    sortLabel: string
+    sortNameAsc: string
+    sortPriceAsc: string
+    sortPriceDesc: string
+    sortDiameter: string
+    backToTop: string
     searchPlaceholder: string
     searchLabel: string
     searchClear: string
@@ -1504,6 +1512,14 @@ export const COPY: Record<Language, CopyStructure> = {
       removeFilter: 'Remove {label} filter',
       filtersCount: 'Filters ({count})',
       showResults: 'Show {count} results',
+      showAll: 'Show all ({count})',
+      showLess: 'Show less',
+      sortLabel: 'Sort',
+      sortNameAsc: 'Name (A–Z)',
+      sortPriceAsc: 'Price: low to high',
+      sortPriceDesc: 'Price: high to low',
+      sortDiameter: 'Diameter: small to large',
+      backToTop: 'Back to top',
       searchPlaceholder: 'Search by product name or code…',
       searchLabel: 'Search products',
       searchClear: 'Clear search',
@@ -2790,6 +2806,14 @@ export const COPY: Record<Language, CopyStructure> = {
       removeFilter: 'Buang penapis {label}',
       filtersCount: 'Tapisan ({count})',
       showResults: 'Tunjuk {count} hasil',
+      showAll: 'Tunjuk semua ({count})',
+      showLess: 'Tunjuk kurang',
+      sortLabel: 'Susun',
+      sortNameAsc: 'Nama (A–Z)',
+      sortPriceAsc: 'Harga: rendah ke tinggi',
+      sortPriceDesc: 'Harga: tinggi ke rendah',
+      sortDiameter: 'Diameter: kecil ke besar',
+      backToTop: 'Kembali ke atas',
       searchPlaceholder: 'Cari mengikut nama atau kod produk…',
       searchLabel: 'Cari produk',
       searchClear: 'Kosongkan carian',
