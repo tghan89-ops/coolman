@@ -140,7 +140,7 @@ Every page composed from these primitives:
 
 ### Product cards (catalogue)
 - White surface, 1px `--rule` border, 8px radius.
-- Photo top (16:9 ratio), padding 24px below.
+- Photo top (1:1 / square ratio — product discs are round and crop badly at 16:9; GH 2026-06-14), padding 24px below.
 - Title H2, sub-title small `--ink-muted`, mono-lg price, badge top-right (`Best seller` / `Low stock`).
 - Hover: shadow `0 4px 12px rgba(10,22,40,0.06)` + 1px `--accent` border. **No translation, no scale.** 150ms ease-out.
 

@@ -371,10 +371,12 @@ export function ProductsClient({
       <section className="overflow-x-clip bg-paper py-8 lg:py-12">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
-            {/* Desktop: inline sticky sidebar, now accordion-collapsed so it
-                fits the viewport and pins cleanly (no nested inner scrollbar).
+            {/* Desktop: inline sticky sidebar. Accordion-collapsed it fits the
+                viewport with no scrollbar; when groups are expanded past the
+                screen it scrolls INTERNALLY (max-h + overflow-y-auto) so the
+                bottom groups stay reachable without scrolling to the page end.
                 Hidden below lg, where the bottom-sheet takes over. */}
-            <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start">
+            <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:overscroll-contain">
               <FilterSidebar
                 groups={facetedGroups}
                 selected={selected}
@@ -538,7 +540,7 @@ export function ProductsClient({
                           href={`/products/${rep.id}`}
                           className="group relative flex flex-col overflow-hidden rounded-md border border-rule bg-white transition-[border-color,box-shadow] duration-150 ease-out hover:border-accent/40 hover:shadow-md"
                         >
-                          <div className="relative aspect-[16/9] overflow-hidden bg-paper">
+                          <div className="relative aspect-square overflow-hidden bg-paper">
                             {/* Size-count badge — only for grouped families. */}
                             {group.isFamily && (
                               <span className="absolute left-3 top-3 z-10 rounded-full bg-accent px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-white">
@@ -553,7 +555,7 @@ export function ProductsClient({
                                 src={cardImageUrl}
                                 alt={group.displayName}
                                 width={400}
-                                height={225}
+                                height={400}
                                 sizes="(max-width: 640px) 50vw, (max-width: 1280px) 50vw, 33vw"
                                 className="h-full w-full object-cover"
                               />
