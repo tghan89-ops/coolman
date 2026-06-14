@@ -136,6 +136,14 @@ async function DashboardWidgetsInner() {
         <Link href="/api/admin/export/contractors">Download customers (Excel)</Link>{'  ·  '}
         <Link href="/api/admin/export/search-log">Download search log (Excel, no PII)</Link>
       </p>
+
+      {/*
+        Search-signal intelligence (top zero-result + high-volume queries, 30d)
+        renders as its own widget — components/admin/SearchSignalWidget.tsx —
+        mounted via admin.components.beforeDashboard in payload.config.ts. It is
+        NOT embedded here to avoid a double-render if this DashboardWidgets is
+        re-enabled. If you ever move it inline, drop it from beforeDashboard.
+      */}
     </div>
   )
 }

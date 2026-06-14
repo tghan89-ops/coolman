@@ -45,8 +45,13 @@ export default buildConfig({
   admin: {
     user: AdminUsers.slug,
     components: {
-      // beforeDashboard: ['@/components/admin/DashboardWidgets#default'], // temporarily disabled to isolate 500 error
-      beforeDashboard: ['@/components/admin/KillSwitchToggle#default'],
+      // DashboardWidgets temporarily disabled to isolate a 500 error. The
+      // KillSwitchToggle and SearchSignalWidget below render independently.
+      // SearchSignalWidget self-gates via getAdminSession, so it is safe here.
+      beforeDashboard: [
+        '@/components/admin/KillSwitchToggle#default',
+        '@/components/admin/SearchSignalWidget#default',
+      ],
       // Sidebar link added at the top of the nav so admins can jump straight
       // into the search-analytics view (custom route below).
       beforeNavLinks: [
