@@ -37,4 +37,63 @@ describe('productMatchesQuery', () => {
     expect(productMatchesQuery({ name: null, sku: null }, 'x')).toBe(false)
     expect(productMatchesQuery({ name: 'Bridge Saw' }, 'bridge')).toBe(true)
   })
+
+  // --- Widened haystack: category / materials / applications ---
+
+  it('matches on material name', () => {
+    const p = { name: 'XR Coring Bit', materials: [{ name: 'Granite' }] }
+    expect(productMatchesQuery(p, 'granite')).toBe(true)
+  })
+
+  it('matches on application name', () => {
+    const p = { name: 'XR Coring Bit', applications: [{ name: 'Core Drilling' }] }
+    expect(productMatchesQuery(p, 'core drilling')).toBe(true)
+  })
+
+  it('matches on category name', () => {
+    const p = { name: 'GS Blade', category: 'Diamond Blades' }
+    expect(productMatchesQuery(p, 'diamond blades')).toBe(true)
+  })
+
+  it('matches dual-shape relations given as bare strings', () => {
+    const p = { name: 'XR Coring Bit', materials: ['Granite', 'Concrete'] }
+    expect(productMatchesQuery(p, 'granite')).toBe(true)
+    expect(productMatchesQuery(p, 'concrete')).toBe(true)
+  })
+
+  it('matches dual-shape relations given as bare numbers without throwing', () => {
+    const p = { name: 'XR Coring Bit', materials: [123, null] }
+    expect(productMatchesQuery(p, 'xr')).toBe(true)
+    expect(productMatchesQuery(p, 'granite')).toBe(false)
+  })
+
+  it('token-AND: all tokens must appear somewhere in the haystack', () => {
+    const p = {
+      name: 'XR Coring Bit',
+      category: 'Core Bits',
+      materials: [{ name: 'Granite' }],
+    }
+    expect(productMatchesQuery(p, 'granite core')).toBe(true) // granite material + Core Bits category
+    expect(productMatchesQuery(p, 'granite banana')).toBe(false) // banana matches nothing
+  })
+
+  it('expands trade-language synonyms (rebar -> Reinforced Concrete)', () => {
+    const p = { name: 'Heavy Duty Bit', materials: [{ name: 'Reinforced Concrete' }] }
+    expect(productMatchesQuery(p, 'rebar')).toBe(true)
+  })
+
+  it('expands Bahasa Malaysia synonyms (kaca -> Glass)', () => {
+    const p = { name: 'Glass Drill', materials: [{ name: 'Glass' }] }
+    expect(productMatchesQuery(p, 'kaca')).toBe(true)
+  })
+
+  it('ignores any description property — it is not part of the haystack', () => {
+    const p = {
+      name: 'XR Coring Bit',
+      // description is intentionally excluded from the slim cache / haystack.
+      description: 'unicornword exclusive secret',
+    } as unknown as Parameters<typeof productMatchesQuery>[0]
+    expect(productMatchesQuery(p, 'unicornword')).toBe(false)
+    expect(productMatchesQuery(p, 'coring')).toBe(true)
+  })
 })

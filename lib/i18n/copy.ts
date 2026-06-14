@@ -897,6 +897,7 @@ export interface CopyStructure {
     lede: string
     tradeNote: string
     filters: {
+      categoryLabel: string
       materialLabel: string
       applicationLabel: string
       diameterLabel: string
@@ -2154,6 +2155,7 @@ export const COPY: Record<Language, CopyStructure> = {
       lede: "247 SKUs across diamond blades, core drills, and segment systems. Use the filters to narrow by material, application, or diameter. If the cut you're planning isn't obvious from the range, the engineering desk is faster than the form.",
       tradeNote: 'Trade accounts get tier pricing and reorder history. Apply through the Trade page.',
       filters: {
+        categoryLabel: 'Type',
         materialLabel: 'Material',
         applicationLabel: 'Application',
         diameterLabel: 'Diameter',
@@ -3433,6 +3435,7 @@ export const COPY: Record<Language, CopyStructure> = {
       lede: '247 SKU merangkumi bilah berlian, penggerudi teras, dan sistem segmen. Guna penapis untuk tapis mengikut bahan, aplikasi, atau diameter. Jika pemotongan yang anda rancang tidak jelas dari rangkaian ini, meja kejuruteraan lebih pantas daripada borang.',
       tradeNote: 'Akaun perdagangan mendapat harga peringkat dan sejarah pesanan semula. Mohon melalui halaman Perdagangan.',
       filters: {
+        categoryLabel: 'Jenis',
         materialLabel: 'Bahan',
         applicationLabel: 'Aplikasi',
         diameterLabel: 'Diameter',

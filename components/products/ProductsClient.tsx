@@ -24,6 +24,7 @@ const PAGE_SIZE = 24
 // app/(frontend)/products/page.tsx. The strings ("material", "application",
 // "diameter") flow into search-log entries verbatim so Alan can scan them.
 const FILTER_KEYS = {
+  category: 'category',
   material: 'material',
   application: 'application',
   diameter: 'diameter',
@@ -41,6 +42,7 @@ export interface ProductCardData {
   id: string | number
   name: string
   sku?: string | null
+  category?: string | null
   listPrice: number
   diameter?: string | null
   diameterMm?: number | null
@@ -70,6 +72,7 @@ export function ProductsClient({
   const { t, language } = useLanguage()
   const products = initialProducts
   const [selected, setSelected] = useState<Record<string, string[]>>({
+    [FILTER_KEYS.category]: [],
     [FILTER_KEYS.material]: [],
     [FILTER_KEYS.application]: [],
     [FILTER_KEYS.diameter]: [],
@@ -80,6 +83,7 @@ export function ProductsClient({
   const filteredProducts = useMemo(() => {
     let result = products
 
+    const selCategories = selected[FILTER_KEYS.category] ?? []
     const selMaterials = selected[FILTER_KEYS.material] ?? []
     const selApplications = selected[FILTER_KEYS.application] ?? []
     const selDiameters = selected[FILTER_KEYS.diameter] ?? []
@@ -94,6 +98,9 @@ export function ProductsClient({
       return String(r)
     }
 
+    if (selCategories.length > 0) {
+      result = result.filter((p) => selCategories.includes(p.category ?? ''))
+    }
     if (selMaterials.length > 0) {
       result = result.filter((p) => {
         const mats = Array.isArray(p.materials) ? p.materials : []
@@ -161,6 +168,7 @@ export function ProductsClient({
 
   const handleClear = () => {
     setSelected({
+      [FILTER_KEYS.category]: [],
       [FILTER_KEYS.material]: [],
       [FILTER_KEYS.application]: [],
       [FILTER_KEYS.diameter]: [],

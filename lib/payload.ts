@@ -35,6 +35,12 @@ export type SlimProduct = {
   id: string | number
   name: string
   sku: string | null
+  // The product's single category name (e.g. "Core Bits"). Required relationship
+  // on every product, so depth:1 resolves the name. Carried on the slim row so
+  // the catalogue can lead with a Category filter and so free-text search can
+  // match category terms ("diamond blades"). One short string per row — trivial
+  // cache-size impact. Added 2026-06-14 (filter revamp wave 1).
+  category: string | null
   listPrice: number
   diameter: string | null
   diameterMm: number | null
@@ -81,6 +87,7 @@ function slimProduct(p: any): SlimProduct {
     id: p.id,
     name: typeof p?.name === 'string' ? p.name : '',
     sku: typeof p?.sku === 'string' ? p.sku : null,
+    category: relationName(p?.category),
     listPrice: typeof p?.listPrice === 'number' ? p.listPrice : 0,
     diameter: typeof p?.diameter === 'string' ? p.diameter : null,
     diameterMm: typeof p?.diameterMm === 'number' ? p.diameterMm : null,

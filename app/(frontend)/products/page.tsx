@@ -14,6 +14,7 @@ import type { FilterGroup } from '@/components/catalogue/FilterSidebar'
 type ProductFilterRow = {
   id: string | number
   family?: string | null
+  category?: string | null
   materials?: Array<{ name?: string | null } | string | number | null> | null
   applications?: Array<{ name?: string | null } | string | number | null> | null
   diameterMm?: number | null
@@ -80,6 +81,22 @@ export default async function ProductsPage() {
   }
   const familyRows = Array.from(familyMap.values())
 
+  // Category counts — the lead filter. Category is a required single-value
+  // relationship and (verified against prod) no family code spans two
+  // categories, so each family contributes its one category once. We still
+  // union per family defensively, mirroring the material/application loops.
+  const categoryCounts = new Map<string, number>()
+  for (const members of familyRows) {
+    const seen = new Set<string>()
+    for (const p of members) {
+      const name = p.category
+      if (typeof name === 'string' && name && !seen.has(name)) {
+        seen.add(name)
+        categoryCounts.set(name, (categoryCounts.get(name) ?? 0) + 1)
+      }
+    }
+  }
+
   // Material counts. A family contributes each distinct material once across
   // all of its sizes (materials are shared, but we union defensively).
   const materialCounts = new Map<string, number>()
@@ -129,6 +146,16 @@ export default async function ProductsPage() {
   const t = COPY.EN.catalogueIntro.filters
   const diameterUnit = COPY.EN.catalogueIntro.filters.diameterUnit
 
+  // Category leads the sidebar. Order by count desc (Diamond Blades, Core Bits,
+  // …) so the biggest, most-likely buckets sit at the top; tiebreak by name.
+  const categoryGroup: FilterGroup = {
+    key: 'category',
+    label: t.categoryLabel,
+    options: Array.from(categoryCounts.entries())
+      .sort(([a, ca], [b, cb]) => cb - ca || a.localeCompare(b))
+      .map(([value, count]) => ({ value, label: value, count })),
+  }
+
   const materialGroup: FilterGroup = {
     key: 'material',
     label: t.materialLabel,
@@ -167,7 +194,9 @@ export default async function ProductsPage() {
     diameterGroup.options.push({ value: 'other', label: 'Other', count: otherCount })
   }
 
-  const filterGroups: FilterGroup[] = [materialGroup, applicationGroup, diameterGroup]
+  // Decision-order funnel: what tool (Category) → what you're cutting (Material)
+  // → how big (Diameter) → wet/dry & job refinement (Application, demoted last).
+  const filterGroups: FilterGroup[] = [categoryGroup, materialGroup, diameterGroup, applicationGroup]
 
   return (
     <ProductsClient
