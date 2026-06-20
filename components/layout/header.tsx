@@ -52,11 +52,15 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
 
   const showFieldNotesLink = fieldNotesCount >= FIELD_NOTES_NAV_THRESHOLD
 
+  // Trimmed to the new transactional direction (June 2026): Products / Shibuya /
+  // Contact. Heritage and Why-Coolman pages still exist but are retiring, so
+  // they're off the primary nav.
   const navItems = [
+    { label: t.nav.aboutUs, href: '/about' },
     { label: t.nav.products, href: '/products' },
     { label: 'Shibuya', href: '/shibuya' },
-    { label: t.nav.heritage, href: '/heritage' },
-    { label: t.nav.whyCoolman, href: '/why-coolman' },
+    { label: t.nav.brotherhood, href: '/brotherhood' },
+    { label: t.nav.career, href: '/career' },
     { label: t.nav.contact, href: '/contact' },
   ]
 
@@ -197,7 +201,7 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
                 {item.label}
               </Link>
             ))}
-            
+
             <div className="mt-4 flex flex-col gap-3">
               <button
                 onClick={() => {

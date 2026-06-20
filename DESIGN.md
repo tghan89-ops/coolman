@@ -70,6 +70,8 @@ All colors are defined as CSS custom properties in [`app/globals.css`](app/globa
 
 Three type families maximum: **IBM Plex Sans** (UI), **Cormorant Garamond** (editorial h1/h2 hero blocks and Field Notes article headers only — never UI labels, buttons, navigation, or body copy), **JetBrains Mono** (numbers, prices, SKUs, dates, IDs). Inter is banned.
 
+> **Posture change — home landing (June 2026).** GH approved a full direction change from editorial Industrial Premium to a transactional B2B catalogue landing. On the home page (`HomePageClient`) and the global header, **section headlines are uppercase IBM Plex Sans bold (700)**, not the editorial serif. The editorial serif is now scoped to the *legacy* editorial pages (heritage, why-coolman, Field Notes) which are retiring. New landing copy lives in `lib/i18n/home-landing.ts` (bilingual). The three-family limit is unchanged — this only moves headlines off the serif on the new surfaces.
+
 - **Sans (UI body + headings):** IBM Plex Sans. Loaded via `next/font/google` in `app/(frontend)/layout.tsx`. Tailwind class: `font-sans`.
 - **Editorial serif (hero h1/h2 + Field Notes article headers):** Cormorant Garamond, 300–600. Tailwind class: `font-fraunces`. Editorial-only — never on UI labels, buttons, navigation, body copy, or admin UI.
 - **Mono (prices, SKUs, quantities, dates, codes):** JetBrains Mono. Same loader. Tailwind class: `font-mono`.
@@ -101,7 +103,7 @@ Three type families maximum: **IBM Plex Sans** (UI), **Cormorant Garamond** (edi
 - **Headings:** always `tracking-tight` from H1 down to H3 — never default tracking on a heading.
 - **Mono goes on numbers, never on prose.** A price is mono; a sentence about pricing is sans.
 - **Three type families maximum, ever.** IBM Plex Sans, Cormorant Garamond (editorial only), JetBrains Mono. No script, no slab, no fourth display face.
-- **Cormorant Garamond is editorial, not UI.** Allowed: hero h1/h2 on home, heritage, why-coolman; Field Notes article headers; mid-page pull-quote blocks. Banned: buttons, navigation, form labels, body copy, admin UI, card titles, status pills.
+- **Cormorant Garamond is editorial, not UI.** Allowed: hero h1/h2 on the legacy editorial pages (heritage, why-coolman); Field Notes article headers; mid-page pull-quote blocks. **Not** on the new home landing (June 2026 — uppercase IBM Plex Sans bold there). Banned: buttons, navigation, form labels, body copy, admin UI, card titles, status pills.
 
 ---
 

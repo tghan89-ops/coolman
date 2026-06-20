@@ -25,6 +25,10 @@ export interface CopyStructure {
     switchToBM: string
     switchToEN: string
     heritage: string
+    getQuote: string
+    aboutUs: string
+    brotherhood: string
+    career: string
   }
   cart: {
     title: string
@@ -1069,6 +1073,10 @@ export const COPY: Record<Language, CopyStructure> = {
       switchToBM: 'Switch to Bahasa Malaysia',
       switchToEN: 'Switch to English',
       heritage: 'Heritage',
+      getQuote: 'Get a quote',
+      aboutUs: 'About Us',
+      brotherhood: 'Brotherhood',
+      career: 'Career',
     },
     cart: {
       title: 'Your Cart',
@@ -2364,6 +2372,10 @@ export const COPY: Record<Language, CopyStructure> = {
       switchToBM: 'Tukar ke Bahasa Malaysia',
       switchToEN: 'Tukar ke Bahasa Inggeris',
       heritage: 'Warisan',
+      getQuote: 'Dapatkan sebut harga',
+      aboutUs: 'Tentang Kami',
+      brotherhood: 'Brotherhood',
+      career: 'Kerjaya',
     },
     cart: {
       title: 'Troli Anda',
