@@ -79,15 +79,15 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
         <Link
           href="/"
           aria-label="Coolman home"
-          className="-mx-2 flex h-11 items-center px-2"
+          className="-mx-2 flex h-14 items-center px-2"
         >
           <Image
             src="/brand/coolman-logo-white.svg"
             alt="Coolman"
-            width={120}
-            height={36}
+            width={200}
+            height={56}
             priority
-            className="h-8 w-auto"
+            className="h-14 w-auto"
           />
         </Link>
 
