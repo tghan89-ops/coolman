@@ -1,6 +1,12 @@
-﻿import type { GlobalConfig } from 'payload'
+import type { GlobalConfig } from 'payload'
 import { bilingualTabs } from '@/lib/admin/bilingualTabs'
 
+// Home Page global — rewired June 2026 to match the transactional landing
+// (HomePageClient). Mirrors the structure of lib/i18n/home-landing.ts, which
+// remains the code-side fallback: any field left blank here falls back to that
+// module, so the page never blanks out. Functional micro-copy (form field
+// labels, "Sending…", interest options) stays in code by design — only the
+// marketing copy is admin-editable. BM fields fall back to EN when blank.
 export const HomePage: GlobalConfig = {
   slug: 'home-page',
   access: { read: () => true },
@@ -10,194 +16,195 @@ export const HomePage: GlobalConfig = {
     },
   },
   fields: [
+    // ── HERO ──────────────────────────────────────────────────────────────
     {
-      name: 'opening',
+      name: 'hero',
       type: 'group',
       fields: bilingualTabs([
-        { name: 'eyebrow',           type: 'text',     defaultValue: 'Coolman · Manufacturer of cutting tools · Selangor, 2007' },
-        { name: 'eyebrowBM',         type: 'text',     defaultValue: 'Coolman · Pengeluar alat pemotong · Selangor, 2007',  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'headlinePrefix',    type: 'text',     defaultValue: 'Right Job ' },
-        { name: 'headlinePrefixBM',  type: 'text',     defaultValue: 'Kerja yang Betul ',                                        admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'headlineEmphasis',  type: 'text',     defaultValue: 'Matched with the Right Blade.' },
-        { name: 'headlineEmphasisBM', type: 'text',    defaultValue: 'Dipadankan dengan Bilah yang Betul.',                      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'eyebrow', type: 'text', defaultValue: 'Diamond tools · Selangor · since 2007' },
+        { name: 'eyebrowBM', type: 'text', defaultValue: 'Alat berlian · Selangor · sejak 2007', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'headlineLineOne', type: 'text', defaultValue: 'The right blade', admin: { description: 'First line of the hero headline.' } },
+        { name: 'headlineLineOneBM', type: 'text', defaultValue: 'Bilah yang tepat', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'headlineLineTwoPrefix', type: 'text', defaultValue: 'for ', admin: { description: 'Start of the second line, before the blue word(s). Keep the trailing space.' } },
+        { name: 'headlineLineTwoPrefixBM', type: 'text', defaultValue: 'untuk ', admin: { description: 'Bahasa Malaysia. Keep the trailing space.' } },
+        { name: 'headlineEmphasis', type: 'text', defaultValue: 'every cut', admin: { description: 'The blue emphasised word(s) at the end of the headline.' } },
+        { name: 'headlineEmphasisBM', type: 'text', defaultValue: 'setiap potongan', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'lede', type: 'textarea', defaultValue: 'Blades, core bits and cutting systems engineered for Malaysian rock, rebar and schedule. Tell us the job — we send the spec and the price.' },
+        { name: 'ledeBM', type: 'textarea', defaultValue: 'Bilah, mata teras dan sistem pemotongan direka untuk batuan, rebar dan jadual kerja Malaysia. Beritahu kami kerjanya — kami hantar spesifikasi dan harganya.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'ctaPrimary', type: 'text', defaultValue: 'Browse products' },
+        { name: 'ctaPrimaryBM', type: 'text', defaultValue: 'Lihat produk', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'ctaSecondary', type: 'text', defaultValue: 'Speak to engineering' },
+        { name: 'ctaSecondaryBM', type: 'text', defaultValue: 'Cakap dengan kejuruteraan', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'badgeTag', type: 'text', defaultValue: 'Ready stock', admin: { description: 'Small label on the image badge.' } },
+        { name: 'badgeTagBM', type: 'text', defaultValue: 'Stok sedia', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'badgeValue', type: 'text', defaultValue: 'Shipped from Selangor', admin: { description: 'Bold line on the image badge.' } },
+        { name: 'badgeValueBM', type: 'text', defaultValue: 'Dihantar dari Selangor', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
-          name: 'lede',
-          type: 'textarea',
-          defaultValue: 'Coolman has built diamond blades, core bits and cutting systems in Malaysia since 2007. Our founder, Alan, has been in the cutting trade since 1998. Every blade we make is engineered for the rock, the rebar and the schedule Malaysian contractors face.',
+          name: 'stats',
+          type: 'array',
+          admin: { description: 'The four stat tiles under the hero buttons. Value is shown as-is (no translation); label is bilingual.' },
+          defaultValue: [
+            { value: '2007', label: 'Cutting since', labelBM: 'Memotong sejak' },
+            { value: '247', label: 'SKUs in stock', labelBM: 'SKU dalam stok' },
+            { value: '2014', label: 'Shibuya partner', labelBM: 'Rakan Shibuya' },
+            { value: '2 days', label: 'Typical dispatch', labelBM: 'Penghantaran biasa' },
+          ],
+          fields: [
+            { name: 'value', type: 'text', required: true, admin: { description: 'e.g. 2007, 247, 2 days — shown as-is, not translated.' } },
+            { name: 'label', type: 'text', required: true },
+            { name: 'labelBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ],
         },
-        {
-          name: 'ledeBM',
-          type: 'textarea',
-          defaultValue: 'Coolman telah membina bilah berlian, mata teras dan sistem pemotongan di Malaysia sejak 2007. Pengasas kami, Alan, telah berada dalam bidang pemotongan sejak 1998. Setiap bilah yang kami hasilkan direka untuk batu, besi tetulang dan jadual yang dihadapi kontraktor Malaysia.',
-          admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
-        },
-        { name: 'ctaPrimary',     type: 'text', defaultValue: 'Speak to engineering' },
-        { name: 'ctaPrimaryBM',   type: 'text', defaultValue: 'Berbual dengan kejuruteraan', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'ctaSecondary',   type: 'text', defaultValue: 'Browse the tools' },
-        { name: 'ctaSecondaryBM', type: 'text', defaultValue: 'Lihat alat',                 admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
       ]),
     },
 
+    // ── TRUST BAR ─────────────────────────────────────────────────────────
     {
-      name: 'fearGrid',
+      name: 'trustBar',
+      type: 'group',
+      fields: [
+        {
+          name: 'items',
+          type: 'array',
+          admin: { description: 'The strip of short trust statements under the hero.' },
+          defaultValue: [
+            { text: 'Engineered in Selangor', textBM: 'Direka di Selangor' },
+            { text: 'Shibuya Japan distributor', textBM: 'Pengedar Shibuya Japan' },
+            { text: 'WhatsApp tech support', textBM: 'Sokongan teknikal WhatsApp' },
+            { text: 'Trade pricing for contractors', textBM: 'Harga dagangan untuk kontraktor' },
+            { text: 'Dispatch within 2 business days', textBM: 'Penghantaran dalam 2 hari bekerja' },
+          ],
+          fields: [
+            { name: 'text', type: 'text', required: true },
+            { name: 'textBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ],
+        },
+      ],
+    },
+
+    // ── WHY COOLMAN ───────────────────────────────────────────────────────
+    {
+      name: 'why',
       type: 'group',
       fields: bilingualTabs([
-        { name: 'eyebrow',    type: 'text', defaultValue: 'What contractors live with' },
-        { name: 'eyebrowBM',  type: 'text', defaultValue: 'Apa yang kontraktor tanggung',                                         admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'headline',   type: 'text', defaultValue: "Four things keep the boss up at night. We've watched all four on site." },
-        { name: 'headlineBM', type: 'text', defaultValue: 'Empat perkara yang menjadikan bos sukar tidur. Kami sudah menyaksi keempat-empatnya di tapak.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'eyebrow', type: 'text', defaultValue: 'Why Coolman' },
+        { name: 'eyebrowBM', type: 'text', defaultValue: 'Kenapa Coolman', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'heading', type: 'text', defaultValue: 'Built for the Malaysian job site' },
+        { name: 'headingBM', type: 'text', defaultValue: 'Dibina untuk tapak kerja Malaysia', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
           name: 'cards',
           type: 'array',
+          admin: { description: 'The three numbered reasons.' },
           defaultValue: [
-            { key: 'delay',          title: 'A delay you cannot explain to the developer',              titleBM: 'Kelewatan yang anda tidak boleh jelaskan kepada pemaju',                  body: 'The blade is slow. The schedule delays. The customer is already calling. We have watched this happen more times than we wish.',                                                                                            bodyBM: 'Bilah perlahan. Jadual tertunda. Pelanggan sudah pun menelefon. Kami sudah lihat ini berlaku lebih kerap daripada yang kami mahu.' },
-            { key: 'equipment',      title: 'Equipment that fails at 11pm on a road closure',           titleBM: 'Peralatan yang gagal pada 11 malam semasa penutupan jalan',                body: "When the cut has to be done tonight and the blade gives out at the wrong moment, the cost isn't the blade. It's the closure, the police, the developer phoning at 6am.",                                                      bodyBM: 'Apabila potongan mesti siap malam ini dan bilah putus pada saat yang salah, kos itu bukan bilah. Ia adalah penutupan, polis, dan pemaju yang menelefon pada jam 6 pagi.' },
-            { key: 'inconsistency',  title: 'Inconsistency between blades that should be identical',    titleBM: 'Ketidakkonsistenan antara bilah yang sepatutnya serupa',                  body: 'One blade cuts. The next one of the same SKU lasts half as long. The crew loses faith. The supplier loses the account.',                                                                                                     bodyBM: 'Satu bilah memotong. Bilah seterusnya dengan SKU yang sama tahan separuh sahaja. Krew hilang keyakinan. Pembekal hilang akaun.' },
-            { key: 'alone',          title: "Being left alone with a cut nobody else has seen",         titleBM: 'Ditinggalkan keseorangan dengan potongan yang belum pernah dilihat orang lain', body: 'A new aggregate. An unusual depth. A spec the supplier has never tested. The crew gets it. The supplier ducks the call.',                                                                                                  bodyBM: 'Agregat baru. Kedalaman luar biasa. Spesifikasi yang pembekal tidak pernah uji. Krew faham. Pembekal mengelak panggilan.' },
+            { num: '01', title: 'Engineered for the rock here', titleBM: 'Direka untuk batuan di sini', body: 'Tested on Malaysian aggregate, rebar and tropical concrete — not a European catalogue. If it cuts here, it cuts anywhere.', bodyBM: 'Diuji pada agregat, rebar dan konkrit tropika Malaysia — bukan katalog Eropah. Kalau ia memotong di sini, ia memotong di mana-mana.' },
+            { num: '02', title: 'The engineering desk answers', titleBM: 'Meja kejuruteraan menjawab', body: "Send the cut on WhatsApp. Alan's desk replies with the right spec — direct, with no salesman in between.", bodyBM: 'Hantar potongan itu di WhatsApp. Meja Alan balas dengan spesifikasi yang betul — terus, tanpa jurujual di tengah.' },
+            { num: '03', title: 'Order direct, see the price', titleBM: 'Pesan terus, lihat harga', body: 'Trade accounts get tier pricing and reorder history. The effective price shows before you submit — never a surprise invoice.', bodyBM: 'Akaun dagangan dapat harga berperingkat dan sejarah pesanan. Harga efektif ditunjukkan sebelum anda hantar — tiada invois mengejut.' },
           ],
-          fields: bilingualTabs([
-            { name: 'key',     type: 'text',     required: true, admin: { description: 'Stable key matching the fear icon in the UI — do not change: delay, equipment, inconsistency, alone.' } },
-            { name: 'title',   type: 'text',     required: true },
-            { name: 'titleBM', type: 'text',     admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-            { name: 'body',    type: 'textarea', required: true },
-            { name: 'bodyBM',  type: 'textarea', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-          ]),
+          fields: [
+            { name: 'num', type: 'text', required: true, admin: { description: 'e.g. 01, 02, 03.' } },
+            { name: 'title', type: 'text', required: true },
+            { name: 'titleBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+            { name: 'body', type: 'textarea', required: true },
+            { name: 'bodyBM', type: 'textarea', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ],
         },
       ]),
     },
 
+    // ── PRODUCTS HEADER ───────────────────────────────────────────────────
     {
-      name: 'threeMythsIntro',
+      name: 'products',
       type: 'group',
+      admin: { description: 'The heading above the products grid. The grid itself is driven by the catalogue.' },
       fields: bilingualTabs([
-        { name: 'eyebrow',    type: 'text',     defaultValue: 'Three myths' },
-        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Tiga mitos',                                                                                                                                                  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'headline',   type: 'text',     defaultValue: 'Three things the cutting trade keeps getting wrong.' },
-        { name: 'headlineBM', type: 'text',     defaultValue: 'Tiga perkara yang industri pemotongan terus salah faham.',                                                                                                      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        {
-          name: 'lede',
-          type: 'textarea',
-          defaultValue: "The cheap blade costs more by the end of the job. The dealer who's never been on site can't tell you why your blade glazed. And 'Made in Japan' doesn't mean it was made for cutting Malaysian concrete.",
-        },
-        {
-          name: 'ledeBM',
-          type: 'textarea',
-          defaultValue: "Bilah yang murah sebenarnya lebih mahal pada akhir kerja. Pengedar yang tidak pernah ke tapak tidak dapat beritahu anda kenapa bilah anda mengaca. Dan 'Buatan Jepun' tidak bermakna ia dibuat untuk memotong konkrit Malaysia.",
-          admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
-        },
-        { name: 'ctaLabel',   type: 'text', defaultValue: 'Read the folio' },
-        { name: 'ctaLabelBM', type: 'text', defaultValue: 'Baca folio',      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'eyebrow', type: 'text', defaultValue: 'Product range' },
+        { name: 'eyebrowBM', type: 'text', defaultValue: 'Rangkaian produk', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'heading', type: 'text', defaultValue: 'Tools for every cut' },
+        { name: 'headingBM', type: 'text', defaultValue: 'Alat untuk setiap potongan', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
       ]),
     },
 
+    // ── SHIBUYA BAND ──────────────────────────────────────────────────────
     {
-      name: 'brotherhoodIntro',
+      name: 'shibuya',
       type: 'group',
       fields: bilingualTabs([
-        { name: 'eyebrow',    type: 'text',     defaultValue: 'The Brotherhood System' },
-        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Sistem Brotherhood',                                                                                                                                        admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'headline',   type: 'text',     defaultValue: 'How we work with the people who buy from us.' },
-        { name: 'headlineBM', type: 'text',     defaultValue: 'Bagaimana kami bekerja dengan orang yang membeli daripada kami.',                                                                                            admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'badge', type: 'text', defaultValue: 'Official Malaysia distributor · since 2014' },
+        { name: 'badgeBM', type: 'text', defaultValue: 'Pengedar rasmi Malaysia · sejak 2014', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'headlineLineOne', type: 'text', defaultValue: 'Shibuya core', admin: { description: 'First line of the Shibuya heading.' } },
+        { name: 'headlineLineOneBM', type: 'text', defaultValue: 'Mesin gerudi', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'headlineLineTwo', type: 'text', defaultValue: 'drilling machines', admin: { description: 'Second line of the Shibuya heading.' } },
+        { name: 'headlineLineTwoBM', type: 'text', defaultValue: 'teras Shibuya', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'lede', type: 'textarea', defaultValue: "Japan's most trusted core-drilling technology, backed by Coolman's training, service and spare-part stock here in Malaysia." },
+        { name: 'ledeBM', type: 'textarea', defaultValue: 'Teknologi penggerudian teras paling dipercayai dari Jepun, disokong latihan, servis dan stok alat ganti Coolman di Malaysia.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'cta', type: 'text', defaultValue: 'Request a demo' },
+        { name: 'ctaBM', type: 'text', defaultValue: 'Minta demo', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
-          name: 'lede',
-          type: 'textarea',
-          defaultValue: 'Dealers and contractors who work with Coolman get direct access to engineering, not a points system. If you carry our blades, we treat you like a partner — not a customer number.',
-        },
-        {
-          name: 'ledeBM',
-          type: 'textarea',
-          defaultValue: 'Pengedar dan kontraktor yang bekerja dengan Coolman mendapat akses terus ke kejuruteraan, bukan sistem mata. Jika anda membawa bilah kami, kami layani anda seperti rakan kongsi — bukan nombor pelanggan.',
-          admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' },
-        },
-        { name: 'ctaLabel',   type: 'text', defaultValue: 'See the five principles' },
-        { name: 'ctaLabelBM', type: 'text', defaultValue: 'Lihat lima prinsip',       admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-      ]),
-    },
-
-    {
-      name: 'alansLetter',
-      type: 'group',
-      fields: bilingualTabs([
-        { name: 'eyebrow',        type: 'text', defaultValue: 'A letter from Alan' },
-        { name: 'eyebrowBM',      type: 'text', defaultValue: 'Surat daripada Alan',  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        {
-          name: 'paragraphs',
+          name: 'bullets',
           type: 'array',
+          admin: { description: 'The bullet list of Shibuya capabilities.' },
           defaultValue: [
-            {
-              paragraph: 'When I started in the cutting trade in 1998, I thought I knew what a good blade was. Nine years later, when I founded Coolman in 2007, I knew I had been wrong. A good blade is not the one with the best segment formulation on paper. It is the one that finishes the cut on the night the contractor cannot afford to fail.',
-              paragraphBM: 'Apabila saya memulakan kerjaya dalam bidang pemotongan pada 1998, saya fikir saya tahu apa itu bilah yang baik. Sembilan tahun kemudian, ketika saya mengasaskan Coolman pada 2007, saya sedar saya silap. Bilah yang baik bukan yang mempunyai formulasi segmen terbaik di atas kertas. Ia adalah yang menyiapkan potongan pada malam kontraktor tidak mampu untuk gagal.',
-            },
-            {
-              paragraph: 'Coolman is built around that single sentence. Every blade we ship is engineered for the kind of cut that breaks weaker blades: Malaysian aggregate, hard rebar, long pours, monsoon damp, a foreman with three jobs running and no time to nurse a slow tool.',
-              paragraphBM: 'Coolman dibina di sekitar satu ayat itu. Setiap bilah yang kami hantar direka untuk jenis potongan yang memecahkan bilah yang lebih lemah: agregat Malaysia, besi tetulang keras, tuangan panjang, lembap monsun, mandor dengan tiga kerja berjalan dan tiada masa untuk menjaga alat yang perlahan.',
-            },
-            {
-              paragraph: 'I started Coolman because I had watched too many contractors get sold a blade by someone who had never been on site at 2am. That has not happened to a Coolman customer in 19 years and it never will. If your cut goes wrong, you call me. Not a hotline. Me.',
-              paragraphBM: 'Saya mengasaskan Coolman kerana saya telah menyaksi terlalu ramai kontraktor dijual bilah oleh orang yang tidak pernah berada di tapak pada jam 2 pagi. Itu tidak pernah berlaku kepada pelanggan Coolman selama 19 tahun dan ia tidak akan berlaku. Jika potongan anda gagal, anda telefon saya. Bukan talian hotline. Saya.',
-            },
-            {
-              paragraph: 'The next pages are not marketing. They are how we work, what we have learned, and the jobs that taught us. If you read them and we still feel right for your worksite, we should talk.',
-              paragraphBM: 'Halaman seterusnya bukan pemasaran. Itu adalah cara kami bekerja, apa yang kami telah pelajari, dan kerja yang mengajar kami. Jika anda membaca dan kami masih dirasakan sesuai untuk tapak anda, mari kita berbual.',
-            },
+            { text: 'Rated 52mm to 600mm core diameters', textBM: 'Dinilai untuk diameter teras 52mm hingga 600mm' },
+            { text: 'Reinforced concrete & post-tension rated', textBM: 'Konkrit bertetulang & post-tension' },
+            { text: 'Operator training & on-site demo', textBM: 'Latihan operator & demo di tapak' },
+            { text: 'Spare parts stocked locally', textBM: 'Alat ganti distok tempatan' },
           ],
-          fields: bilingualTabs([
-            { name: 'paragraph',   type: 'textarea', required: true },
-            { name: 'paragraphBM', type: 'textarea', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-          ]),
+          fields: [
+            { name: 'text', type: 'text', required: true },
+            { name: 'textBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ],
         },
-        { name: 'signature',      type: 'text', defaultValue: 'Alan',             admin: { description: 'Signature name — not translated.' } },
-        { name: 'signatureLine2',   type: 'text', defaultValue: 'Founder, Coolman' },
-        { name: 'signatureLine2BM', type: 'text', defaultValue: 'Pengasas, Coolman', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-      ]),
-    },
-
-    {
-      name: 'quietDoor',
-      type: 'group',
-      fields: bilingualTabs([
-        { name: 'eyebrow',      type: 'text',     defaultValue: 'The quiet door' },
-        { name: 'eyebrowBM',    type: 'text',     defaultValue: 'Pintu yang senyap',                                                             admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'headline',     type: 'text',     defaultValue: 'The full range, in stock and ready to ship from Selangor.' },
-        { name: 'headlineBM',   type: 'text',     defaultValue: 'Rangkaian penuh, dalam stok dan sedia untuk dihantar dari Selangor.',       admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'lede',         type: 'textarea', defaultValue: 'No catalogue front. No PDF download chase. Just the inventory, the spec, and a phone call away if the blade you need is not the one we list.' },
-        { name: 'ledeBM',       type: 'textarea', defaultValue: 'Tiada muka katalog. Tiada perlu memburu PDF. Hanya inventori, spesifikasi, dan satu panggilan telefon jika bilah yang anda perlukan bukan yang kami senaraikan.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'ctaPrimary',   type: 'text',     defaultValue: 'Open the catalogue' },
-        { name: 'ctaPrimaryBM', type: 'text',     defaultValue: 'Buka katalog',                                                                  admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'ctaSecondary',   type: 'text',   defaultValue: 'Speak to engineering' },
-        { name: 'ctaSecondaryBM', type: 'text',   defaultValue: 'Hubungi kejuruteraan',                                                          admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-      ]),
-    },
-
-    {
-      name: 'conversation',
-      type: 'group',
-      fields: bilingualTabs([
-        { name: 'eyebrow',    type: 'text',     defaultValue: 'How to start the conversation' },
-        { name: 'eyebrowBM',  type: 'text',     defaultValue: 'Bagaimana memulakan perbualan',                      admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'headline',   type: 'text',     defaultValue: 'Three ways in. WhatsApp is the fastest.' },
-        { name: 'headlineBM', type: 'text',     defaultValue: 'Tiga cara masuk. WhatsApp paling cepat.',            admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-        { name: 'lede',       type: 'textarea', defaultValue: "Most cuts begin with a phone call. We don't hide ours." },
-        { name: 'ledeBM',     type: 'textarea', defaultValue: 'Kebanyakan potongan bermula dengan satu panggilan telefon. Kami tidak sembunyikan kami punya.', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
         {
-          name: 'channels',
+          name: 'stats',
           type: 'array',
+          admin: { description: 'The four Shibuya stat tiles. Value shown as-is; label is bilingual.' },
           defaultValue: [
-            { tag: 'Primary',  tagBM: 'Utama',     title: 'Engineering desk on WhatsApp',    titleBM: 'Meja kejuruteraan di WhatsApp',    body: 'Send a photo of the cut, the aggregate, the blade. We will tell you what we think before we tell you what we sell.', bodyBM: 'Hantar gambar potongan, agregat, bilah. Kami akan beritahu apa kami fikir sebelum kami beritahu apa kami jual.', ctaLabel: 'Open WhatsApp',        ctaLabelBM: 'Buka WhatsApp' },
-            { tag: 'Office',   tagBM: 'Pejabat',   title: 'Selangor office line',       titleBM: 'Talian pejabat Selangor',    body: 'Speak to the team about an order, a dispatch, a returns question. Mon to Sat, 8:30am to 5:30pm.',                    bodyBM: 'Berbual dengan pasukan tentang pesanan, penghantaran, soalan pemulangan. Isnin hingga Sabtu, 8:30 pagi hingga 5:30 petang.', ctaLabel: 'Call the office', ctaLabelBM: 'Telefon pejabat' },
-            { tag: 'On site',  tagBM: 'Di tapak',  title: 'Site visit form',                 titleBM: 'Borang lawatan tapak',            body: "If the cut is unusual, we'd rather come and see it than guess. Tell us where and when.",                               bodyBM: 'Jika potongan luar biasa, kami lebih rela datang melihat daripada meneka. Beritahu kami di mana dan bila.', ctaLabel: 'Request a site visit', ctaLabelBM: 'Minta lawatan tapak' },
+            { value: '600mm', label: 'Max core size', labelBM: 'Saiz teras maks' },
+            { value: '52mm', label: 'Min core size', labelBM: 'Saiz teras min' },
+            { value: '2014', label: 'Distributor since', labelBM: 'Pengedar sejak' },
+            { value: 'MY', label: 'Local service', labelBM: 'Servis tempatan' },
           ],
-          fields: bilingualTabs([
-            { name: 'tag',        type: 'text',     required: true },
-            { name: 'tagBM',      type: 'text',     admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-            { name: 'title',      type: 'text',     required: true },
-            { name: 'titleBM',    type: 'text',     admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-            { name: 'body',       type: 'textarea', required: true },
-            { name: 'bodyBM',     type: 'textarea', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-            { name: 'ctaLabel',   type: 'text',     required: true },
-            { name: 'ctaLabelBM', type: 'text',     admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
-          ]),
+          fields: [
+            { name: 'value', type: 'text', required: true },
+            { name: 'label', type: 'text', required: true },
+            { name: 'labelBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ],
         },
+        {
+          name: 'tags',
+          type: 'array',
+          admin: { description: 'The small sector tags under the Shibuya stats.' },
+          defaultValue: [
+            { text: 'High-rise', textBM: 'Bangunan tinggi' },
+            { text: 'Infrastructure', textBM: 'Infrastruktur' },
+            { text: 'MEP services', textBM: 'Perkhidmatan MEP' },
+            { text: 'Renovation', textBM: 'Pengubahsuaian' },
+          ],
+          fields: [
+            { name: 'text', type: 'text', required: true },
+            { name: 'textBM', type: 'text', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+          ],
+        },
+      ]),
+    },
+
+    // ── CONTACT ───────────────────────────────────────────────────────────
+    {
+      name: 'contact',
+      type: 'group',
+      admin: { description: 'The contact section heading and details. The form field labels stay fixed in code.' },
+      fields: bilingualTabs([
+        { name: 'eyebrow', type: 'text', defaultValue: 'Get in touch' },
+        { name: 'eyebrowBM', type: 'text', defaultValue: 'Hubungi kami', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'heading', type: 'text', defaultValue: 'Request a quote or the right spec' },
+        { name: 'headingBM', type: 'text', defaultValue: 'Minta sebut harga atau spesifikasi yang betul', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'whatsappCta', type: 'text', defaultValue: 'WhatsApp us now' },
+        { name: 'whatsappCtaBM', type: 'text', defaultValue: 'WhatsApp kami sekarang', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'workshopValue', type: 'textarea', defaultValue: 'Selangor, Malaysia', admin: { description: 'Workshop / address line.' } },
+        { name: 'workshopValueBM', type: 'textarea', defaultValue: 'Selangor, Malaysia', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
+        { name: 'emailValue', type: 'text', defaultValue: 'info@coolman.com.my', admin: { description: 'Contact email shown on the page (not translated).' } },
+        { name: 'hoursValue', type: 'text', defaultValue: 'Mon–Fri 8:30–17:30 · Sat 8:30–13:00' },
+        { name: 'hoursValueBM', type: 'text', defaultValue: 'Isn–Jum 8:30–17:30 · Sab 8:30–13:00', admin: { description: 'Bahasa Malaysia. Leave blank to fall back to English.' } },
       ]),
     },
   ],

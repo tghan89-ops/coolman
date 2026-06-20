@@ -2,15 +2,17 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { useLivePreview } from '@payloadcms/live-preview-react'
 import { useLanguage } from '@/lib/i18n/context'
 import { PublicLayout } from '@/components/layout/public-layout'
-import { HOME_LANDING } from '@/lib/i18n/home-landing'
+import { resolveHomeLanding, type RawHomePage } from '@/lib/i18n/home-landing'
 import type { Setting } from '@/payload-types'
 import type { SlimProduct } from '@/lib/payload'
 
 interface HomePageClientProps {
   settings: Partial<Setting>
   products: SlimProduct[]
+  initialData?: RawHomePage | null
 }
 
 const ALL = '__all__'
@@ -42,9 +44,17 @@ function ProductGlyph() {
   )
 }
 
-export function HomePageClient({ settings, products }: HomePageClientProps) {
+export function HomePageClient({ settings, products, initialData }: HomePageClientProps) {
   const { language } = useLanguage()
-  const c = HOME_LANDING[language]
+  // Live-preview lets the Payload admin's preview pane update as the editor
+  // types. On the public site this just returns initialData (the fetched
+  // global). resolveHomeLanding overlays CMS values on the code defaults.
+  const { data } = useLivePreview<RawHomePage>({
+    initialData: (initialData ?? {}) as RawHomePage,
+    serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+    depth: 1,
+  })
+  const c = resolveHomeLanding(data, language)
 
   const whatsappNumber = settings?.whatsapp_number || '+60126363156'
   const whatsappDigits = whatsappNumber.replace(/\D/g, '')

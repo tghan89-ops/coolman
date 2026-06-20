@@ -319,3 +319,145 @@ const BM: HomeLandingCopy = {
 }
 
 export const HOME_LANDING: Record<Language, HomeLandingCopy> = { EN, BM }
+
+// ──────────────────────────────────────────────────────────────────────────
+// CMS overlay. The `home-page` Payload global (globals/HomePage.ts) mirrors the
+// editable subset of this structure. resolveHomeLanding() overlays any non-blank
+// CMS value on top of the code defaults above, language-aware, so a blank CMS
+// field (or no CMS row at all) falls back to the code copy and the page never
+// blanks out. Functional micro-copy (form labels, button states, interest
+// options) is not in the CMS and always comes from the code defaults.
+// ──────────────────────────────────────────────────────────────────────────
+
+type RawText = string | null | undefined
+type RawPair = { text?: RawText; textBM?: RawText }
+type RawStat = { value?: RawText; label?: RawText; labelBM?: RawText }
+
+export type RawHomePage = {
+  hero?: {
+    eyebrow?: RawText; eyebrowBM?: RawText
+    headlineLineOne?: RawText; headlineLineOneBM?: RawText
+    headlineLineTwoPrefix?: RawText; headlineLineTwoPrefixBM?: RawText
+    headlineEmphasis?: RawText; headlineEmphasisBM?: RawText
+    lede?: RawText; ledeBM?: RawText
+    ctaPrimary?: RawText; ctaPrimaryBM?: RawText
+    ctaSecondary?: RawText; ctaSecondaryBM?: RawText
+    badgeTag?: RawText; badgeTagBM?: RawText
+    badgeValue?: RawText; badgeValueBM?: RawText
+    stats?: RawStat[] | null
+  } | null
+  trustBar?: { items?: RawPair[] | null } | null
+  why?: {
+    eyebrow?: RawText; eyebrowBM?: RawText; heading?: RawText; headingBM?: RawText
+    cards?: Array<{ num?: RawText; title?: RawText; titleBM?: RawText; body?: RawText; bodyBM?: RawText }> | null
+  } | null
+  products?: { eyebrow?: RawText; eyebrowBM?: RawText; heading?: RawText; headingBM?: RawText } | null
+  shibuya?: {
+    badge?: RawText; badgeBM?: RawText
+    headlineLineOne?: RawText; headlineLineOneBM?: RawText
+    headlineLineTwo?: RawText; headlineLineTwoBM?: RawText
+    lede?: RawText; ledeBM?: RawText; cta?: RawText; ctaBM?: RawText
+    bullets?: RawPair[] | null
+    stats?: RawStat[] | null
+    tags?: RawPair[] | null
+  } | null
+  contact?: {
+    eyebrow?: RawText; eyebrowBM?: RawText; heading?: RawText; headingBM?: RawText
+    whatsappCta?: RawText; whatsappCtaBM?: RawText
+    workshopValue?: RawText; workshopValueBM?: RawText
+    emailValue?: RawText
+    hoursValue?: RawText; hoursValueBM?: RawText
+  } | null
+}
+
+export function resolveHomeLanding(
+  data: RawHomePage | null | undefined,
+  language: Language,
+): HomeLandingCopy {
+  const base = HOME_LANDING[language]
+  if (!data) return base
+
+  // Language-aware pick with code fallback: BM uses bm→en→fallback, EN uses en→fallback.
+  const L = (en: RawText, bm: RawText, fallback: string): string => {
+    const v =
+      language === 'BM'
+        ? (bm && bm.trim()) || (en && en.trim()) || ''
+        : (en && en.trim()) || ''
+    return v || fallback
+  }
+  // Plain value (no translation, e.g. stat values, email): cms→fallback.
+  const V = (val: RawText, fallback: string): string => (val && val.trim()) || fallback
+
+  // Use the CMS array when it has rows (admin controls the count); otherwise the
+  // code array. Each row merges field-by-field against the base row at the same
+  // index (or the last base row when the admin added extra rows).
+  const mergeRows = <T>(
+    cmsRows: unknown[] | null | undefined,
+    baseRows: T[],
+    build: (row: any, baseRow: T) => T,
+  ): T[] => {
+    if (!Array.isArray(cmsRows) || cmsRows.length === 0) return baseRows
+    return cmsRows.map((row, i) => build(row, baseRows[i] ?? baseRows[baseRows.length - 1] ?? ({} as T)))
+  }
+
+  const h = data.hero ?? {}
+  const w = data.why ?? {}
+  const p = data.products ?? {}
+  const s = data.shibuya ?? {}
+  const ct = data.contact ?? {}
+
+  return {
+    hero: {
+      eyebrow: L(h.eyebrow, h.eyebrowBM, base.hero.eyebrow),
+      headlineLine1: L(h.headlineLineOne, h.headlineLineOneBM, base.hero.headlineLine1),
+      headlineLine2Prefix: L(h.headlineLineTwoPrefix, h.headlineLineTwoPrefixBM, base.hero.headlineLine2Prefix),
+      headlineEmphasis: L(h.headlineEmphasis, h.headlineEmphasisBM, base.hero.headlineEmphasis),
+      lede: L(h.lede, h.ledeBM, base.hero.lede),
+      ctaPrimary: L(h.ctaPrimary, h.ctaPrimaryBM, base.hero.ctaPrimary),
+      ctaSecondary: L(h.ctaSecondary, h.ctaSecondaryBM, base.hero.ctaSecondary),
+      badgeTag: L(h.badgeTag, h.badgeTagBM, base.hero.badgeTag),
+      badgeValue: L(h.badgeValue, h.badgeValueBM, base.hero.badgeValue),
+      stats: mergeRows(h.stats, base.hero.stats, (r, b) => ({
+        value: V(r?.value, b.value),
+        label: L(r?.label, r?.labelBM, b.label),
+      })),
+    },
+    trustBar: mergeRows(data.trustBar?.items, base.trustBar, (r, b) => L(r?.text, r?.textBM, b as string)),
+    why: {
+      eyebrow: L(w.eyebrow, w.eyebrowBM, base.why.eyebrow),
+      heading: L(w.heading, w.headingBM, base.why.heading),
+      cards: mergeRows(w.cards, base.why.cards, (r, b) => ({
+        num: V(r?.num, b.num),
+        title: L(r?.title, r?.titleBM, b.title),
+        body: L(r?.body, r?.bodyBM, b.body),
+      })),
+    },
+    products: {
+      ...base.products,
+      eyebrow: L(p.eyebrow, p.eyebrowBM, base.products.eyebrow),
+      heading: L(p.heading, p.headingBM, base.products.heading),
+    },
+    shibuya: {
+      badge: L(s.badge, s.badgeBM, base.shibuya.badge),
+      headingLine1: L(s.headlineLineOne, s.headlineLineOneBM, base.shibuya.headingLine1),
+      headingLine2: L(s.headlineLineTwo, s.headlineLineTwoBM, base.shibuya.headingLine2),
+      lede: L(s.lede, s.ledeBM, base.shibuya.lede),
+      cta: L(s.cta, s.ctaBM, base.shibuya.cta),
+      bullets: mergeRows(s.bullets, base.shibuya.bullets, (r, b) => L(r?.text, r?.textBM, b as string)),
+      stats: mergeRows(s.stats, base.shibuya.stats, (r, b) => ({
+        value: V(r?.value, b.value),
+        label: L(r?.label, r?.labelBM, b.label),
+      })),
+      tags: mergeRows(s.tags, base.shibuya.tags, (r, b) => L(r?.text, r?.textBM, b as string)),
+    },
+    contact: {
+      ...base.contact,
+      eyebrow: L(ct.eyebrow, ct.eyebrowBM, base.contact.eyebrow),
+      heading: L(ct.heading, ct.headingBM, base.contact.heading),
+      whatsappCta: L(ct.whatsappCta, ct.whatsappCtaBM, base.contact.whatsappCta),
+      workshopValue: L(ct.workshopValue, ct.workshopValueBM, base.contact.workshopValue),
+      emailValue: V(ct.emailValue, base.contact.emailValue),
+      hoursValue: L(ct.hoursValue, ct.hoursValueBM, base.contact.hoursValue),
+    },
+  }
+}
