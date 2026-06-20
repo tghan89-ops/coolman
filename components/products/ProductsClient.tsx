@@ -161,6 +161,26 @@ export function ProductsClient({
   const [sortBy, setSortBy] = useState<SortKey>(initialState.sort)
   const [showBackToTop, setShowBackToTop] = useState(false)
 
+  // Adopt the URL when it changes via NAVIGATION — e.g. the header mega-menu
+  // links to /products?category=X while we're already on this page. Internal
+  // filter edits mirror to the URL with history.replaceState, which does NOT
+  // update useSearchParams(), so this effect fires only on real navigations and
+  // never loops or fights our own URL writing. The initial mount is skipped —
+  // state is already seeded from the URL above.
+  const searchKey = searchParams.toString()
+  const didNavSyncMount = useRef(false)
+  useEffect(() => {
+    if (!didNavSyncMount.current) {
+      didNavSyncMount.current = true
+      return
+    }
+    const next = parseCatalogueParams(new URLSearchParams(searchKey))
+    setSelected(next.selected)
+    setQuery(next.query)
+    setSortBy(next.sort)
+    setPage(next.page)
+  }, [searchKey])
+
   const totalSelected = useMemo(
     () => Object.values(selected).reduce((sum, list) => sum + list.length, 0),
     [selected],
@@ -301,6 +321,20 @@ export function ProductsClient({
 
     return { filteredProducts: filtered, facetedGroups: faceted, activeChips: chips }
   }, [products, selected, query, language, filterGroups])
+
+  // Once a category is chosen (typically via the header mega-menu), the "Type"
+  // filter is redundant — the visitor already picked the product type — so we
+  // drop it from the sidebar and lead straight with the sub-filters (Material /
+  // Diameter / Application). The active category still shows as a removable chip
+  // above the grid; clearing it brings the Type filter back.
+  const categorySelected = (selected[FILTER_KEYS.category]?.length ?? 0) > 0
+  const sidebarGroups = useMemo(
+    () =>
+      categorySelected
+        ? facetedGroups.filter((g) => g.key !== FILTER_KEYS.category)
+        : facetedGroups,
+    [facetedGroups, categorySelected],
+  )
 
   // Collapse same-family sizes into one card. A diameter filter narrows the
   // members first (above), so a family shows only if at least one of its sizes
@@ -459,7 +493,7 @@ export function ProductsClient({
                 Hidden below lg, where the bottom-sheet takes over. */}
             <div className="hidden lg:block lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto lg:overscroll-contain">
               <FilterSidebar
-                groups={facetedGroups}
+                groups={sidebarGroups}
                 selected={selected}
                 onChange={setSelected}
                 onClear={handleClear}
