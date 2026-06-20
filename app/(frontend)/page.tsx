@@ -2,7 +2,12 @@ import { getCachedSettings, getProducts, getGlobal } from '@/lib/payload'
 import { HomePageClient } from '@/components/home/HomePageClient'
 import type { RawHomePage } from '@/lib/i18n/home-landing'
 
-export const revalidate = 60
+// Render fresh on every request so a CMS edit to the `home-page` global shows
+// on the very next reload — no 60s ISR window where the public page serves the
+// old copy while the admin live-preview already shows the new one. The cost is
+// one cheap single-row global read per hit; the heavy catalogue query stays
+// behind its own 60s data cache (getProducts), so this is a light SSR render.
+export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   // Copy comes from the `home-page` CMS global (admin-editable); resolveHomeLanding
