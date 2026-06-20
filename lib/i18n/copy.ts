@@ -30,6 +30,18 @@ export interface CopyStructure {
     brotherhood: string
     career: string
   }
+  productMenu: {
+    shopByCategory: string
+    blurb: string
+    viewAll: string
+    groups: {
+      cutting: string
+      drilling: string
+      grinding: string
+      accessories: string
+      more: string
+    }
+  }
   cart: {
     title: string
     empty: string
@@ -1077,6 +1089,18 @@ export const COPY: Record<Language, CopyStructure> = {
       aboutUs: 'About Us',
       brotherhood: 'Brotherhood',
       career: 'Career',
+    },
+    productMenu: {
+      shopByCategory: 'Shop by category',
+      blurb: 'Browse the full catalogue, or jump straight to a category.',
+      viewAll: 'View all products',
+      groups: {
+        cutting: 'Cutting',
+        drilling: 'Drilling & Coring',
+        grinding: 'Grinding & Polishing',
+        accessories: 'Accessories',
+        more: 'More',
+      },
     },
     cart: {
       title: 'Your Cart',
@@ -2376,6 +2400,18 @@ export const COPY: Record<Language, CopyStructure> = {
       aboutUs: 'Tentang Kami',
       brotherhood: 'Brotherhood',
       career: 'Kerjaya',
+    },
+    productMenu: {
+      shopByCategory: 'Beli ikut kategori',
+      blurb: 'Lihat katalog penuh, atau terus ke kategori.',
+      viewAll: 'Lihat semua produk',
+      groups: {
+        cutting: 'Pemotongan',
+        drilling: 'Penggerudian & Teras',
+        grinding: 'Pengisaran & Penggilap',
+        accessories: 'Aksesori',
+        more: 'Lain-lain',
+      },
     },
     cart: {
       title: 'Troli Anda',

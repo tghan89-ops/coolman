@@ -138,6 +138,45 @@ export async function getProducts(): Promise<SlimProduct[]> {
   }
 }
 
+// One row per category for the header mega-menu. Name (EN) is the canonical
+// value the catalogue filters on (it matches SlimProduct.category); nameBM is
+// carried for the BM display. `count` lets the menu hide empty categories and
+// show a SKU tally. Counts are derived from the same cached slim catalogue so
+// this adds no extra heavy query, and the whole thing is cached + tagged
+// 'products' so an admin add/remove surfaces within ~60s.
+export type MenuCategory = { name: string; nameBM: string; count: number }
+
+const getMenuCategoriesCached = unstable_cache(
+  async (): Promise<MenuCategory[]> => {
+    const payload = await getPayloadClient()
+    const [catsRes, products] = await Promise.all([
+      payload.find({ collection: 'categories', limit: 100, depth: 0, sort: 'name' }),
+      getProductsCached(),
+    ])
+    const counts = new Map<string, number>()
+    for (const p of products) {
+      if (p.category) counts.set(p.category, (counts.get(p.category) ?? 0) + 1)
+    }
+    return catsRes.docs
+      .map((c: any): MenuCategory => {
+        const name = typeof c?.name === 'string' ? c.name : ''
+        const nameBM = typeof c?.nameBM === 'string' && c.nameBM ? c.nameBM : name
+        return { name, nameBM, count: counts.get(name) ?? 0 }
+      })
+      .filter((c) => c.name && c.count > 0)
+  },
+  ['menu-categories'],
+  { revalidate: 60, tags: ['products'] },
+)
+
+export async function getMenuCategories(): Promise<MenuCategory[]> {
+  try {
+    return await getMenuCategoriesCached()
+  } catch {
+    return []
+  }
+}
+
 export async function getProductById(id: string): Promise<any | null> {
   try {
     const payload = await getPayloadClient()
