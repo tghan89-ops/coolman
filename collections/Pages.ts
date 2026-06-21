@@ -29,9 +29,11 @@ export const Pages: CollectionConfig = {
     maxPerDoc: 50,
   },
   access: {
-    // Public read filtered to published at the query layer (lib/payload.ts), so
-    // drafts remain fetchable in admin / preview but never on the public site.
-    read: () => true,
+    // Admin users read everything (drafts included, for editing/preview).
+    // Everyone else (public REST/GraphQL + the catch-all route) is constrained
+    // to published rows, so draft puckData never leaks via the API.
+    read: ({ req: { user } }) =>
+      (user as any)?.collection === 'adminUsers' ? true : { status: { equals: 'published' } },
     create: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
     update: ({ req: { user } }) => (user as any)?.collection === 'adminUsers',
     delete: ({ req: { user } }) =>
@@ -51,13 +53,20 @@ export const Pages: CollectionConfig = {
       },
     ],
     beforeChange: [
-      ({ data }) => {
-        // Empty-publish guard: never let a content-less page go live.
-        if (data?.status === 'published' && isPuckDataEmpty(data.puckData)) {
-          throw new APIError(
-            'This page has no content yet. Add at least one block before publishing.',
-            400,
-          )
+      ({ data, originalDoc }) => {
+        // Empty-publish guard: never let a content-less page go live. puckData is
+        // edited out-of-band (Puck editor) and is readOnly in the admin form, so a
+        // status-only flip (Draft→Published in the sidebar) won't resubmit it —
+        // fall back to the stored value before judging it empty, or we'd reject a
+        // page that actually has content.
+        if (data?.status === 'published') {
+          const puck = data.puckData ?? originalDoc?.puckData
+          if (isPuckDataEmpty(puck)) {
+            throw new APIError(
+              'This page has no content yet. Add at least one block before publishing.',
+              400,
+            )
+          }
         }
         return data
       },

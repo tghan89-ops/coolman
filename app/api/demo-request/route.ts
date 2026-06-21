@@ -27,6 +27,13 @@ export async function POST(req: NextRequest) {
     const model = String(body?.model ?? '').trim()
     const project = String(body?.project ?? '').trim()
     const notes = String(body?.notes ?? '').trim()
+    const honeypot = String(body?.website ?? '').trim()
+
+    // Honeypot — bots fill this hidden field; humans never see it. Return a fake
+    // success so the bot doesn't retry, but send nothing.
+    if (honeypot) {
+      return NextResponse.json({ ok: true })
+    }
 
     if (!name || !phone || !model) {
       return NextResponse.json(

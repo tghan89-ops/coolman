@@ -22,6 +22,7 @@
 import type { Config } from '@puckeditor/core'
 import { MediaField, type MediaValue } from './fields/MediaField'
 import { LinkField } from './fields/LinkField'
+import { safeHref } from './safeHref'
 import { homeBlocks, homeBlockNames } from './blocks/home'
 import { pageBlocks, pageBlockNames } from './blocks/pages'
 import {
@@ -131,7 +132,7 @@ const captionAlignClass: Record<string, string> = {
 function ButtonLink({ label, href, variant }: { label?: React.ReactNode; href?: string; variant?: ButtonVariant }) {
   if (!label) return null
   return (
-    <a href={(href as string) || '#'} className={cx(buttonBase, buttonClass[variant || 'primary'])}>
+    <a href={safeHref(href as string)} className={cx(buttonBase, buttonClass[variant || 'primary'])}>
       {label}
     </a>
   )
@@ -726,7 +727,7 @@ export const config: Config = {
               <h3 className="text-lg font-semibold text-navy">{heading}</h3>
               {body && <p className="mt-2 flex-1 leading-relaxed text-ink-muted whitespace-pre-line">{body}</p>}
               {ctaLabel && (
-                <a href={(ctaHref as string) || '#'} className="mt-4 inline-flex items-center font-mono text-xs font-semibold uppercase tracking-[0.08em] text-accent hover:opacity-80">
+                <a href={safeHref(ctaHref as string)} className="mt-4 inline-flex items-center font-mono text-xs font-semibold uppercase tracking-[0.08em] text-accent hover:opacity-80">
                   {ctaLabel} →
                 </a>
               )}

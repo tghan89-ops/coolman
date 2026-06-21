@@ -82,7 +82,9 @@ export function WhyCoolmanFolioTabs({ folios }: { folios: FolioItem[] }) {
               <button
                 key={folio.folioLabel}
                 role="tab"
+                id={`folio-tab-${idx}`}
                 aria-selected={activeTab === idx}
+                aria-controls="folio-panel"
                 onClick={() => setActiveTab(idx)}
                 className={[
                   'flex-1 py-4 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors duration-150 ease-out',
@@ -99,7 +101,12 @@ export function WhyCoolmanFolioTabs({ folios }: { folios: FolioItem[] }) {
         </div>
       </div>
 
-      <article className="bg-paper text-ink" role="tabpanel">
+      <article
+        className="bg-paper text-ink"
+        role="tabpanel"
+        id="folio-panel"
+        aria-labelledby={`folio-tab-${activeTab}`}
+      >
         <div className="mx-auto max-w-3xl px-6 py-14 lg:px-8 lg:py-20">
           <FolioHeader folio={active} />
           <FolioBody folio={active} />

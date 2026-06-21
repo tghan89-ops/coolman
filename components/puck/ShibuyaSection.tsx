@@ -130,7 +130,9 @@ export function ShibuyaLineupSection({
                     key={machine.modelId}
                     type="button"
                     role="tab"
+                    id={`shibuya-tab-${machine.modelId}`}
                     aria-selected={isActive}
+                    aria-controls={`shibuya-panel-${machine.modelId}`}
                     onClick={() => setUserSelectedModelId(machine.modelId)}
                     className={cn(
                       '-mb-px min-h-[44px] border-b-[3px] px-6 py-3 font-mono text-[11px] uppercase tracking-[0.10em] transition-colors',
@@ -146,7 +148,12 @@ export function ShibuyaLineupSection({
             </div>
 
             {selectedMachine && (
-              <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16">
+              <div
+                className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-16"
+                role="tabpanel"
+                id={`shibuya-panel-${selectedMachine.modelId}`}
+                aria-labelledby={`shibuya-tab-${selectedMachine.modelId}`}
+              >
                 {/* Photo / placeholder */}
                 <div className="relative aspect-square overflow-hidden bg-[#EFF4FB]">
                   <MachinePlaceholder modelId={selectedMachine.modelId} />
@@ -285,9 +292,10 @@ export function ShibuyaDemoSection({
           model: fd.get('model'),
           project: fd.get('project'),
           notes: fd.get('notes'),
+          website: fd.get('website'), // honeypot — bots fill this, humans don't
         }),
       })
-      const json = await res.json()
+      const json = await res.json().catch(() => ({}))
       if (!res.ok || json.error) {
         setFormError(json.error || labels.error)
         setFormState('error')
@@ -333,6 +341,19 @@ export function ShibuyaDemoSection({
               </div>
             ) : (
               <form onSubmit={handleDemoSubmit} className="space-y-4">
+                {/* Honeypot — hidden from humans, visible to bots. Field name
+                    `website` must stay in sync with /api/demo-request. */}
+                <div aria-hidden="true" className="absolute -left-[9999px]">
+                  <label htmlFor="demo-website">Website</label>
+                  <input
+                    id="demo-website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                  />
+                </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label
