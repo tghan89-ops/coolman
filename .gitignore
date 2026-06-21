@@ -33,3 +33,9 @@ payload-types.ts
 # logs and test artifacts
 dev.log
 /test-results/
+.env.scratch
+
+# runtime uploads, local backups, data exports (not source; live on droplet disk)
+/media/
+/backups/
+*.xlsx

@@ -5,7 +5,8 @@ import { AuthProvider } from '@/lib/auth/context'
 import { CartProvider } from '@/lib/cart/context'
 import { SettingsProvider, type PublicSettings } from '@/lib/settings/context'
 import { CategoriesProvider } from '@/lib/categories/context'
-import { getCachedSettings, getMenuCategories } from '@/lib/payload'
+import { NavigationProvider } from '@/lib/navigation/context'
+import { getCachedSettings, getMenuCategories, getNavigation } from '@/lib/payload'
 import '../globals.css'
 
 const plexSans = IBM_Plex_Sans({
@@ -56,9 +57,10 @@ export default async function FrontendLayout({
   // (footer, WhatsApp buttons, kill-switch banners) reads the same source of
   // truth without each page re-fetching. `overrideAccess: true` because
   // Settings is admin-restricted by access control (see globals/Settings.ts).
-  const [settingsRaw, menuCategories] = await Promise.all([
+  const [settingsRaw, menuCategories, navItems] = await Promise.all([
     getCachedSettings().catch(() => null),
     getMenuCategories().catch(() => []),
+    getNavigation().catch(() => []),
   ])
   const initialSettings: Partial<PublicSettings> | null = settingsRaw
     ? (() => {
@@ -102,13 +104,15 @@ export default async function FrontendLayout({
       <body className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable} ${maShanZheng.variable} overflow-x-hidden font-sans antialiased`}>
         <SettingsProvider initialSettings={initialSettings}>
           <CategoriesProvider categories={menuCategories}>
-            <LanguageProvider>
-              <AuthProvider>
-                <CartProvider>
-                  {children}
-                </CartProvider>
-              </AuthProvider>
-            </LanguageProvider>
+            <NavigationProvider items={navItems}>
+              <LanguageProvider>
+                <AuthProvider>
+                  <CartProvider>
+                    {children}
+                  </CartProvider>
+                </AuthProvider>
+              </LanguageProvider>
+            </NavigationProvider>
           </CategoriesProvider>
         </SettingsProvider>
       </body>

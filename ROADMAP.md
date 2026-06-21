@@ -1,6 +1,6 @@
 # Coolman — Roadmap
 
-**Last updated:** 2026-05-23
+**Last updated:** 2026-05-24
 
 ---
 
@@ -42,10 +42,12 @@
 
 **Phase E — launch readiness**
 
-- [ ] Email mailboxes live: sales@/parts@/training@/careers@coolman.com.my
-- [ ] WhatsApp number +6012-6363156 seeded in Settings, rendered everywhere
-- [ ] Legal entity name "Coolman Malaysia Sdn Bhd" seeded in Settings, surfaced in footer + contact + legal pages + order emails
-- [ ] Real numbers wired (247 SKUs, 100–900mm, 96% on-time, ~500 accounts, ≤14:00 cut-off)
+- [ ] Email mailboxes live: sales@/parts@/training@/careers@coolman.com.my — *(mailbox provisioning is GH/host-side; not a code task)*
+- [x] WhatsApp number seeded in Settings — *(Verified 2026-05-24: `+60126363156` is the Settings default in `globals/Settings.ts:104`)*
+  - [ ] Confirm it renders consistently on every surface — open follow-up LO-02 (dashed vs un-dashed format mismatch on `about`/`trade` pages)
+- [x] Legal entity name seeded in Settings — *(Verified 2026-05-24: "Coolman Malaysia Sdn Bhd" is the Settings default in `globals/Settings.ts:113`)*
+  - [ ] Confirm it is surfaced in footer + contact + legal pages + order emails (rendering not yet audited end-to-end)
+- [ ] Real numbers wired (247 SKUs, 100–900mm, 96% on-time, ~500 accounts, ≤14:00 cut-off) — awaiting Alan's confirmed figures
 - [x] Field Notes nav link gate — *(Done 2026-05-23)* implemented in `header.tsx:53`; hides link until `fieldNotesCount >= 3` (threshold from Settings)
 
 **Deferred review findings (REVIEW.md 2026-05-17)** — outside the `88394e8` bundle; need GH decision or larger refactor before closing:

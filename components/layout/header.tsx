@@ -28,6 +28,7 @@ import {
 import { useLanguage } from '@/lib/i18n/context'
 import { useAuth } from '@/lib/auth/context'
 import { useMenuCategories, type MenuCategory } from '@/lib/categories/context'
+import { useNavigation, navLabel } from '@/lib/navigation/context'
 import { CartBadge } from '@/components/cart/CartBadge'
 
 // Minimum published Field Notes before the nav link surfaces. Below this,
@@ -108,17 +109,12 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
 
   const showFieldNotesLink = fieldNotesCount >= FIELD_NOTES_NAV_THRESHOLD
 
-  // Trimmed to the new transactional direction (June 2026): Products / Shibuya /
-  // Contact. Heritage and Why-Coolman pages still exist but are retiring, so
-  // they're off the primary nav.
-  const navItems = [
-    { label: t.nav.aboutUs, href: '/about' },
-    { label: t.nav.products, href: '/products' },
-    { label: 'Shibuya', href: '/shibuya' },
-    { label: t.nav.brotherhood, href: '/brotherhood' },
-    { label: t.nav.career, href: '/career' },
-    { label: t.nav.contact, href: '/contact' },
-  ]
+  // CMS-driven top nav (editable in admin → Navigation). Falls back to the
+  // built-in DEFAULT_NAV if the CMS nav is empty/unavailable, so the menu can
+  // never vanish (plan-eng-review P1). Labels resolve via navLabel: i18n for
+  // built-in items, label/labelBM (EN fallback) for CMS items.
+  const navItems = useNavigation()
+  const tNav = t.nav as unknown as Record<string, string>
 
   useEffect(() => {
     const handleScroll = () => {
@@ -153,19 +149,19 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
 
         {/* Desktop Navigation */}
         <nav className="hidden items-center lg:flex">
-          {navItems.map((item) => {
+          {navItems.map((item, idx) => {
             // Products gets a Hilti-style mega-panel on hover. The wrapper is
             // full header height (h-20) so the pointer can travel from the link
             // down to the panel without crossing a dead gap (the panel sits
             // flush at top-20). group-hover/group-focus-within drive it — no JS.
-            if (item.href === '/products' && hasMegaMenu) {
+            if (item.type === 'mega-products' && hasMegaMenu) {
               return (
-                <div key={item.href} className="group relative flex h-20 items-center">
+                <div key={item.href ?? `nav-${idx}`} className="group relative flex h-20 items-center">
                   <Link
                     href="/products"
                     className="relative flex items-center gap-1 px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white group-hover:text-white"
                   >
-                    {item.label}
+                    {navLabel(item, language, tNav)}
                     <ChevronDown className="h-3.5 w-3.5 transition-transform duration-150 group-hover:rotate-180" />
                     <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-accent transition-transform group-hover:scale-x-100" />
                   </Link>
@@ -227,11 +223,11 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
 
             return (
               <Link
-                key={item.href}
-                href={item.href}
+                key={item.href ?? `nav-${idx}`}
+                href={item.href || '#'}
                 className="group relative px-4 py-2 font-sans text-sm font-semibold tracking-wide text-white/70 transition-colors hover:text-white"
               >
-                {item.label}
+                {navLabel(item, language, tNav)}
                 <span className="absolute bottom-0 left-4 right-4 h-0.5 scale-x-0 bg-accent transition-transform group-hover:scale-x-100" />
               </Link>
             )
@@ -320,17 +316,17 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
       }`}>
         <div className="border-t border-white/10 bg-navy">
           <nav className="flex flex-col px-6 py-4">
-            {navItems.map((item) => {
-              if (item.href === '/products' && hasMegaMenu) {
+            {navItems.map((item, idx) => {
+              if (item.type === 'mega-products' && hasMegaMenu) {
                 return (
-                  <div key={item.href} className="border-b border-white/5">
+                  <div key={item.href ?? `nav-${idx}`} className="border-b border-white/5">
                     <button
                       type="button"
                       onClick={() => setMobileProductsOpen((v) => !v)}
                       aria-expanded={mobileProductsOpen}
                       className="flex w-full items-center justify-between py-4 text-base font-medium text-white transition-colors hover:text-accent"
                     >
-                      {item.label}
+                      {navLabel(item, language, tNav)}
                       <ChevronDown
                         className={`h-4 w-4 transition-transform duration-150 ${mobileProductsOpen ? 'rotate-180' : ''}`}
                       />
@@ -375,12 +371,12 @@ export function Header({ variant = 'default' }: { variant?: 'default' | 'transpa
               }
               return (
                 <Link
-                  key={item.href}
-                  href={item.href}
+                  key={item.href ?? `nav-${idx}`}
+                  href={item.href || '#'}
                   className="border-b border-white/5 py-4 text-base font-medium text-white transition-colors hover:text-accent"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {item.label}
+                  {navLabel(item, language, tNav)}
                 </Link>
               )
             })}

@@ -25,8 +25,10 @@ import { Media } from './collections/Media'
 import { Posts } from './collections/Posts'
 import { ShibuyaMachines } from './collections/ShibuyaMachines'
 import { Dealers } from './collections/Dealers'
+import { Pages } from './collections/Pages'
 
 import { HomePage } from './globals/HomePage'
+import { Navigation } from './globals/Navigation'
 import { ApplicationsPage } from './globals/ApplicationsPage'
 import { ResourcesPage } from './globals/ResourcesPage'
 import { ContactPage } from './globals/ContactPage'
@@ -93,13 +95,17 @@ export default buildConfig({
     Posts,
     ShibuyaMachines,
     Dealers,
+    Pages,
   ],
-  globals: [HomePage, ApplicationsPage, ResourcesPage, ContactPage, ShibuyaPage, WhyCoolmanPage, HeritagePage, Settings],
+  globals: [HomePage, ApplicationsPage, ResourcesPage, ContactPage, ShibuyaPage, WhyCoolmanPage, HeritagePage, Settings, Navigation],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || process.env.POSTGRES_URL || '',
     },
-    push: false,
+    // Production stays migration-only (push disabled). Push is opt-in via env for
+    // a disposable scratch/dev DB so the schema can be auto-synced there without
+    // hand-running migrations. NEVER set PAYLOAD_DB_PUSH=true against production.
+    push: process.env.PAYLOAD_DB_PUSH === 'true',
   }),
   upload: {
     limits: {

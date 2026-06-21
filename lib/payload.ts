@@ -257,6 +257,46 @@ export const getCachedSettings = cache(async () =>
   getGlobal('settings', { overrideAccess: true }),
 )
 
+// ── Top navigation (CMS-driven, cached) ──────────────────────────────────────
+// Read on every page via the header, so cache it (mirrors getMenuCategories) to
+// avoid a per-request DB hit. Maps the Navigation global's raw items to the slim
+// NavItem shape the header consumes; resolves page relationships to /<slug>.
+const getNavigationCached = unstable_cache(
+  async (): Promise<import('@/lib/navigation/context').NavItem[]> => {
+    const payload = await getPayloadClient()
+    const nav = await payload.findGlobal({ slug: 'navigation', depth: 1, overrideAccess: true })
+    const rawItems = Array.isArray((nav as any)?.items) ? (nav as any).items : []
+    return rawItems
+      .map((it: any): import('@/lib/navigation/context').NavItem | null => {
+        if (it?.type === 'mega-products') {
+          return { type: 'mega-products', label: it.label || 'Products', labelBM: it.labelBM ?? null }
+        }
+        if (it?.type === 'link') {
+          let href = '#'
+          if (it.linkType === 'page' && it.page && typeof it.page === 'object' && it.page.slug) {
+            href = `/${it.page.slug}`
+          } else if ((it.linkType === 'internal' || it.linkType === 'external') && it.url) {
+            href = it.url
+          }
+          return { type: 'link', label: it.label, labelBM: it.labelBM ?? null, href, newTab: !!it.newTab }
+        }
+        return null
+      })
+      .filter(Boolean) as import('@/lib/navigation/context').NavItem[]
+  },
+  ['navigation'],
+  { revalidate: 60, tags: ['navigation'] },
+)
+
+export async function getNavigation(): Promise<import('@/lib/navigation/context').NavItem[]> {
+  try {
+    return await getNavigationCached()
+  } catch {
+    // Empty → header uses its built-in DEFAULT_NAV fallback (menu never vanishes).
+    return []
+  }
+}
+
 export async function getGlobal(
   slug: string,
   opts?: { overrideAccess?: boolean },
