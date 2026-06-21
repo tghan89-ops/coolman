@@ -27,14 +27,11 @@ import { ShibuyaMachines } from './collections/ShibuyaMachines'
 import { Dealers } from './collections/Dealers'
 import { Pages } from './collections/Pages'
 
-import { HomePage } from './globals/HomePage'
 import { Navigation } from './globals/Navigation'
-import { ApplicationsPage } from './globals/ApplicationsPage'
-import { ResourcesPage } from './globals/ResourcesPage'
-import { ContactPage } from './globals/ContactPage'
-import { ShibuyaPage } from './globals/ShibuyaPage'
-import { WhyCoolmanPage } from './globals/WhyCoolmanPage'
-import { HeritagePage } from './globals/HeritagePage'
+// Editorial page globals (HomePage, ApplicationsPage, ResourcesPage, ContactPage,
+// ShibuyaPage, WhyCoolmanPage, HeritagePage) retired 2026-06-21 — these pages are
+// now managed in the visual editor (Pages collection). The global definition
+// files + their DB tables are kept (orphaned) so the old copy is recoverable.
 import { Settings } from './globals/Settings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -97,7 +94,7 @@ export default buildConfig({
     Dealers,
     Pages,
   ],
-  globals: [HomePage, ApplicationsPage, ResourcesPage, ContactPage, ShibuyaPage, WhyCoolmanPage, HeritagePage, Settings, Navigation],
+  globals: [Settings, Navigation],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || process.env.POSTGRES_URL || '',

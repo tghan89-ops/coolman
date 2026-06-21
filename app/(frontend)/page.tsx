@@ -3,10 +3,9 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import puckConfig from '@/puck/config'
 import { sanitizePuckData, type PuckData } from '@/puck/sanitize'
-import { getCachedSettings, getProducts, getGlobal } from '@/lib/payload'
+import { getCachedSettings, getProducts } from '@/lib/payload'
 import { PublicLayout } from '@/components/layout/public-layout'
 import { HomePageClient } from '@/components/home/HomePageClient'
-import type { RawHomePage } from '@/lib/i18n/home-landing'
 
 // Render fresh each request: a CMS/visual-editor edit shows on the next reload.
 // Catalogue stays behind its own 60s data cache (getProducts), so this is a
@@ -44,13 +43,8 @@ export default async function HomePage() {
     }
   }
 
-  // Fallback: original code-driven home.
-  const homeData = await getGlobal('home-page').catch(() => null)
-  return (
-    <HomePageClient
-      settings={settings ?? {}}
-      products={products}
-      initialData={(homeData as RawHomePage | null) ?? null}
-    />
-  )
+  // Fallback (only if the "home" Puck page is ever missing): original code-driven
+  // home using its built-in copy defaults. The home-page global was retired with
+  // the cutover, so no CMS read here.
+  return <HomePageClient settings={settings ?? {}} products={products} initialData={null} />
 }
